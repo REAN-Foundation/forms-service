@@ -23,7 +23,6 @@
    - DisplayCode
    - Sequence
    - ParentSectionId
-   - AddSaveButton
    - CreatedAt
    - UpdatedAt
    - DeletedAt
@@ -77,7 +76,7 @@
    - FileResourceId
    - TextValue
    - SubmissionTimestamp
-   - SaveTimestamp
+   - LastSaveTimestamp
    - CreatedAt
    - UpdatedAt
    - DeletedAt
@@ -152,3 +151,38 @@
      Submitted  = 'Submitted'
    }
    ```
+
+## Routes
+
+1. FormTemplate routes - `form.template.routes.ts`
+   - POST: Create form template - `/api/v1/form-templates/`
+   - PUT: Update form template - `/api/v1/form-templates/:id`
+   - GET: Get form template - `/api/v1/form-templates/:id`
+   - GET: Serach form templates - `/api/v1/form-templates/search?`
+   - DELETE: Delete form template - `/api/v1/form-templates/:id`
+   - GET: Get all submissions for the template - `/api/v1/form-templates/:id/submissions`
+  
+2. FormSection routes - `form.section.routes.ts`
+   - POST: Create form section - `/api/v1/form-sections`
+   - PUT: Update form section - `/api/v1/form-sections/:id`
+   - GET: Get form section - `/api/v1/form-sections/:id`
+   - DELETE: Delete form section - `/api/v1/form-sections/:id`
+  
+3. FormQuestion routes - `form.question.routes.ts`
+   - GET: Get questions for section - `/api/v1/form-questions/by-section:sectionId`
+   - POST: Create question - `/api/v1/form-questions`
+   - PUT: Update question - `/api/v1/form-questions/:id`
+   - GET: Get question - `/api/v1/form-questions/:id`
+   - DELETE: Delete question - `/api/v1/form-questions/:id`
+
+3. Form routes - `form.routes.ts`
+   - POST: Create form - `/api/v1/forms`
+   - PUT: Update form - `/api/v1/forms/:id` - This saves current state of the form
+   - GET: Get form - `/api/v1/forms/:id`
+   - DELETE: Delete form - `/api/v1/forms/:id`
+   - GET: Get forms for template - `/api/v1/forms/by-template:templateId`
+   - GET: Get form question response details - `/api/v1/forms/:id/questions/:questionId`
+   - POST: Submit form - `/api/v1/forms/:id/submit`
+
+  
+   
