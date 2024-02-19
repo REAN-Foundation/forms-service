@@ -108,12 +108,14 @@
 ## Enums
 
 1. Form types
-   `export enum FormType {
+   ```
+   export enum FormType {
      Survey         = 'Survey',
      Questionnaire  = 'Questionnaire',
      TestPaper      = 'Test Paper',
      DataCollection = 'Data Collection'
-   }`
+   }
+   ```
    
 2. Response Types Supported -
    `export enum QueryResponseType {
