@@ -175,7 +175,7 @@
    - GET: Get question - `/api/v1/form-questions/:id`
    - DELETE: Delete question - `/api/v1/form-questions/:id`
 
-3. Form routes - `form.routes.ts`
+4. Form routes - `form.routes.ts`
    - POST: Create form - `/api/v1/forms`
    - PUT: Update form - `/api/v1/forms/:id` - This saves current state of the form
    - GET: Get form - `/api/v1/forms/:id`
@@ -184,5 +184,11 @@
    - GET: Get form question response details - `/api/v1/forms/:id/questions/:questionId`
    - POST: Submit form - `/api/v1/forms/:id/submit`
 
-  
+5. User routes - `user.routes.ts`
+   - POST: Create user - `/api/v1/users`
+   - PUT: Update user - `/api/v1/users/:id`
+   - GET: Get user - `/api/v1/users/:id`
+   - DELETE: Delete user - `/api/v1/users/:id`
+   - POST: Login with password - `/api/v1/users/login-with-password`
+   - POST: Logout - `/api/v1/users/logout`
    
