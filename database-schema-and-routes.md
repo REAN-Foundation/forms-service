@@ -108,7 +108,7 @@
 ## Enums
 
 1. Form types
-   ```
+   ``` typescript
    export enum FormType {
      Survey         = 'Survey',
      Questionnaire  = 'Questionnaire',
@@ -118,7 +118,8 @@
    ```
    
 2. Response Types Supported -
-   `export enum QueryResponseType {
+   ``` typescript
+   export enum QueryResponseType {
       Text                  = 'Text',
       Float                 = 'Float',
       Integer               = 'Integer',
@@ -139,12 +140,15 @@
       Range                 = 'Range',
       Ok                    = 'Ok', //Acknowledgement
       None                  = 'None', //Not expecting response
-   }`
+   }
+   ```
 
 3. Form Status types
-   `export enum FormStatus {
+   ``` typescript
+   export enum FormStatus {
      LinkShared = 'Link Shared',
      Presented  = 'Presented',
      InProgress = 'In-Progress',
      Submitted  = 'Submitted'
-   }`
+   }
+   ```
