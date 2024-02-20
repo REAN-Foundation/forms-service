@@ -42,7 +42,7 @@
    - UpdatedAt
    - DeletedAt
 
-4. QuestionOption - Table name: `question_details`
+4. QuestionDetails - Table name: `question_details`
    - QuestionId
    - Option
    - OptionSequence: number (integer)
