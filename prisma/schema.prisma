@@ -10,24 +10,153 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model question {
-  id       Int    @id @default(autoincrement())
-  question String
-  type     String
+model questions {
+  id            Int               @id @default(autoincrement())
+  //TemplateId    String
+  //SectionId     String              
+  Title         String
+  Description   String
+  DisplayCode   String
+  ResponseType  QueryResponseType
+  Score         Int
+  CorrectAnswer String
+  Hint          String
+  CreatedAt     DateTime          @default(now())
+  UpdatedAt     DateTime          @default(now())
+  DeletedAt     DateTime          @default(now())
 }
 
-model node {
-  id                          Int      @id @default(autoincrement())
-  nodeType                    String
-  parentNodeId                String
-  title                       String
-  description                 String
-  sequence                    Int
-  queryType                   String
-  resolutionScore             Int
-  providerAssessmentCode      String
-  message                     String
-  serveListNodeChildrenAtOnce Boolean
-  scoringApplicable           Boolean
-  options                     String
+model form_templates {
+  id                      String   @id @default(uuid())
+  Title                   String
+  Description             String
+  CurrentVersion          Int
+  Type                    String
+  DisplayCode             String  
+  OwnerUserId             String   @default(uuid())
+  RootSectionId           String   @default(uuid())
+  DefaultSectionNumbering Boolean
+  CreatedAt               DateTime @default(now())
+  UpdatedAt               DateTime @default(now())
+  DeletedAt               DateTime @default(now())
+}
+
+model form_sections {
+  id                String   @id @default(uuid())
+  //TemplateId
+  SectionIdentifier String
+  Title             String
+  Description       String
+  DisplayCode       String   @default(uuid())
+  Sequence          Int
+  ParentSectionId   String
+  CreatedAt         DateTime @default(now())
+  UpdatedAt         DateTime @default(now())
+  DeletedAt         DateTime @default(now())
+}
+
+model question_details {
+    id                String   @id @default(uuid())
+  // QuestionId
+  Option           String
+  OptionSequence   Int
+  // FileResourceId 
+  QuestionImageUrl String
+  RangeMin         Int
+  RangeMax         Int
+}
+
+model forms{
+  id  String   @id @default(uuid())
+// TemplateId
+FormUrl String
+// AnsweredByUserId 
+Status FormStatus
+SubmissionTimestamp DateTime
+CreatedAt  DateTime @default(now())
+UpdatedAt  DateTime @default(now())
+DeletedAt  DateTime @default(now())
+}
+
+model form_submissions{
+  id  String @id @default(uuid())
+// FormId
+// TemplateId
+// QuestionId
+ResponseType QueryResponseType
+IntegerValue Int
+FloatValue Float
+BooleanValue Boolean
+DateTimeValue DateTime
+Url String
+// FileResourceId
+TextValue String
+SubmissionTimestamp DateTime
+LastSaveTimestamp DateTime
+CreatedAt DateTime @default(now())
+UpdatedAt DateTime @default(now())
+DeletedAt DateTime @default(now())
+}
+
+model users{
+  id String @id @default(uuid())
+FirstName String
+LastName String
+CountryCode Int
+Phone String
+Email String
+Username String
+Password String
+CreatedAt DateTime @default(now())
+UpdatedAt DateTime @default(now())
+DeletedAt DateTime @default(now())
+}
+
+model user_login_sessions{
+  id  String @id @default(uuid())
+// UserId 
+IsActiveSession Boolean
+StartedAt  DateTime @default(now())
+ValidTill  DateTime 
+CreatedAt  DateTime @default(now())
+UpdatedAt  DateTime @default(now())
+DeletedAt  DateTime @default(now())
+}
+
+
+enum FormType {
+  Survey
+  Questionnaire
+  TestPaper
+  DataCollection
+}
+
+enum QueryResponseType {
+  Text
+  Float
+  Integer
+  Boolean
+  Object
+  TextArray
+  FloatArray
+  IntegerArray
+  BooleanArray
+  ObjectArray
+  SinglehoiceSelection
+  MultiChoiceSelection
+  File
+  Date
+  DateTime
+  Rating
+  Location
+  Range
+  Ok //Acknowledgement
+  None //Not expecting response
+}
+
+enum FormStatus {
+  LinkShared
+  Presented
+  InProgress
+  Submitted
 }
