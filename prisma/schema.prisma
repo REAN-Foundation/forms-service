@@ -11,118 +11,137 @@ datasource db {
 }
 
 model questions {
-  id            Int               @id @default(autoincrement())
-  //TemplateId    String
-  //SectionId     String              
-  Title         String
-  Description   String
-  DisplayCode   String
-  ResponseType  QueryResponseType
-  Score         Int
-  CorrectAnswer String
-  Hint          String
-  CreatedAt     DateTime          @default(now())
-  UpdatedAt     DateTime          @default(now())
-  DeletedAt     DateTime          @default(now())
+  id               String            @id @default(uuid())
+  form_templates   form_templates    @relation(fields: [TemplateId], references: [id])
+  TemplateId       String // one-to-many relation with form_template
+  form_sections    form_sections     @relation(fields: [SectionId], references: [id])
+  SectionId        String //one-to-many relation with form_section
+  Title            String
+  Description      String
+  DisplayCode      String
+  ResponseType     QueryResponseType
+  Score            Int
+  CorrectAnswer    String
+  Hint             String
+  CreatedAt        DateTime          @default(now())
+  UpdatedAt        DateTime          @default(now())
+  DeletedAt        DateTime          @default(now())
+  Question_details question_details?
+  response         response[]
 }
 
 model form_templates {
-  id                      String   @id @default(uuid())
+  id                      String          @id @default(uuid())
   Title                   String
   Description             String
   CurrentVersion          Int
   Type                    String
-  DisplayCode             String  
-  OwnerUserId             String   @default(uuid())
-  RootSectionId           String   @default(uuid())
+  DisplayCode             String
+  OwnerUserId             String
+  RootSectionId           String
   DefaultSectionNumbering Boolean
-  CreatedAt               DateTime @default(now())
-  UpdatedAt               DateTime @default(now())
-  DeletedAt               DateTime @default(now())
+  CreatedAt               DateTime        @default(now())
+  UpdatedAt               DateTime        @default(now())
+  DeletedAt               DateTime        @default(now())
+  Forms                   forms[]
+  Form_sections           form_sections[]
+  Questions               questions[]
+  response                response[]
 }
 
 model form_sections {
-  id                String   @id @default(uuid())
-  //TemplateId
+  id                String         @id @default(uuid())
+  form_templates    form_templates @relation(fields: [TemplateId], references: [id])
+  TemplateId        String //one-to-many relation with form_templates
   SectionIdentifier String
   Title             String
   Description       String
-  DisplayCode       String   @default(uuid())
+  DisplayCode       String         @default(uuid())
   Sequence          Int
   ParentSectionId   String
-  CreatedAt         DateTime @default(now())
-  UpdatedAt         DateTime @default(now())
-  DeletedAt         DateTime @default(now())
+  CreatedAt         DateTime       @default(now())
+  UpdatedAt         DateTime       @default(now())
+  DeletedAt         DateTime       @default(now())
+  Question          questions[]
 }
 
 model question_details {
-    id                String   @id @default(uuid())
-  // QuestionId
+  id               String    @id @default(uuid())
+  Question         questions @relation(fields: [QuestionId], references: [id])
+  QuestionId       String    @unique //one-to-one relation with question
   Option           String
   OptionSequence   Int
-  // FileResourceId 
+  FileResourceId   String
   QuestionImageUrl String
   RangeMin         Int
   RangeMax         Int
 }
 
-model forms{
-  id  String   @id @default(uuid())
-// TemplateId
-FormUrl String
-// AnsweredByUserId 
-Status FormStatus
-SubmissionTimestamp DateTime
-CreatedAt  DateTime @default(now())
-UpdatedAt  DateTime @default(now())
-DeletedAt  DateTime @default(now())
+model forms {
+  id                  String         @id @default(uuid())
+  Forms               form_templates @relation(fields: [TemplateId], references: [id])
+  TemplateId          String //one-to-many relation with form_templates
+  FormUrl             String
+  Users               users          @relation(fields: [AnsweredByUserId], references: [id])
+  AnsweredByUserId    String // one-to-many relation with user
+  Status              FormStatus
+  SubmissionTimestamp DateTime
+  CreatedAt           DateTime       @default(now())
+  UpdatedAt           DateTime       @default(now())
+  DeletedAt           DateTime       @default(now())
+  Form_submission     response?
 }
 
-model form_submissions{
-  id  String @id @default(uuid())
-// FormId
-// TemplateId
-// QuestionId
-ResponseType QueryResponseType
-IntegerValue Int
-FloatValue Float
-BooleanValue Boolean
-DateTimeValue DateTime
-Url String
-// FileResourceId
-TextValue String
-SubmissionTimestamp DateTime
-LastSaveTimestamp DateTime
-CreatedAt DateTime @default(now())
-UpdatedAt DateTime @default(now())
-DeletedAt DateTime @default(now())
+model response {
+  id                  String            @id @default(uuid())
+  Forms               forms             @relation(fields: [FormId], references: [id])
+  FormId              String            @unique // one to one relation with form
+  form_templates      form_templates    @relation(fields: [TemplateId], references: [id])
+  TemplateId          String //one-to-many relation with form_templates
+  Questions           questions         @relation(fields: [QuestionId], references: [id])
+  QuestionId          String // one-to-many relation with question
+  ResponseType        QueryResponseType
+  IntegerValue        Int
+  FloatValue          Float
+  BooleanValue        Boolean
+  DateTimeValue       DateTime
+  Url                 String
+  FileResourceId      String
+  TextValue           String
+  SubmissionTimestamp DateTime
+  LastSaveTimestamp   DateTime
+  CreatedAt           DateTime          @default(now())
+  UpdatedAt           DateTime          @default(now())
+  DeletedAt           DateTime          @default(now())
 }
 
-model users{
-  id String @id @default(uuid())
-FirstName String
-LastName String
-CountryCode Int
-Phone String
-Email String
-Username String
-Password String
-CreatedAt DateTime @default(now())
-UpdatedAt DateTime @default(now())
-DeletedAt DateTime @default(now())
+model users {
+  id                 String                @id @default(uuid())
+  FirstName          String
+  LastName           String
+  CountryCode        Int
+  Phone              String
+  Email              String
+  Username           String
+  Password           String
+  CreatedAt          DateTime              @default(now())
+  UpdatedAt          DateTime              @default(now())
+  DeletedAt          DateTime              @default(now())
+  user_login_session user_login_sessions[]
+  forms              forms[]
 }
 
-model user_login_sessions{
-  id  String @id @default(uuid())
-// UserId 
-IsActiveSession Boolean
-StartedAt  DateTime @default(now())
-ValidTill  DateTime 
-CreatedAt  DateTime @default(now())
-UpdatedAt  DateTime @default(now())
-DeletedAt  DateTime @default(now())
+model user_login_sessions {
+  id              String   @id @default(uuid())
+  Users           users    @relation(fields: [UserId], references: [id])
+  UserId          String //one-to-one relation with users
+  IsActiveSession Boolean
+  StartedAt       DateTime @default(now())
+  ValidTill       DateTime
+  CreatedAt       DateTime @default(now())
+  UpdatedAt       DateTime @default(now())
+  DeletedAt       DateTime @default(now())
 }
-
 
 enum FormType {
   Survey
@@ -138,10 +157,10 @@ enum QueryResponseType {
   Boolean
   Object
   TextArray
-  FloatArray
-  IntegerArray
-  BooleanArray
-  ObjectArray
+  // FloatArray
+  // IntegerArray
+  // BooleanArray
+  // ObjectArray
   SinglehoiceSelection
   MultiChoiceSelection
   File
@@ -150,7 +169,7 @@ enum QueryResponseType {
   Rating
   Location
   Range
-  Ok //Acknowledgement
+  //Ok //Acknowledgement
   None //Not expecting response
 }
 
