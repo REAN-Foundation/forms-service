@@ -79,8 +79,8 @@ model QuestionDetail {
 
 model Form {
   id                  String       @id @default(uuid())
-  Forms               FormTemplate @relation(fields: [TemplateId], references: [id])
-  TemplateId          String //one-to-many relation with form_templates
+  FormTemplate        FormTemplate @relation(fields: [FormTemplateId], references: [id])
+  FormTemplateId          String //one-to-many relation with form_templates
   FormUrl             String
   Users               User         @relation(fields: [AnsweredByUserId], references: [id])
   AnsweredByUserId    String // one-to-many relation with user
@@ -96,8 +96,8 @@ model Response {
   id                  String            @id @default(uuid())
   Forms               Form              @relation(fields: [FormId], references: [id])
   FormId              String            @unique // one to one relation with form
-  FormTemplates       FormTemplate      @relation(fields: [TemplateId], references: [id])
-  TemplateId          String //one-to-many relation with form_templates
+  FormTemplates       FormTemplate      @relation(fields: [FormTemplateId], references: [id])
+  FormTemplateId          String //one-to-many relation with form_templates
   Questions           Question          @relation(fields: [QuestionId], references: [id])
   QuestionId          String // one-to-many relation with question
   ResponseType        QueryResponseType
