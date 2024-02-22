@@ -1,3 +1,5 @@
+import { FormStatus } from "../miscellaneous/system.types";
+
 export interface formCreateDto {
     TemplateId: string;
     FormUrl: string;
@@ -46,9 +48,3 @@ export interface formResponseDto {
     CreatedAt: Date;
 }
 
-enum FormStatus {
-    LinkShared,
-    Presented,
-    InProgress,
-    Submitted,
-}

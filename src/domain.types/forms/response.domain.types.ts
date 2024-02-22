@@ -1,3 +1,5 @@
+import {FormStatus, QueryResponseType} from "../miscellaneous/system.types"
+
 export interface ResponseCreateDto {
     FormId: string;
     FormTemplateId: string;
@@ -81,32 +83,3 @@ export interface ResponseResponseDto {
     LastSaveTimestamp: Date
 }
 
-enum FormStatus {
-    LinkShared,
-    Presented,
-    InProgress,
-    Submitted,
-}
-
-enum QueryResponseType {
-    Text,
-    Float,
-    Integer,
-    Boolean,
-    Object,
-    TextArray,
-    // FloatArray
-    // IntegerArray
-    // BooleanArray
-    // ObjectArray
-    SinglehoiceSelection,
-    MultiChoiceSelection,
-    File,
-    Date,
-    DateTime,
-    Rating,
-    Location,
-    Range,
-    //ok//Acknowledgement
-    None //Not expecting response
-}

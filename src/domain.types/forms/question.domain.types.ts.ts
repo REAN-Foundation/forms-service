@@ -1,3 +1,5 @@
+import { QueryResponseType } from "../miscellaneous/system.types";
+
 export interface QuestionCreateDto {
     TemplateId: string;
     SectionId: string;
@@ -54,26 +56,4 @@ export interface QuestionResponseDto {
     }
     CreatedAt: Date;
     UpdatedAt: Date;
-}
-enum QueryResponseType {
-    Text,
-    Float,
-    Integer,
-    Boolean,
-    Object,
-    TextArray,
-    // FloatArray
-    // IntegerArray
-    // BooleanArray
-    // ObjectArray
-    SinglehoiceSelection,
-    MultiChoiceSelection,
-    File,
-    Date,
-    DateTime,
-    Rating,
-    Location,
-    Range,
-    //ok//Acknowledgement
-    None //Not expecting response
 }

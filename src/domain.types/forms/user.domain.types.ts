@@ -1,4 +1,4 @@
-export interface FormSectionCreateDto {
+export interface UserCreateDto {
     FirstName: string;
     LastName: string;
     CountryCode: number;
@@ -8,7 +8,7 @@ export interface FormSectionCreateDto {
     Password: String;
 }
 
-export interface FormSectionUpdateDto {
+export interface UserUpdateDto {
     FirstName?: string;
     LastName?: string;
     CountryCode?: number;
@@ -18,7 +18,7 @@ export interface FormSectionUpdateDto {
     Password?: String;
 }
 
-export interface FormSectionResponseDto {
+export interface UserResponseDto {
     id: string;
     FirstName: string;
     LastName: string;

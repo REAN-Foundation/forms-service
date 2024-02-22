@@ -1,8 +1,10 @@
+import { FormType } from "../miscellaneous/system.types";
+
 export interface FormTemplateCreateDto {
     Title: String;
     Description: String;
     CurrentVersion: number;
-    Type: String;
+    Type: FormType;
     DisplayCode: String;
     OwnerUserId: String;
     RootSectionId: String;
@@ -13,7 +15,7 @@ export interface FormTemplateUpdateDto {
     Title?: String;
     Description?: String;
     CurrentVersion?: number;
-    Type?: String;
+    Type?: FormType;
     DisplayCode?: String;
     OwnerUserId?: String;
     RootSectionId?: String;
@@ -25,7 +27,7 @@ export interface FormTemplateResponseDto {
     Title: String;
     Description: String;
     CurrentVersion: number;
-    Type: String;
+    Type: FormType;
     DisplayCode: String;
     OwnerUserId: String;
     RootSectionId: String;
