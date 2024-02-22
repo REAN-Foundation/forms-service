@@ -4,8 +4,8 @@ import Application from './app';
 
 dotenv.config();
 
-(async ()=>{
-    const app =Application.instance();
+(async () => {
+    const app = Application.instance();
     app.start();
 })();
 

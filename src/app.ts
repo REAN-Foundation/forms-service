@@ -6,7 +6,7 @@ export default class Application {
 
     public _app: express.Application = null;
 
-    private _router:Router=null;
+    private _router: Router = null;
 
     private static _instance: Application = null;
 
@@ -26,26 +26,24 @@ export default class Application {
         return this._instance || (this._instance = new this())
     }
 
-    start = async()=>{
-        try{
+    start = async () => {
+        try {
             this._router.init();
             this.listen();
         }
-        catch(error){
-
+        catch (error) {
         }
     }
 
-    private listen = async ()=>{
-        return new Promise((resolve,reject)=>{
-            try{
+    private listen = async () => {
+        return new Promise((resolve, reject) => {
+            try {
                 this._app.listen(process.env.PORT, () => {
                     console.log(`"its a port ${process.env.PORT}"`);
                 });
             }
-            catch(error){
+            catch (error) {
                 console.log("Error in listening");
-
             }
         })
     }

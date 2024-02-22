@@ -10,28 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model questions {
-  id               String            @id @default(uuid())
-  form_templates   form_templates    @relation(fields: [TemplateId], references: [id])
-  TemplateId       String // one-to-many relation with form_template
-  form_sections    form_sections     @relation(fields: [SectionId], references: [id])
-  SectionId        String //one-to-many relation with form_section
-  Title            String
-  Description      String
-  DisplayCode      String
-  ResponseType     QueryResponseType
-  Score            Int
-  CorrectAnswer    String
-  Hint             String
-  CreatedAt        DateTime          @default(now())
-  UpdatedAt        DateTime          @default(now())
-  DeletedAt        DateTime          @default(now())
-  Question_details question_details?
-  response         response[]
+model Question {
+  id              String            @id @default(uuid())
+  FormTemplates   FormTemplate      @relation(fields: [TemplateId], references: [id])
+  TemplateId      String // one-to-many relation with form_template
+  FormSections    FormSection       @relation(fields: [SectionId], references: [id])
+  SectionId       String //one-to-many relation with form_section
+  Title           String
+  Description     String
+  DisplayCode     String
+  ResponseType    QueryResponseType
+  Score           Int
+  CorrectAnswer   String
+  Hint            String
+  CreatedAt       DateTime          @default(now())
+  UpdatedAt       DateTime          @default(now())
+  DeletedAt       DateTime          @default(now())
+  QuestionDetails QuestionDetail?
+  Response        Response[]
 }
 
-model form_templates {
-  id                      String          @id @default(uuid())
+model FormTemplate {
+  id                      String        @id @default(uuid())
   Title                   String
   Description             String
   CurrentVersion          Int
@@ -40,35 +40,35 @@ model form_templates {
   OwnerUserId             String
   RootSectionId           String
   DefaultSectionNumbering Boolean
-  CreatedAt               DateTime        @default(now())
-  UpdatedAt               DateTime        @default(now())
-  DeletedAt               DateTime        @default(now())
-  Forms                   forms[]
-  Form_sections           form_sections[]
-  Questions               questions[]
-  response                response[]
+  CreatedAt               DateTime      @default(now())
+  UpdatedAt               DateTime      @default(now())
+  DeletedAt               DateTime      @default(now())
+  Forms                   Form[]
+  FormSections            FormSection[]
+  Questions               Question[]
+  Response                Response[]
 }
 
-model form_sections {
-  id                String         @id @default(uuid())
-  form_templates    form_templates @relation(fields: [TemplateId], references: [id])
+model FormSection {
+  id                String       @id @default(uuid())
+  FormTemplates     FormTemplate @relation(fields: [TemplateId], references: [id])
   TemplateId        String //one-to-many relation with form_templates
   SectionIdentifier String
   Title             String
   Description       String
-  DisplayCode       String         @default(uuid())
+  DisplayCode       String       @default(uuid())
   Sequence          Int
   ParentSectionId   String
-  CreatedAt         DateTime       @default(now())
-  UpdatedAt         DateTime       @default(now())
-  DeletedAt         DateTime       @default(now())
-  Question          questions[]
+  CreatedAt         DateTime     @default(now())
+  UpdatedAt         DateTime     @default(now())
+  DeletedAt         DateTime     @default(now())
+  Question          Question[]
 }
 
-model question_details {
-  id               String    @id @default(uuid())
-  Question         questions @relation(fields: [QuestionId], references: [id])
-  QuestionId       String    @unique //one-to-one relation with question
+model QuestionDetail {
+  id               String   @id @default(uuid())
+  Question         Question @relation(fields: [QuestionId], references: [id])
+  QuestionId       String   @unique //one-to-one relation with question
   Option           String
   OptionSequence   Int
   FileResourceId   String
@@ -77,28 +77,28 @@ model question_details {
   RangeMax         Int
 }
 
-model forms {
-  id                  String         @id @default(uuid())
-  Forms               form_templates @relation(fields: [TemplateId], references: [id])
+model Form {
+  id                  String       @id @default(uuid())
+  Forms               FormTemplate @relation(fields: [TemplateId], references: [id])
   TemplateId          String //one-to-many relation with form_templates
   FormUrl             String
-  Users               users          @relation(fields: [AnsweredByUserId], references: [id])
+  Users               User         @relation(fields: [AnsweredByUserId], references: [id])
   AnsweredByUserId    String // one-to-many relation with user
   Status              FormStatus
   SubmissionTimestamp DateTime
-  CreatedAt           DateTime       @default(now())
-  UpdatedAt           DateTime       @default(now())
-  DeletedAt           DateTime       @default(now())
-  Form_submission     response?
+  CreatedAt           DateTime     @default(now())
+  UpdatedAt           DateTime     @default(now())
+  DeletedAt           DateTime     @default(now())
+  Response            Response?
 }
 
-model response {
+model Response {
   id                  String            @id @default(uuid())
-  Forms               forms             @relation(fields: [FormId], references: [id])
+  Forms               Form              @relation(fields: [FormId], references: [id])
   FormId              String            @unique // one to one relation with form
-  form_templates      form_templates    @relation(fields: [TemplateId], references: [id])
+  FormTemplates       FormTemplate      @relation(fields: [TemplateId], references: [id])
   TemplateId          String //one-to-many relation with form_templates
-  Questions           questions         @relation(fields: [QuestionId], references: [id])
+  Questions           Question          @relation(fields: [QuestionId], references: [id])
   QuestionId          String // one-to-many relation with question
   ResponseType        QueryResponseType
   IntegerValue        Int
@@ -115,8 +115,8 @@ model response {
   DeletedAt           DateTime          @default(now())
 }
 
-model users {
-  id                 String                @id @default(uuid())
+model User {
+  id                 String              @id @default(uuid())
   FirstName          String
   LastName           String
   CountryCode        Int
@@ -124,16 +124,16 @@ model users {
   Email              String
   Username           String
   Password           String
-  CreatedAt          DateTime              @default(now())
-  UpdatedAt          DateTime              @default(now())
-  DeletedAt          DateTime              @default(now())
-  user_login_session user_login_sessions[]
-  forms              forms[]
+  CreatedAt          DateTime            @default(now())
+  UpdatedAt          DateTime            @default(now())
+  DeletedAt          DateTime            @default(now())
+  user_login_session UserLoginSessions[]
+  Form               Form[]
 }
 
-model user_login_sessions {
+model UserLoginSessions {
   id              String   @id @default(uuid())
-  Users           users    @relation(fields: [UserId], references: [id])
+  User            User     @relation(fields: [UserId], references: [id])
   UserId          String //one-to-one relation with users
   IsActiveSession Boolean
   StartedAt       DateTime @default(now())
