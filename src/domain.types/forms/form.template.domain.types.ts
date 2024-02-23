@@ -1,6 +1,6 @@
 import { FormType } from "../miscellaneous/system.types";
 
-export interface FormTemplateCreateDto {
+export interface IFormTemplateCreateDto {
     Title: String;
     Description: String;
     CurrentVersion: number;
@@ -11,7 +11,7 @@ export interface FormTemplateCreateDto {
     DefaultSectionNumbering: Boolean
 }
 
-export interface FormTemplateUpdateDto {
+export interface IFormTemplateUpdateDto {
     Title?: String;
     Description?: String;
     CurrentVersion?: number;
@@ -22,7 +22,7 @@ export interface FormTemplateUpdateDto {
     DefaultSectionNumbering?: Boolean
 }
 
-export interface FormTemplateResponseDto {
+export interface IFormTemplateResponseDto {
     id: String;
     Title: String;
     Description: String;
@@ -35,3 +35,5 @@ export interface FormTemplateResponseDto {
     CreatedAt: Date;
     UpdatedAt: Date;
 }
+
+

@@ -1,6 +1,6 @@
 import { QueryResponseType } from "../miscellaneous/system.types";
 
-export interface QuestionCreateDto {
+export interface IQuestionCreateDto {
     TemplateId: string;
     SectionId: string;
     Title: string;
@@ -12,7 +12,7 @@ export interface QuestionCreateDto {
     Hint: String;
 }
 
-export interface QuestionUpdateDto {
+export interface IQuestionUpdateDto {
     TemplateId?: string;
     SectionId?: string;
     Title?: string;
@@ -24,7 +24,7 @@ export interface QuestionUpdateDto {
     Hint?: String;
 }
 
-export interface QuestionResponseDto {
+export interface IQuestionResponseDto {
     id: string;
     Title: string;
     Description: string;

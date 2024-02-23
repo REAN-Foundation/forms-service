@@ -1,4 +1,4 @@
-export interface FormSectionCreateDto {
+export interface IFormSectionCreateDto {
     TemplateId:string;
     SectionIdentifier: number;
     Title: String;
@@ -9,7 +9,7 @@ export interface FormSectionCreateDto {
     CreatedAt: Date;
 }
 
-export interface FormSectionUpdateDto {
+export interface IFormSectionUpdateDto {
     SectionIdentifier?: number;
     Title?: String;
     Description?: String;
@@ -19,7 +19,7 @@ export interface FormSectionUpdateDto {
     CreatedAt?: Date;
 }
 
-export interface FormSectionResponseDto {
+export interface IFormSectionResponseDto {
     id: String;
     Template: {
         id: string;

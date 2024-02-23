@@ -1,6 +1,6 @@
 import { FormStatus } from "../miscellaneous/system.types";
 
-export interface formCreateDto {
+export interface IformCreateDto {
     TemplateId: string;
     FormUrl: string;
     AnsweredByUserId: String;
@@ -9,7 +9,7 @@ export interface formCreateDto {
     CreatedAt: Date;
 }
 
-export interface formUpdateDto {
+export interface IformUpdateDto {
     TemplateId?: string;
     FormUrl?: string;
     AnsweredByUserId?: String;
@@ -18,7 +18,7 @@ export interface formUpdateDto {
     CreatedAt?: Date;
 }
 
-export interface formResponseDto {
+export interface IformResponseDto {
     id: String;
     Template: {
         id: String;

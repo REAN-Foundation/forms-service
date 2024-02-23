@@ -1,14 +1,14 @@
-export interface FormSectionCreateDto {
+export interface IFormSectionCreateDto {
     UserId: string;
 }
 
-export interface FormSectionUpdateDto {
+export interface IFormSectionUpdateDto {
     UserId: string;
 }
 
-export interface FormSectionResponseDto {
+export interface IFormSectionResponseDto {
     id: string;
-    user: {
+    User: {
         FirstName: string;
         LastName: string;
         CountryCode: number;

@@ -1,6 +1,6 @@
-import {FormStatus, QueryResponseType} from "../miscellaneous/system.types"
+import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
 
-export interface ResponseCreateDto {
+export interface IResponseCreateDto {
     FormId: string;
     FormTemplateId: string;
     QuestionId: String;
@@ -17,7 +17,7 @@ export interface ResponseCreateDto {
     CreatedAt: Date;
 }
 
-export interface ResponseUpdateDto {
+export interface IResponseUpdateDto {
     FormId?: string;
     FormTemplateId?: string;
     QuestionId?: String;
@@ -34,7 +34,7 @@ export interface ResponseUpdateDto {
     CreatedAt?: Date;
 }
 
-export interface ResponseResponseDto {
+export interface IResponseResponseDto {
     id: String;
     Form: {
         id: String;

@@ -1,4 +1,4 @@
-export interface UserCreateDto {
+export interface IUserCreateDto {
     FirstName: string;
     LastName: string;
     CountryCode: number;
@@ -8,7 +8,7 @@ export interface UserCreateDto {
     Password: String;
 }
 
-export interface UserUpdateDto {
+export interface IUserUpdateDto {
     FirstName?: string;
     LastName?: string;
     CountryCode?: number;
@@ -18,7 +18,7 @@ export interface UserUpdateDto {
     Password?: String;
 }
 
-export interface UserResponseDto {
+export interface IUserResponseDto {
     id: string;
     FirstName: string;
     LastName: string;

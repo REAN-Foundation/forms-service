@@ -1,4 +1,4 @@
-export interface QuestionDetailsCreateDto {
+export interface IQuestionDetailsCreateDto {
     QuestionId:string;
     Option: string;
     OptionSequence: number;
@@ -8,7 +8,7 @@ export interface QuestionDetailsCreateDto {
     RangeMax: number;
 }
 
-export interface QuestionDetailsUpdateDto {
+export interface IQuestionDetailsUpdateDto {
     QuestionId?:string;
     Option?: string;
     OptionSequence?: number;
@@ -18,7 +18,7 @@ export interface QuestionDetailsUpdateDto {
     RangeMax?: number;
 }
 
-export interface QuestionDetailsResponseDto {
+export interface IQuestionDetailsResponseDto {
     id: String;
     Question: {
         id: string;
