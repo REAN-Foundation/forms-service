@@ -1,24 +1,25 @@
-import { IFormSectionResponseDto } from "../domain.types/forms/form.section.domain.types";
+import { FormSectionResponseDto } from "../domain.types/forms/form.section.domain.types";
 
-export class FormMapper {
-    static toDto = (record: any): IFormSectionResponseDto => {
+export class FormSectionMapper {
+    static toDto = (record: any): FormSectionResponseDto => {
         if (record === null) {
             return null;
         }
 
-        const dto: IFormSectionResponseDto = {
+        const dto: FormSectionResponseDto = {
             id: record.id,
-            Template: {
-                id: record.Template.id,
-                Title: record.Template.Title,
-                Description: record.Template.Description,
-                CurrentVersion: record.Template.CurrentVersion,
-                Type: record.Template.Type,
-                DisplayCode: record.Template.DisplayCode,
-                OwnerUserId: record.Template.OwnerUserId,
-                RootSectionId: record.Template.RootSectionId,
-                DefaultSectionNumbering: record.DefaultSectionNumbering
+            FormTemplates: {
+                id: record.FormTemplates.id,
+                Title: record.FormTemplates.Title,
+                Description: record.FormTemplates.Description,
+                CurrentVersion: record.FormTemplates.CurrentVersion,
+                Type: record.FormTemplates.Type,
+                DisplayCode: record.FormTemplates.DisplayCode,
+                OwnerUserId: record.FormTemplates.OwnerUserId,
+                RootSectionId: record.FormTemplates.RootSectionId,
+                DefaultSectionNumbering: record.FormTemplates.DefaultSectionNumbering
             },
+            // TemplateId:record.TemplateId,
             SectionIdentifier: record.SectionIdentifier,
             Title: record.Title,
             Description: record.Description,
@@ -31,38 +32,65 @@ export class FormMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): IFormSectionResponseDto[] {
+    static toArrayDto(record: any[]): FormSectionResponseDto[] {
         if (record === null) {
             return null;
         }
 
-        const dtos: IFormSectionResponseDto[] = [];
+        const dtos: FormSectionResponseDto[] = [];
 
-        record.forEach((element) => {
+        for (let i = 0; i < record.length; i++) {
+            const obj = record[i];
+            // Modify the object or push it to a new array
             dtos.push({
-                id: element.id,
-                Template: {
-                    id: element.Template.id,
-                    Title: element.Template.Title,
-                    Description: element.Template.Description,
-                    CurrentVersion: element.Template.CorrectAnswer,
-                    Type: element.Template.Type,
-                    DisplayCode: element.Template.DisplayCode,
-                    OwnerUserId: element.Template.OwnerUserId,
-                    RootSectionId: element.Template.RootSectionId,
-                    DefaultSectionNumbering: element.DefaultSectionNumbering
+                id: obj.id,
+                FormTemplates: {
+                    id: obj.FormTemplates.id,
+                    Title: obj.FormTemplates.Title,
+                    Description: obj.FormTemplates.Description,
+                    CurrentVersion: obj.FormTemplates.CorrectAnswer,
+                    Type: obj.FormTemplates.Type,
+                    DisplayCode: obj.FormTemplates.DisplayCode,
+                    OwnerUserId: obj.FormTemplates.OwnerUserId,
+                    RootSectionId: obj.FormTemplates.RootSectionId,
+                    DefaultSectionNumbering: obj.FormTemplates.DefaultSectionNumbering
                 },
-                SectionIdentifier: element.SectionIdentifier,
-                Title: element.Title,
-                Description: element.Description,
-                DisplayCode: element.DisplayCode,
-                Sequence: element.Sequence,
-                ParentSectionId: element.ParentSectionId,
-                CreatedAt: element.CreatedAt,
-                UpdatedAt: element.UpdatedAt
+                // TemplateId:obj.TemplateId,
+                SectionIdentifier: obj.SectionIdentifier,
+                Title: obj.Title,
+                Description: obj.Description,
+                DisplayCode: obj.DisplayCode,
+                Sequence: obj.Sequence,
+                ParentSectionId: obj.ParentSectionId,
+                CreatedAt: obj.CreatedAt,
+                UpdatedAt: obj.UpdatedAt
             });
-            return dtos;
         }
-        )
+        // record.forEach((record) => {
+        //     dtos.push({
+        //         id: record.id,
+        //         FormTemplates: {
+        //             id: record.FormTemplates.id,
+        //             Title: record.FormTemplates.Title,
+        //             Description: record.FormTemplates.Description,
+        //             CurrentVersion: record.FormTemplates.CorrectAnswer,
+        //             Type: record.FormTemplates.Type,
+        //             DisplayCode: record.FormTemplates.DisplayCode,
+        //             OwnerUserId: record.FormTemplates.OwnerUserId,
+        //             RootSectionId: record.FormTemplates.RootSectionId,
+        //             DefaultSectionNumbering: record.FormTemplates.DefaultSectionNumbering
+        //         },
+        //         SectionIdentifier: record.SectionIdentifier,
+        //         Title: record.Title,
+        //         Description: record.Description,
+        //         DisplayCode: record.DisplayCode,
+        //         Sequence: record.Sequence,
+        //         ParentSectionId: record.ParentSectionId,
+        //         CreatedAt: record.CreatedAt,
+        //         UpdatedAt: record.UpdatedAt
+        //     });
+        return dtos;
+        // }
+        // )
     }
 }

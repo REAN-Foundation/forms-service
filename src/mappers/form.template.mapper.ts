@@ -1,12 +1,12 @@
-import { IFormTemplateResponseDto } from "../domain.types/forms/form.template.domain.types";
+import { FormTemplateResponseDto } from "../domain.types/forms/form.template.domain.types";
 
-export class FormMapper {
-    static toDto = (record: any): IFormTemplateResponseDto => {
+export class FormTemplateMapper {
+    static toDto = (record: any): FormTemplateResponseDto => {
         if (record === null) {
             return null;
         }
 
-        const dto: IFormTemplateResponseDto = {
+        const dto: FormTemplateResponseDto = {
             id: record.id,
             Title: record.Title,
             Description: record.Description,
@@ -22,14 +22,15 @@ export class FormMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): IFormTemplateResponseDto[] {
+    static toArrayDto(record: any[]): FormTemplateResponseDto[] {
         if (record === null) {
             return null;
         }
 
-        const dtos: IFormTemplateResponseDto[] = [];
+        const dtos: FormTemplateResponseDto[] = [];
 
-        record.forEach((element) => {
+        for (let i = 0; i < record.length; i++) {
+            const element = record[i];
             dtos.push({
                 id: element.id,
                 Title: element.Title,
@@ -43,8 +44,7 @@ export class FormMapper {
                 CreatedAt: element.CreatedAt,
                 UpdatedAt: element.UpdatedAt
             });
-            return dtos;
         }
-        )
+            return dtos;
     }
 }

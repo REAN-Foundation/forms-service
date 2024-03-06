@@ -1,12 +1,12 @@
-import { IQuestionResponseDto } from "../domain.types/forms/question.domain.types";
+import { QuestionResponseDto } from "../domain.types/forms/question.domain.types";
 
 export class QuestionMapper {
-    static toDto = (record: any): IQuestionResponseDto => {
+    static toDto = (record: any): QuestionResponseDto => {
         if (record === null) {
             return null;
         }
 
-        const dto: IQuestionResponseDto = {
+        const dto: QuestionResponseDto = {
             id: record.id,
             Title: record.Title,
             Description: record.Description,
@@ -42,14 +42,15 @@ export class QuestionMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): IQuestionResponseDto[] {
+    static toArrayDto(record: any[]): QuestionResponseDto[] {
         if (record === null) {
             return null;
         }
 
-        const dtos: IQuestionResponseDto[] = [];
+        const dtos: QuestionResponseDto[] = [];
 
-        record.forEach((element) => {
+        for (let i = 0; i < record.length; i++) {
+            const element = record[i];
             dtos.push({
                 id: element.id,
                 Title: element.Title,
@@ -83,8 +84,7 @@ export class QuestionMapper {
                 CreatedAt: element.CreatedAt,
                 UpdatedAt: element.UpdatedAt
             });
-            return dtos;
         }
-        )
+        return dtos;
     }
 }

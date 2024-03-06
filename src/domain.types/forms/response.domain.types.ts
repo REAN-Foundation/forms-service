@@ -1,9 +1,11 @@
-import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
+// import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
 
-export interface IResponseCreateDto {
+import { FormStatus, QueryResponseType } from "@prisma/client";
+
+export interface ResponseCreateModel {
     FormId: string;
     FormTemplateId: string;
-    QuestionId: String;
+    QuestionId:string;
     ResponseType: QueryResponseType;
     IntegerValue: number;
     FloatValue: GLfloat;
@@ -14,13 +16,13 @@ export interface IResponseCreateDto {
     TextValue: string;
     SubmissionTimestamp: Date;
     LastSaveTimestamp: Date
-    CreatedAt: Date;
+    // CreatedAt: Date;
 }
 
-export interface IResponseUpdateDto {
+export interface ResponseUpdateModel {
     FormId?: string;
     FormTemplateId?: string;
-    QuestionId?: String;
+    QuestionId?:string;
     ResponseType?: QueryResponseType;
     IntegerValue?: number;
     FloatValue?: GLfloat;
@@ -31,13 +33,13 @@ export interface IResponseUpdateDto {
     TextValue?: string;
     SubmissionTimestamp?: Date;
     LastSaveTimestamp?: Date
-    CreatedAt?: Date;
+    // CreatedAt?: Date;
 }
 
-export interface IResponseResponseDto {
-    id: String;
+export interface ResponseResponseDto {
+    id:string;
     Form: {
-        id: String;
+        id:string;
         TemplateId: string;
         FormUrl: string;
         UserId: string;
@@ -46,14 +48,14 @@ export interface IResponseResponseDto {
         CreatedAt: Date;
     }
     FormTemplate: {
-        id: String;
-        Title: String;
-        Description: String;
+        id:string;
+        Title:string;
+        Description:string;
         CurrentVersion: number;
-        Type: String;
-        DisplayCode: String;
-        OwnerUserId: String;
-        RootSectionId: String;
+        Type:string;
+        DisplayCode:string;
+        OwnerUserId:string;
+        RootSectionId:string;
         DefaultSectionNumbering: Boolean
         CreatedAt: Date;
     }
@@ -64,8 +66,8 @@ export interface IResponseResponseDto {
         DisplayCode: string;
         ResponseType: QueryResponseType;
         Score: number;
-        CorrectAnswer: String;
-        Hint: String;
+        CorrectAnswer:string;
+        Hint:string;
         TemplateId: string;
         SectionId: string;
         CreatedAt: Date;

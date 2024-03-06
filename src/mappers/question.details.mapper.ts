@@ -1,12 +1,12 @@
-import { IQuestionDetailsResponseDto } from "../domain.types/forms/question.details.domain.types";
+import { QuestionDetailsResponseDto } from "../domain.types/forms/question.details.domain.types";
 
-export class FormMapper {
-    static toDto = (record: any): IQuestionDetailsResponseDto => {
+export class QuestionDetailMapper {
+    static toDto = (record: any): QuestionDetailsResponseDto => {
         if (record === null) {
             return null;
         }
 
-        const dto: IQuestionDetailsResponseDto = {
+        const dto: QuestionDetailsResponseDto = {
             id: record.id,
             Question: {
                 id: record.Question.id,
@@ -28,14 +28,14 @@ export class FormMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): IQuestionDetailsResponseDto[] {
+    static toArrayDto(record: any[]): QuestionDetailsResponseDto[] {
         if (record === null) {
             return null;
         }
 
-        const dtos: IQuestionDetailsResponseDto[] = [];
-
-        record.forEach((element) => {
+        const dtos: QuestionDetailsResponseDto[] = [];
+        for (let i = 0; i < record.length; i++) {
+            const element = record[i];
             dtos.push({
                 id: element.id,
                 Question: {
@@ -55,8 +55,8 @@ export class FormMapper {
                 RangeMin: element.RangeMin,
                 RangeMax: element.Ranelement
             });
-            return dtos;
         }
-        )
+        return dtos;
     }
+
 }

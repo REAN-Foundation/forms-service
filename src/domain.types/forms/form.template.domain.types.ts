@@ -1,39 +1,40 @@
-import { FormType } from "../miscellaneous/system.types";
+// import { FormType } from "../miscellaneous/system.types";
 
-export interface IFormTemplateCreateDto {
-    Title: String;
-    Description: String;
+import { FormType } from "@prisma/client";
+
+export interface FormTemplateCreateModel {
+    Title: string;
+    Description: string;
     CurrentVersion: number;
     Type: FormType;
-    DisplayCode: String;
-    OwnerUserId: String;
-    RootSectionId: String;
-    DefaultSectionNumbering: Boolean
+    DisplayCode: string;
+    OwnerUserId?: string;
+    RootSectionId?: string;
+    DefaultSectionNumbering: boolean
 }
 
-export interface IFormTemplateUpdateDto {
-    Title?: String;
-    Description?: String;
+export interface FormTemplateUpdateModel {
+    Title?: string;
+    Description?: string;
     CurrentVersion?: number;
     Type?: FormType;
-    DisplayCode?: String;
-    OwnerUserId?: String;
-    RootSectionId?: String;
-    DefaultSectionNumbering?: Boolean
+    DisplayCode?: string;
+    OwnerUserId?: string;
+    RootSectionId?: string;
+    DefaultSectionNumbering?: boolean
 }
 
-export interface IFormTemplateResponseDto {
-    id: String;
-    Title: String;
-    Description: String;
+export interface FormTemplateResponseDto {
+    id: string;
+    Title: string;
+    Description: string;
     CurrentVersion: number;
     Type: FormType;
-    DisplayCode: String;
-    OwnerUserId: String;
-    RootSectionId: String;
-    DefaultSectionNumbering: Boolean
+    DisplayCode: string;
+    OwnerUserId: string;
+    RootSectionId: string;
+    DefaultSectionNumbering: boolean
     CreatedAt: Date;
     UpdatedAt: Date;
 }
-
 

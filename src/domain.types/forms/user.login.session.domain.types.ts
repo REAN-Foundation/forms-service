@@ -1,12 +1,17 @@
-export interface IFormSectionCreateDto {
+export interface UserLoginSessionCreateModel {
+    IsActiveSession: boolean;
     UserId: string;
+    ValidTill:Date;
 }
 
-export interface IFormSectionUpdateDto {
+export interface UserLoginSessionUpdateModel {
     UserId: string;
+    ValidTill:Date;
+    IsActiveSession: boolean;
+
 }
 
-export interface IFormSectionResponseDto {
+export interface UserLoginSessionResponseDto {
     id: string;
     User: {
         FirstName: string;

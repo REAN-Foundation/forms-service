@@ -1,43 +1,44 @@
-export interface IFormSectionCreateDto {
-    TemplateId:string;
-    SectionIdentifier: number;
-    Title: String;
-    Description: String;
-    DisplayCode: String;
-    Sequence: String;
-    ParentSectionId: String;
-    CreatedAt: Date;
+export interface FormSectionCreateModel {
+    TemplateId: string;
+    SectionIdentifier: string;
+    Title: string;
+    Description: string;
+    DisplayCode: string;
+    Sequence: string;
+    ParentSectionId: string;
+    // CreatedAt: Date;
 }
 
-export interface IFormSectionUpdateDto {
-    SectionIdentifier?: number;
-    Title?: String;
-    Description?: String;
-    DisplayCode?: String;
-    Sequence?: String;
-    ParentSectionId?: String;
-    CreatedAt?: Date;
+export interface FormSectionUpdateModel {
+    SectionIdentifier?: string;
+    Title?: string;
+    Description?: string;
+    DisplayCode?: string;
+    Sequence?: string;
+    ParentSectionId?: string;
+    // CreatedAt?: Date;
 }
 
-export interface IFormSectionResponseDto {
-    id: String;
-    Template: {
+export interface FormSectionResponseDto {
+    id: string;
+    FormTemplates: {
         id: string;
-        Title: String;
-        Description: String;
+        Title: string;
+        Description: string;
         CurrentVersion: number;
-        Type: String;
-        DisplayCode: String;
-        OwnerUserId: String;
-        RootSectionId: String;
+        Type: string;
+        DisplayCode: string;
+        OwnerUserId: string;
+        RootSectionId: string;
         DefaultSectionNumbering: Boolean
     }
+    // TemplateId:string;
     SectionIdentifier: number;
-    Title: String;
-    Description: String;
-    DisplayCode: String;
-    Sequence: String;
-    ParentSectionId: String;
+    Title: string;
+    Description: string;
+    DisplayCode: string;
+    Sequence: string;
+    ParentSectionId: string;
     CreatedAt: Date;
     UpdatedAt: Date;
 }

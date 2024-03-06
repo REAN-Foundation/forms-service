@@ -35,7 +35,7 @@ model FormTemplate {
   Title                   String
   Description             String
   CurrentVersion          Int
-  Type                    String
+  Type                    FormType
   DisplayCode             String
   OwnerUserId             String
   RootSectionId           String
@@ -57,7 +57,7 @@ model FormSection {
   Title             String
   Description       String
   DisplayCode       String       @default(uuid())
-  Sequence          Int
+  Sequence          String
   ParentSectionId   String
   CreatedAt         DateTime     @default(now())
   UpdatedAt         DateTime     @default(now())
@@ -80,12 +80,12 @@ model QuestionDetail {
 model Form {
   id                  String       @id @default(uuid())
   FormTemplate        FormTemplate @relation(fields: [FormTemplateId], references: [id])
-  FormTemplateId          String //one-to-many relation with form_templates
+  FormTemplateId      String //one-to-many relation with form_templates
   FormUrl             String
   Users               User         @relation(fields: [AnsweredByUserId], references: [id])
   AnsweredByUserId    String // one-to-many relation with user
   Status              FormStatus
-  SubmissionTimestamp DateTime
+  SubmissionTimestamp DateTime     @default(now())
   CreatedAt           DateTime     @default(now())
   UpdatedAt           DateTime     @default(now())
   DeletedAt           DateTime     @default(now())
@@ -97,7 +97,7 @@ model Response {
   Forms               Form              @relation(fields: [FormId], references: [id])
   FormId              String            @unique // one to one relation with form
   FormTemplates       FormTemplate      @relation(fields: [FormTemplateId], references: [id])
-  FormTemplateId          String //one-to-many relation with form_templates
+  FormTemplateId      String //one-to-many relation with form_templates
   Questions           Question          @relation(fields: [QuestionId], references: [id])
   QuestionId          String // one-to-many relation with question
   ResponseType        QueryResponseType
@@ -134,7 +134,7 @@ model User {
 model UserLoginSessions {
   id              String   @id @default(uuid())
   User            User     @relation(fields: [UserId], references: [id])
-  UserId          String //one-to-one relation with users
+  UserId          String    //one-to-one relation with users
   IsActiveSession Boolean
   StartedAt       DateTime @default(now())
   ValidTill       DateTime

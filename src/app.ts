@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { Router } from './startup/router';
 
@@ -28,6 +27,8 @@ export default class Application {
 
     start = async () => {
         try {
+            this._app.use(express.json());
+            this._app.use(express.urlencoded());
             this._router.init();
             this.listen();
         }

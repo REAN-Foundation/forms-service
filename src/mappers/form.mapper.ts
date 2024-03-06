@@ -1,25 +1,25 @@
-import { IformResponseDto } from "../domain.types/forms/form.domain.types";
+import { FormResponseDto } from "../domain.types/forms/form.domain.types";
 
 export class FormMapper {
-    static toDto = (record: any): IformResponseDto => {
+    static toDto = (record: any): FormResponseDto => {
         if (record === null) {
             return null;
         }
 
-        const dto: IformResponseDto = {
+        const dto: FormResponseDto = {
             id: record.id,
-            Template: {
-                id: record.Template.id,
-                Title: record.Template.Title,
-                Description: record.Template.Description,
-                CurrentVersion: record.Template.CorrectAnswer,
-                Type: record.Template.Type,
-                DisplayCode: record.Template.DisplayCode,
-                OwnerUserId: record.Template.OwnerUserId,
-                RootSectionId: record.Template.RootSectionId,
+            FormTemplate: {
+                id: record.FormTemplate.id,
+                Title: record.FormTemplate.Title,
+                Description: record.FormTemplate.Description,
+                CurrentVersion: record.FormTemplate.CorrectAnswer,
+                Type: record.FormTemplate.Type,
+                DisplayCode: record.FormTemplate.DisplayCode,
+                OwnerUserId: record.FormTemplate.OwnerUserId,
+                RootSectionId: record.FormTemplate.RootSectionId,
                 DefaultSectionNumbering: record.DefaultSectionNumbering,
-                CreatedAt: record.Template.CreatedAt,
-                UpdatedAt: record.Template.UpdatedAt
+                CreatedAt: record.FormTemplate.CreatedAt,
+                UpdatedAt: record.FormTemplate.UpdatedAt,
             },
             FormUrl: record.FormUrl,
             User: {
@@ -29,37 +29,38 @@ export class FormMapper {
                 CountryCode: record.User.CountryCode,
                 Phone: record.User.Phone,
                 Email: record.User.Email,
-                Username: record.User.User
+                Username: record.User.User,
             },
             Status: record.FormStatus,
             SubmissionTimestamp: record.SubmissionTimestamp,
-            CreatedAt: record.CreatedAt
+            CreatedAt: record.CreatedAt,
         };
         return dto;
     };
 
-    static toArrayDto(record: any[]): IformResponseDto[] {
+    static toArrayDto(record: any[]): FormResponseDto[] {
         if (record === null) {
             return null;
         }
 
-        const dtos: IformResponseDto[] = [];
+        const dtos: FormResponseDto[] = [];
 
-        record.forEach((element) => {
+        for (let i = 0; i < record.length; i++) {
+            const element = record[i];
             dtos.push({
                 id: element.id,
-                Template: {
-                    id: element.Template.id,
-                    Title: element.Template.Title,
-                    Description: element.Template.Description,
-                    CurrentVersion: element.Template.CorrectAnswer,
-                    Type: element.Template.Type,
-                    DisplayCode: element.Template.DisplayCode,
-                    OwnerUserId: element.Template.OwnerUserId,
-                    RootSectionId: element.Template.RootSectionId,
+                FormTemplate: {
+                    id: element.FormTemplate.id,
+                    Title: element.FormTemplate.Title,
+                    Description: element.FormTemplate.Description,
+                    CurrentVersion: element.FormTemplate.CorrectAnswer,
+                    Type: element.FormTemplate.Type,
+                    DisplayCode: element.FormTemplate.DisplayCode,
+                    OwnerUserId: element.FormTemplate.OwnerUserId,
+                    RootSectionId: element.FormTemplate.RootSectionId,
                     DefaultSectionNumbering: element.DefaultSectionNumbering,
-                    CreatedAt: element.Template.CreatedAt,
-                    UpdatedAt: element.Template.UpdatedAt
+                    CreatedAt: element.FormTemplate.CreatedAt,
+                    UpdatedAt: element.FormTemplate.UpdatedAt,
                 },
                 FormUrl: element.FormUrl,
                 User: {
@@ -69,14 +70,13 @@ export class FormMapper {
                     CountryCode: element.User.CountryCode,
                     Phone: element.User.Phone,
                     Email: element.User.Email,
-                    Username: element.User.User
+                    Username: element.User.User,
                 },
                 Status: element.FormStatus,
                 SubmissionTimestamp: element.SubmissionTimestamp,
                 CreatedAt: element.CreatedAt
             });
-            return dtos;
         }
-        )
+        return dtos;
     }
 }

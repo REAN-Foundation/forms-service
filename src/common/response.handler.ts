@@ -13,16 +13,16 @@ export class ResponseHandler {
     data?: any
   ) {
     const responseObject: ResponseDto = {
-      // Status: "success",
-      // Message: message,
-      // HttpCode: httpCode ?? 200,
-      // Request: {
-      //   Method: request ? request.method : null,
-      //   Host: request ? request.hostname : null,
-      //   Body: request ? request.body : null,
-      //   Url: request ? request.originalUrl : null,
-      //   Params: request ? request.params : null,
-      // },
+      Status: "success",
+      Message: message,
+      HttpCode: httpCode ?? 200,
+      Request: {
+        Method: request ? request.method : null,
+        Host: request ? request.hostname : null,
+        Body: request ? request.body : null,
+        Url: request ? request.originalUrl : null,
+        Params: request ? request.params : null,
+      },
       Data: data ?? null,
     };
     response.status(httpCode).send(responseObject);
@@ -42,16 +42,16 @@ export class ResponseHandler {
         : "An error has occurred.";
 
     const responseObject: ResponseDto = {
-      // Status: "failure",
-      // Message: msg,
-      // Request: {
-      //   Method: request ? request.method : null,
-      //   Host: request ? request.hostname : null,
-      //   Body: request ? request.body : null,
-      //   Url: request ? request.originalUrl : null,
-      //   Params: request ? request.params : null,
-      // },
-      // HttpCode: httpErrorCode ? httpErrorCode : 500,
+      Status: "failure",
+      Message: msg,
+      Request: {
+        Method: request ? request.method : null,
+        Host: request ? request.hostname : null,
+        Body: request ? request.body : null,
+        Url: request ? request.originalUrl : null,
+        Params: request ? request.params : null,
+      },
+      HttpCode: httpErrorCode ? httpErrorCode : 500,
     };
 
     response.status(httpErrorCode).send(responseObject);

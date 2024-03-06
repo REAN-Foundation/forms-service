@@ -1,25 +1,25 @@
-export interface IQuestionDetailsCreateDto {
+export interface QuestionDetailsCreateModel {
     QuestionId:string;
     Option: string;
     OptionSequence: number;
-    FileResourceId: String;
-    QuestionImageUrl: String;
+    FileResourceId: string;
+    QuestionImageUrl: string;
     RangeMin: number;
     RangeMax: number;
 }
 
-export interface IQuestionDetailsUpdateDto {
+export interface QuestionDetailsUpdateModel {
     QuestionId?:string;
     Option?: string;
     OptionSequence?: number;
-    FileResourceId?: String;
-    QuestionImageUrl?: String;
+    FileResourceId?: string;
+    QuestionImageUrl?: string;
     RangeMin?: number;
     RangeMax?: number;
 }
 
-export interface IQuestionDetailsResponseDto {
-    id: String;
+export interface QuestionDetailsResponseDto {
+    id: string;
     Question: {
         id: string;
         Title: string;
@@ -32,8 +32,8 @@ export interface IQuestionDetailsResponseDto {
     }
     Option: string;
     OptionSequence: number;
-    FileResourceId: String;
-    QuestionImageUrl: String;
+    FileResourceId: string;
+    QuestionImageUrl: string;
     RangeMin: number;
     RangeMax: number;
    

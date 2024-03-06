@@ -1,31 +1,31 @@
-export interface IUserCreateDto {
+export interface UserCreateModel {
     FirstName: string;
     LastName: string;
     CountryCode: number;
-    Phone: String;
-    Email: String;
-    Username: String;
-    Password: String;
+    Phone: string;
+    Email: string;
+    Username: string;
+    Password: string;
 }
 
-export interface IUserUpdateDto {
+export interface UserUpdateModel {
     FirstName?: string;
     LastName?: string;
     CountryCode?: number;
-    Phone?: String;
-    Email?: String;
-    Username?: String;
-    Password?: String;
+    Phone?: string;
+    Email?: string;
+    Username?: string;
+    Password?: string;
 }
 
-export interface IUserResponseDto {
+export interface UserResponseDto {
     id: string;
     FirstName: string;
     LastName: string;
     CountryCode: number;
-    Phone: String;
-    Email: String;
-    Username: String;
-    Password: String;
+    Phone: string;
+    Email: string;
+    Username: string;
+    Password: string;
     CreatedAt: Date
 }

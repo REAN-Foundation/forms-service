@@ -1,6 +1,8 @@
-import { QueryResponseType } from "../miscellaneous/system.types";
+// import { QueryResponseType } from "../miscellaneous/system.types";
 
-export interface IQuestionCreateDto {
+import { QueryResponseType } from "@prisma/client";
+
+export interface QuestionCreateModel {
     TemplateId: string;
     SectionId: string;
     Title: string;
@@ -8,11 +10,11 @@ export interface IQuestionCreateDto {
     DisplayCode: string;
     ResponseType: QueryResponseType;
     Score: number;
-    CorrectAnswer: String;
-    Hint: String;
+    CorrectAnswer: string;
+    Hint: string;
 }
 
-export interface IQuestionUpdateDto {
+export interface QuestionUpdateModel {
     TemplateId?: string;
     SectionId?: string;
     Title?: string;
@@ -20,38 +22,38 @@ export interface IQuestionUpdateDto {
     DisplayCode?: string;
     ResponseType?: QueryResponseType;
     Score?: number;
-    CorrectAnswer?: String;
-    Hint?: String;
+    CorrectAnswer?: string;
+    Hint?: string;
 }
 
-export interface IQuestionResponseDto {
+export interface QuestionResponseDto {
     id: string;
     Title: string;
     Description: string;
     DisplayCode: string;
     ResponseType: QueryResponseType;
     Score: number;
-    CorrectAnswer: String;
-    Hint: String;
+    CorrectAnswer: string;
+    Hint: string;
     Template: {
         id: string;
         Title: string;
         CurrentVersion: string;
-        Type: String;
-        DisplayCode: String;
-        OwnerUserId: String;
-        RootSectionId: String;
+        Type: string;
+        DisplayCode: string;
+        OwnerUserId: string;
+        RootSectionId: string;
         DefaultSectionNumbering: Boolean;
         CreatedAt: Date
     };
     Section: {
         id: string;
-        SectionIdentifier: String;
-        Title: String;
-        Description: String;
-        DisplayCode: String;
+        SectionIdentifier: string;
+        Title: string;
+        Description: string;
+        DisplayCode: string;
         Sequence: number;
-        ParentSectionId: String;
+        ParentSectionId: string;
         CreatedAt: Date
     }
     CreatedAt: Date;

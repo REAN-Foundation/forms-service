@@ -1,47 +1,49 @@
-import { FormStatus } from "../miscellaneous/system.types";
+// import { FormStatus } from "../miscellaneous/system.types";
 
-export interface IformCreateDto {
-    TemplateId: string;
+import { FormStatus } from "@prisma/client";
+
+export interface FormCreateModel {
+    FormTemplateId: string;
     FormUrl: string;
-    AnsweredByUserId: String;
+    AnsweredByUserId: string;
     Status: FormStatus;
-    SubmissionTimestamp: Date;
-    CreatedAt: Date;
+    // SubmissionTimestamp: Date;
+    // CreatedAt: Date;
 }
 
-export interface IformUpdateDto {
-    TemplateId?: string;
+export interface FormUpdateModel {
+    FormTemplateId?: string;
     FormUrl?: string;
-    AnsweredByUserId?: String;
+    AnsweredByUserId?: string;
     Status?: FormStatus;
-    SubmissionTimestamp?: Date;
-    CreatedAt?: Date;
+    // SubmissionTimestamp?: Date;
+    // CreatedAt?: Date;
 }
 
-export interface IformResponseDto {
-    id: String;
-    Template: {
-        id: String;
-        Title: String;
-        Description: String;
+export interface FormResponseDto {
+    id: string;
+    FormTemplate: {
+        id: string;
+        Title: string;
+        Description: string;
         CurrentVersion: number;
-        Type: String;
-        DisplayCode: String;
-        OwnerUserId: String;
-        RootSectionId: String;
+        Type: string;
+        DisplayCode: string;
+        OwnerUserId: string;
+        RootSectionId: string;
         DefaultSectionNumbering: Boolean
         CreatedAt: Date;
         UpdatedAt: Date;
     }
     FormUrl: string;
     User: {
-        id: String;
-        FirstName: String;
-        LastName: String;
+        id: string;
+        FirstName: string;
+        LastName: string;
         CountryCode: number;
-        Phone: String;
-        Email: String;
-        Username: String;
+        Phone: string;
+        Email: string;
+        Username: string;
     }
     Status: FormStatus;
     SubmissionTimestamp: Date;

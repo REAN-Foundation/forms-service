@@ -1,12 +1,12 @@
-import { IUserResponseDto } from "../domain.types/forms/user.domain.types";
+import { UserResponseDto } from "../domain.types/forms/user.domain.types";
 
-export class FormMapper {
-    static toDto = (record: any): IUserResponseDto => {
+export class UserMapper {
+    static toDto = (record: any): UserResponseDto => {
         if (record === null) {
             return null;
         }
 
-        const dto: IUserResponseDto = {
+        const dto: UserResponseDto = {
             id: record.id,
             FirstName: record.FirstName,
             LastName: record.LastName,
@@ -20,14 +20,15 @@ export class FormMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): IUserResponseDto[] {
+    static toArrayDto(record: any[]): UserResponseDto[] {
         if (record === null) {
             return null;
         }
 
-        const dtos: IUserResponseDto[] = [];
+        const dtos: UserResponseDto[] = [];
 
-        record.forEach((element) => {
+        for (let i = 0; i < record.length; i++) {
+            const element = record[i];
             dtos.push({
                 id: element.id,
                 FirstName: element.FirstName,
@@ -39,8 +40,8 @@ export class FormMapper {
                 Password: element.Password,
                 CreatedAt: element.CreatedAt
             });
-            return dtos;
         }
-        )
+        return dtos;
+
     }
 }

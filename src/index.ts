@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import Application from './app';
 
-
 dotenv.config();
 
 (async () => {

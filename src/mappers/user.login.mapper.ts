@@ -1,12 +1,14 @@
-import { IFormSectionResponseDto } from "../domain.types/forms/user.login.session.domain.types";
+// import { UserLoginSessionResponseDto } from "../domain.types/forms/form.section.domain.types";
 
-export class FormMapper {
-    static toDto = (record: any): IFormSectionResponseDto => {
+import { UserLoginSessionResponseDto } from "../domain.types/forms/user.login.session.domain.types";
+
+export class UserLoginSessionMapper {
+    static toDto = (record: any): UserLoginSessionResponseDto => {
         if (record === null) {
             return null;
         }
 
-        const dto: IFormSectionResponseDto = {
+        const dto: UserLoginSessionResponseDto = {
             id: record.id,
             User: {
                 FirstName: record.User.FirstName,
@@ -25,14 +27,15 @@ export class FormMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): IFormSectionResponseDto[] {
+    static toArrayDto(record: any[]): UserLoginSessionResponseDto[] {
         if (record === null) {
             return null;
         }
 
-        const dtos: IFormSectionResponseDto[] = [];
+        const dtos: UserLoginSessionResponseDto[] = [];
 
-        record.forEach((element) => {
+        for (let i = 0; i < record.length; i++) {
+            const element = record[i];
             dtos.push({
                 id: element.id,
                 User: {
@@ -49,7 +52,7 @@ export class FormMapper {
                 StartedAt: element.StartedAt,
                 ValidTill: element.ValidTill
             });
-            return dtos;
-        })
+        }
+        return dtos;
     }
 }
