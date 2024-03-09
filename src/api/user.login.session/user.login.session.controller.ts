@@ -1,6 +1,5 @@
 import express from 'express';
 import { ResponseHandler } from '../../common/response.handler';
-// import { UserValidator } from './user.validator';
 import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
@@ -8,11 +7,8 @@ import { error } from 'console';
 import { UserLoginSessionService } from '../../services/user.login.session';
 import { UserLoginSessionValidator } from './user.login.session.validor';
 import { UserLoginSessionCreateModel, UserLoginSessionUpdateModel } from '../../domain.types/forms/user.login.session.domain.types';
-// import { UserCreateModel, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
-// import { UserService } from '../../services/user.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
-
 export class UserLoginSessionController extends BaseController {
 
     //#region member variables and constructors

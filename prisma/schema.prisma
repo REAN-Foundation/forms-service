@@ -108,8 +108,8 @@ model Response {
   Url                 String
   FileResourceId      String
   TextValue           String
-  SubmissionTimestamp DateTime
-  LastSaveTimestamp   DateTime
+  SubmissionTimestamp DateTime          @default(now())
+  LastSaveTimestamp   DateTime          @default(now())
   CreatedAt           DateTime          @default(now())
   UpdatedAt           DateTime          @default(now())
   DeletedAt           DateTime          @default(now())
@@ -134,7 +134,7 @@ model User {
 model UserLoginSessions {
   id              String   @id @default(uuid())
   User            User     @relation(fields: [UserId], references: [id])
-  UserId          String    //one-to-one relation with users
+  UserId          String //one-to-one relation with users
   IsActiveSession Boolean
   StartedAt       DateTime @default(now())
   ValidTill       DateTime

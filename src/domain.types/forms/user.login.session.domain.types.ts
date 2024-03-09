@@ -17,10 +17,10 @@ export interface UserLoginSessionResponseDto {
         FirstName: string;
         LastName: string;
         CountryCode: number;
-        Phone: String;
-        Email: String;
-        Username: String;
-        Password: String;
+        Phone: string;
+        Email: string;
+        Username: string;
+        Password: string;
         CreatedAt: Date
     }
     IsActiveSession: boolean;

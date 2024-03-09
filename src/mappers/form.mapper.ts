@@ -7,7 +7,7 @@ export class FormMapper {
         }
 
         const dto: FormResponseDto = {
-            id: record.id,
+            id: "record.id",
             FormTemplate: {
                 id: record.FormTemplate.id,
                 Title: record.FormTemplate.Title,
@@ -21,16 +21,18 @@ export class FormMapper {
                 CreatedAt: record.FormTemplate.CreatedAt,
                 UpdatedAt: record.FormTemplate.UpdatedAt,
             },
-            FormUrl: record.FormUrl,
-            User: {
-                id: record.User.id,
-                FirstName: record.User.FirstName,
-                LastName: record.User.LastName,
-                CountryCode: record.User.CountryCode,
-                Phone: record.User.Phone,
-                Email: record.User.Email,
-                Username: record.User.User,
+            Users: {
+                id: record.Users.id,
+                FirstName: record.Users.FirstName,
+                LastName: record.Users.LastName,
+                CountryCode: record.Users.CountryCode,
+                Phone: record.Users.Phone,
+                Email: record.Users.Email,
+                Username: record.Users.User,
             },
+            FormTemplateId:record.FormTemplateId,
+            FormUrl: record.FormUrl,
+            // AnsweresByUserId:record.AnsweresByUserId,
             Status: record.FormStatus,
             SubmissionTimestamp: record.SubmissionTimestamp,
             CreatedAt: record.CreatedAt,
@@ -49,6 +51,7 @@ export class FormMapper {
             const element = record[i];
             dtos.push({
                 id: element.id,
+                FormTemplateId:element.FormTemplateId,
                 FormTemplate: {
                     id: element.FormTemplate.id,
                     Title: element.FormTemplate.Title,
@@ -63,7 +66,8 @@ export class FormMapper {
                     UpdatedAt: element.FormTemplate.UpdatedAt,
                 },
                 FormUrl: element.FormUrl,
-                User: {
+                // AnsweresByUserId:element.AnsweredByUserId,
+                Users: {
                     id: element.User.id,
                     FirstName: element.User.FirstName,
                     LastName: element.User.LastName,

@@ -24,8 +24,8 @@ export class ResponseValidator extends BaseValidator {
                 Url: joi.string(),
                 FileResourceId: joi.string(),
                 TextValue: joi.string(),
-                // SubmissionTimestamp: joi.date(),
-                // LastSaveTimestamp: joi.string(),
+                SubmissionTimestamp: joi.date(),
+                LastSaveTimestamp: joi.string(),
                 // CreatedAt: joi.string()
             });
             await schema.validateAsync(request.body);
@@ -37,12 +37,12 @@ export class ResponseValidator extends BaseValidator {
                 IntegerValue: request.body.IntegerValue,
                 FloatValue: request.body.FloatValue,
                 BooleanValue: request.body.BooleanValue,
-                DateTimeValue: request.body.DateTimeValue,
+                DateTimeValue: new Date(request.body.DateTimeValue),
                 Url: request.body.Url,
                 FileResourceId: request.body.FileResourceId,
                 TextValue: request.body.TextValue,
-                SubmissionTimestamp: request.body.SubmissionTimestamp,
-                LastSaveTimestamp:request.body.LastSaveTimestamp
+                SubmissionTimestamp: new Date(request.body.SubmissionTimestamp),
+                LastSaveTimestamp: new Date(request.body.LastSaveTimestamp)
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);

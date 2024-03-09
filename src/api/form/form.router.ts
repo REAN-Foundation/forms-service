@@ -18,6 +18,7 @@ export const register = (app: express.Application): void => {
     router.get('/by-template:templateId', controller.getByTemplateId);
     // router.get('/:id/questions/:questionId',  controller.getByQuestionId);
     router.post('/:id/submit', controller.submit);
+    router.get('/get-by-date/:date', controller.getFormByDate);
 
     app.use('/api/v1/forms', router);
 };

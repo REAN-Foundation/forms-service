@@ -30,7 +30,7 @@ export class ResponseController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Form template added successfully!';
+            const message = 'Response fetch successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -46,7 +46,7 @@ export class ResponseController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Form added successfully!';
+            const message = 'Response fetch successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -58,7 +58,7 @@ export class ResponseController extends BaseController {
             // await this.authorize('Form.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            const message = 'Form retrieved successfully!';
+            const message = 'Response fetch retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -71,7 +71,7 @@ export class ResponseController extends BaseController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             var model: ResponseUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
-            const message = 'Form updated successfully!';
+            const message = 'Response fetch updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -83,7 +83,7 @@ export class ResponseController extends BaseController {
             // await this.authorize('Form.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const result = await this._service.delete(id);
-            const message = 'Form deleted successfully!';
+            const message = 'Response fetch deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

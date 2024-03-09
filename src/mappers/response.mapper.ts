@@ -8,40 +8,40 @@ export class ResponseMapper {
 
         const dto: ResponseResponseDto = {
             id: record.id,
-            Form: {
-                id: record.Form.id,
-                TemplateId: record.Form.TemplateId,
-                FormUrl: record.Form.FormUrl,
-                UserId: record.Form.UserId,
-                Status: record.Form.Status,
-                SubmissionTimestamp: record.Form.SubmissionTimestamp,
-                CreatedAt: record.Form.CreatedAt
+            Forms: {
+                id: record.Forms.id,
+                TemplateId: record.Forms.TemplateId,
+                FormUrl: record.Forms.FormUrl,
+                UserId: record.Forms.UserId,
+                Status: record.Forms.Status,
+                SubmissionTimestamp: record.Forms.SubmissionTimestamp,
+                CreatedAt: record.Forms.CreatedAt
             },
-            FormTemplate: {
-                id: record.FormTemplate.id,
-                Title: record.FormTemplate.Title,
-                Description: record.FormTemplate.Description,
-                CurrentVersion: record.FormTemplate.CorrectAnswer,
-                Type: record.FormTemplate.Type,
-                DisplayCode: record.FormTemplate.DisplayCode,
-                OwnerUserId: record.FormTemplate.OwnerUserId,
-                RootSectionId: record.FormTemplate.RootSectionId,
-                DefaultSectionNumbering: record.FormTemplate.DefaultSectionNumbering,
-                CreatedAt: record.Template.CreatedAt
+            FormTemplates: {
+                id: record.FormTemplates.id,
+                Title: record.FormTemplates.Title,
+                Description: record.FormTemplates.Description,
+                CurrentVersion: record.FormTemplates.CorrectAnswer,
+                Type: record.FormTemplates.Type,
+                DisplayCode: record.FormTemplates.DisplayCode,
+                OwnerUserId: record.FormTemplates.OwnerUserId,
+                RootSectionId: record.FormTemplates.RootSectionId,
+                DefaultSectionNumbering: record.FormTemplates.DefaultSectionNumbering,
+                CreatedAt: record.FormTemplates.CreatedAt
             },
-            Question: {
-                id: record.Question.id,
-                Title: record.Question.Title,
-                Description: record.Question.Description,
-                DisplayCode: record.Question.DisplayCode,
-                ResponseType: record.Question.ResponseType,
-                Score: record.Question.Score,
-                CorrectAnswer: record.Question.CorrectAnswer,
-                Hint: record.Question.Hint,
-                TemplateId: record.Question.TemplateId,
-                SectionId: record.Question.SectionId,
-                CreatedAt: record.Question.CreatedAt,
-                UpdatedAt: record.Question.UpdatedAt
+            Questions: {
+                id: record.Questions.id,
+                Title: record.Questions.Title,
+                Description: record.Questions.Description,
+                DisplayCode: record.Questions.DisplayCode,
+                ResponseType: record.Questions.ResponseType,
+                Score: record.Questions.Score,
+                CorrectAnswer: record.Questions.CorrectAnswer,
+                Hint: record.Questions.Hint,
+                TemplateId: record.Questions.TemplateId,
+                SectionId: record.Questions.SectionId,
+                CreatedAt: record.Questions.CreatedAt,
+                UpdatedAt: record.Questions.UpdatedAt
             },
             ResponseType: record.ResponseType,
             IntegerValue: record.IntegerValue,
@@ -68,40 +68,40 @@ export class ResponseMapper {
             const element = record[i];
             dtos.push({
                 id: element.id,
-                Form: {
-                    id: element.Form.id,
-                    TemplateId: element.Form.TemplateId,
-                    FormUrl: element.Form.FormUrl,
-                    UserId: element.Form.UserId,
-                    Status: element.Form.Status,
-                    SubmissionTimestamp: element.Form.SubmissionTimestamp,
-                    CreatedAt: element.Form.CreatedAt
+                Forms: {
+                    id: element.Forms.id,
+                    TemplateId: element.Forms.TemplateId,
+                    FormUrl: element.Forms.FormUrl,
+                    UserId: element.Forms.UserId,
+                    Status: element.Forms.Status,
+                    SubmissionTimestamp: element.Forms.SubmissionTimestamp,
+                    CreatedAt: element.Forms.CreatedAt
                 },
-                FormTemplate: {
-                    id: element.FormTemplate.id,
-                    Title: element.FormTemplate.Title,
-                    Description: element.FormTemplate.Description,
-                    CurrentVersion: element.FormTemplate.CorrectAnswer,
-                    Type: element.FormTemplate.Type,
-                    DisplayCode: element.FormTemplate.DisplayCode,
-                    OwnerUserId: element.FormTemplate.OwnerUserId,
-                    RootSectionId: element.FormTemplate.RootSectionId,
-                    DefaultSectionNumbering: element.FormTemplate.DefaultSectionNumbering,
+                FormTemplates: {
+                    id: element.FormTemplates.id,
+                    Title: element.FormTemplates.Title,
+                    Description: element.FormTemplates.Description,
+                    CurrentVersion: element.FormTemplates.CorrectAnswer,
+                    Type: element.FormTemplates.Type,
+                    DisplayCode: element.FormTemplates.DisplayCode,
+                    OwnerUserId: element.FormTemplates.OwnerUserId,
+                    RootSectionId: element.FormTemplates.RootSectionId,
+                    DefaultSectionNumbering: element.FormTemplates.DefaultSectionNumbering,
                     CreatedAt: element.Template.CreatedAt
                 },
-                Question: {
-                    id: element.Question.id,
-                    Title: element.Question.Title,
-                    Description: element.Question.Description,
-                    DisplayCode: element.Question.DisplayCode,
-                    ResponseType: element.Question.ResponseType,
-                    Score: element.Question.Score,
-                    CorrectAnswer: element.Question.CorrectAnswer,
-                    Hint: element.Question.Hint,
-                    TemplateId: element.Question.TemplateId,
-                    SectionId: element.Question.SectionId,
-                    CreatedAt: element.Question.CreatedAt,
-                    UpdatedAt: element.Question.UpdatedAt
+                Questions: {
+                    id: element.Questions.id,
+                    Title: element.Questions.Title,
+                    Description: element.Questions.Description,
+                    DisplayCode: element.Questions.DisplayCode,
+                    ResponseType: element.Questions.ResponseType,
+                    Score: element.Questions.Score,
+                    CorrectAnswer: element.Questions.CorrectAnswer,
+                    Hint: element.Questions.Hint,
+                    TemplateId: element.Questions.TemplateId,
+                    SectionId: element.Questions.SectionId,
+                    CreatedAt: element.Questions.CreatedAt,
+                    UpdatedAt: element.Questions.UpdatedAt
                 },
                 ResponseType: element.ResponseType,
                 IntegerValue: element.IntegerValue,

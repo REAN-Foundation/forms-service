@@ -31,11 +31,11 @@ export interface QuestionResponseDto {
     Title: string;
     Description: string;
     DisplayCode: string;
-    ResponseType: QueryResponseType;
+    ResponseType: string;
     Score: number;
     CorrectAnswer: string;
     Hint: string;
-    Template: {
+    FormTemplates: {
         id: string;
         Title: string;
         CurrentVersion: string;
@@ -46,7 +46,7 @@ export interface QuestionResponseDto {
         DefaultSectionNumbering: Boolean;
         CreatedAt: Date
     };
-    Section: {
+    FormSections: {
         id: string;
         SectionIdentifier: string;
         Title: string;

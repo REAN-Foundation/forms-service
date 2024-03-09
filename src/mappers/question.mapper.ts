@@ -15,26 +15,26 @@ export class QuestionMapper {
             Score: record.Score,
             CorrectAnswer: record.CorrectAnswer,
             Hint: record.Hint,
-            Template: {
-                id: record.Template.id,
-                Title: record.Template.Title,
-                CurrentVersion: record.Template.CorrectAnswer,
-                Type: record.Template.Type,
-                DisplayCode: record.Template.DisplayCode,
-                OwnerUserId: record.Template.OwnerUserId,
-                RootSectionId: record.Template.RootSectionId,
-                DefaultSectionNumbering: record.Template.DefaultSectionNumbering,
-                CreatedAt: record.Template.CreatedAt
+            FormTemplates: {
+                id: record.FormTemplates.id,
+                Title: record.FormTemplates.Title,
+                CurrentVersion: record.FormTemplates.CorrectAnswer,
+                Type: record.FormTemplates.Type,
+                DisplayCode: record.FormTemplates.DisplayCode,
+                OwnerUserId: record.FormTemplates.OwnerUserId,
+                RootSectionId: record.FormTemplates.RootSectionId,
+                DefaultSectionNumbering: record.FormTemplates.DefaultSectionNumbering,
+                CreatedAt: record.FormTemplates.CreatedAt
             },
-            Section: {
-                id: record.Section.id,
-                SectionIdentifier: record.Section.SectionIdentifier,
-                Title: record.Section.Title,
-                Description: record.Section.Description,
-                DisplayCode: record.Section.DisplayCode,
-                Sequence: record.Section.Sequence,
-                ParentSectionId: record.Section.ParentSectionId,
-                CreatedAt: record.Section.CreatedAt
+            FormSections: {
+                id: record.FormSection.id,
+                SectionIdentifier: record.FormSection.SectionIdentifier,
+                Title: record.FormSection.Title,
+                Description: record.FormSection.Description,
+                DisplayCode: record.FormSection.DisplayCode,
+                Sequence: record.FormSection.Sequence,
+                ParentSectionId: record.FormSection.ParentSectionId,
+                CreatedAt: record.FormSection.CreatedAt
             },
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt
@@ -60,26 +60,26 @@ export class QuestionMapper {
                 Score: element.Score,
                 CorrectAnswer: element.CorrectAnswer,
                 Hint: element.Hint,
-                Template: {
-                    id: element.Template.id,
-                    Title: element.Template.Title,
-                    CurrentVersion: element.Template.CorrectAnswer,
-                    Type: element.Template.Type,
-                    DisplayCode: element.Template.DisplayCode,
-                    OwnerUserId: element.Template.OwnerUserId,
-                    RootSectionId: element.Template.RootSectionId,
+                FormTemplates: {
+                    id: element.FormTemplates.id,
+                    Title: element.FormTemplates.Title,
+                    CurrentVersion: element.FormTemplates.CorrectAnswer,
+                    Type: element.FormTemplates.Type,
+                    DisplayCode: element.FormTemplates.DisplayCode,
+                    OwnerUserId: element.FormTemplates.OwnerUserId,
+                    RootSectionId: element.FormTemplates.RootSectionId,
                     DefaultSectionNumbering: element.DefaultSectionNumbering,
-                    CreatedAt: element.Template.CreatedAt
+                    CreatedAt: element.FormTemplates.CreatedAt
                 },
-                Section: {
-                    id: element.Section.id,
-                    SectionIdentifier: element.Section.SectionIdentifier,
-                    Title: element.Section.Title,
-                    Description: element.Section.Description,
-                    DisplayCode: element.Section.DisplayCode,
-                    Sequence: element.Section.Sequence,
-                    ParentSectionId: element.Section.ParentSectionId,
-                    CreatedAt: element.Section.CreatedAt
+                FormSections: {
+                    id: element.FormSections.id,
+                    SectionIdentifier: element.FormSections.SectionIdentifier,
+                    Title: element.FormSections.Title,
+                    Description: element.FormSections.Description,
+                    DisplayCode: element.FormSections.DisplayCode,
+                    Sequence: element.FormSections.Sequence,
+                    ParentSectionId: element.FormSections.ParentSectionId,
+                    CreatedAt: element.FormSections.CreatedAt
                 },
                 CreatedAt: element.CreatedAt,
                 UpdatedAt: element.UpdatedAt

@@ -19,10 +19,9 @@ export class UserLoginSessionValidator extends BaseValidator {
             });
             await schema.validateAsync(request.body);
             return {
-                UserId: request.body.userId,
+                UserId: request.body.UserId,
                 IsActiveSession:request.body.IsActiveSession,
-                ValidTill:request.body.ValidTill
-                
+                ValidTill:request.body.ValidTill               
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -36,7 +35,7 @@ export class UserLoginSessionValidator extends BaseValidator {
             });
             await schema.validateAsync(request.body);
             return {
-                UserId: request.body.userId ?? null,
+                UserId: request.body.UserId ?? null,
                 IsActiveSession:request.body.IsActiveSession ?? null,
                 ValidTill:request.body.ValidTill ?? null
             };

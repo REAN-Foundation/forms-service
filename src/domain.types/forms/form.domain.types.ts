@@ -22,6 +22,7 @@ export interface FormUpdateModel {
 
 export interface FormResponseDto {
     id: string;
+    FormTemplateId:string,
     FormTemplate: {
         id: string;
         Title: string;
@@ -31,12 +32,13 @@ export interface FormResponseDto {
         DisplayCode: string;
         OwnerUserId: string;
         RootSectionId: string;
-        DefaultSectionNumbering: Boolean
+        DefaultSectionNumbering: boolean
         CreatedAt: Date;
         UpdatedAt: Date;
     }
     FormUrl: string;
-    User: {
+    // AnsweresByUserId:string;
+    Users: {
         id: string;
         FirstName: string;
         LastName: string;
@@ -45,7 +47,7 @@ export interface FormResponseDto {
         Email: string;
         Username: string;
     }
-    Status: FormStatus;
+    Status: string;
     SubmissionTimestamp: Date;
     CreatedAt: Date;
 }

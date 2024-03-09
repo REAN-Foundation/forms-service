@@ -38,7 +38,7 @@ export interface ResponseUpdateModel {
 
 export interface ResponseResponseDto {
     id:string;
-    Form: {
+    Forms: {
         id:string;
         TemplateId: string;
         FormUrl: string;
@@ -47,7 +47,7 @@ export interface ResponseResponseDto {
         SubmissionTimestamp: Date;
         CreatedAt: Date;
     }
-    FormTemplate: {
+    FormTemplates: {
         id:string;
         Title:string;
         Description:string;
@@ -56,10 +56,10 @@ export interface ResponseResponseDto {
         DisplayCode:string;
         OwnerUserId:string;
         RootSectionId:string;
-        DefaultSectionNumbering: Boolean
+        DefaultSectionNumbering: boolean
         CreatedAt: Date;
     }
-    Question: {
+    Questions: {
         id: string;
         Title: string;
         Description: string;

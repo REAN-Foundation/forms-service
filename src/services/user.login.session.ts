@@ -11,23 +11,27 @@ export class UserLoginSessionService {
     }
 
     allUserLoginSessions = async (): Promise<any> => {
-        const response = await this.prisma.userLoginSessions.findMany({});
+        const response = await this.prisma.userLoginSessions.findMany({
+            include:{
+                User: true,
+            }
+        });
         return UserLoginSessionMapper.toArrayDto(response);
         // return response;
     };
 
     create = async (model: UserLoginSessionCreateModel) => {
         const response = await this.prisma.userLoginSessions.create({
+            include: {
+                User: true
+            },
             data: {
                 User: {
                     connect: { id: model.UserId }
-                }, 
-                ValidTill:model.ValidTill, 
-                IsActiveSession:model.IsActiveSession              
+                },
+                ValidTill: model.ValidTill,
+                IsActiveSession: model.IsActiveSession
             },
-            include: {
-                User: true
-            }
         });
         return UserLoginSessionMapper.toDto(response);
     };
@@ -37,9 +41,9 @@ export class UserLoginSessionService {
             data: {
                 User: {
                     connect: { id: model.UserId }
-                }, 
-                ValidTill:model.ValidTill, 
-                IsActiveSession:model.IsActiveSession              
+                },
+                ValidTill: model.ValidTill,
+                IsActiveSession: model.IsActiveSession
             },
             include: {
                 User: true
@@ -47,7 +51,7 @@ export class UserLoginSessionService {
             where: {
                 id: id,
             },
-            
+
         });
         return UserLoginSessionMapper.toDto(response);
         // return response;
