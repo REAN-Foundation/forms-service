@@ -11,7 +11,11 @@ export class QuestionDetailService {
     }
 
     allQuestionDetails = async () => {
-        const response = await this.prisma.questionDetail.findMany({});
+        const response = await this.prisma.questionDetail.findMany({
+            include:{
+                Question:true
+            }
+        });
         return QuestionDetailMapper.toArrayDto(response);
     };
 
@@ -63,6 +67,9 @@ export class QuestionDetailService {
             where: {
                 id: id,
             },
+            include:{
+                Question:true
+            }
         });
         return QuestionDetailMapper.toDto(response);
     };
@@ -73,6 +80,9 @@ export class QuestionDetailService {
             where: {
                 id: id,
             },
+            include:{
+                Question:true
+            }
         });
         return QuestionDetailMapper.toDto(response);
     };

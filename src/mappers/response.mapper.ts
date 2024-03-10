@@ -87,7 +87,7 @@ export class ResponseMapper {
                     OwnerUserId: element.FormTemplates.OwnerUserId,
                     RootSectionId: element.FormTemplates.RootSectionId,
                     DefaultSectionNumbering: element.FormTemplates.DefaultSectionNumbering,
-                    CreatedAt: element.Template.CreatedAt
+                    CreatedAt: element.FormTemplates.CreatedAt
                 },
                 Questions: {
                     id: element.Questions.id,

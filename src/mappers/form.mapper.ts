@@ -7,7 +7,7 @@ export class FormMapper {
         }
 
         const dto: FormResponseDto = {
-            id: "record.id",
+            id: record.id,
             FormTemplate: {
                 id: record.FormTemplate.id,
                 Title: record.FormTemplate.Title,
@@ -68,13 +68,13 @@ export class FormMapper {
                 FormUrl: element.FormUrl,
                 // AnsweresByUserId:element.AnsweredByUserId,
                 Users: {
-                    id: element.User.id,
-                    FirstName: element.User.FirstName,
-                    LastName: element.User.LastName,
-                    CountryCode: element.User.CountryCode,
-                    Phone: element.User.Phone,
-                    Email: element.User.Email,
-                    Username: element.User.User,
+                    id: element.Users.id,
+                    FirstName: element.Users.FirstName,
+                    LastName: element.Users.LastName,
+                    CountryCode: element.Users.CountryCode,
+                    Phone: element.Users.Phone,
+                    Email: element.Users.Email,
+                    Username: element.Users.User,
                 },
                 Status: element.FormStatus,
                 SubmissionTimestamp: element.SubmissionTimestamp,

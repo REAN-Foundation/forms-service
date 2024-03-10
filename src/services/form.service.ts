@@ -146,8 +146,6 @@ export class FormService {
                 },
             },
         });
-        // return FormMapper.toDto(response);
         return FormMapper.toArrayDto(response);
-        // return response;
     };
 }

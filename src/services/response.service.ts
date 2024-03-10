@@ -13,7 +13,13 @@ export class ResponseService {
     }
 
     allResponses = async (): Promise<any> => {
-        const response = await this.prisma.response.findMany({});
+        const response = await this.prisma.response.findMany({
+            include: {
+                FormTemplates: true,
+                Forms:true,
+                Questions:true
+            }
+        });
         return ResponseMapper.toArrayDto(response);
         // return response;
     };
@@ -38,8 +44,8 @@ export class ResponseService {
                 Url: model.Url,
                 FileResourceId: model.FileResourceId,
                 TextValue:model.TextValue,
-                SubmissionTimestamp:model.SubmissionTimestamp,
-                LastSaveTimestamp:model.LastSaveTimestamp,
+                // SubmissionTimestamp:model.SubmissionTimestamp,
+                // LastSaveTimestamp:model.LastSaveTimestamp,
             
             },
             include: {
@@ -72,8 +78,8 @@ export class ResponseService {
                 Url: model.Url,
                 FileResourceId: model.FileResourceId,
                 TextValue:model.TextValue,
-                SubmissionTimestamp:model.SubmissionTimestamp,
-                LastSaveTimestamp:model.LastSaveTimestamp,
+                // SubmissionTimestamp:model.SubmissionTimestamp,
+                // LastSaveTimestamp:model.LastSaveTimestamp,
             
             },
             include: {

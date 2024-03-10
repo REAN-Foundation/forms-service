@@ -24,8 +24,8 @@ export class ResponseValidator extends BaseValidator {
                 Url: joi.string(),
                 FileResourceId: joi.string(),
                 TextValue: joi.string(),
-                SubmissionTimestamp: joi.date(),
-                LastSaveTimestamp: joi.string(),
+                // SubmissionTimestamp: joi.date(),
+                // LastSaveTimestamp: joi.string(),
                 // CreatedAt: joi.string()
             });
             await schema.validateAsync(request.body);
@@ -41,8 +41,8 @@ export class ResponseValidator extends BaseValidator {
                 Url: request.body.Url,
                 FileResourceId: request.body.FileResourceId,
                 TextValue: request.body.TextValue,
-                SubmissionTimestamp: new Date(request.body.SubmissionTimestamp),
-                LastSaveTimestamp: new Date(request.body.LastSaveTimestamp)
+                // SubmissionTimestamp: new Date(request.body.SubmissionTimestamp),
+                // LastSaveTimestamp: new Date(request.body.LastSaveTimestamp)
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -73,7 +73,7 @@ export class ResponseValidator extends BaseValidator {
                 IntegerValue: request.body.IntegerValue ?? null,
                 FloatValue: request.body.FloatValue ?? null,
                 BooleanValue: request.body.BooleanValue ?? null,
-                DateTimeValue: request.body.DateTimeValue ?? null,
+                DateTimeValue: new Date(request.body.DateTimeValue) ?? null,
                 Url: request.body.Url ?? null,
                 FileResourceId: request.body.FileResourceId ?? null,
                 TextValue: request.body.TextValue ?? null

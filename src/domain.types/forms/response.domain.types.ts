@@ -14,8 +14,8 @@ export interface ResponseCreateModel {
     Url: string;
     FileResourceId: string;
     TextValue: string;
-    SubmissionTimestamp: Date;
-    LastSaveTimestamp: Date
+    // SubmissionTimestamp: Date;
+    // LastSaveTimestamp: Date
     // CreatedAt: Date;
 }
 
@@ -31,8 +31,8 @@ export interface ResponseUpdateModel {
     Url?: string;
     FileResourceId?: string;
     TextValue?: string;
-    SubmissionTimestamp?: Date;
-    LastSaveTimestamp?: Date
+    // SubmissionTimestamp?: Date;
+    // LastSaveTimestamp?: Date
     // CreatedAt?: Date;
 }
 
