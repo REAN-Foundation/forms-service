@@ -106,8 +106,9 @@ export class FormController extends BaseController {
     submit = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.Create', request, response);
-            var model: FormSubmissionCreateModel = await this._validator.validateCreateRequest(request);
-            const record = await this._service.submit(model);
+            // var model: FormSubmissionCreateModel = await this._validator.validateCreateRequest(request);
+            var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            const record = await this._service.submit(id);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
