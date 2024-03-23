@@ -1,8 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { FormStatus, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormMapper } from "../mappers/form.submission.mapper"
 import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from "../domain.types/forms/form.domain.types";
 import moment from "moment";
+import { uuid } from "../domain.types/miscellaneous/system.types";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -98,14 +99,14 @@ export class FormService {
         return FormMapper.toArrayDto(response);
     };
 
-    submit = async (model: any) => {
+    submit = async (id:uuid) => {
         const response = await this.prisma.formSubmission.update({
             where: {
-                id: model.id,
+                id: id,
             },
             data: {
                 SubmissionTimestamp: new Date(),
-                Status: model.Status,
+                Status: FormStatus.Submitted,
             }
         });
         return FormMapper.toDto(response);
