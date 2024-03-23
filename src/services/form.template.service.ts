@@ -19,14 +19,15 @@ export class FormTemplateService {
     create = async (model: FormTemplateCreateModel) => {
         const response = await this.prisma.formTemplate.create({
             data: {
-                Title: model.Title,
-                Description: model.Description,
-                CurrentVersion: model.CurrentVersion,
-                Type: model.Type as FormType,
-                DisplayCode: model.DisplayCode,
-                OwnerUserId: model.OwnerUserId,
-                RootSectionId: model.RootSectionId,
-                DefaultSectionNumbering: model.DefaultSectionNumbering
+                Title                  : model.Title,
+                Description            : model.Description,
+                CurrentVersion         : model.CurrentVersion,
+                Type                   : model.Type as FormType,
+                DisplayCode            : model.DisplayCode,
+                OwnerUserId            : model.OwnerUserId,
+                RootSectionId          : model.RootSectionId,
+                DefaultSectionNumbering: model.DefaultSectionNumbering,
+                DeletedAt              : null
             },
         });
         return FormTemplateMapper.toDto(response);
@@ -38,20 +39,18 @@ export class FormTemplateService {
                 id: id,
             },
             data: {
-                Title: model.Title,
-                Description: model.Description,
-                CurrentVersion: model.CurrentVersion,
-                Type: model.Type,
-                DisplayCode: model.DisplayCode,
-                OwnerUserId: model.OwnerUserId,
-                RootSectionId: model.RootSectionId,
+                Title                  : model.Title,
+                Description            : model.Description,
+                CurrentVersion         : model.CurrentVersion,
+                Type                   : model.Type,
+                DisplayCode            : model.DisplayCode,
+                OwnerUserId            : model.OwnerUserId,
+                RootSectionId          : model.RootSectionId,
                 DefaultSectionNumbering: model.DefaultSectionNumbering
             },
         });
         return FormTemplateMapper.toDto(response);
     };
-
-
 
     getById = async (id: string) => {
         const response = await this.prisma.formTemplate.findUnique({
@@ -72,8 +71,6 @@ export class FormTemplateService {
         return FormTemplateMapper.toDto(response);
     };
 
-
-
     submissions = async (id: string) => {
         const response = await this.prisma.formTemplate.findMany({
             where: {
@@ -81,8 +78,6 @@ export class FormTemplateService {
             }
         });
         return FormTemplateMapper.toArrayDto(response);
-
     };
-
 
 }

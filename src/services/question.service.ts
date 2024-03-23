@@ -10,11 +10,11 @@ export class QuestionService {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
-    allQuestions = async (): Promise<any> => { 
+    allQuestions = async (): Promise<any> => {
         const response = await this.prisma.question.findMany({
             include:{
-                FormTemplates:true,
-                FormSections:true
+                ParentFormTemplate:true,
+                ParentFormSection:true
             }
         });
         return QuestionMapper.toArrayDto(response);
@@ -23,11 +23,11 @@ export class QuestionService {
     create = async (model: QuestionCreateModel) => {
         const response = await this.prisma.question.create({
             data: {
-                FormTemplates: {
-                    connect: { id: model.TemplateId }
+                ParentFormTemplate: {
+                    connect: { id: model.ParentTemplateId }
                 },
-                FormSections:{
-                    connect:{ id:model.SectionId}
+                ParentFormSection:{
+                    connect:{ id:model.ParentSectionId}
                 },
                 Title: model.Title,
                 Description: model.Description,
@@ -36,25 +36,26 @@ export class QuestionService {
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
                 Hint: model.Hint,
+                Options: JSON.stringify(model.Options),
+                QuestionImageUrl: model.QuestionImageUrl,
+                RangeMax: model.RangeMax,
+                RangeMin: model.RangeMin,
+                CreatedAt: new Date(),
+                UpdatedAt: new Date(),
+                DeletedAt: null,
             },
             include: {
-                FormTemplates: true,
-                FormSections:true
+                ParentFormTemplate: true,
+                ParentFormSection:true
             }
         });
         return QuestionMapper.toDto(response);
-        
+
     };
 
     update = async (id: string, model: QuestionUpdateModel) => {
         const response = await this.prisma.question.update({
             data: {
-                FormTemplates: {
-                    connect: { id: model.TemplateId }
-                },
-                FormSections:{
-                    connect:{ id:model.SectionId}
-                },
                 Title: model.Title,
                 Description: model.Description,
                 DisplayCode: model.DisplayCode,
@@ -64,8 +65,8 @@ export class QuestionService {
                 Hint: model.Hint,
             },
             include: {
-                FormTemplates: true,
-                FormSections:true
+                ParentFormSection: true,
+                ParentFormTemplate:true
             },
             where: {
                 id: id,
@@ -80,8 +81,8 @@ export class QuestionService {
                 id: id,
             },
             include: {
-                FormTemplates: true,
-                FormSections:true
+                ParentFormSection: true,
+                ParentFormTemplate:true
             },
         });
         return QuestionMapper.toDto(response);
@@ -93,8 +94,8 @@ export class QuestionService {
                 id: id,
             },
             include: {
-                FormTemplates: true,
-                FormSections:true
+                ParentFormSection: true,
+                ParentFormTemplate:true
             },
         });
         return QuestionMapper.toDto(response);

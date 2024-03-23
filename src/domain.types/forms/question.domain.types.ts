@@ -2,60 +2,80 @@
 
 import { QueryResponseType } from "@prisma/client";
 
+export interface QuestionOption {
+    Sequence: number;
+    Option  : string;
+    ImageUrl: string;
+}
+
 export interface QuestionCreateModel {
-    TemplateId: string;
-    SectionId: string;
-    Title: string;
-    Description?: string;
-    DisplayCode: string;
-    ResponseType: QueryResponseType;
-    Score: number;
-    CorrectAnswer: string;
-    Hint: string;
+    ParentTemplateId : string;
+    ParentSectionId  : string;
+    Title            : string;
+    Description     ?: string;
+    DisplayCode      : string;
+    ResponseType     : QueryResponseType;
+    Score            : number;
+    CorrectAnswer    : string;
+    Hint             : string;
+    Options          : QuestionOption[];   // JSON array of QuestionOption
+    FileResourceId   : string;
+    QuestionImageUrl : string;
+    RangeMin         : number;
+    RangeMax         : number;
 }
 
 export interface QuestionUpdateModel {
-    TemplateId?: string;
-    SectionId?: string;
-    Title?: string;
-    Description?: string;
-    DisplayCode?: string;
-    ResponseType?: QueryResponseType;
-    Score?: number;
-    CorrectAnswer?: string;
-    Hint?: string;
+    Title           ?: string;
+    Description     ?: string;
+    DisplayCode     ?: string;
+    ResponseType    ?: QueryResponseType;
+    Score           ?: number;
+    CorrectAnswer   ?: string;
+    Hint            ?: string;
+    Options         ?: QuestionOption[]; // JSON array of QuestionOption
+    FileResourceId  ?: string;
+    QuestionImageUrl?: string;
+    RangeMin        ?: number;
+    RangeMax        ?: number;
 }
 
 export interface QuestionResponseDto {
-    id: string;
-    Title: string;
-    Description: string;
-    DisplayCode: string;
-    ResponseType: string;
-    Score: number;
-    CorrectAnswer: string;
-    Hint: string;
-    FormTemplates: {
-        id: string;
-        Title: string;
-        CurrentVersion: string;
-        Type: string;
-        DisplayCode: string;
-        OwnerUserId: string;
-        RootSectionId: string;
-        DefaultSectionNumbering: Boolean;
-        CreatedAt: Date
-    };
-    FormSections: {
-        id: string;
+    id              : string;
+    Title           : string;
+    Description     : string;
+    DisplayCode     : string;
+    ResponseType    : QueryResponseType;
+    Score           : number;
+    CorrectAnswer   : string;
+    Hint            : string;
+    Options         : QuestionOption[]; // JSON array of QuestionOption
+    FileResourceId  : string;
+    QuestionImageUrl: string;
+    RangeMin        : number;
+    RangeMax        : number;
+    ParentFormSection: {
+        id               : string;
         SectionIdentifier: string;
-        Title: string;
-        Description: string;
-        DisplayCode: string;
-        Sequence: number;
-        ParentSectionId: string;
-        CreatedAt: Date
-    }
+        Title            : string;
+        Description      : string;
+        DisplayCode      : string;
+        Sequence         : number;
+        ParentSectionId  : string;
+        CreatedAt        : Date
+    },
+    ParentFormTemplate: {
+        id                     : string;
+        Title                  : string;
+        Description            : string;
+        CurrentVersion         : number;
+        Type                   : string;
+        DisplayCode            : string;
+        OwnerUserId            : string;
+        RootSectionId          : string;
+        DefaultSectionNumbering: boolean;
+        CreatedAt              : Date
+    },
     CreatedAt: Date;
     UpdatedAt: Date;
 }

@@ -1,12 +1,12 @@
 import express from 'express';
-import { QuestionDetailController } from './question.details.controller';
+import { QuestionResponseController } from './question.response.controller';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
 
     const router = express.Router();
-    const controller = new QuestionDetailController();
+    const controller = new QuestionResponseController();
 
     router.get('/all', controller.getAll);
     router.post('/', controller.create);
@@ -14,5 +14,5 @@ export const register = (app: express.Application): void => {
     router.get('/:id', controller.getById);
     router.delete('/:id', controller.delete);
 
-    app.use('/api/v1/question-details', router);
+    app.use('/api/v1/responses', router);
 };

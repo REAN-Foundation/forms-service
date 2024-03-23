@@ -1,54 +1,36 @@
-// import { FormStatus } from "../miscellaneous/system.types";
-
 import { FormStatus } from "@prisma/client";
 
-export interface FormCreateModel {
-    FormTemplateId: string;
-    FormUrl: string;
+export interface FormSubmissionCreateModel {
+    FormTemplateId  : string;
+    FormUrl         : string;
     AnsweredByUserId: string;
-    Status: FormStatus;
-    // SubmissionTimestamp: Date;
-    // CreatedAt: Date;
+    Status          : FormStatus;
 }
 
-export interface FormUpdateModel {
-    FormTemplateId?: string;
-    FormUrl?: string;
-    AnsweredByUserId?: string;
-    Status?: FormStatus;
-    // SubmissionTimestamp?: Date;
-    // CreatedAt?: Date;
+// Only status will be updated
+export interface FormSubmissionUpdateModel {
+    Status ?: FormStatus;
 }
 
-export interface FormResponseDto {
-    id: string;
-    FormTemplateId:string,
-    FormTemplate: {
-        id: string;
-        Title: string;
-        Description: string;
-        CurrentVersion: number;
-        Type: string;
-        DisplayCode: string;
-        OwnerUserId: string;
-        RootSectionId: string;
+export interface FormSubmissionResponseDto {
+    id                  : string;
+    ParentFormTemplateId: string,
+    ParentFormTemplate  : {
+        id                     : string;
+        Title                  : string;
+        Description            : string;
+        CurrentVersion         : number;
+        Type                   : string;
+        DisplayCode            : string;
+        OwnerUserId            : string;
+        RootSectionId          : string;
         DefaultSectionNumbering: boolean
-        CreatedAt: Date;
-        UpdatedAt: Date;
+        CreatedAt              : Date;
+        UpdatedAt              : Date;
     }
-    FormUrl: string;
-    // AnsweresByUserId:string;
-    Users: {
-        id: string;
-        FirstName: string;
-        LastName: string;
-        CountryCode: number;
-        Phone: string;
-        Email: string;
-        Username: string;
-    }
-    Status: string;
-    SubmissionTimestamp: Date;
-    CreatedAt: Date;
+    FormUrl             : string;
+    AnsweredByUserId   ?: string;
+    Status              : string;
+    SubmissionTimestamp : Date;
+    CreatedAt           : Date;
 }
-

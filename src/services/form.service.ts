@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import * as express from "express";
 import { PrismaClientInit } from "../startup/prisma.client.init";
-import { FormMapper } from "../mappers/form.mapper"
-import { FormCreateModel, FormUpdateModel } from "../domain.types/forms/form.domain.types";
+import { FormMapper } from "../mappers/form.submission.mapper"
+import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from "../domain.types/forms/form.domain.types";
 import moment from "moment";
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormService {
     prisma: PrismaClient = null;
@@ -12,62 +13,59 @@ export class FormService {
     }
 
     allForms = async (): Promise<any> => {
-        const response = await this.prisma.form.findMany({
+        const response = await this.prisma.formSubmission.findMany({
             include: {
                 FormTemplate: true,
-                Users: true
             }
         });
         return FormMapper.toArrayDto(response);
     };
 
-    create = async (model: FormCreateModel) => {
-        const response = await this.prisma.form.create({
+    create = async (model: FormSubmissionCreateModel) => {
+        const response = await this.prisma.formSubmission.create({
             data: {
                 FormTemplate: {
                     connect: { id: model.FormTemplateId }
                 },
-                Users: {
+                Submitter: {
                     connect: { id: model.AnsweredByUserId }
                 },
                 FormUrl: model.FormUrl,
                 Status: model.Status,
+                CreatedAt: new Date(),
+                SubmissionTimestamp: null,
+                DeletedAt: null
             },
             include: {
                 FormTemplate: true,
-                Users: true
+                Submitter: true
             }
         });
         return FormMapper.toDto(response);
         // return response;
     };
 
-    update = async (id: string, model: FormUpdateModel) => {
-        const response = await this.prisma.form.update({
+    update = async (id: string, model: FormSubmissionUpdateModel) => {
+        const response = await this.prisma.formSubmission.update({
             where: {
                 id: id,
             },
             data: {
-                FormTemplateId: model.FormTemplateId,
-                FormUrl: model.FormUrl,
-                AnsweredByUserId: model.AnsweredByUserId,
                 Status: model.Status,
             },
             include: {
                 FormTemplate: true,
-                Users: true
+                Submitter: true
             },
         });
         return FormMapper.toDto(response);
     };
 
-
-
     getById = async (id: string) => {
-        const response = await this.prisma.form.findUnique({
+        const response = await this.prisma.formSubmission.findUnique({
             include: {
                 FormTemplate: true,
-                Users: true
+                Submitter: true
             },
             where: {
                 id: id,
@@ -79,53 +77,36 @@ export class FormService {
 
 
     delete = async (id: string) => {
-        const response = await this.prisma.form.delete({
+        const response = await this.prisma.formSubmission.delete({
             where: {
                 id: id,
-            },
-            include: {
-                FormTemplate: true,
-                Users: true
-            },
+            }
         });
         return FormMapper.toDto(response);
     };
 
     getByTemplateId = async (id: string) => {
-        const response = await this.prisma.form.findMany({
+        const response = await this.prisma.formSubmission.findMany({
             where: {
                 FormTemplateId: id,
             },
             include: {
                 FormTemplate: true,
-                Users: true
+                Submitter: true
             },
         });
         return FormMapper.toArrayDto(response);
     };
 
-    getByResponse = async (phone: string) => {
-        const response = await this.prisma.form.findMany({
-            // where: {
-            //     id:id,
-
-            // },
-        });
-        return response;
-    };
-
-    submit = async (model: FormUpdateModel) => {
-        const response = await this.prisma.form.create({
+    submit = async (model: any) => {
+        const response = await this.prisma.formSubmission.update({
+            where: {
+                id: model.id,
+            },
             data: {
-                FormTemplateId: model.FormTemplateId,
-                FormUrl: model.FormUrl,
-                AnsweredByUserId: model.AnsweredByUserId,
+                SubmissionTimestamp: new Date(),
                 Status: model.Status,
-            },
-            include: {
-                FormTemplate: true,
-                Users: true
-            },
+            }
         });
         return FormMapper.toDto(response);
     };
@@ -134,10 +115,10 @@ export class FormService {
         const startDate = moment(date).startOf('day').toDate();
         const endDate = moment(date).endOf('day').toDate();
 
-        const response = await this.prisma.form.findMany({
+        const response = await this.prisma.formSubmission.findMany({
             include: {
                 FormTemplate: true,
-                Users: true
+                Submitter: true
             },
             where: {
                 CreatedAt: {

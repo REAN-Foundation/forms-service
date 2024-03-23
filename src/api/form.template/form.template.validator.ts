@@ -6,7 +6,6 @@ import {
 import BaseValidator from '../base.validator';
 import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
 import { randomInt } from 'crypto';
-// import { FormType } from '../../domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -15,24 +14,24 @@ export class FormTemplateValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request): Promise<FormTemplateCreateModel> => {
         try {
             const schema = joi.object({
-                Title: joi.string().required(),
-                Description: joi.string().max(256).optional(),
-                CurrentVersion: joi.number(),
-                Type: joi.string().required(),
-                DisplayCode: joi.string().max(1024),
-                OwnerUserId: joi.string().uuid(),
-                RootSectionId: joi.string().uuid(),
+                Title                  : joi.string().required(),
+                Description            : joi.string().max(512).optional(),
+                CurrentVersion         : joi.number(),
+                Type                   : joi.string().required(),
+                DisplayCode            : joi.string().max(64),
+                OwnerUserId            : joi.string().uuid(),
+                RootSectionId          : joi.string().uuid(),
                 DefaultSectionNumbering: joi.boolean()
             });
             await schema.validateAsync(request.body);
             return {
-                Title: request.body.Title,
-                Description: request.body.Description ?? null,
-                CurrentVersion: request.body.CurrentVersion ?? 1,
-                Type: request.body.Type,
-                DisplayCode: request.body.DisplayCode ?? `FT-${randomInt(10000)}`,
-                OwnerUserId: request.body.OwnerUserId,
-                RootSectionId: request.body.RootSectionId,
+                Title                  : request.body.Title,
+                Description            : request.body.Description ?? null,
+                CurrentVersion         : request.body.CurrentVersion ?? 1,
+                Type                   : request.body.Type,
+                DisplayCode            : request.body.DisplayCode ?? `FT-${randomInt(10000)}`,
+                OwnerUserId            : request.body.OwnerUserId,
+                RootSectionId          : request.body.RootSectionId,
                 DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? false,
             };
         } catch (error) {
@@ -43,24 +42,24 @@ export class FormTemplateValidator extends BaseValidator {
     public validateUpdateRequest = async (request: express.Request): Promise<FormTemplateUpdateModel | undefined> => {
         try {
             const schema = joi.object({
-                Title: joi.string().optional(),
-                Description: joi.string().max(256).optional(),
-                CurrentVersion: joi.number().optional(),
-                Type: joi.string().optional(),
-                DisplayCode: joi.string().max(1024).optional(),
-                OwnerUserId: joi.string().uuid().optional(),
-                RootSectionId: joi.string().uuid().optional(),
+                Title                  : joi.string().optional(),
+                Description            : joi.string().max(512).optional(),
+                CurrentVersion         : joi.number().optional(),
+                Type                   : joi.string().optional(),
+                DisplayCode            : joi.string().max(64).optional(),
+                OwnerUserId            : joi.string().uuid().optional(),
+                RootSectionId          : joi.string().uuid().optional(),
                 DefaultSectionNumbering: joi.boolean().optional()
             });
             await schema.validateAsync(request.body);
             return {
-                Title: request.body.Title ?? null,
-                Description: request.body.Description ?? null,
-                CurrentVersion: request.body.CurrentVersion ?? null,
-                Type: request.body.Type ?? null,
-                DisplayCode: request.body.DisplayCode ?? null,
-                OwnerUserId: request.body.OwnerUserId ?? null,
-                RootSectionId: request.body.RootSectionId ?? null,
+                Title                  : request.body.Title ?? null,
+                Description            : request.body.Description ?? null,
+                CurrentVersion         : request.body.CurrentVersion ?? null,
+                Type                   : request.body.Type ?? null,
+                DisplayCode            : request.body.DisplayCode ?? null,
+                OwnerUserId            : request.body.OwnerUserId ?? null,
+                RootSectionId          : request.body.RootSectionId ?? null,
                 DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? null
             };
         } catch (error) {

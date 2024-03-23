@@ -7,34 +7,40 @@ export class QuestionMapper {
         }
 
         const dto: QuestionResponseDto = {
-            id: record.id,
-            Title: record.Title,
-            Description: record.Description,
-            DisplayCode: record.DisplayCode,
-            ResponseType: record.ResponseType,
-            Score: record.Score,
-            CorrectAnswer: record.CorrectAnswer,
-            Hint: record.Hint,
-            FormTemplates: {
-                id: record.FormTemplates.id,
-                Title: record.FormTemplates.Title,
-                CurrentVersion: record.FormTemplates.CorrectAnswer,
-                Type: record.FormTemplates.Type,
-                DisplayCode: record.FormTemplates.DisplayCode,
-                OwnerUserId: record.FormTemplates.OwnerUserId,
-                RootSectionId: record.FormTemplates.RootSectionId,
-                DefaultSectionNumbering: record.FormTemplates.DefaultSectionNumbering,
-                CreatedAt: record.FormTemplates.CreatedAt
+            id              : record.id,
+            Title           : record.Title,
+            Description     : record.Description,
+            DisplayCode     : record.DisplayCode,
+            ResponseType    : record.ResponseType,
+            Score           : record.Score,
+            CorrectAnswer   : record.CorrectAnswer,
+            Hint            : record.Hint,
+            Options         : record.Options,
+            FileResourceId  : record.FileResourceId,
+            QuestionImageUrl: record.QuestionImageUrl,
+            RangeMin        : record.RangeMin,
+            RangeMax        : record.RangeMax,
+            ParentFormSection: {
+                id               : record.ParentFormSection.id,
+                SectionIdentifier: record.ParentFormSection.SectionIdentifier,
+                Title            : record.ParentFormSection.Title,
+                Description      : record.ParentFormSection.Description,
+                DisplayCode      : record.ParentFormSection.DisplayCode,
+                Sequence         : record.ParentFormSection.Sequence,
+                ParentSectionId  : record.ParentFormSection.ParentSectionId,
+                CreatedAt        : record.ParentFormSection.CreatedAt
             },
-            FormSections: {
-                id: record.FormSection.id,
-                SectionIdentifier: record.FormSection.SectionIdentifier,
-                Title: record.FormSection.Title,
-                Description: record.FormSection.Description,
-                DisplayCode: record.FormSection.DisplayCode,
-                Sequence: record.FormSection.Sequence,
-                ParentSectionId: record.FormSection.ParentSectionId,
-                CreatedAt: record.FormSection.CreatedAt
+            ParentFormTemplate: {
+                id                     : record.ParentFormTemplate.id,
+                Title                  : record.ParentFormTemplate.Title,
+                Description            : record.ParentFormTemplate.Description,
+                CurrentVersion         : record.ParentFormTemplate.CorrectAnswer,
+                Type                   : record.ParentFormTemplate.Type,
+                DisplayCode            : record.ParentFormTemplate.DisplayCode,
+                OwnerUserId            : record.ParentFormTemplate.OwnerUserId,
+                RootSectionId          : record.ParentFormTemplate.RootSectionId,
+                DefaultSectionNumbering: record.ParentFormTemplate.DefaultSectionNumbering,
+                CreatedAt              : record.ParentFormTemplate.CreatedAt
             },
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt
@@ -42,49 +48,10 @@ export class QuestionMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): QuestionResponseDto[] {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): QuestionResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dtos: QuestionResponseDto[] = [];
-
-        for (let i = 0; i < record.length; i++) {
-            const element = record[i];
-            dtos.push({
-                id: element.id,
-                Title: element.Title,
-                Description: element.Description,
-                DisplayCode: element.DisplayCode,
-                ResponseType: element.ResponseType,
-                Score: element.Score,
-                CorrectAnswer: element.CorrectAnswer,
-                Hint: element.Hint,
-                FormTemplates: {
-                    id: element.FormTemplates.id,
-                    Title: element.FormTemplates.Title,
-                    CurrentVersion: element.FormTemplates.CorrectAnswer,
-                    Type: element.FormTemplates.Type,
-                    DisplayCode: element.FormTemplates.DisplayCode,
-                    OwnerUserId: element.FormTemplates.OwnerUserId,
-                    RootSectionId: element.FormTemplates.RootSectionId,
-                    DefaultSectionNumbering: element.DefaultSectionNumbering,
-                    CreatedAt: element.FormTemplates.CreatedAt
-                },
-                FormSections: {
-                    id: element.FormSections.id,
-                    SectionIdentifier: element.FormSections.SectionIdentifier,
-                    Title: element.FormSections.Title,
-                    Description: element.FormSections.Description,
-                    DisplayCode: element.FormSections.DisplayCode,
-                    Sequence: element.FormSections.Sequence,
-                    ParentSectionId: element.FormSections.ParentSectionId,
-                    CreatedAt: element.FormSections.CreatedAt
-                },
-                CreatedAt: element.CreatedAt,
-                UpdatedAt: element.UpdatedAt
-            });
-        }
-        return dtos;
+        return records.map(record => QuestionMapper.toDto(record));
     }
 }

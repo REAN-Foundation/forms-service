@@ -27,7 +27,7 @@ export class BaseController {
         if (tokens.length < 2) {
             ErrorHandler.throwInternalServerError('Invalid request context', error);
         }
-       
+
     };
 
 }

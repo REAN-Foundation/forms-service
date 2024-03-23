@@ -5,7 +5,7 @@ import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { FormService } from '../../services/form.service';
-import { FormCreateModel, FormUpdateModel } from '../../domain.types/forms/form.domain.types';
+import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms/form.domain.types';
 import { error } from 'console';
 import moment from 'moment-timezone';
 
@@ -42,7 +42,7 @@ export class FormController extends BaseController {
     create = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.Create', request, response);
-            let model: FormCreateModel = await this._validator.validateCreateRequest(request);
+            let model: FormSubmissionCreateModel = await this._validator.validateCreateRequest(request);
             const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
@@ -71,7 +71,7 @@ export class FormController extends BaseController {
         try {
             // await this.authorize('Form.Update', request, response);
             const id = await this._validator.validateParamAsUUID(request, 'id');
-            var model: FormUpdateModel = await this._validator.validateUpdateRequest(request);
+            var model: FormSubmissionUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
             const message = 'Form updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -106,7 +106,7 @@ export class FormController extends BaseController {
     submit = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.Create', request, response);
-            var model: FormCreateModel = await this._validator.validateCreateRequest(request);
+            var model: FormSubmissionCreateModel = await this._validator.validateCreateRequest(request);
             const record = await this._service.submit(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);

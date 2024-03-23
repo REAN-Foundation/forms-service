@@ -13,23 +13,23 @@ export class FormSectionValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request): Promise<FormSectionCreateModel> => {
         try {
             const schema = joi.object({
-                TemplateId: joi.string().uuid().required(),
-                SectionIdentifier: joi.string(),
-                Title: joi.string().required(),
-                Description: joi.string(),
-                DisplayCode: joi.string(),
-                Sequence: joi.string(),
-                ParentSectionId: joi.string().uuid(),
+                ParentFormTemplateId: joi.string().uuid().required(),
+                SectionIdentifier   : joi.string(),
+                Title               : joi.string().required(),
+                Description         : joi.string(),
+                DisplayCode         : joi.string(),
+                Sequence            : joi.string(),
+                ParentSectionId     : joi.string().uuid(),
             });
             await schema.validateAsync(request.body);
             return {
-                TemplateId: request.body.TemplateId,
-                SectionIdentifier: request.body.SectionIdentifier,
-                Title: request.body.Title,
-                Description: request.body.Description,
-                DisplayCode: request.body.DisplayCode,
-                Sequence: request.body.Sequence,
-                ParentSectionId: request.body.ParentSectionId
+                ParentFormTemplateId: request.body.ParentFormTemplateId,
+                SectionIdentifier   : request.body.SectionIdentifier,
+                Title               : request.body.Title,
+                Description         : request.body.Description,
+                DisplayCode         : request.body.DisplayCode,
+                Sequence            : request.body.Sequence,
+                ParentSectionId     : request.body.ParentSectionId
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);

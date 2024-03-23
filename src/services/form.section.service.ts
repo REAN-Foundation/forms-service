@@ -13,11 +13,10 @@ export class FormSectionService {
     allFormSections = async (): Promise<any> => {
         const response = await this.prisma.formSection.findMany({
             include:{
-                FormTemplates:true
+                ParentFormTemplate:true
             }
         });
         return FormSectionMapper.toArrayDto(response);
-        // return response;
     };
 
 
@@ -26,19 +25,19 @@ export class FormSectionService {
     create = async (model: FormSectionCreateModel) => {
         const response = await this.prisma.formSection.create({
             data: {
-                FormTemplates: {
-                    connect: { id: model.TemplateId }
+                ParentFormTemplate: {
+                    connect: { id: model.ParentFormTemplateId }
                 },
-                // TemplateId: model.TemplateId,
                 SectionIdentifier: model.SectionIdentifier,
-                Title: model.Title,
-                Description: model.Description,
-                DisplayCode: model.DisplayCode,
-                Sequence: model.Sequence,
-                ParentSectionId: model.ParentSectionId,
+                Title            : model.Title,
+                Description      : model.Description,
+                DisplayCode      : model.DisplayCode,
+                Sequence         : model.Sequence,
+                ParentSectionId  : model.ParentSectionId,
+                DeletedAt        : null,
             },
             include: {
-                FormTemplates: true
+                ParentFormTemplate: true
             }
         });
         return FormSectionMapper.toDto(response);
@@ -47,19 +46,18 @@ export class FormSectionService {
     update = async (id: string, model: FormSectionUpdateModel) => {
         const response = await this.prisma.formSection.update({
             data: {
-                // TemplateId: model.TemplateId,
                 SectionIdentifier: model.SectionIdentifier,
-                Title: model.Title,
-                Description: model.Description,
-                DisplayCode: model.DisplayCode,
-                Sequence: model.Sequence,
-                ParentSectionId: model.ParentSectionId,
+                Title            : model.Title,
+                Description      : model.Description,
+                DisplayCode      : model.DisplayCode,
+                Sequence         : model.Sequence,
+                ParentSectionId  : model.ParentSectionId,
             },
             where: {
                 id: id,
             },
             include: {
-                FormTemplates: true,
+                ParentFormTemplate: true,
             },
         });
         return FormSectionMapper.toDto(response);
@@ -71,7 +69,7 @@ export class FormSectionService {
                 id: id,
             },
             include: {
-                FormTemplates: true,
+                ParentFormTemplate: true,
             }
         });
         return FormSectionMapper.toDto(response);
@@ -83,7 +81,7 @@ export class FormSectionService {
                 id: id,
             },
             include: {
-                FormTemplates: true,
+                ParentFormTemplate: true,
             }
         });
         return FormSectionMapper.toDto(response);

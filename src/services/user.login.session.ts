@@ -11,7 +11,7 @@ export class UserLoginSessionService {
     }
 
     allUserLoginSessions = async (): Promise<any> => {
-        const response = await this.prisma.userLoginSessions.findMany({
+        const response = await this.prisma.userLoginSession.findMany({
             include:{
                 User: true,
             }
@@ -21,7 +21,7 @@ export class UserLoginSessionService {
     };
 
     create = async (model: UserLoginSessionCreateModel) => {
-        const response = await this.prisma.userLoginSessions.create({
+        const response = await this.prisma.userLoginSession.create({
             include: {
                 User: true
             },
@@ -30,14 +30,15 @@ export class UserLoginSessionService {
                     connect: { id: model.UserId }
                 },
                 ValidTill: model.ValidTill,
-                IsActiveSession: model.IsActiveSession
+                IsActiveSession: model.IsActiveSession,
+                DeletedAt: null
             },
         });
         return UserLoginSessionMapper.toDto(response);
     };
 
     update = async (id: string, model: UserLoginSessionUpdateModel) => {
-        const response = await this.prisma.userLoginSessions.update({
+        const response = await this.prisma.userLoginSession.update({
             data: {
                 User: {
                     connect: { id: model.UserId }
@@ -58,7 +59,7 @@ export class UserLoginSessionService {
     };
 
     getById = async (id: string) => {
-        const response = await this.prisma.userLoginSessions.findUnique({
+        const response = await this.prisma.userLoginSession.findUnique({
             where: {
                 id: id,
             },
@@ -70,7 +71,7 @@ export class UserLoginSessionService {
     };
 
     delete = async (id: string) => {
-        const response = await this.prisma.userLoginSessions.delete({
+        const response = await this.prisma.userLoginSession.delete({
             where: {
                 id: id,
             },

@@ -4,19 +4,19 @@ import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
-import { ResponseValidator } from './response.validator';
+import { QuestionResponseValidator } from './question.response.validator';
 import { ResponseService } from '../../services/response.service';
-import { ResponseCreateModel, ResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
+import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class ResponseController extends BaseController {
+export class QuestionResponseController extends BaseController {
 
     //#region member variables and constructors
 
     _service: ResponseService = new ResponseService();
 
-    _validator: ResponseValidator = new ResponseValidator();
+    _validator: QuestionResponseValidator = new QuestionResponseValidator();
 
     constructor() {
         super();
@@ -41,7 +41,7 @@ export class ResponseController extends BaseController {
         try {
             // await this.authorize('Form.Create', request, response);
             // const model = await this.createTypeModel(request);
-            let model: ResponseCreateModel = await this._validator.validateCreateRequest(request);
+            let model: QuestionResponseCreateModel = await this._validator.validateCreateRequest(request);
             const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
@@ -69,7 +69,7 @@ export class ResponseController extends BaseController {
         try {
             // await this.authorize('Form.Update', request, response);
             const id = await this._validator.validateParamAsUUID(request, 'id');
-            var model: ResponseUpdateModel = await this._validator.validateUpdateRequest(request);
+            var model: QuestionResponseUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
             const message = 'Response fetch updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -89,6 +89,6 @@ export class ResponseController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
-    
+
 }
 
