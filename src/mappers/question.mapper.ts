@@ -1,4 +1,4 @@
-import { QuestionResponseDto } from "../domain.types/forms/question.domain.types";
+import { QuestionResponseDto } from "../domain.types/forms.submission/question.domain.types";
 
 export class QuestionMapper {
     static toDto = (record: any): QuestionResponseDto => {
@@ -16,7 +16,7 @@ export class QuestionMapper {
             CorrectAnswer   : record.CorrectAnswer,
             Hint            : record.Hint,
             Options         : record.Options,
-            FileResourceId  : record.FileResourceId,
+            // FileResourceId  : record.FileResourceId,
             QuestionImageUrl: record.QuestionImageUrl,
             RangeMin        : record.RangeMin,
             RangeMax        : record.RangeMax,

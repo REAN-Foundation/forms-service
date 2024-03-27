@@ -19,7 +19,7 @@ export interface QuestionCreateModel {
     CorrectAnswer    : string;
     Hint             : string;
     Options          : QuestionOption[];   // JSON array of QuestionOption
-    FileResourceId   : string;
+    // FileResourceId   : string;
     QuestionImageUrl : string;
     RangeMin         : number;
     RangeMax         : number;
@@ -34,7 +34,7 @@ export interface QuestionUpdateModel {
     CorrectAnswer   ?: string;
     Hint            ?: string;
     Options         ?: QuestionOption[]; // JSON array of QuestionOption
-    FileResourceId  ?: string;
+    // FileResourceId  ?: string;
     QuestionImageUrl?: string;
     RangeMin        ?: number;
     RangeMax        ?: number;
@@ -50,7 +50,7 @@ export interface QuestionResponseDto {
     CorrectAnswer   : string;
     Hint            : string;
     Options         : QuestionOption[]; // JSON array of QuestionOption
-    FileResourceId  : string;
+    // FileResourceId  : string;
     QuestionImageUrl: string;
     RangeMin        : number;
     RangeMax        : number;

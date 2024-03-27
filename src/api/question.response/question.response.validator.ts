@@ -4,7 +4,7 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
+import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms.submission/response.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +26,7 @@ export class QuestionResponseValidator extends BaseValidator {
             });
             await schema.validateAsync(request.body);
             return {
-                FormSubmissionId: request.body.FormId,
+                FormSubmissionId: request.body.FormSubmissionId,
                 QuestionId      : request.body.QuestionId,
                 ResponseType    : request.body.ResponseType,
                 IntegerValue    : request.body.IntegerValue ?? null,

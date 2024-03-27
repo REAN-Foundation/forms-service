@@ -4,8 +4,8 @@ import { FormValidator } from './form.validator';
 import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { FormService } from '../../services/form.service';
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms/form.domain.types';
+import { FormService } from '../../services/form.submission.service';
+import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms.submission/form.submission.domain.types';
 import { error } from 'console';
 import moment from 'moment-timezone';
 

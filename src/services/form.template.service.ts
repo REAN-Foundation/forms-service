@@ -1,6 +1,6 @@
-import { FormType, PrismaClient } from "@prisma/client";
+import { FormType,PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
-import { FormTemplateCreateModel, FormTemplateUpdateModel } from "../domain.types/forms/form.template.domain.types";
+import { FormTemplateCreateModel, FormTemplateUpdateModel } from "../domain.types/forms.submission/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
 
 
@@ -12,6 +12,9 @@ export class FormTemplateService {
 
     allFormTemplates = async () => {
         const response = await this.prisma.formTemplate.findMany({
+            where: {
+                DeletedAt: null,
+            }
         });
         return FormTemplateMapper.toArrayDto(response);
     };
@@ -19,15 +22,15 @@ export class FormTemplateService {
     create = async (model: FormTemplateCreateModel) => {
         const response = await this.prisma.formTemplate.create({
             data: {
-                Title                  : model.Title,
-                Description            : model.Description,
-                CurrentVersion         : model.CurrentVersion,
-                Type                   : model.Type as FormType,
-                DisplayCode            : model.DisplayCode,
-                OwnerUserId            : model.OwnerUserId,
-                RootSectionId          : model.RootSectionId,
+                Title: model.Title,
+                Description: model.Description,
+                CurrentVersion: model.CurrentVersion,
+                Type: model.Type as FormType,
+                DisplayCode: model.DisplayCode,
+                OwnerUserId: model.OwnerUserId,
+                RootSectionId: model.RootSectionId,
                 DefaultSectionNumbering: model.DefaultSectionNumbering,
-                DeletedAt              : null
+                // DeletedAt              : null
             },
         });
         return FormTemplateMapper.toDto(response);
@@ -37,16 +40,18 @@ export class FormTemplateService {
         const response = await this.prisma.formTemplate.update({
             where: {
                 id: id,
+                DeletedAt: null
             },
             data: {
-                Title                  : model.Title,
-                Description            : model.Description,
-                CurrentVersion         : model.CurrentVersion,
-                Type                   : model.Type,
-                DisplayCode            : model.DisplayCode,
-                OwnerUserId            : model.OwnerUserId,
-                RootSectionId          : model.RootSectionId,
-                DefaultSectionNumbering: model.DefaultSectionNumbering
+                Title: model.Title,
+                Description: model.Description,
+                CurrentVersion: model.CurrentVersion,
+                Type: model.Type as FormType,
+                DisplayCode: model.DisplayCode,
+                OwnerUserId: model.OwnerUserId,
+                RootSectionId: model.RootSectionId,
+                DefaultSectionNumbering: model.DefaultSectionNumbering,
+                UpdatedAt: new Date()
             },
         });
         return FormTemplateMapper.toDto(response);
@@ -56,6 +61,7 @@ export class FormTemplateService {
         const response = await this.prisma.formTemplate.findUnique({
             where: {
                 id: id,
+                DeletedAt: null
             },
         });
         return FormTemplateMapper.toDto(response);
@@ -63,10 +69,14 @@ export class FormTemplateService {
 
 
     delete = async (id: string) => {
-        const response = await this.prisma.formTemplate.delete({
+        const response = await this.prisma.formTemplate.update({
             where: {
                 id: id,
+                DeletedAt:null
             },
+            data: {
+                DeletedAt: new Date(),
+            }
         });
         return FormTemplateMapper.toDto(response);
     };
@@ -74,7 +84,8 @@ export class FormTemplateService {
     submissions = async (id: string) => {
         const response = await this.prisma.formTemplate.findMany({
             where: {
-                id: id
+                id: id,
+                DeletedAt: null
             }
         });
         return FormTemplateMapper.toArrayDto(response);

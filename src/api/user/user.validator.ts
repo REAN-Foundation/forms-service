@@ -4,7 +4,7 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { UserCreateModel, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
+import { UserCreateModel, UserUpdateModel } from '../../domain.types/forms.submission/user.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

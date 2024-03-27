@@ -19,5 +19,5 @@ export const register = (app: express.Application): void => {
     router.post('/:id/submit', controller.submit);
     router.get('/get-by-date/:date', controller.getFormByDate);
 
-    app.use('/api/v1/forms', router);
+    app.use('/api/v1/form-submissions', router);
 };

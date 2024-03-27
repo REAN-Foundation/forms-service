@@ -14,5 +14,5 @@ export const register = (app: express.Application): void => {
     router.get('/:id', controller.getById);
     router.delete('/:id', controller.delete);
 
-    app.use('/api/v1/responses', router);
+    app.use('/api/v1/question-responses', router);
 };

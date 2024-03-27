@@ -1,4 +1,4 @@
-import { FormSectionResponseDto } from "../domain.types/forms/form.section.domain.types";
+import { FormSectionResponseDto } from "../domain.types/forms.submission/form.section.domain.types";
 
 export class FormSectionMapper {
     static toDto = (record: any): FormSectionResponseDto => {
@@ -9,15 +9,15 @@ export class FormSectionMapper {
         const dto: FormSectionResponseDto = {
             id                : record.id,
             ParentFormTemplate: {
-                id                     : record.FormTemplates.id,
-                Title                  : record.FormTemplates.Title,
-                Description            : record.FormTemplates.Description,
-                CurrentVersion         : record.FormTemplates.CurrentVersion,
-                Type                   : record.FormTemplates.Type,
-                DisplayCode            : record.FormTemplates.DisplayCode,
-                OwnerUserId            : record.FormTemplates.OwnerUserId,
-                RootSectionId          : record.FormTemplates.RootSectionId,
-                DefaultSectionNumbering: record.FormTemplates.DefaultSectionNumbering
+                id                     : record.ParentFormTemplate.id,
+                Title                  : record.ParentFormTemplate.Title,
+                Description            : record.ParentFormTemplate.Description,
+                CurrentVersion         : record.ParentFormTemplate.CurrentVersion,
+                Type                   : record.ParentFormTemplate.Type,
+                DisplayCode            : record.ParentFormTemplate.DisplayCode,
+                OwnerUserId            : record.ParentFormTemplate.OwnerUserId,
+                RootSectionId          : record.ParentFormTemplate.RootSectionId,
+                DefaultSectionNumbering: record.ParentFormTemplate.DefaultSectionNumbering
             },
             SectionIdentifier: record.SectionIdentifier,
             Title            : record.Title,

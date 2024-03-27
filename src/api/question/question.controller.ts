@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionService } from '../../services/question.service';
 import { QuestionValidator } from './question.validator';
-import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms/question.domain.types';
+import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms.submission/question.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

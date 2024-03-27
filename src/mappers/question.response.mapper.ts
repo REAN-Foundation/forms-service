@@ -1,4 +1,4 @@
-import { QuestionResponseResponseDto } from "../domain.types/forms/response.domain.types";
+import { QuestionResponseResponseDto } from "../domain.types/forms.submission/response.domain.types";
 
 export class ResponseMapper {
     static toDto = (record: any): QuestionResponseResponseDto => {
@@ -9,27 +9,27 @@ export class ResponseMapper {
         const dto: QuestionResponseResponseDto = {
             id            : record.id,
             FormSubmission: {
-                id                 : record.Forms.id,
-                TemplateId         : record.Forms.TemplateId,
-                FormUrl            : record.Forms.FormUrl,
-                UserId             : record.Forms.UserId,
-                Status             : record.Forms.Status,
-                SubmissionTimestamp: record.Forms.SubmissionTimestamp,
-                CreatedAt          : record.Forms.CreatedAt
+                id                 : record.FormSubmission.id,
+                TemplateId         : record.FormSubmission.TemplateId,
+                FormUrl            : record.FormSubmission.FormUrl,
+                UserId             : record.FormSubmission.UserId,
+                Status             : record.FormSubmission.Status,
+                SubmissionTimestamp: record.FormSubmission.SubmissionTimestamp,
+                CreatedAt          : record.FormSubmission.CreatedAt
             },
             Question: {
-                id           : record.Questions.id,
-                Title        : record.Questions.Title,
-                Description  : record.Questions.Description,
-                DisplayCode  : record.Questions.DisplayCode,
-                ResponseType : record.Questions.ResponseType,
-                Score        : record.Questions.Score,
-                CorrectAnswer: record.Questions.CorrectAnswer,
-                Hint         : record.Questions.Hint,
-                TemplateId   : record.Questions.TemplateId,
-                SectionId    : record.Questions.SectionId,
-                CreatedAt    : record.Questions.CreatedAt,
-                UpdatedAt    : record.Questions.UpdatedAt
+                id           : record.Question.id,
+                Title        : record.Question.Title,
+                Description  : record.Question.Description,
+                DisplayCode  : record.Question.DisplayCode,
+                ResponseType : record.Question.ResponseType,
+                Score        : record.Question.Score,
+                CorrectAnswer: record.Question.CorrectAnswer,
+                Hint         : record.Question.Hint,
+                TemplateId   : record.Question.TemplateId,
+                SectionId    : record.Question.SectionId,
+                CreatedAt    : record.Question.CreatedAt,
+                UpdatedAt    : record.Question.UpdatedAt
             },
             ResponseType       : record.ResponseType,
             IntegerValue       : record.IntegerValue,

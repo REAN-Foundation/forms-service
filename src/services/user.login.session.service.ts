@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { UserLoginSessionMapper } from "../mappers/user.login.mapper";
-import { UserLoginSessionCreateModel, UserLoginSessionUpdateModel } from "../domain.types/forms/user.login.session.domain.types";
+import { UserLoginSessionCreateModel, UserLoginSessionUpdateModel } from "../domain.types/forms.submission/user.login.session.domain.types";
 
 
 export class UserLoginSessionService {
@@ -12,8 +12,11 @@ export class UserLoginSessionService {
 
     allUserLoginSessions = async (): Promise<any> => {
         const response = await this.prisma.userLoginSession.findMany({
-            include:{
+            include: {
                 User: true,
+            },
+            where: {
+                DeletedAt: null
             }
         });
         return UserLoginSessionMapper.toArrayDto(response);
@@ -31,7 +34,7 @@ export class UserLoginSessionService {
                 },
                 ValidTill: model.ValidTill,
                 IsActiveSession: model.IsActiveSession,
-                DeletedAt: null
+                // DeletedAt: null
             },
         });
         return UserLoginSessionMapper.toDto(response);
@@ -44,13 +47,15 @@ export class UserLoginSessionService {
                     connect: { id: model.UserId }
                 },
                 ValidTill: model.ValidTill,
-                IsActiveSession: model.IsActiveSession
+                IsActiveSession: model.IsActiveSession,
+                UpdatedAt: new Date()
             },
             include: {
                 User: true
             },
             where: {
                 id: id,
+                DeletedAt: null
             },
 
         });
@@ -62,6 +67,7 @@ export class UserLoginSessionService {
         const response = await this.prisma.userLoginSession.findUnique({
             where: {
                 id: id,
+                DeletedAt: null
             },
             include: {
                 User: true
@@ -71,9 +77,12 @@ export class UserLoginSessionService {
     };
 
     delete = async (id: string) => {
-        const response = await this.prisma.userLoginSession.delete({
+        const response = await this.prisma.userLoginSession.update({
             where: {
                 id: id,
+            },
+            data: {
+                DeletedAt: new Date(),
             },
             include: {
                 User: true

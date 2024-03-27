@@ -11,7 +11,7 @@ datasource db {
 }
 
 model FormTemplate {
-  id                      String        @id @default(uuid())
+  id                      String           @id @default(uuid())
   Title                   String
   Description             String
   CurrentVersion          Int
@@ -23,69 +23,69 @@ model FormTemplate {
   FormSubmissions         FormSubmission[]
   FormSections            FormSection[]
   Questions               Question[]
-  CreatedAt               DateTime      @default(now())
-  UpdatedAt               DateTime      @default(now())
-  DeletedAt               DateTime
+  CreatedAt               DateTime         @default(now())
+  UpdatedAt               DateTime?
+  DeletedAt               DateTime?
 
   @@map("form_templates")
 }
 
 model FormSection {
-  id                      String       @id @default(uuid())
-  ParentFormTemplate      FormTemplate @relation(fields: [ParentFormTemplateId], references: [id])
-  ParentFormTemplateId    String //one-to-many relation with form_templates @map("ParentTemplateId")
-  SectionIdentifier       String
-  Title                   String
-  Description             String
-  DisplayCode             String
-  Sequence                String
-  ParentSectionId         String
-  Questions               Question[]
-  CreatedAt               DateTime     @default(now())
-  UpdatedAt               DateTime     @default(now())
-  DeletedAt               DateTime
+  id                   String       @id @default(uuid())
+  ParentFormTemplate   FormTemplate @relation(fields: [ParentFormTemplateId], references: [id])
+  ParentFormTemplateId String //one-to-many relation with form_templates @map("ParentTemplateId")
+  SectionIdentifier    String
+  Title                String
+  Description          String
+  DisplayCode          String
+  Sequence             String
+  ParentSectionId      String
+  Questions            Question[]
+  CreatedAt            DateTime     @default(now())
+  UpdatedAt            DateTime?
+  DeletedAt            DateTime?
 
   @@map("form_sections")
 }
 
 model Question {
-  id                      String            @id @default(uuid())
-  ParentFormTemplate      FormTemplate @relation(fields: [ParentTemplateId], references: [id])
-  ParentTemplateId        String //one-to-many relation with form_templates
-  ParentFormSection       FormSection       @relation(fields: [ParentSectionId], references: [id])
-  ParentSectionId         String //one-to-many relation with form_section
-  Title                   String
-  Description             String
-  DisplayCode             String
-  ResponseType            QueryResponseType
-  Score                   Int
-  CorrectAnswer           String
-  Hint                    String
-  Options                 String
-  QuestionImageUrl        String
-  RangeMin                Int
-  RangeMax                Int
-  Responses               QuestionResponse[]
-  CreatedAt               DateTime          @default(now())
-  UpdatedAt               DateTime          @default(now())
-  DeletedAt               DateTime
+  id                 String             @id @default(uuid())
+  ParentFormTemplate FormTemplate       @relation(fields: [ParentTemplateId], references: [id])
+  ParentTemplateId   String //one-to-many relation with form_templates
+  ParentFormSection  FormSection        @relation(fields: [ParentSectionId], references: [id])
+  ParentSectionId    String //one-to-many relation with form_section
+  Title              String
+  Description        String
+  DisplayCode        String
+  ResponseType       QueryResponseType
+  Score              Int
+  CorrectAnswer      String
+  Hint               String
+  Options            String
+  QuestionImageUrl   String
+  RangeMin           Int
+  RangeMax           Int
+  Responses          QuestionResponse[]
+  CreatedAt          DateTime           @default(now())
+  UpdatedAt          DateTime?
+  DeletedAt          DateTime?
 
   @@map("questions")
 }
 
 model FormSubmission {
-  id                  String       @id @default(uuid())
-  FormTemplate        FormTemplate @relation(fields: [FormTemplateId], references: [id])
+  id                  String             @id @default(uuid())
+  FormTemplate        FormTemplate       @relation(fields: [FormTemplateId], references: [id])
   FormTemplateId      String //one-to-many relation with form_templates
   FormUrl             String
-  Submitter           User         @relation(fields: [AnsweredByUserId], references: [id])
+  Submitter           User               @relation(fields: [AnsweredByUserId], references: [id])
   AnsweredByUserId    String // one-to-many relation with user
   Status              FormStatus
-  SubmissionTimestamp DateTime
+  SubmissionTimestamp DateTime?
   QuestionResponses   QuestionResponse[]
-  CreatedAt           DateTime     @default(now())
-  UpdatedAt           DateTime     @default(now())
-  DeletedAt           DateTime
+  CreatedAt           DateTime           @default(now())
+  UpdatedAt           DateTime?
+  DeletedAt           DateTime?
 
   @@map("form_submissions")
 }
@@ -104,43 +104,43 @@ model QuestionResponse {
   Url                 String
   FileResourceId      String
   TextValue           String
-  SubmissionTimestamp DateTime
+  SubmissionTimestamp DateTime?
   LastSaveTimestamp   DateTime
   CreatedAt           DateTime          @default(now())
-  UpdatedAt           DateTime          @default(now())
-  DeletedAt           DateTime
+  UpdatedAt           DateTime?
+  DeletedAt           DateTime?
 
   @@map("question_responses")
 }
 
 model User {
-  id                 String              @id @default(uuid())
-  FirstName          String
-  LastName           String
-  CountryCode        Int
-  Phone              String
-  Email              String
-  Username           String
-  Password           String
-  CreatedAt          DateTime            @default(now())
-  UpdatedAt          DateTime            @default(now())
-  DeletedAt          DateTime            @default(now())
-  LoginSessions      UserLoginSession[]
-  Submissions        FormSubmission[]
+  id            String             @id @default(uuid())
+  FirstName     String
+  LastName      String
+  CountryCode   Int
+  Phone         String
+  Email         String
+  Username      String
+  Password      String
+  CreatedAt     DateTime           @default(now())
+  UpdatedAt     DateTime?
+  DeletedAt     DateTime?
+  LoginSessions UserLoginSession[]
+  Submissions   FormSubmission[]
 
   @@map("users")
 }
 
 model UserLoginSession {
-  id              String   @id @default(uuid())
-  User            User     @relation(fields: [UserId], references: [id])
+  id              String    @id @default(uuid())
+  User            User      @relation(fields: [UserId], references: [id])
   UserId          String //one-to-one relation with users
   IsActiveSession Boolean
-  StartedAt       DateTime @default(now())
+  StartedAt       DateTime  @default(now())
   ValidTill       DateTime
-  CreatedAt       DateTime @default(now())
-  UpdatedAt       DateTime @default(now())
-  DeletedAt       DateTime
+  CreatedAt       DateTime  @default(now())
+  UpdatedAt       DateTime?
+  DeletedAt       DateTime?
 
   @@map("user_login_sessions")
 }

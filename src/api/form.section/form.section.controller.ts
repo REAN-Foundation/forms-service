@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormSectionValidator } from './form.section.validator';
 import { FormSectionService } from '../../services/form.section.service';
-import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms/form.section.domain.types';
+import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms.submission/form.section.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

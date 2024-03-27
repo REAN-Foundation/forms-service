@@ -6,7 +6,7 @@ import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormTemplateService } from '../../services/form.template.service';
-import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
+import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms.submission/form.template.domain.types';
 import { randomInt } from 'crypto';
 
 ///////////////////////////////////////////////////////////////////////////////////////

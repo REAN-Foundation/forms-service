@@ -5,8 +5,8 @@ import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionResponseValidator } from './question.response.validator';
-import { ResponseService } from '../../services/response.service';
-import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
+import { ResponseService } from '../../services/question.response.service';
+import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms.submission/response.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

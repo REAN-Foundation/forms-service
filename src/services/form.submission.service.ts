@@ -1,7 +1,7 @@
 import { FormStatus, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormMapper } from "../mappers/form.submission.mapper"
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from "../domain.types/forms/form.domain.types";
+import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from "../domain.types/forms.submission/form.submission.domain.types";
 import moment from "moment";
 import { uuid } from "../domain.types/miscellaneous/system.types";
 
@@ -17,6 +17,10 @@ export class FormService {
         const response = await this.prisma.formSubmission.findMany({
             include: {
                 FormTemplate: true,
+                Submitter:true
+            },
+            where: {
+                DeletedAt: null
             }
         });
         return FormMapper.toArrayDto(response);
@@ -34,8 +38,8 @@ export class FormService {
                 FormUrl: model.FormUrl,
                 Status: model.Status,
                 CreatedAt: new Date(),
-                SubmissionTimestamp: null,
-                DeletedAt: null
+                // SubmissionTimestamp: null,
+                // DeletedAt: null
             },
             include: {
                 FormTemplate: true,
@@ -50,13 +54,16 @@ export class FormService {
         const response = await this.prisma.formSubmission.update({
             where: {
                 id: id,
+                DeletedAt: null
             },
             data: {
                 Status: model.Status,
+                UpdatedAt: new Date()
             },
             include: {
                 FormTemplate: true,
-                Submitter: true
+                Submitter: true,
+
             },
         });
         return FormMapper.toDto(response);
@@ -70,6 +77,7 @@ export class FormService {
             },
             where: {
                 id: id,
+                DeletedAt: null
             },
         });
         // return response;
@@ -78,9 +86,16 @@ export class FormService {
 
 
     delete = async (id: string) => {
-        const response = await this.prisma.formSubmission.delete({
+        const response = await this.prisma.formSubmission.update({
             where: {
                 id: id,
+            },
+            data: {
+                DeletedAt: new Date(),
+            },
+            include:{
+                FormTemplate:true,
+                Submitter:true
             }
         });
         return FormMapper.toDto(response);
@@ -90,6 +105,7 @@ export class FormService {
         const response = await this.prisma.formSubmission.findMany({
             where: {
                 FormTemplateId: id,
+                DeletedAt: null
             },
             include: {
                 FormTemplate: true,
@@ -99,10 +115,11 @@ export class FormService {
         return FormMapper.toArrayDto(response);
     };
 
-    submit = async (id:uuid) => {
+    submit = async (id: uuid) => {
         const response = await this.prisma.formSubmission.update({
             where: {
                 id: id,
+                DeletedAt: null
             },
             data: {
                 SubmissionTimestamp: new Date(),

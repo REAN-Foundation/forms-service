@@ -4,7 +4,7 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms/question.domain.types';
+import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms.submission/question.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,8 +22,8 @@ export class QuestionValidator extends BaseValidator {
                 Score           : joi.number(),
                 CorrectAnswer   : joi.string(),
                 Hint            : joi.string(),
-                Option          : joi.string(),
-                FileResourceId  : joi.string().uuid(),
+                Options          : joi.string(),
+                // FileResourceId  : joi.string().uuid(),
                 QuestionImageUrl: joi.string(),
                 RangeMin        : joi.number(),
                 RangeMax        : joi.number()
@@ -40,7 +40,7 @@ export class QuestionValidator extends BaseValidator {
                 CorrectAnswer   : request.body.CorrectAnswer,
                 Hint            : request.body.Hint,
                 Options         : request.body.Options,
-                FileResourceId  : request.body.FileResourceId,
+                // FileResourceId  : request.body.FileResourceId,
                 QuestionImageUrl: request.body.QuestionImageUrl,
                 RangeMin        : request.body.RangeMin,
                 RangeMax        : request.body.RangeMax
@@ -61,7 +61,7 @@ export class QuestionValidator extends BaseValidator {
                 CorrectAnswer   : joi.string().optional(),
                 Hint            : joi.string().optional(),
                 Option          : joi.string().optional(),
-                FileResourceId  : joi.string().uuid().optional(),
+                // FileResourceId  : joi.string().uuid().optional(),
                 QuestionImageUrl: joi.string().optional(),
                 RangeMin        : joi.number().optional(),
                 RangeMax        : joi.number().optional()
@@ -76,7 +76,7 @@ export class QuestionValidator extends BaseValidator {
                 CorrectAnswer   : request.body.CorrectAnswer ?? null,
                 Hint            : request.body.Hint ?? null,
                 Options         : request.body.Options ?? null,
-                FileResourceId  : request.body.FileResourceId ?? null,
+                // FileResourceId  : request.body.FileResourceId ?? null,
                 QuestionImageUrl: request.body.QuestionImageUrl ?? null,
                 RangeMin        : request.body.RangeMin ?? null,
                 RangeMax        : request.body.RangeMax ?? null

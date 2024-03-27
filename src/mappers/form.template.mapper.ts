@@ -1,4 +1,4 @@
-import { FormTemplateResponseDto } from "../domain.types/forms/form.template.domain.types";
+import { FormTemplateResponseDto } from "../domain.types/forms.submission/form.template.domain.types";
 
 export class FormTemplateMapper {
     static toDto = (record: any): FormTemplateResponseDto => {

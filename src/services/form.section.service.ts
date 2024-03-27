@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormSectionMapper } from "../mappers/form.section.mapper";
-import { FormSectionCreateModel, FormSectionUpdateModel } from "../domain.types/forms/form.section.domain.types";
+import { FormSectionCreateModel, FormSectionUpdateModel } from "../domain.types/forms.submission/form.section.domain.types";
 
 
 export class FormSectionService {
@@ -12,8 +12,11 @@ export class FormSectionService {
 
     allFormSections = async (): Promise<any> => {
         const response = await this.prisma.formSection.findMany({
-            include:{
-                ParentFormTemplate:true
+            include: {
+                ParentFormTemplate: true
+            },
+            where: {
+                DeletedAt: null,
             }
         });
         return FormSectionMapper.toArrayDto(response);
@@ -29,12 +32,12 @@ export class FormSectionService {
                     connect: { id: model.ParentFormTemplateId }
                 },
                 SectionIdentifier: model.SectionIdentifier,
-                Title            : model.Title,
-                Description      : model.Description,
-                DisplayCode      : model.DisplayCode,
-                Sequence         : model.Sequence,
-                ParentSectionId  : model.ParentSectionId,
-                DeletedAt        : null,
+                Title: model.Title,
+                Description: model.Description,
+                DisplayCode: model.DisplayCode,
+                Sequence: model.Sequence,
+                ParentSectionId: model.ParentSectionId,
+                // DeletedAt        : null,
             },
             include: {
                 ParentFormTemplate: true
@@ -47,14 +50,16 @@ export class FormSectionService {
         const response = await this.prisma.formSection.update({
             data: {
                 SectionIdentifier: model.SectionIdentifier,
-                Title            : model.Title,
-                Description      : model.Description,
-                DisplayCode      : model.DisplayCode,
-                Sequence         : model.Sequence,
-                ParentSectionId  : model.ParentSectionId,
+                Title: model.Title,
+                Description: model.Description,
+                DisplayCode: model.DisplayCode,
+                Sequence: model.Sequence,
+                ParentSectionId: model.ParentSectionId,
+                UpdatedAt: new Date(),
             },
             where: {
                 id: id,
+                DeletedAt: null
             },
             include: {
                 ParentFormTemplate: true,
@@ -67,6 +72,7 @@ export class FormSectionService {
         const response = await this.prisma.formSection.findUnique({
             where: {
                 id: id,
+                DeletedAt: null
             },
             include: {
                 ParentFormTemplate: true,
@@ -76,9 +82,12 @@ export class FormSectionService {
     };
 
     delete = async (id: string) => {
-        const response = await this.prisma.formSection.delete({
+        const response = await this.prisma.formSection.update({
             where: {
                 id: id,
+            },
+            data: {
+                DeletedAt: new Date(),
             },
             include: {
                 ParentFormTemplate: true,

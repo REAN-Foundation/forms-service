@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { UserMapper } from "../mappers/user.mapper";
-import { UserCreateModel, UserUpdateModel } from "../domain.types/forms/user.domain.types";
+import { UserCreateModel, UserUpdateModel } from "../domain.types/forms.submission/user.domain.types";
 
 export class UserService {
     prisma: PrismaClient = null;
@@ -10,7 +10,11 @@ export class UserService {
     }
 
     allUsers = async () => {
-        const response = await this.prisma.user.findMany({});
+        const response = await this.prisma.user.findMany({
+            where: {
+                DeletedAt: null
+            }
+        });
         return UserMapper.toArrayDto(response);
     };
 
@@ -33,6 +37,7 @@ export class UserService {
         const response = await this.prisma.user.update({
             where: {
                 id: id,
+                DeletedAt: null
             },
             data: {
                 FirstName: model.FirstName,
@@ -42,6 +47,7 @@ export class UserService {
                 Email: model.Email,
                 Username: model.Username,
                 Password: model.Password,
+                UpdatedAt: new Date()
             },
         });
         return UserMapper.toDto(response);
@@ -51,6 +57,7 @@ export class UserService {
         const response = await this.prisma.user.findUnique({
             where: {
                 id: id,
+                DeletedAt: null
             },
         });
         return UserMapper.toDto(response);
@@ -60,10 +67,14 @@ export class UserService {
 
 
     delete = async (id: string) => {
-        const response = await this.prisma.user.delete({
+        const response = await this.prisma.user.update({
             where: {
                 id: id,
+                DeletedAt: null
             },
+            data: {
+                DeletedAt: new Date(),
+            }
         });
         return UserMapper.toDto(response);
     };

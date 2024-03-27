@@ -10,8 +10,8 @@ CREATE TABLE `form_templates` (
     `RootSectionId` VARCHAR(191) NOT NULL,
     `DefaultSectionNumbering` BOOLEAN NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NOT NULL,
+    `UpdatedAt` DATETIME(3) NULL,
+    `DeletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -27,8 +27,8 @@ CREATE TABLE `form_sections` (
     `Sequence` VARCHAR(191) NOT NULL,
     `ParentSectionId` VARCHAR(191) NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NOT NULL,
+    `UpdatedAt` DATETIME(3) NULL,
+    `DeletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -50,8 +50,8 @@ CREATE TABLE `questions` (
     `RangeMin` INTEGER NOT NULL,
     `RangeMax` INTEGER NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NOT NULL,
+    `UpdatedAt` DATETIME(3) NULL,
+    `DeletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -63,10 +63,10 @@ CREATE TABLE `form_submissions` (
     `FormUrl` VARCHAR(191) NOT NULL,
     `AnsweredByUserId` VARCHAR(191) NOT NULL,
     `Status` ENUM('LinkShared', 'Presented', 'InProgress', 'Submitted') NOT NULL,
-    `SubmissionTimestamp` DATETIME(3) NOT NULL,
+    `SubmissionTimestamp` DATETIME(3) NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NOT NULL,
+    `UpdatedAt` DATETIME(3) NULL,
+    `DeletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -87,8 +87,8 @@ CREATE TABLE `question_responses` (
     `SubmissionTimestamp` DATETIME(3) NOT NULL,
     `LastSaveTimestamp` DATETIME(3) NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NOT NULL,
+    `UpdatedAt` DATETIME(3) NULL,
+    `DeletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -104,8 +104,8 @@ CREATE TABLE `users` (
     `Username` VARCHAR(191) NOT NULL,
     `Password` VARCHAR(191) NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `UpdatedAt` DATETIME(3) NULL,
+    `DeletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -118,8 +118,8 @@ CREATE TABLE `user_login_sessions` (
     `StartedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `ValidTill` DATETIME(3) NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `UpdatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `DeletedAt` DATETIME(3) NOT NULL,
+    `UpdatedAt` DATETIME(3) NULL,
+    `DeletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

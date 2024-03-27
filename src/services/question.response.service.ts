@@ -1,7 +1,7 @@
 import { PrismaClient, QueryResponseType } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { ResponseMapper } from "../mappers/question.response.mapper";
-import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from "../domain.types/forms/response.domain.types";
+import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from "../domain.types/forms.submission/response.domain.types";
 
 
 export class ResponseService {
@@ -14,7 +14,10 @@ export class ResponseService {
         const response = await this.prisma.questionResponse.findMany({
             include: {
                 FormSubmission: true,
-                Question:true
+                Question: true
+            },
+            where: {
+                DeletedAt: null
             }
         });
         return ResponseMapper.toArrayDto(response);
@@ -23,27 +26,27 @@ export class ResponseService {
     create = async (model: QuestionResponseCreateModel) => {
         const response = await this.prisma.questionResponse.create({
             data: {
-                FormSubmission: {
-                    connect: { id: model.FormSubmissionId }
-                },
                 Question: {
                     connect: { id: model.QuestionId }
                 },
-                ResponseType       : model.ResponseType as QueryResponseType,
-                IntegerValue       : model.IntegerValue,
-                FloatValue         : model.FloatValue,
-                BooleanValue       : model.BooleanValue,
-                DateTimeValue      : model.DateTimeValue,
-                Url                : model.Url,
-                FileResourceId     : model.FileResourceId,
-                TextValue          : model.TextValue,
+                FormSubmission: {
+                    connect: { id: model.FormSubmissionId }
+                },
+                ResponseType: model.ResponseType as QueryResponseType,
+                IntegerValue: model.IntegerValue,
+                FloatValue: model.FloatValue,
+                BooleanValue: model.BooleanValue,
+                DateTimeValue: model.DateTimeValue,
+                Url: model.Url,
+                FileResourceId: model.FileResourceId,
+                TextValue: model.TextValue,
                 SubmissionTimestamp: null,
-                LastSaveTimestamp  : new Date(),
-                DeletedAt          : null,
+                LastSaveTimestamp: new Date(),
+                // DeletedAt          : null,
             },
             include: {
                 FormSubmission: true,
-                Question:true
+                Question: true
             }
         });
         return ResponseMapper.toDto(response);
@@ -53,26 +56,29 @@ export class ResponseService {
         const record = await this.prisma.questionResponse.findUnique({
             where: {
                 id: id,
+                DeletedAt: null
             }
         });
         const response = await this.prisma.questionResponse.update({
             data: {
-                ResponseType     : model.ResponseType as QueryResponseType ?? record.ResponseType,
-                IntegerValue     : model.IntegerValue ?? record.IntegerValue,
-                FloatValue       : model.FloatValue ?? record.FloatValue,
-                BooleanValue     : model.BooleanValue ?? record.BooleanValue,
-                DateTimeValue    : model.DateTimeValue ?? record.DateTimeValue,
-                Url              : model.Url ?? record.Url,
-                FileResourceId   : model.FileResourceId ?? record.FileResourceId,
-                TextValue        : model.TextValue ?? record.TextValue,
+                ResponseType: model.ResponseType as QueryResponseType ?? record.ResponseType,
+                IntegerValue: model.IntegerValue ?? record.IntegerValue,
+                FloatValue: model.FloatValue ?? record.FloatValue,
+                BooleanValue: model.BooleanValue ?? record.BooleanValue,
+                DateTimeValue: model.DateTimeValue ?? record.DateTimeValue,
+                Url: model.Url ?? record.Url,
+                FileResourceId: model.FileResourceId ?? record.FileResourceId,
+                TextValue: model.TextValue ?? record.TextValue,
                 LastSaveTimestamp: new Date(),
+                UpdatedAt: new Date()
             },
             include: {
                 FormSubmission: true,
-                Question:true
+                Question: true
             },
             where: {
                 id: id,
+                DeletedAt: null
             },
         });
         return ResponseMapper.toDto(response);
@@ -82,23 +88,27 @@ export class ResponseService {
         const response = await this.prisma.questionResponse.findUnique({
             where: {
                 id: id,
+                DeletedAt: null
             },
             include: {
                 FormSubmission: true,
-                Question:true
+                Question: true
             }
         });
         return ResponseMapper.toDto(response);
     };
 
     delete = async (id: string) => {
-        const response = await this.prisma.questionResponse.delete({
+        const response = await this.prisma.questionResponse.update({
             where: {
                 id: id,
             },
+            data: {
+                DeletedAt: new Date()
+            },
             include: {
                 FormSubmission: true,
-                Question:true
+                Question: true
             }
         });
         return ResponseMapper.toDto(response);

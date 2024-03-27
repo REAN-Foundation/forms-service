@@ -1,7 +1,7 @@
 import { PrismaClient, QueryResponseType } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { QuestionMapper } from "../mappers/question.mapper";
-import { QuestionCreateModel, QuestionUpdateModel } from "../domain.types/forms/question.domain.types";
+import { QuestionCreateModel, QuestionUpdateModel } from "../domain.types/forms.submission/question.domain.types";
 
 
 export class QuestionService {
@@ -12,9 +12,12 @@ export class QuestionService {
 
     allQuestions = async (): Promise<any> => {
         const response = await this.prisma.question.findMany({
-            include:{
-                ParentFormTemplate:true,
-                ParentFormSection:true
+            include: {
+                ParentFormTemplate: true,
+                ParentFormSection: true
+            },
+            where: {
+                DeletedAt: null
             }
         });
         return QuestionMapper.toArrayDto(response);
@@ -26,8 +29,8 @@ export class QuestionService {
                 ParentFormTemplate: {
                     connect: { id: model.ParentTemplateId }
                 },
-                ParentFormSection:{
-                    connect:{ id:model.ParentSectionId}
+                ParentFormSection: {
+                    connect: { id: model.ParentSectionId }
                 },
                 Title: model.Title,
                 Description: model.Description,
@@ -41,12 +44,12 @@ export class QuestionService {
                 RangeMax: model.RangeMax,
                 RangeMin: model.RangeMin,
                 CreatedAt: new Date(),
-                UpdatedAt: new Date(),
-                DeletedAt: null,
+                // UpdatedAt: new Date(),
+                // DeletedAt: null,
             },
             include: {
                 ParentFormTemplate: true,
-                ParentFormSection:true
+                ParentFormSection: true
             }
         });
         return QuestionMapper.toDto(response);
@@ -63,13 +66,15 @@ export class QuestionService {
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
                 Hint: model.Hint,
+                UpdatedAt: new Date()
             },
             include: {
                 ParentFormSection: true,
-                ParentFormTemplate:true
+                ParentFormTemplate: true
             },
             where: {
                 id: id,
+                DeletedAt: null
             }
         });
         return QuestionMapper.toDto(response);
@@ -79,23 +84,28 @@ export class QuestionService {
         const response = await this.prisma.question.findUnique({
             where: {
                 id: id,
+                DeletedAt: null
             },
             include: {
                 ParentFormSection: true,
-                ParentFormTemplate:true
+                ParentFormTemplate: true
             },
         });
         return QuestionMapper.toDto(response);
     };
 
     delete = async (id: string) => {
-        const response = await this.prisma.question.delete({
+        const response = await this.prisma.question.update({
             where: {
                 id: id,
+                DeletedAt: null
+            },
+            data: {
+                DeletedAt: new Date()
             },
             include: {
                 ParentFormSection: true,
-                ParentFormTemplate:true
+                ParentFormTemplate: true
             },
         });
         return QuestionMapper.toDto(response);

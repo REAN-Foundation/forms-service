@@ -1,5 +1,5 @@
 import express from 'express';
-import { register as form } from '../api/form/form.router';
+import { register as form } from '../api/form.submission/form.router';
 import { register as formTemplate } from '../api/form.template/form.template.router';
 import { register as user } from '../api/user/user.router';
 import { register as formSection } from '../api/form.section/form.section.router'
