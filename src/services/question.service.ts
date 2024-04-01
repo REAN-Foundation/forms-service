@@ -61,7 +61,7 @@ export class QuestionService {
             data: {
                 Title: model.Title,
                 Description: model.Description,
-                DisplayCode: model.DisplayCode,
+                // DisplayCode: model.DisplayCode,
                 ResponseType: model.ResponseType as QueryResponseType,
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
@@ -92,6 +92,20 @@ export class QuestionService {
             },
         });
         return QuestionMapper.toDto(response);
+    };
+
+    getByTemplateId = async (id: string) => {
+        const response = await this.prisma.question.findMany({
+            where: {
+                ParentTemplateId: id,
+                DeletedAt: null
+            },
+            include: {
+                ParentFormSection: true,
+                ParentFormTemplate: true
+            },
+        });
+        return QuestionMapper.toArrayDto(response);
     };
 
     delete = async (id: string) => {

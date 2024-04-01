@@ -95,4 +95,17 @@ export class FormSectionService {
         });
         return FormSectionMapper.toDto(response);
     };
+
+    getByTemplateId = async (id: string) => {
+        const response = await this.prisma.formSection.findMany({
+            where: {
+                ParentFormTemplateId: id,
+                DeletedAt: null
+            },
+            include: {
+                ParentFormTemplate: true,
+            }
+        });
+        return FormSectionMapper.toArrayDto(response);
+    };
 }

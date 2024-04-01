@@ -89,4 +89,15 @@ export class FormSectionController extends BaseController {
         }
     };
 
+    getByTemplateId = async (request: express.Request, response: express.Response) => {
+        try {
+            var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            const record = await this._service.getByTemplateId(id);
+            const message = 'Form section retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
 }

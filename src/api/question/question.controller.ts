@@ -58,7 +58,20 @@ export class QuestionController extends BaseController {
             // await this.authorize('Form.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            const message = 'Form retrieved successfully!';
+            const message = 'questions retrieved successfully!';
+            return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    
+    getByTemplateId = async (request: express.Request, response: express.Response) => {
+        try {
+            // await this.authorize('Form.GetById', request, response);
+            var id: uuid = await this._validator.validateParamAsUUID(request, 'templateId');
+            const record = await this._service.getByTemplateId(id);
+            const message = 'Questions retrived successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

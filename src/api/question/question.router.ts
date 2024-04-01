@@ -13,6 +13,7 @@ export const register = (app: express.Application): void => {
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.get('/:id', controller.getById);
+    router.get('/by-template-id/:templateId', controller.getByTemplateId);
     router.delete('/:id', controller.delete);
 
     app.use('/api/v1/questions', router);

@@ -5,6 +5,7 @@ import {
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
 import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms.submission/question.domain.types';
+import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -17,16 +18,16 @@ export class QuestionValidator extends BaseValidator {
                 ParentSectionId : joi.string().uuid().required(),
                 Title           : joi.string(),
                 Description     : joi.string().optional(),
-                DisplayCode     : joi.string(),
+                DisplayCode     : joi.string().optional(),
                 ResponseType    : joi.string(),
                 Score           : joi.number(),
-                CorrectAnswer   : joi.string(),
-                Hint            : joi.string(),
-                Options          : joi.string(),
+                CorrectAnswer   : joi.string().optional(),
+                Hint            : joi.string().optional(),
+                Options          : joi.string().optional(),
                 // FileResourceId  : joi.string().uuid(),
-                QuestionImageUrl: joi.string(),
-                RangeMin        : joi.number(),
-                RangeMax        : joi.number()
+                QuestionImageUrl: joi.string().optional(),
+                RangeMin        : joi.number().optional(),
+                RangeMax        : joi.number().optional()
             });
             await schema.validateAsync(request.body);
             return {
@@ -34,7 +35,7 @@ export class QuestionValidator extends BaseValidator {
                 ParentSectionId : request.body.ParentSectionId,
                 Title           : request.body.Title,
                 Description     : request.body.Description,
-                DisplayCode     : request.body.DisplayCode,
+                DisplayCode     : request.body.DisplayCode ?? generateDisplayCode(25,'QUESTION_#'),
                 ResponseType    : request.body.ResponseType,
                 Score           : request.body.Score,
                 CorrectAnswer   : request.body.CorrectAnswer,

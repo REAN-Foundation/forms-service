@@ -10,7 +10,7 @@ export class QuestionMapper {
             id              : record.id,
             Title           : record.Title,
             Description     : record.Description,
-            DisplayCode     : record.DisplayCode,
+            DisplayCode     : record.DisplayCode ?? null,
             ResponseType    : record.ResponseType,
             Score           : record.Score,
             CorrectAnswer   : record.CorrectAnswer,

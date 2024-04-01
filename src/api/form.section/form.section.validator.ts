@@ -5,6 +5,7 @@ import {
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
 import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms.submission/form.section.domain.types';
+import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -14,22 +15,22 @@ export class FormSectionValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 ParentFormTemplateId: joi.string().uuid().required(),
-                SectionIdentifier   : joi.string(),
-                Title               : joi.string().required(),
-                Description         : joi.string(),
-                DisplayCode         : joi.string(),
-                Sequence            : joi.string(),
-                ParentSectionId     : joi.string().uuid(),
+                SectionIdentifier: joi.string(),
+                Title: joi.string().required(),
+                Description: joi.string(),
+                DisplayCode: joi.string(),
+                Sequence: joi.string(),
+                ParentSectionId: joi.string().uuid(),
             });
             await schema.validateAsync(request.body);
             return {
                 ParentFormTemplateId: request.body.ParentFormTemplateId,
-                SectionIdentifier   : request.body.SectionIdentifier,
-                Title               : request.body.Title,
-                Description         : request.body.Description,
-                DisplayCode         : request.body.DisplayCode,
-                Sequence            : request.body.Sequence,
-                ParentSectionId     : request.body.ParentSectionId
+                SectionIdentifier: request.body.SectionIdentifier,
+                Title: request.body.Title,
+                Description: request.body.Description ,
+                DisplayCode: request.body.DisplayCode ?? generateDisplayCode(25, 'SECTION_#'),
+                Sequence: request.body.Sequence,
+                ParentSectionId: request.body.ParentSectionId
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);

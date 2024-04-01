@@ -59,12 +59,12 @@ model Question {
   DisplayCode        String
   ResponseType       QueryResponseType
   Score              Int
-  CorrectAnswer      String
-  Hint               String
-  Options            String
-  QuestionImageUrl   String
-  RangeMin           Int
-  RangeMax           Int
+  CorrectAnswer      String?
+  Hint               String?
+  Options            String?
+  QuestionImageUrl   String?
+  RangeMin           Int?
+  RangeMax           Int?
   Responses          QuestionResponse[]
   CreatedAt          DateTime           @default(now())
   UpdatedAt          DateTime?

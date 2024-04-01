@@ -6,6 +6,7 @@ import {
 import BaseValidator from '../base.validator';
 import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms.submission/form.template.domain.types';
 import { randomInt } from 'crypto';
+import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,7 +19,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Description            : joi.string().max(512).optional(),
                 CurrentVersion         : joi.number(),
                 Type                   : joi.string().required(),
-                DisplayCode            : joi.string().max(64),
+                DisplayCode            : joi.string().optional(),
                 OwnerUserId            : joi.string().uuid(),
                 RootSectionId          : joi.string().uuid(),
                 DefaultSectionNumbering: joi.boolean()
@@ -29,7 +30,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Description            : request.body.Description ?? null,
                 CurrentVersion         : request.body.CurrentVersion ?? 1,
                 Type                   : request.body.Type,
-                DisplayCode            : request.body.DisplayCode ?? `FT-${randomInt(10000)}`,
+                DisplayCode            : request.body.DisplayCode ?? generateDisplayCode(30, 'ASSESS_TEMP_#'),
                 OwnerUserId            : request.body.OwnerUserId,
                 RootSectionId          : request.body.RootSectionId,
                 DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? false,
