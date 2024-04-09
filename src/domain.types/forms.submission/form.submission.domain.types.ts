@@ -10,6 +10,7 @@ export interface FormSubmissionCreateModel {
 // Only status will be updated
 export interface FormSubmissionUpdateModel {
     Status?: FormStatus;
+    AnsweredByUserId:string;
 }
 
 export interface FormSubmissionResponseDto {
@@ -28,15 +29,15 @@ export interface FormSubmissionResponseDto {
         CreatedAt: Date;
         UpdatedAt: Date;
     };
-    Submitter: {
-        id: string;
-        FirstName: string;
-        LastName: string;
-        Phone: string;
-        Email: string;
-        UserName: string
-        CountryCode: string
-    }
+    // Submitter: {
+    //     id: string;
+    //     FirstName: string;
+    //     LastName: string;
+    //     Phone: string;
+    //     Email: string;
+    //     UserName: string
+    //     CountryCode: string
+    // }
     FormUrl: string;
     AnsweredByUserId?: string;
     Status: string;

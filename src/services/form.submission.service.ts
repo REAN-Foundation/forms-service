@@ -32,11 +32,11 @@ export class FormService {
                 FormTemplate: {
                     connect: { id: model.FormTemplateId }
                 },
-                Submitter: {
-                    connect: { id: model.AnsweredByUserId }
-                },
-                FormUrl: model.FormUrl,
-                Status: model.Status,
+                // Submitter: {
+                //     connect: { id: model.AnsweredByUserId }
+                // },
+                // FormUrl: model.FormUrl,
+                Status: 'LinkShared',
                 CreatedAt: new Date(),
                 // SubmissionTimestamp: null,
                 // DeletedAt: null
@@ -58,7 +58,10 @@ export class FormService {
             },
             data: {
                 Status: model.Status,
-                UpdatedAt: new Date()
+                UpdatedAt: new Date(),
+                Submitter: {
+                    connect: { id: model.AnsweredByUserId }
+                },
             },
             include: {
                 FormTemplate: true,

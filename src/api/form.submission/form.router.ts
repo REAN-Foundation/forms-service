@@ -15,7 +15,7 @@ export const register = (app: express.Application): void => {
     router.put('/:id', controller.update);
     router.get('/:id', controller.getById);
     router.delete('/:id', controller.delete);
-    router.get('/by-template:templateId', controller.getByTemplateId);
+    router.get('/by-template/:templateId', controller.getByTemplateId);
     router.post('/:id/submit', controller.submit);
     router.get('/get-by-date/:date', controller.getFormByDate);
 

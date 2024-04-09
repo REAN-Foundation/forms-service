@@ -21,15 +21,15 @@ export class FormMapper {
                 CreatedAt: record.FormTemplate.CreatedAt,
                 UpdatedAt: record.FormTemplate.UpdatedAt,
             },
-            Submitter: {
-                id: record.Submitter.id,
-                FirstName: record.Submitter.FirstName,
-                LastName: record.Submitter.LastName,
-                Phone: record.Submitter.Phone,
-                Email: record.Submitter.Email,
-                UserName: record.Submitter.Username,
-                CountryCode: record.Submitter.CountryCode
-            },
+            // Submitter: {
+            //     id: record.Submitter.id,
+            //     FirstName: record.Submitter.FirstName,
+            //     LastName: record.Submitter.LastName,
+            //     Phone: record.Submitter.Phone,
+            //     Email: record.Submitter.Email,
+            //     UserName: record.Submitter.Username,
+            //     CountryCode: record.Submitter.CountryCode
+            // },
             ParentFormTemplateId: record.FormTemplateId,
             FormUrl: record.FormUrl,
             Status: record.FormStatus,
@@ -64,15 +64,15 @@ export class FormMapper {
                     CreatedAt: element.FormTemplate.CreatedAt,
                     UpdatedAt: element.FormTemplate.UpdatedAt,
                 },
-                Submitter: {
-                    id: element.Submitter.id,
-                    FirstName: element.Submitter.FirstName,
-                    LastName: element.Submitter.LastName,
-                    Phone: element.Submitter.Phone,
-                    Email: element.Submitter.Email,
-                    UserName: element.Submitter.UserName,
-                    CountryCode: element.Submitter.CountryCode
-                },
+                // Submitter: {
+                //     id: element.Submitter.id,
+                //     FirstName: element.Submitter.FirstName,
+                //     LastName: element.Submitter.LastName,
+                //     Phone: element.Submitter.Phone,
+                //     Email: element.Submitter.Email,
+                //     UserName: element.Submitter.UserName,
+                //     CountryCode: element.Submitter.CountryCode
+                // },
                 FormUrl: element.FormUrl,
                 AnsweredByUserId: element.AnsweredByUserId,
                 Status: element.FormStatus,

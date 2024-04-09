@@ -15,9 +15,9 @@ export class FormValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 FormTemplateId: joi.string().uuid().required(),
-                FormUrl: joi.string(),
-                AnsweredByUserId: joi.string().uuid(),
-                Status: joi.string(),
+                // FormUrl: joi.string(),
+                // AnsweredByUserId: joi.string().uuid(),
+                // Status: joi.string(),
                 // SubmissionTimestamp: joi.date(),
 
             });
@@ -37,11 +37,13 @@ export class FormValidator extends BaseValidator {
     public validateUpdateRequest = async (request: express.Request): Promise<FormSubmissionUpdateModel | undefined> => {
         try {
             const schema = joi.object({
-                Status: joi.string().optional()
+                Status: joi.string().optional(),
+                AnsweredByUserId:joi.string(),
             });
             await schema.validateAsync(request.body);
             return {
                 Status: request.body.Status ?? null,
+                AnsweredByUserId:request.body.AnsweredByUserId ?? null
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);

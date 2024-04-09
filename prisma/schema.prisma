@@ -77,9 +77,9 @@ model FormSubmission {
   id                  String             @id @default(uuid())
   FormTemplate        FormTemplate       @relation(fields: [FormTemplateId], references: [id])
   FormTemplateId      String //one-to-many relation with form_templates
-  FormUrl             String
-  Submitter           User               @relation(fields: [AnsweredByUserId], references: [id])
-  AnsweredByUserId    String // one-to-many relation with user
+  FormUrl             String?
+  Submitter           User   ?            @relation(fields: [AnsweredByUserId], references: [id])
+  AnsweredByUserId    String? // one-to-many relation with user
   Status              FormStatus
   SubmissionTimestamp DateTime?
   QuestionResponses   QuestionResponse[]

@@ -94,7 +94,8 @@ export class FormController extends BaseController {
     getByTemplateId = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            // var id: uuid = await this._validator.validateParamAsUUID(request, 'templateId');
+            var id: uuid = request.params.templateId;
             const record = await this._service.getByTemplateId(id);
             const message = 'Form retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
