@@ -14,7 +14,7 @@ export const register = (app: express.Application): void => {
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.get('/:id', controller.getById);
-    router.get('/templateId/:id', controller.getByTemplateId);
+    router.get('/templateId/:templateId', controller.getByTemplateId);
     router.delete('/:id', controller.delete);
 
     app.use('/api/v1/form-sections', router);

@@ -97,13 +97,13 @@ model QuestionResponse {
   Question            Question          @relation(fields: [QuestionId], references: [id])
   QuestionId          String // one-to-many relation with question
   ResponseType        QueryResponseType
-  IntegerValue        Int
-  FloatValue          Float
-  BooleanValue        Boolean
-  DateTimeValue       DateTime
-  Url                 String
-  FileResourceId      String
-  TextValue           String
+  IntegerValue        Int?
+  FloatValue          Float?
+  BooleanValue        Boolean?
+  DateTimeValue       DateTime?
+  Url                 String?
+  FileResourceId      String?
+  TextValue           String?
   SubmissionTimestamp DateTime?
   LastSaveTimestamp   DateTime
   CreatedAt           DateTime          @default(now())

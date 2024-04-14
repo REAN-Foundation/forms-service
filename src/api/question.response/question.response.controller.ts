@@ -7,7 +7,7 @@ import { error } from 'console';
 import { QuestionResponseValidator } from './question.response.validator';
 import { ResponseService } from '../../services/question.response.service';
 import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms.submission/response.domain.types';
-
+import { QueryResponseType } from '@prisma/client';
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class QuestionResponseController extends BaseController {
@@ -52,6 +52,99 @@ export class QuestionResponseController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
+    save = async (request: express.Request, response: express.Response) => {
+        var responseArray: any[] = [];
+        try {
+            // let model = await this._validator.validateResponseRequest(request);
+            let FormSubmissionId = request.body.FormSubmissionId;
+            let model = request.body.Data;
+
+
+            for (let key in model) {
+                const questionResponseType = await this.getQuestionById(key);
+
+
+                const finalModel: QuestionResponseUpdateModel = {
+                    FormSubmissionId: FormSubmissionId,
+                    ResponseType: questionResponseType,
+                    QuestionId: key,
+                    IntegerValue: null,
+                    FloatValue: null,
+                    BooleanValue: null,
+                    DateTimeValue: null,
+                    Url: null,
+                    TextValue: null,
+                    FileResourceId: null
+
+                }
+
+                if (questionResponseType === 'Integer') {
+                    finalModel.IntegerValue = model[key]
+                }
+                if (questionResponseType === 'Float') {
+                    finalModel.FloatValue = model[key]
+                }
+                if (questionResponseType === 'Boolean') {
+                    finalModel.BooleanValue = model[key]
+                }
+                if (questionResponseType === 'Text') {
+                    finalModel.TextValue = model[key]
+                }
+                if (questionResponseType === 'TextArray') {
+                    finalModel.TextValue = model[key]
+                }
+                if (questionResponseType === 'File') {
+                    finalModel.FileResourceId = model[key]
+                }
+                if (questionResponseType === 'Date') {
+                    finalModel.DateTimeValue = model[key]
+                }
+                if (questionResponseType === 'DateTime') {
+                    finalModel.DateTimeValue = model[key]
+                }
+                if (questionResponseType === 'Rating') {
+                    finalModel.IntegerValue = model[key]
+                }
+                if (questionResponseType === 'Location') {
+                    finalModel.DateTimeValue = model[key]
+                }
+                if (questionResponseType === 'Range') {
+                    finalModel.DateTimeValue = model[key]
+                }
+
+                // for (let index = 0; index < model.length; index++) {
+                //     const element = model[index];
+
+
+
+                const record = await this._service.save(finalModel);
+
+                if (record === null) {
+                    ErrorHandler.throwInternalServerError('Unable to add response!', error);
+                }
+                responseArray.push(record);
+            }
+            const message = 'Response fetch successfully!';
+            return ResponseHandler.success(request, response, message, 201, responseArray);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    getQuestionById = async (id: uuid) => {
+        // try {
+        const question = await this._service.getQuestionById(id);
+        // if (question === null) {
+        //     ErrorHandler.throwInternalServerError('Question Not found..?', error);
+        // }
+        const type: QueryResponseType = question.ResponseType;
+        return type;
+        // } catch (error) {
+        // return "Question Not found..?"
+        // }
+    }
+
 
     getById = async (request: express.Request, response: express.Response) => {
         try {

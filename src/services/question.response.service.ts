@@ -2,6 +2,7 @@ import { PrismaClient, QueryResponseType } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { ResponseMapper } from "../mappers/question.response.mapper";
 import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from "../domain.types/forms.submission/response.domain.types";
+import { QuestionMapper } from "../mappers/question.mapper";
 
 
 export class ResponseService {
@@ -43,6 +44,33 @@ export class ResponseService {
                 SubmissionTimestamp: null,
                 LastSaveTimestamp: new Date(),
                 // DeletedAt          : null,
+            },
+            include: {
+                FormSubmission: true,
+                Question: true
+            }
+        });
+        return ResponseMapper.toDto(response);
+    };
+
+    save = async (model: any) => {
+        const response = await this.prisma.questionResponse.create({
+            data: {
+                Question: {
+                    connect: { id: model.QuestionId }
+                },
+                FormSubmission: {
+                    connect: { id: model.FormSubmissionId }
+                },
+                ResponseType: model.ResponseType as QueryResponseType,
+                FloatValue: model.FloatValue,
+                IntegerValue:model.IntegerValue,
+                BooleanValue: model.BooleanValue,
+                DateTimeValue: model.DateTimeValue,
+                Url: model.Url,
+                TextValue: model.TextValue,
+                SubmissionTimestamp: null,
+                LastSaveTimestamp: new Date(),
             },
             include: {
                 FormSubmission: true,
@@ -96,6 +124,20 @@ export class ResponseService {
             }
         });
         return ResponseMapper.toDto(response);
+    };
+
+    getQuestionById = async (id: string) => {
+        const response = await this.prisma.question.findUnique({
+            where: {
+                id: id,
+                DeletedAt: null
+            },
+            include: {
+                ParentFormSection: true,
+                ParentFormTemplate: true
+            }
+        });
+        return QuestionMapper.toDto(response);
     };
 
     delete = async (id: string) => {

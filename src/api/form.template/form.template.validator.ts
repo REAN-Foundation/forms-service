@@ -17,12 +17,12 @@ export class FormTemplateValidator extends BaseValidator {
             const schema = joi.object({
                 Title                  : joi.string().required(),
                 Description            : joi.string().max(512).optional(),
-                CurrentVersion         : joi.number(),
+                CurrentVersion         : joi.number().optional(),
                 Type                   : joi.string().required(),
                 DisplayCode            : joi.string().optional(),
                 OwnerUserId            : joi.string().uuid(),
                 RootSectionId          : joi.string().uuid(),
-                DefaultSectionNumbering: joi.boolean()
+                DefaultSectionNumbering: joi.boolean().optional()
             });
             await schema.validateAsync(request.body);
             return {
