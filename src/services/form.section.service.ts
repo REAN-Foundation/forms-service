@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormSectionMapper } from "../mappers/form.section.mapper";
-import { FormSectionCreateModel, FormSectionUpdateModel } from "../domain.types/forms.submission/form.section.domain.types";
+import { FormSectionCreateModel, FormSectionUpdateModel } from "../domain.types/forms/form.section.domain.types";
 
 
 export class FormSectionService {

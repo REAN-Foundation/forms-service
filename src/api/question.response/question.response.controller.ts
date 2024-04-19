@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionResponseValidator } from './question.response.validator';
 import { ResponseService } from '../../services/question.response.service';
-import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms.submission/response.domain.types';
+import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
 import { QueryResponseType } from '@prisma/client';
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,7 @@ export class QuestionResponseController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Response fetch successfully!';
+            const message = 'All Responses fetched successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -46,7 +46,7 @@ export class QuestionResponseController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Response fetch successfully!';
+            const message = 'Response added successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -125,7 +125,7 @@ export class QuestionResponseController extends BaseController {
                 }
                 responseArray.push(record);
             }
-            const message = 'Response fetch successfully!';
+            const message = 'Response saved successfully!';
             return ResponseHandler.success(request, response, message, 201, responseArray);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -151,7 +151,7 @@ export class QuestionResponseController extends BaseController {
             // await this.authorize('Form.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            const message = 'Response fetch retrieved successfully!';
+            const message = 'Response fetch successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -164,7 +164,7 @@ export class QuestionResponseController extends BaseController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             var model: QuestionResponseUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
-            const message = 'Response fetch updated successfully!';
+            const message = 'Response updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -176,7 +176,7 @@ export class QuestionResponseController extends BaseController {
             // await this.authorize('Form.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const result = await this._service.delete(id);
-            const message = 'Response fetch deleted successfully!';
+            const message = 'Response deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

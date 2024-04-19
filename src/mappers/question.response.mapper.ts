@@ -1,4 +1,4 @@
-import { QuestionResponseResponseDto } from "../domain.types/forms.submission/response.domain.types";
+import { QuestionResponseResponseDto } from "../domain.types/forms/response.domain.types";
 
 export class ResponseMapper {
     static toDto = (record: any): QuestionResponseResponseDto => {

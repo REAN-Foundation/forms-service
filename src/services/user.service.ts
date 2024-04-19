@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { UserMapper } from "../mappers/user.mapper";
-import { UserCreateModel, UserUpdateModel } from "../domain.types/forms.submission/user.domain.types";
+import { UserCreateModel, UserUpdateModel } from "../domain.types/forms/user.domain.types";
 
 export class UserService {
     prisma: PrismaClient = null;

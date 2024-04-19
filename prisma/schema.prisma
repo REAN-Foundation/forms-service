@@ -163,7 +163,7 @@ enum QueryResponseType {
   // IntegerArray
   // BooleanArray
   // ObjectArray
-  SinglehoiceSelection
+  SingleChoiceSelection
   MultiChoiceSelection
   File
   Date

@@ -1,7 +1,7 @@
 import { PrismaClient, QueryResponseType } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { ResponseMapper } from "../mappers/question.response.mapper";
-import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from "../domain.types/forms.submission/response.domain.types";
+import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from "../domain.types/forms/response.domain.types";
 import { QuestionMapper } from "../mappers/question.mapper";
 
 
@@ -66,7 +66,7 @@ export class ResponseService {
                 FloatValue: model.FloatValue,
                 IntegerValue:model.IntegerValue,
                 BooleanValue: model.BooleanValue,
-                DateTimeValue: model.DateTimeValue,
+                DateTimeValue: new Date(model.DateTimeValue),
                 Url: model.Url,
                 TextValue: model.TextValue,
                 SubmissionTimestamp: null,

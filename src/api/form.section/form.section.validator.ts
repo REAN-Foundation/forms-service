@@ -4,7 +4,7 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms.submission/form.section.domain.types';
+import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms/form.section.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

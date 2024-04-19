@@ -41,14 +41,14 @@ CREATE TABLE `questions` (
     `Title` VARCHAR(191) NOT NULL,
     `Description` VARCHAR(191) NOT NULL,
     `DisplayCode` VARCHAR(191) NOT NULL,
-    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SinglehoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None') NOT NULL,
+    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None') NOT NULL,
     `Score` INTEGER NOT NULL,
-    `CorrectAnswer` VARCHAR(191) NOT NULL,
-    `Hint` VARCHAR(191) NOT NULL,
-    `Options` VARCHAR(191) NOT NULL,
-    `QuestionImageUrl` VARCHAR(191) NOT NULL,
-    `RangeMin` INTEGER NOT NULL,
-    `RangeMax` INTEGER NOT NULL,
+    `CorrectAnswer` VARCHAR(191) NULL,
+    `Hint` VARCHAR(191) NULL,
+    `Options` VARCHAR(191) NULL,
+    `QuestionImageUrl` VARCHAR(191) NULL,
+    `RangeMin` INTEGER NULL,
+    `RangeMax` INTEGER NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `UpdatedAt` DATETIME(3) NULL,
     `DeletedAt` DATETIME(3) NULL,
@@ -60,8 +60,8 @@ CREATE TABLE `questions` (
 CREATE TABLE `form_submissions` (
     `id` VARCHAR(191) NOT NULL,
     `FormTemplateId` VARCHAR(191) NOT NULL,
-    `FormUrl` VARCHAR(191) NOT NULL,
-    `AnsweredByUserId` VARCHAR(191) NOT NULL,
+    `FormUrl` VARCHAR(191) NULL,
+    `AnsweredByUserId` VARCHAR(191) NULL,
     `Status` ENUM('LinkShared', 'Presented', 'InProgress', 'Submitted') NOT NULL,
     `SubmissionTimestamp` DATETIME(3) NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -76,15 +76,15 @@ CREATE TABLE `question_responses` (
     `id` VARCHAR(191) NOT NULL,
     `FormSubmissionId` VARCHAR(191) NOT NULL,
     `QuestionId` VARCHAR(191) NOT NULL,
-    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SinglehoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None') NOT NULL,
-    `IntegerValue` INTEGER NOT NULL,
-    `FloatValue` DOUBLE NOT NULL,
-    `BooleanValue` BOOLEAN NOT NULL,
-    `DateTimeValue` DATETIME(3) NOT NULL,
-    `Url` VARCHAR(191) NOT NULL,
-    `FileResourceId` VARCHAR(191) NOT NULL,
-    `TextValue` VARCHAR(191) NOT NULL,
-    `SubmissionTimestamp` DATETIME(3) NOT NULL,
+    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None') NOT NULL,
+    `IntegerValue` INTEGER NULL,
+    `FloatValue` DOUBLE NULL,
+    `BooleanValue` BOOLEAN NULL,
+    `DateTimeValue` DATETIME(3) NULL,
+    `Url` VARCHAR(191) NULL,
+    `FileResourceId` VARCHAR(191) NULL,
+    `TextValue` VARCHAR(191) NULL,
+    `SubmissionTimestamp` DATETIME(3) NULL,
     `LastSaveTimestamp` DATETIME(3) NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `UpdatedAt` DATETIME(3) NULL,
@@ -137,7 +137,7 @@ ALTER TABLE `questions` ADD CONSTRAINT `questions_ParentSectionId_fkey` FOREIGN 
 ALTER TABLE `form_submissions` ADD CONSTRAINT `form_submissions_FormTemplateId_fkey` FOREIGN KEY (`FormTemplateId`) REFERENCES `form_templates`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `form_submissions` ADD CONSTRAINT `form_submissions_AnsweredByUserId_fkey` FOREIGN KEY (`AnsweredByUserId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `form_submissions` ADD CONSTRAINT `form_submissions_AnsweredByUserId_fkey` FOREIGN KEY (`AnsweredByUserId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `question_responses` ADD CONSTRAINT `question_responses_FormSubmissionId_fkey` FOREIGN KEY (`FormSubmissionId`) REFERENCES `form_submissions`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

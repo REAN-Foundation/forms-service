@@ -4,7 +4,7 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms.submission/form.submission.domain.types';
+import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
 // import { IformCreateDto, IformUpdateDto } from '../../domain.types/forms/form.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

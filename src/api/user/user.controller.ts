@@ -5,7 +5,7 @@ import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
-import { UserCreateModel, UserUpdateModel } from '../../domain.types/forms.submission/user.domain.types';
+import { UserCreateModel, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
 import { UserService } from '../../services/user.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////

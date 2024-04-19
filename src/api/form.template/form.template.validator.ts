@@ -4,7 +4,7 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms.submission/form.template.domain.types';
+import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
 import { randomInt } from 'crypto';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 

@@ -1,4 +1,4 @@
-import { QuestionResponseDto } from "../domain.types/forms.submission/question.domain.types";
+import { QuestionResponseDto } from "../domain.types/forms/question.domain.types";
 
 export class QuestionMapper {
     static toDto = (record: any): QuestionResponseDto => {
@@ -6,6 +6,10 @@ export class QuestionMapper {
             return null;
         }
 
+        var options = [];
+        if (record.Options !== null && record.Options !== undefined) {
+            options = JSON.parse(record.Options);
+        }
         const dto: QuestionResponseDto = {
             id              : record.id,
             Title           : record.Title,
@@ -15,8 +19,7 @@ export class QuestionMapper {
             Score           : record.Score,
             CorrectAnswer   : record.CorrectAnswer,
             Hint            : record.Hint,
-            Options         : record.Options,
-            // FileResourceId  : record.FileResourceId,
+            Options         : options,
             QuestionImageUrl: record.QuestionImageUrl,
             RangeMin        : record.RangeMin,
             RangeMax        : record.RangeMax,

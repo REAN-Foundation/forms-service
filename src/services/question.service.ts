@@ -1,7 +1,7 @@
 import { PrismaClient, QueryResponseType } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { QuestionMapper } from "../mappers/question.mapper";
-import { QuestionCreateModel, QuestionUpdateModel } from "../domain.types/forms.submission/question.domain.types";
+import { QuestionCreateModel, QuestionUpdateModel } from "../domain.types/forms/question.domain.types";
 
 
 export class QuestionService {

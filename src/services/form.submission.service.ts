@@ -1,7 +1,7 @@
 import { FormStatus, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormMapper } from "../mappers/form.submission.mapper"
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from "../domain.types/forms.submission/form.submission.domain.types";
+import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from "../domain.types/forms/form.submission.domain.types";
 import moment from "moment";
 import { uuid } from "../domain.types/miscellaneous/system.types";
 

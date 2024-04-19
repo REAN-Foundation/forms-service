@@ -5,7 +5,7 @@ import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { FormService } from '../../services/form.submission.service';
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms.submission/form.submission.domain.types';
+import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
 import { error } from 'console';
 import moment from 'moment-timezone';
 
@@ -32,7 +32,7 @@ export class FormController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Form added successfully!';
+            const message = 'All form fetched successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -97,7 +97,7 @@ export class FormController extends BaseController {
             // var id: uuid = await this._validator.validateParamAsUUID(request, 'templateId');
             var id: uuid = request.params.templateId;
             const record = await this._service.getByTemplateId(id);
-            const message = 'Form retrieved successfully!';
+            const message = 'Form submission by templateId retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -113,7 +113,7 @@ export class FormController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Form added successfully!';
+            const message = 'Form submission done successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

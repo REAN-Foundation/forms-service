@@ -6,7 +6,7 @@ import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormTemplateService } from '../../services/form.template.service';
-import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms.submission/form.template.domain.types';
+import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
 import { randomInt } from 'crypto';
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ export class FormTemplateController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Form template added successfully!';
+            const message = 'All Form templates retrived successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -57,7 +57,7 @@ export class FormTemplateController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Form added successfully!';
+            const message = 'Form template added successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -69,7 +69,7 @@ export class FormTemplateController extends BaseController {
             // await this.authorize('Form.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            const message = 'Form retrieved successfully!';
+            const message = 'Form template retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -82,7 +82,7 @@ export class FormTemplateController extends BaseController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             var model: FormTemplateUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
-            const message = 'Form updated successfully!';
+            const message = 'Form templated updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -94,7 +94,7 @@ export class FormTemplateController extends BaseController {
             // await this.authorize('Form.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const result = await this._service.delete(id);
-            const message = 'Form deleted successfully!';
+            const message = 'Form template deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

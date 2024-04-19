@@ -4,7 +4,7 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms.submission/question.domain.types';
+import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms/question.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,10 +23,10 @@ export class QuestionValidator extends BaseValidator {
                 Score           : joi.number().optional(),
                 CorrectAnswer   : joi.string().optional(),
                 Hint            : joi.string().optional(),
-                Options          : joi.string().optional(),
+                Options         : joi.array().items(joi.string()).optional(),
                 // FileResourceId  : joi.string().uuid(),
                 QuestionImageUrl: joi.string().optional(),
-                RangeMin        : joi.number().optional(),
+                RangeMin        : joi.string().optional(),
                 RangeMax        : joi.number().optional()
             });
             await schema.validateAsync(request.body);
@@ -43,8 +43,8 @@ export class QuestionValidator extends BaseValidator {
                 Options         : request.body.Options,
                 // FileResourceId  : request.body.FileResourceId,
                 QuestionImageUrl: request.body.QuestionImageUrl,
-                RangeMin        : request.body.RangeMin,
-                RangeMax        : request.body.RangeMax
+                RangeMin        : request.body.RangeMin ?? null,
+                RangeMax        : request.body.RangeMax ?? null
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -61,7 +61,7 @@ export class QuestionValidator extends BaseValidator {
                 Score           : joi.number().optional(),
                 CorrectAnswer   : joi.string().optional(),
                 Hint            : joi.string().optional(),
-                Option          : joi.string().optional(),
+                Options         : joi.array().items(joi.string().optional()).optional(),
                 // FileResourceId  : joi.string().uuid().optional(),
                 QuestionImageUrl: joi.string().optional(),
                 RangeMin        : joi.number().optional(),

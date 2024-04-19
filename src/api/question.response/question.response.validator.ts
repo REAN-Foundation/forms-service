@@ -5,7 +5,7 @@ import BaseValidator from "../base.validator";
 import {
     QuestionResponseCreateModel,
     QuestionResponseUpdateModel,
-} from "../../domain.types/forms.submission/response.domain.types";
+} from "../../domain.types/forms/response.domain.types";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +34,7 @@ export class QuestionResponseValidator extends BaseValidator {
                 IntegerValue: request.body.IntegerValue ?? null,
                 FloatValue: request.body.FloatValue ?? null,
                 BooleanValue: request.body.BooleanValue ?? null,
-                DateTimeValue: request.body.DateTimeValue ?? null,
+                DateTimeValue: new Date(request.body.DateTimeValue) ?? null,
                 Url: request.body.Url ?? null,
                 FileResourceId: request.body.FileResourceId ?? null,
                 TextValue: request.body.TextValue ?? null,

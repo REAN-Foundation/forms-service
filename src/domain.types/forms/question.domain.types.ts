@@ -2,11 +2,11 @@
 
 import { QueryResponseType } from "@prisma/client";
 
-export interface QuestionOption {
-    Sequence: number;
-    Option: string;
-    ImageUrl: string;
-}
+// export interface QuestionOption {
+//     Sequence: number;
+//     Option: string;
+//     ImageUrl: string;
+// }
 
 export interface QuestionCreateModel {
     ParentTemplateId: string;
@@ -18,11 +18,11 @@ export interface QuestionCreateModel {
     Score: number;
     CorrectAnswer: string;
     Hint: string;
-    Options: QuestionOption[]; // JSON array of QuestionOption
+    Options: string[]; // JSON array of QuestionOption
     // FileResourceId   : string;
     QuestionImageUrl: string;
     RangeMin: number;
-    RangeMax: number;
+    RangeMax: number | null;
 }
 
 export interface QuestionUpdateModel {
@@ -33,7 +33,7 @@ export interface QuestionUpdateModel {
     Score?: number;
     CorrectAnswer?: string;
     Hint?: string;
-    Options?: QuestionOption[]; // JSON array of QuestionOption
+    Options?: string[]; // JSON array of QuestionOption
     // FileResourceId  ?: string;
     QuestionImageUrl?: string;
     RangeMin?: number;
@@ -49,7 +49,7 @@ export interface QuestionResponseDto {
     Score: number;
     CorrectAnswer: string;
     Hint: string;
-    Options: QuestionOption[]; // JSON array of QuestionOption
+    Options: string[]; // JSON array of QuestionOption
     // FileResourceId  : string;
     QuestionImageUrl: string;
     RangeMin: number;

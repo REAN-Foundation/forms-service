@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormSectionValidator } from './form.section.validator';
 import { FormSectionService } from '../../services/form.section.service';
-import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms.submission/form.section.domain.types';
+import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms/form.section.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,7 @@ export class FormSectionController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to Load all sections!', error);
             }
-            const message = 'Form section retrived successfully!';
+            const message = 'All form sections retrived successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -94,7 +94,7 @@ export class FormSectionController extends BaseController {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'templateId');
             var ida :uuid = request.params.templateId;
             const record = await this._service.getByTemplateId(id);
-            const message = 'Form section retrieved successfully!';
+            const message = 'Form section by templateId retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

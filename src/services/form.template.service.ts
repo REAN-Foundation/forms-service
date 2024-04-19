@@ -1,6 +1,6 @@
 import { FormType,PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
-import { FormTemplateCreateModel, FormTemplateUpdateModel } from "../domain.types/forms.submission/form.template.domain.types";
+import { FormTemplateCreateModel, FormTemplateUpdateModel } from "../domain.types/forms/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
 
 

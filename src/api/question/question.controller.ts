@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionService } from '../../services/question.service';
 import { QuestionValidator } from './question.validator';
-import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms.submission/question.domain.types';
+import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms/question.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,7 @@ export class QuestionController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Question!', error);
             }
-            const message = 'Form template added successfully!';
+            const message = 'All Questions retrived successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -46,7 +46,7 @@ export class QuestionController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-            const message = 'Form added successfully!';
+            const message = 'Question added successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -58,7 +58,7 @@ export class QuestionController extends BaseController {
             // await this.authorize('Form.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
-            const message = 'questions retrieved successfully!';
+            const message = 'Question retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -71,7 +71,7 @@ export class QuestionController extends BaseController {
             // await this.authorize('Form.GetById', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'templateId');
             const record = await this._service.getByTemplateId(id);
-            const message = 'Questions retrived successfully!';
+            const message = 'Questions by templateId retrived successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -84,7 +84,7 @@ export class QuestionController extends BaseController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             var model: QuestionUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
-            const message = 'Form updated successfully!';
+            const message = 'Question updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -96,7 +96,7 @@ export class QuestionController extends BaseController {
             // await this.authorize('Form.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const result = await this._service.delete(id);
-            const message = 'Form deleted successfully!';
+            const message = 'Question deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
