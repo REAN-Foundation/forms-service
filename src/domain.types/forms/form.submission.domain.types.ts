@@ -43,4 +43,5 @@ export interface FormSubmissionResponseDto {
     Status: string;
     SubmissionTimestamp: Date;
     CreatedAt: Date;
+    UpdatedAt: Date;
 }

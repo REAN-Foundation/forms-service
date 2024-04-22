@@ -66,7 +66,7 @@ export class ResponseService {
                 FloatValue: model.FloatValue,
                 IntegerValue:model.IntegerValue,
                 BooleanValue: model.BooleanValue,
-                DateTimeValue: new Date(model.DateTimeValue),
+                DateTimeValue: model.DateTimeValue,
                 Url: model.Url,
                 TextValue: model.TextValue,
                 SubmissionTimestamp: null,

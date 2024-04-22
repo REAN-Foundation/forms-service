@@ -40,7 +40,7 @@ export default class Application {
         return new Promise((resolve, reject) => {
             try {
                 this._app.listen(process.env.PORT, () => {
-                    console.log(`"its a port ${process.env.PORT}"`);
+                    console.log(`Form Service is running and listening on PORT ${process.env.PORT}`);
                 });
             }
             catch (error) {

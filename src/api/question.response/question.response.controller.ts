@@ -76,7 +76,6 @@ export class QuestionResponseController extends BaseController {
                     Url: null,
                     TextValue: null,
                     FileResourceId: null
-
                 }
 
                 if (questionResponseType === 'Integer') {
@@ -94,14 +93,23 @@ export class QuestionResponseController extends BaseController {
                 if (questionResponseType === 'TextArray') {
                     finalModel.TextValue = model[key]
                 }
+                if (questionResponseType === 'SingleChoiceSelection') {
+                    finalModel.TextValue = model[key]
+                }
+                if (questionResponseType === 'MultiChoiceSelection') {
+                    finalModel.TextValue = model[key] + '' //convert array to string 
+                }
+                // if (questionResponseType === 'TextArray') {
+                //     finalModel.TextValue = model[key]
+                // }
                 if (questionResponseType === 'File') {
                     finalModel.FileResourceId = model[key]
                 }
                 if (questionResponseType === 'Date') {
-                    finalModel.DateTimeValue = model[key]
+                    finalModel.DateTimeValue = model[key] 
                 }
                 if (questionResponseType === 'DateTime') {
-                    finalModel.DateTimeValue = model[key]
+                    finalModel.DateTimeValue = new Date(model[key])
                 }
                 if (questionResponseType === 'Rating') {
                     finalModel.IntegerValue = model[key]

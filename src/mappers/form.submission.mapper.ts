@@ -35,6 +35,7 @@ export class FormMapper {
             Status: record.FormStatus,
             SubmissionTimestamp: record.SubmissionTimestamp,
             CreatedAt: record.CreatedAt,
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -77,7 +78,8 @@ export class FormMapper {
                 AnsweredByUserId: element.AnsweredByUserId,
                 Status: element.FormStatus,
                 SubmissionTimestamp: element.SubmissionTimestamp,
-                CreatedAt: element.CreatedAt
+                CreatedAt: element.CreatedAt,
+                UpdatedAt: element.UpdatedAt,
             });
         }
         return dtos;

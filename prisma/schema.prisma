@@ -99,7 +99,8 @@ model QuestionResponse {
   ResponseType        QueryResponseType
   IntegerValue        Int?
   FloatValue          Float?
-  BooleanValue        Boolean?
+  // BooleanValue        Boolean?
+  BooleanValue        String?
   DateTimeValue       DateTime?
   Url                 String?
   FileResourceId      String?

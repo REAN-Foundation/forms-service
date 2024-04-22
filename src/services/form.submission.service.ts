@@ -127,7 +127,12 @@ export class FormService {
             data: {
                 SubmissionTimestamp: new Date(),
                 Status: FormStatus.Submitted,
-            }
+                UpdatedAt: new Date()
+            },
+            include: {
+                FormTemplate: true,
+                Submitter: true
+            },
         });
         return FormMapper.toDto(response);
     };

@@ -8,7 +8,8 @@ export interface QuestionResponseCreateModel {
     ResponseType    : QueryResponseType;
     IntegerValue    : number;
     FloatValue      : GLfloat;
-    BooleanValue    : boolean;
+    // BooleanValue    : boolean;
+    BooleanValue    : string;
     DateTimeValue   : Date;
     Url             : string;
     FileResourceId  : string;
@@ -21,7 +22,8 @@ export interface QuestionResponseUpdateModel {
     ResponseType    ?: QueryResponseType;
     IntegerValue    ?: number;
     FloatValue      ?: GLfloat;
-    BooleanValue    ?: boolean;
+    // BooleanValue    ?: boolean;
+    BooleanValue    ?: string;
     DateTimeValue   ?: Date;
     Url             ?: string;
     FileResourceId  ?: string;
@@ -56,7 +58,8 @@ export interface QuestionResponseResponseDto {
     ResponseType       : QueryResponseType;
     IntegerValue       : number;
     FloatValue         : GLfloat;
-    BooleanValue       : boolean;
+    // BooleanValue       : boolean;
+    BooleanValue       ?: string;
     DateTimeValue      : Date;
     Url                : string;
     FileResourceId     : string;
