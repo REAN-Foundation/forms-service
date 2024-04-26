@@ -13,6 +13,8 @@ export const register = (app: express.Application): void => {
     router.post('/save', controller.save);
     router.put('/:id', controller.update);
     router.get('/:id', controller.getById);
+    router.get('/exportcsv/export', controller.exportCSV);
+    router.get('/exportpdf/export', controller.exportPDF);
     router.delete('/:id', controller.delete);
 
     app.use('/api/v1/question-responses', router);

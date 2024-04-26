@@ -5,7 +5,7 @@ import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
-import { UserCreateModel, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
+import { UserCreateModel, UserSearchFilters, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
 import { UserService } from '../../services/user.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -114,4 +114,15 @@ export class UserController extends BaseController {
     //         ResponseHandler.handleError(request, response, error);
     //     }
     // };
+
+    search = async (request: express.Request, response: express.Response) => {
+        try {
+            var filters: UserSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'User retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 }

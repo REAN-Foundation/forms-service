@@ -8,6 +8,9 @@ import { QuestionResponseValidator } from './question.response.validator';
 import { ResponseService } from '../../services/question.response.service';
 import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
 import { QueryResponseType } from '@prisma/client';
+import * as path from 'path';
+import * as fs from 'fs';
+
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class QuestionResponseController extends BaseController {
@@ -106,7 +109,7 @@ export class QuestionResponseController extends BaseController {
                     finalModel.FileResourceId = model[key]
                 }
                 if (questionResponseType === 'Date') {
-                    finalModel.DateTimeValue = model[key] 
+                    finalModel.DateTimeValue = model[key]
                 }
                 if (questionResponseType === 'DateTime') {
                     finalModel.DateTimeValue = new Date(model[key])
@@ -186,6 +189,30 @@ export class QuestionResponseController extends BaseController {
             const result = await this._service.delete(id);
             const message = 'Response deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    exportCSV = async (request: express.Request, response: express.Response) => {
+        try {
+            const record = await this._service.exportCsv();
+            const file = path.resolve(record);
+            response.download(file, 'data.csv');
+            const message = 'Response fetch successfully!';
+            return response.status(200).json({ message, record });
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    exportPDF = async (request: express.Request, response: express.Response) => {
+        try {
+            const record = await this._service.exportPdf();
+      const file = path.resolve(record);
+      response.download(file, 'data.pdf');
+      const message = 'Response fetch successfully!';
+      return response.status(200).json({ message, record });
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

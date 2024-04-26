@@ -1,0 +1,8 @@
+ID,Submission ID,Template ID,Form URL,User ID,Status,Submission Timestamp,Created At,Question ID,Question Title,Question Description,Display Code,Response Type,Score,Correct Answer,Hint,Question Template ID,Question Section ID,Question Created At,Question Updated At,Query Response Type,Integer Value,Float Value,Boolean Value,Date Time Value,URL,File Resource ID,Text Value,Submission Timestamp,Last Save Timestamp
+03dad43f-1cc8-4606-89c2-55007d006669,,,,,,,,,,,,,,,,,,,,Text,,,,,,,Pratiksha More,,Tue Apr 23 2024 10:50:26 GMT+0530 (India Standard Time)
+04d9b706-eb29-413c-94e3-d8b30bb499d9,,,,,,,,,,,,,,,,,,,,Float,,25,,,,,,,Tue Apr 23 2024 10:50:26 GMT+0530 (India Standard Time)
+327b2ca5-0434-4bed-a904-a35bf3f99763,,,,,,,,,,,,,,,,,,,,Text,,,,,,,prashant,,Sat Apr 20 2024 09:37:54 GMT+0530 (India Standard Time)
+4467ef37-0d66-416b-bdc7-523b067671da,,,,,,,,,,,,,,,,,,,,Float,,52,,,,,,,Tue Apr 23 2024 10:48:59 GMT+0530 (India Standard Time)
+69b95410-4c5e-4336-9488-c73d872d063c,,,,,,,,,,,,,,,,,,,,MultiChoiceSelection,,,,,,,HTML,,Tue Apr 23 2024 10:50:26 GMT+0530 (India Standard Time)
+78587ddf-4455-473a-a7d6-6436f8718e5e,,,,,,,,,,,,,,,,,,,,Text,,,,,,,prashant,,Sat Apr 20 2024 09:32:58 GMT+0530 (India Standard Time)
+a7939e68-fdbe-4428-8901-182f6bdd183e,,,,,,,,,,,,,,,,,,,,MultiChoiceSelection,,,,,,,"HTML,CSS",,Sat Apr 20 2024 09:37:54 GMT+0530 (India Standard Time)
