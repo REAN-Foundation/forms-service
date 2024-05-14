@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormSectionValidator } from './form.section.validator';
 import { FormSectionService } from '../../services/form.section.service';
-import { FormSectionCreateModel, FormSectionUpdateModel } from '../../domain.types/forms/form.section.domain.types';
+import { FormSectionCreateModel, FormSectionSearchFilters, FormSectionUpdateModel } from '../../domain.types/forms/form.section.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -96,6 +96,17 @@ export class FormSectionController extends BaseController {
             const record = await this._service.getByTemplateId(id);
             const message = 'Form section by templateId retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+    
+    search = async (request: express.Request, response: express.Response) => {
+        try {
+            var filters: FormSectionSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'User retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

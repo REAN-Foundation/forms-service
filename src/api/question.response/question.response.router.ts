@@ -8,6 +8,8 @@ export const register = (app: express.Application): void => {
     const router = express.Router();
     const controller = new QuestionResponseController();
 
+    router.get('/search', controller.search);
+    
     router.get('/all', controller.getAll);
     router.post('/', controller.create);
     router.post('/save', controller.save);

@@ -4,8 +4,9 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
+import { FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
 // import { IformCreateDto, IformUpdateDto } from '../../domain.types/forms/form.domain.types';
+import { ParsedQs } from 'qs';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,4 +50,69 @@ export class FormValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    public validateSearchRequest = async (request: express.Request): Promise<FormSubmissionSearchFilters> => {
+        try {
+            const schema = joi.object({
+                id:joi.string().uuid().optional(),
+                formTemplateId: joi.string().uuid().optional(),
+                formUrl: joi.string().optional(),
+                answeredByUserId: joi.string().uuid().optional(),
+                status: joi.string().optional(),
+                submissionTimestamp: joi.date().optional(),
+            });
+
+            await schema.validateAsync(request.query);
+            const filters = this.getSearchFilters(request.query);
+            return filters;
+        } catch (error) {
+            ErrorHandler.handleValidationError(error);
+        }
+    };
+
+    private getSearchFilters = (query: ParsedQs): FormSubmissionSearchFilters => {
+        var filters = {};
+
+        var id = query.id ? query.id : null;
+        if (id != null) {
+            filters['id'] = id;
+        }
+        
+        var formTemplateId = query.formTemplateId ? query.formTemplateId : null;
+        if (formTemplateId != null) {
+            filters['formTemplateId'] = formTemplateId;
+        }
+        var formUrl = query.formUrl ? query.formUrl : null;
+        if (formUrl != null) {
+            filters['formUrl'] = formUrl;
+        }
+        var answeredByUserId = query.answeredByUserId ? query.answeredByUserId : null;
+        if (answeredByUserId != null) {
+            filters['answeredByUserId'] = answeredByUserId;
+        }
+        var status = query.status ? query.status : null;
+        if (status != null) {
+            filters['status'] = status;
+        }
+
+        var submissionTimestamp = query.submissionTimestamp ? query.submissionTimestamp : null;
+        if (submissionTimestamp != null) {
+            filters['submissionTimestamp'] = submissionTimestamp;
+        }
+
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = itemsPerPage;
+        }
+        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
+        var order = query.order ? query.order : 'ASC';
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        return filters;
+    };
+
 }

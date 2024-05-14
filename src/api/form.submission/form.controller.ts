@@ -5,7 +5,7 @@ import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { FormService } from '../../services/form.submission.service';
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
+import { FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
 import { error } from 'console';
 import moment from 'moment-timezone';
 
@@ -136,6 +136,17 @@ export class FormController extends BaseController {
             }
             const message = 'Form added successfully!';
             return ResponseHandler.success(request, response, message, 201, records);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    search = async (request: express.Request, response: express.Response) => {
+        try {
+            var filters: FormSubmissionSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'User retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

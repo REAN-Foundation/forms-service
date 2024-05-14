@@ -1,9 +1,10 @@
-import { FormStatus, PrismaClient } from "@prisma/client";
+import { FormStatus, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormMapper } from "../mappers/form.submission.mapper"
-import { FormSubmissionCreateModel, FormSubmissionUpdateModel } from "../domain.types/forms/form.submission.domain.types";
+import { FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionSearchResponseDto, FormSubmissionUpdateModel } from "../domain.types/forms/form.submission.domain.types";
 import moment from "moment";
 import { uuid } from "../domain.types/miscellaneous/system.types";
+import { ErrorHandler } from "../common/error.handler";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -155,4 +156,131 @@ export class FormService {
         });
         return FormMapper.toArrayDto(response);
     };
+
+    protected addSortingAndPagination = (
+        search: Prisma.FormSubmissionFindManyArgs,
+        filters: FormSubmissionSearchFilters
+    ) => {
+        // Sorting
+        let orderByColumn: keyof typeof Prisma.FormSubmissionScalarFieldEnum = 'CreatedAt';
+        if (filters.OrderBy) {
+            orderByColumn = filters.OrderBy as keyof typeof Prisma.FormSubmissionScalarFieldEnum;
+        }
+        let order: Prisma.SortOrder = 'asc';
+        if (filters.Order === 'descending') {
+            order = 'desc';
+        }
+
+        search.orderBy = {
+            [orderByColumn]: order,
+        };
+
+        // Pagination
+        let limit = 25;
+        if (filters.ItemsPerPage) {
+            limit = filters.ItemsPerPage;
+        }
+        let offset = 0;
+        let pageIndex = 1;
+        if (filters.PageIndex) {
+            pageIndex = filters.PageIndex < 1 ? 1 : filters.PageIndex;
+            offset = (pageIndex - 1) * limit;
+        }
+
+        search.take = limit;
+        search.skip = offset;
+
+        // Update where clause
+        const whereClause = this.getSearchModel(filters);
+        if (Object.keys(whereClause).length > 0) {
+            search.where = whereClause;
+        }
+
+        return { search, pageIndex, limit, order, orderByColumn };
+    };
+
+
+
+
+
+
+
+    public search = async (filters: FormSubmissionSearchFilters): Promise<FormSubmissionSearchResponseDto> => {
+        try {
+            const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
+
+            const list = await this.prisma.formSubmission.findMany({
+                where: prismaSearch.where,
+                include: {
+                    FormTemplate: true,
+                    Submitter: true
+                },
+                take: limit,
+                skip: (pageIndex - 1) * limit,
+                orderBy: {
+                    [orderByColumn]: order === 'desc' ? 'desc' : 'asc',
+                },
+            });
+
+            const count = await this.prisma.formSubmission.count({
+                where: prismaSearch.where,
+            });
+
+            const searchResults = {
+                TotalCount: count,
+                RetrievedCount: list.length,
+                PageIndex: pageIndex,
+                ItemsPerPage: limit,
+                Order: order === 'desc' ? 'descending' : 'ascending',
+                OrderedBy: orderByColumn,
+                Items: list.map((x) => FormMapper.toDto(x)),
+            };
+
+            return searchResults;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+        }
+    };
+
+
+
+
+
+    private getSearchModel = (filters: FormSubmissionSearchFilters): Prisma.FormSubmissionWhereInput => {
+        const where: Prisma.FormSubmissionWhereInput = {};
+
+        if (filters.id) {
+            where.id = {
+                equals: filters.id,
+            };
+        }
+
+        if (filters.formTemplateId) {
+            where.FormTemplateId = {
+                equals: filters.formTemplateId,
+            };
+        }
+
+        if (filters.formUrl) {
+            where.FormUrl = {
+                equals: filters.formUrl,
+            };
+        }
+
+        if (filters.answeredByUserId) {
+            where.AnsweredByUserId = {
+                equals: filters.answeredByUserId,
+            };
+        }
+
+        if (filters.submissionTimestamp) {
+            where.SubmissionTimestamp = {
+                equals: filters.submissionTimestamp,
+            };
+        }
+
+
+        return where;
+    };
+    
 }

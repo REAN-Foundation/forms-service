@@ -1,12 +1,13 @@
-import { PrismaClient, QueryResponseType } from "@prisma/client";
+import { Prisma, PrismaClient, QueryResponseType } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { ResponseMapper } from "../mappers/question.response.mapper";
-import { QuestionResponseCreateModel, QuestionResponseResponseDto, QuestionResponseUpdateModel } from "../domain.types/forms/response.domain.types";
+import { QuestionResponseCreateModel, QuestionResponseResponseDto, QuestionResponseSearchFilters, QuestionResponseSearchResponseDto, QuestionResponseUpdateModel } from "../domain.types/forms/response.domain.types";
 import { QuestionMapper } from "../mappers/question.mapper";
 import { createObjectCsvWriter } from 'csv-writer';
 import PDFDocument from 'pdfkit';
 import * as fs from 'fs';
 import * as path from 'path';
+import { ErrorHandler } from "../common/error.handler";
 
 
 export class ResponseService {
@@ -242,6 +243,154 @@ export class ResponseService {
 
         doc.end();
         return pdfPath;
+    };
+
+
+    
+    protected addSortingAndPagination = (
+        search: Prisma.QuestionResponseFindManyArgs,
+        filters: QuestionResponseSearchFilters
+    ) => {
+        // Sorting
+        let orderByColumn: keyof typeof Prisma.QuestionResponseScalarFieldEnum = 'CreatedAt';
+        if (filters.OrderBy) {
+            orderByColumn = filters.OrderBy as keyof typeof Prisma.QuestionResponseScalarFieldEnum;
+        }
+        let order: Prisma.SortOrder = 'asc';
+        if (filters.Order === 'descending') {
+            order = 'desc';
+        }
+
+        search.orderBy = {
+            [orderByColumn]: order,
+        };
+
+        // Pagination
+        let limit = 25;
+        if (filters.ItemsPerPage) {
+            limit = filters.ItemsPerPage;
+        }
+        let offset = 0;
+        let pageIndex = 1;
+        if (filters.PageIndex) {
+            pageIndex = filters.PageIndex < 1 ? 1 : filters.PageIndex;
+            offset = (pageIndex - 1) * limit;
+        }
+
+        search.take = limit;
+        search.skip = offset;
+
+        // Update where clause
+        const whereClause = this.getSearchModel(filters);
+        if (Object.keys(whereClause).length > 0) {
+            search.where = whereClause;
+        }
+
+        return { search, pageIndex, limit, order, orderByColumn };
+    };
+
+
+
+
+
+
+
+    public search = async (filters: QuestionResponseSearchFilters): Promise<QuestionResponseSearchResponseDto> => {
+        try {
+            const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
+
+            const list = await this.prisma.questionResponse.findMany({
+                where: prismaSearch.where,
+                include: {
+                    FormSubmission: true,
+                    Question: true,
+                },
+                take: limit,
+                skip: (pageIndex - 1) * limit,
+                orderBy: {
+                    [orderByColumn]: order === 'desc' ? 'desc' : 'asc',
+                },
+            });
+
+            const count = await this.prisma.questionResponse.count({
+                where: prismaSearch.where,
+            });
+
+            const searchResults = {
+                TotalCount: count,
+                RetrievedCount: list.length,
+                PageIndex: pageIndex,
+                ItemsPerPage: limit,
+                Order: order === 'desc' ? 'descending' : 'ascending',
+                OrderedBy: orderByColumn,
+                Items: list.map((x) => ResponseMapper.toDto(x)),
+            };
+
+            return searchResults;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+        }
+    };
+
+
+
+
+
+    private getSearchModel = (filters: QuestionResponseSearchFilters): Prisma.QuestionResponseWhereInput => {
+        const where: Prisma.QuestionResponseWhereInput = {};
+
+        if (filters.formSubmissionId) {
+            where.FormSubmissionId = {
+                equals: filters.formSubmissionId,
+            };
+        }
+
+        if (filters.questionId) {
+            where.QuestionId = {
+                equals: filters.questionId,
+            };
+        }
+
+        if (filters.responseType) {
+            where.ResponseType = {
+                equals: filters.responseType,
+            };
+        }
+
+        if (filters.integerValue) {
+            where.IntegerValue = {
+                equals: filters.integerValue,
+            };
+        }
+
+        if (filters.floatValue) {
+            where.FloatValue = {
+                equals: filters.floatValue,
+            };
+        }
+
+        if (filters.booleanValue) {
+            where.BooleanValue = {
+                equals: filters.booleanValue,
+            };
+        }
+        if (filters.url) {
+            where.Url = {
+                equals: filters.url,
+            };
+        }
+        if (filters.fileResourceId) {
+            where.FileResourceId = {
+                equals: filters.fileResourceId,
+            };
+        }
+        if (filters.textValue) {
+            where.TextValue = {
+                equals: filters.textValue,
+            };
+        }
+
+        return where;
     };
  
 }

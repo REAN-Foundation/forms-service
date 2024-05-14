@@ -6,7 +6,7 @@ import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormTemplateService } from '../../services/form.template.service';
-import { FormTemplateCreateModel, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
+import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
 import { randomInt } from 'crypto';
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +113,16 @@ export class FormTemplateController extends BaseController {
         }
     };
 
-
+    search = async (request: express.Request, response: express.Response) => {
+        try {
+            var filters: FormTemplateSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'User retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 
 }
 

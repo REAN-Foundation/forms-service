@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionResponseValidator } from './question.response.validator';
 import { ResponseService } from '../../services/question.response.service';
-import { QuestionResponseCreateModel, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
+import { QuestionResponseCreateModel, QuestionResponseSearchFilters, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
 import { QueryResponseType } from '@prisma/client';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -213,6 +213,17 @@ export class QuestionResponseController extends BaseController {
       response.download(file, 'data.pdf');
       const message = 'Response fetch successfully!';
       return response.status(200).json({ message, record });
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+    
+    search = async (request: express.Request, response: express.Response) => {
+        try {
+            var filters: QuestionResponseSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'User retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

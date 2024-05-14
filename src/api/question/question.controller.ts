@@ -6,7 +6,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionService } from '../../services/question.service';
 import { QuestionValidator } from './question.validator';
-import { QuestionCreateModel, QuestionUpdateModel } from '../../domain.types/forms/question.domain.types';
+import { QuestionCreateModel, QuestionSearchFilters, QuestionUpdateModel } from '../../domain.types/forms/question.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -102,5 +102,17 @@ export class QuestionController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
+    search = async (request: express.Request, response: express.Response) => {
+        try {
+            var filters: QuestionSearchFilters = await this._validator.validateSearchRequest(request);
+            const searchResults = await this._service.search(filters);
+            const message = 'User retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, searchResults);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
 }
 
