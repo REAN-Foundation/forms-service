@@ -84,13 +84,23 @@ export class FormSectionValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): FormSectionSearchFilters => {
-        var filters = {};
+        // var filters:FormSectionSearchFilters = {};
+        var filters: any = {
+            // id,
+            // parentFormTemplateId,
+            // sectionIdentifier,
+            // title,
+            // description,
+            // displayCode,
+            // sequence,
+            // parentSectionId,
+        };
 
         var id = query.id ? query.id : null;
         if (id != null) {
             filters['id'] = id;
         }
-        
+
         var parentFormTemplateId = query.parentFormTemplateId ? query.parentFormTemplateId : null;
         if (parentFormTemplateId != null) {
             filters['parentFormTemplateId'] = parentFormTemplateId;

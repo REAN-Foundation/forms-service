@@ -217,7 +217,7 @@ export class QuestionService {
 
 
     private getSearchModel = (filters: QuestionSearchFilters): Prisma.QuestionWhereInput => {
-        const where: Prisma.QuestionWhereInput = {};
+        const where: Prisma.QuestionWhereInput = {DeletedAt: null};
 
         if (filters.id) {
             where.id = {

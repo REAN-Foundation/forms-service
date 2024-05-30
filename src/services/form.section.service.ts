@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormSectionMapper } from "../mappers/form.section.mapper";
-import { FormSectionCreateModel, FormSectionSearchFilters, FormSectionSearchResponseDto, FormSectionUpdateModel } from "../domain.types/forms/form.section.domain.types";
+import { FormSectionCreateModel, FormSectionSearchFilters, FormSectionUpdateModel } from "../domain.types/forms/form.section.domain.types";
 import { ErrorHandler } from "../common/error.handler";
 
 
@@ -158,7 +158,7 @@ export class FormSectionService {
 
 
 
-    public search = async (filters: FormSectionSearchFilters): Promise<FormSectionSearchResponseDto> => {
+    public search = async (filters: FormSectionSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
 
@@ -186,6 +186,8 @@ export class FormSectionService {
                 Order: order === 'desc' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: list.map((x) => FormSectionMapper.toDto(x)),
+                // Items: FormSectionMapper.toArrayDto(list),
+
             };
 
             return searchResults;
