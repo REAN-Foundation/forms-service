@@ -115,7 +115,7 @@ export class QuestionResponseValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): QuestionResponseSearchFilters => {
-        var filters = {};
+        var filters:any = {};
 
         var formSubmissionId = query.formSubmissionId ? query.formSubmissionId : null;
         if (formSubmissionId != null) {

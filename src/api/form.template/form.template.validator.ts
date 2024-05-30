@@ -90,7 +90,7 @@ export class FormTemplateValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): FormTemplateSearchFilters => {
-        var filters = {};
+        var filters:any = {};
 
         var id = query.id ? query.id : null;
         if (id != null) {

@@ -84,7 +84,7 @@ export class UserValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): UserSearchFilters => {
-        var filters = {};
+        var filters:any = {};
 
         var firstName = query.firstName ? query.firstName : null;
         if (firstName != null) {
