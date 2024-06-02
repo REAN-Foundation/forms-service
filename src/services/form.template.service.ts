@@ -1,4 +1,4 @@
-import { FormType,Prisma,PrismaClient } from "@prisma/client";
+import { FormType, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateSearchResponseDto, FormTemplateUpdateModel } from "../domain.types/forms/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
@@ -73,7 +73,7 @@ export class FormTemplateService {
         const response = await this.prisma.formTemplate.update({
             where: {
                 id: id,
-                DeletedAt:null
+                DeletedAt: null
             },
             data: {
                 DeletedAt: new Date(),
@@ -91,7 +91,7 @@ export class FormTemplateService {
         });
         return FormTemplateMapper.toArrayDto(response);
     };
-    
+
     protected addSortingAndPagination = (
         search: Prisma.FormTemplateFindManyArgs,
         filters: FormTemplateSearchFilters
@@ -135,7 +135,7 @@ export class FormTemplateService {
     };
 
 
-    public search = async (filters: FormTemplateSearchFilters): Promise<FormTemplateSearchResponseDto> => {
+    public search = async (filters: FormTemplateSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
 
@@ -226,7 +226,7 @@ export class FormTemplateService {
                 equals: filters.defaultSectionNumbering,
             };
         }
-       
+
 
         return where;
     };

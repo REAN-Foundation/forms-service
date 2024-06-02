@@ -18,7 +18,7 @@ export class FormService {
         const response = await this.prisma.formSubmission.findMany({
             include: {
                 FormTemplate: true,
-                Submitter:true
+                Submitter: true
             },
             where: {
                 DeletedAt: null
@@ -97,9 +97,9 @@ export class FormService {
             data: {
                 DeletedAt: new Date(),
             },
-            include:{
-                FormTemplate:true,
-                Submitter:true
+            include: {
+                FormTemplate: true,
+                Submitter: true
             }
         });
         return FormMapper.toDto(response);
@@ -205,7 +205,7 @@ export class FormService {
 
 
 
-    public search = async (filters: FormSubmissionSearchFilters): Promise<FormSubmissionSearchResponseDto> => {
+    public search = async (filters: FormSubmissionSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
 
@@ -282,5 +282,5 @@ export class FormService {
 
         return where;
     };
-    
+
 }

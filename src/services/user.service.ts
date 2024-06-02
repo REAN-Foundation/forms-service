@@ -162,7 +162,7 @@ export class UserService {
 
 
 
-    public search = async (filters: UserSearchFilters): Promise<UserSearchResponseDto> => {
+    public search = async (filters: UserSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
 

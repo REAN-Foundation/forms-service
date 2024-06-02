@@ -86,6 +86,7 @@ export class FormSectionService {
         const response = await this.prisma.formSection.update({
             where: {
                 id: id,
+                DeletedAt:null
             },
             data: {
                 DeletedAt: new Date(),

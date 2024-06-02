@@ -246,7 +246,7 @@ export class ResponseService {
     };
 
 
-    
+
     protected addSortingAndPagination = (
         search: Prisma.QuestionResponseFindManyArgs,
         filters: QuestionResponseSearchFilters
@@ -295,7 +295,7 @@ export class ResponseService {
 
 
 
-    public search = async (filters: QuestionResponseSearchFilters): Promise<QuestionResponseSearchResponseDto> => {
+    public search = async (filters: QuestionResponseSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
 
@@ -392,5 +392,5 @@ export class ResponseService {
 
         return where;
     };
- 
+
 }

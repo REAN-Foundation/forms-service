@@ -175,7 +175,7 @@ export class QuestionService {
 
 
 
-    public search = async (filters: QuestionSearchFilters): Promise<QuestionSearchResponseDto> => {
+    public search = async (filters: QuestionSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
 
@@ -217,7 +217,7 @@ export class QuestionService {
 
 
     private getSearchModel = (filters: QuestionSearchFilters): Prisma.QuestionWhereInput => {
-        const where: Prisma.QuestionWhereInput = {DeletedAt: null};
+        const where: Prisma.QuestionWhereInput = { DeletedAt: null };
 
         if (filters.id) {
             where.id = {
