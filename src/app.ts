@@ -2,6 +2,11 @@ import express from 'express';
 import { Router } from './startup/router';
 import { execSync } from 'child_process';
 import { Logger } from './startup/logger';
+import { ConfigurationManager } from './config/configuration.manager';
+import { HttpLogger } from './logger/HttpLogger';
+import cors from 'cors';
+import helmet from 'helmet';
+import fileUpload from 'express-fileupload';
 
 export default class Application {
 
@@ -29,10 +34,11 @@ export default class Application {
 
     start = async () => {
         try {
-            this._app.use(express.json());
-            this._app.use(express.urlencoded());
+            // this._app.use(express.json());
+            // this._app.use(express.urlencoded());
 
             this.migrate();
+            this.setupMiddlewares();
             this._router.init();
             this.listen();
         }
@@ -66,6 +72,35 @@ export default class Application {
             Logger.instance().log(error.message);
         }
         return false;
+    };
+    private setupMiddlewares = async (): Promise<boolean> => {
+
+        return new Promise((resolve, reject) => {
+            try {
+                this._app.use(express.urlencoded({ extended: true }));
+                this._app.use(express.json());
+                this._app.use(helmet());
+                this._app.use(cors());
+                if (ConfigurationManager.UseHTTPLogging) {
+                    HttpLogger.use(this._app);
+                }
+
+                const MAX_UPLOAD_FILE_SIZE = ConfigurationManager.MaxUploadFileSize;
+
+                this._app.use(fileUpload({
+                    limits            : { fileSize: MAX_UPLOAD_FILE_SIZE },
+                    preserveExtension : true,
+                    createParentPath  : true,
+                    parseNested       : true,
+                    useTempFiles      : true,
+                    tempFileDir       : '/tmp/uploads/'
+                }));
+                resolve(true);
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
     };
 
 }

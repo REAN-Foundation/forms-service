@@ -5,7 +5,7 @@ import { register as user } from '../api/user/user.router';
 import { register as formSection } from '../api/form.section/form.section.router'
 import { register as question }  from '../api/question/question.router';
 import { register as Response }  from '../api/question.response/question.response.router';
-
+import { register as registerFileResourceRoutes } from '../api/file.resource/file.resource.routes';
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class Router {
@@ -27,6 +27,7 @@ export class Router {
                 formSection(this._app);
                 question(this._app);
                 Response(this._app);
+                registerFileResourceRoutes(this._app);
             } catch (error) {
                 console.log("Error initilizing the routes")
             }

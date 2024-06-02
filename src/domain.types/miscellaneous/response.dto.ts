@@ -6,4 +6,9 @@ export interface ResponseDto {
     HttpCode: number;
     Request: RequestDto
     Data?: any;
+    Trace?: string[];
+    Context: string;
+    ClientIps: string[];
+    APIVersion: string;
+    ServiceVersion: string;
 }

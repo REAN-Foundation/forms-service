@@ -36,4 +36,6 @@ export class Logger {
         console.log(temp_str);
     };
 
+    
+
 }

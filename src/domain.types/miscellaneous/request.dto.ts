@@ -1,7 +1,10 @@
+import { IncomingHttpHeaders } from "http2";
+
 export interface RequestDto {
     Method: string;
-    Host: String;
+    Host: string;
     Body: any;
+    Headers?: IncomingHttpHeaders;
     Url: string;
     Params: any;
 }

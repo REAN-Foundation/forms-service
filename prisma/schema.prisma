@@ -78,7 +78,7 @@ model FormSubmission {
   FormTemplate        FormTemplate       @relation(fields: [FormTemplateId], references: [id])
   FormTemplateId      String //one-to-many relation with form_templates
   FormUrl             String?
-  Submitter           User   ?            @relation(fields: [AnsweredByUserId], references: [id])
+  Submitter           User?              @relation(fields: [AnsweredByUserId], references: [id])
   AnsweredByUserId    String? // one-to-many relation with user
   Status              FormStatus
   SubmissionTimestamp DateTime?
@@ -144,6 +144,25 @@ model UserLoginSession {
   DeletedAt       DateTime?
 
   @@map("user_login_sessions")
+}
+
+model FileResource {
+  id               String    @id @default(uuid())
+  OriginalFilename String?   @db.VarChar(1024)
+  StorageKey       String    @db.VarChar(1024)
+  MimeType         String    @db.VarChar(256)
+  Url              String?   @db.VarChar(256)
+  Public           Boolean   @default(false)
+  Size             Int?
+  DownloadCount    Int       @default(0)
+  Tags             Json?
+  DefaultVersionId String?
+  DefaultVersion   Json?
+  CreatedAt        DateTime  @default(now())
+  UpdatedAt        DateTime  @updatedAt
+  DeletedAt        DateTime?
+
+  @@map("file_resources")
 }
 
 enum FormType {
