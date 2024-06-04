@@ -2,6 +2,7 @@ import express from 'express';
 import { Router } from './startup/router';
 import { execSync } from 'child_process';
 import { Logger } from './startup/logger';
+import mysql from 'mysql2/promise';
 
 export default class Application {
 
@@ -53,19 +54,68 @@ export default class Application {
         })
     }
 
+    // public migrate = async () => {
+    //     try {
+    //         const output = execSync('npx prisma migrate dev --name init');
+
+    //         const str = output.toString();
+    //         Logger.instance().log('Database migrated successfully!');
+    //         Logger.instance().log(str);
+
+    //         return true;
+    //     } catch (error) {
+    //         Logger.instance().log(error.message);
+    //     }
+    //     return false;
+    // };
+
+
     public migrate = async () => {
+        const databaseUrl = process.env.DATABASE_URL;
+
+        if (!databaseUrl) {
+            throw new Error('DATABASE_URL is not defined in the .env file');
+        }
+
+        // Parse the database URL to extract connection parameters
+        const regex = /mysql:\/\/(.*?):(.*?)@(.*?)@(.*?):(.*?)\/(.*?)$/;
+        const matches = databaseUrl.match(regex);
+
+        if (!matches) {
+            throw new Error('DATABASE_URL format is incorrect');
+        }
+
+        const [_, user, pass, tail, host, port, database] = matches;
+
+        const password = pass + '@' + tail;
         try {
-            const output = execSync('npx prisma migrate dev --name init');
+            const connection = await mysql.createConnection({
+                host,
+                port: parseInt(port),
+                user,
+                password
+            });
+            // Directly construct the query string without placeholders
+            const query = `SHOW DATABASES LIKE '${database}'`;
+            const [rows]: [mysql.RowDataPacket[], mysql.FieldPacket[]] = await connection.execute(query);
+            if (rows.length > 0) {
+                Logger.instance().log(`Database ${database} already exists. Connecting and syncing...`);
+                // Here you would add code to sync with the existing database if needed
+            } else {
+                Logger.instance().log(`Database ${database} does not exist. Migrating and syncing...`);
+                execSync('npx prisma migrate deploy');
+                Logger.instance().log('Database migrated and synced successfully!');
+            }
 
-            const str = output.toString();
-            Logger.instance().log('Database migrated successfully!');
-            Logger.instance().log(str);
-
+            await connection.end();
             return true;
         } catch (error) {
+            Logger.instance().log('Migration failed:');
             Logger.instance().log(error.message);
+            Logger.instance().log(error.stack); // Log stack trace for debugging purposes
+            return false;
         }
-        return false;
     };
+
 
 }

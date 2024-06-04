@@ -222,7 +222,7 @@ export class QuestionResponseController extends BaseController {
         try {
             var filters: QuestionResponseSearchFilters = await this._validator.validateSearchRequest(request);
             const searchResults = await this._service.search(filters);
-            const message = 'User retrieved successfully!';
+            const message = 'Responses retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
