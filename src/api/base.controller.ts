@@ -8,10 +8,7 @@ import { error } from 'console';
 
 export class BaseController {
 
-    // _authorizer: Authorizer | null = null;
-
     constructor() {
-        // this._authorizer = Loader.Authorizer;
     }
 
     authorize = async (
@@ -21,7 +18,7 @@ export class BaseController {
         authorize = true) => {
 
         if (context === undefined || context === null) {
-            ErrorHandler.throwInternalServerError('Invalid request context',error);
+            ErrorHandler.throwInternalServerError('Invalid request context', error);
         }
         const tokens = context.split('.');
         if (tokens.length < 2) {
