@@ -34,12 +34,12 @@ model FormSection {
   id                   String       @id @default(uuid())
   ParentFormTemplate   FormTemplate @relation(fields: [ParentFormTemplateId], references: [id])
   ParentFormTemplateId String //one-to-many relation with form_templates @map("ParentTemplateId")
-  SectionIdentifier    String
-  Title                String
-  Description          String
+  SectionIdentifier    String?
+  Title                String?
+  Description          String?
   DisplayCode          String
-  Sequence             String
-  ParentSectionId      String
+  Sequence             String?
+  ParentSectionId      String?
   Questions            Question[]
   CreatedAt            DateTime     @default(now())
   UpdatedAt            DateTime?
@@ -54,11 +54,11 @@ model Question {
   ParentTemplateId   String //one-to-many relation with form_templates
   ParentFormSection  FormSection        @relation(fields: [ParentSectionId], references: [id])
   ParentSectionId    String //one-to-many relation with form_section
-  Title              String
-  Description        String
-  DisplayCode        String
+  Title              String?
+  Description        String?
+  DisplayCode        String?
   ResponseType       QueryResponseType
-  Score              Int
+  Score              Int?
   CorrectAnswer      String?
   Hint               String?
   Options            String?
@@ -78,7 +78,7 @@ model FormSubmission {
   FormTemplate        FormTemplate       @relation(fields: [FormTemplateId], references: [id])
   FormTemplateId      String //one-to-many relation with form_templates
   FormUrl             String?
-  Submitter           User?            @relation(fields: [AnsweredByUserId], references: [id])
+  Submitter           User?              @relation(fields: [AnsweredByUserId], references: [id])
   AnsweredByUserId    String? // one-to-many relation with user
   Status              FormStatus
   SubmissionTimestamp DateTime?

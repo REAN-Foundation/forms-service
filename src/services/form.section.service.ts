@@ -38,7 +38,6 @@ export class FormSectionService {
                 DisplayCode: model.DisplayCode,
                 Sequence: model.Sequence,
                 ParentSectionId: model.ParentSectionId,
-                // DeletedAt        : null,
             },
             include: {
                 ParentFormTemplate: true
@@ -53,7 +52,7 @@ export class FormSectionService {
                 SectionIdentifier: model.SectionIdentifier,
                 Title: model.Title,
                 Description: model.Description,
-                DisplayCode: model.DisplayCode,
+                // DisplayCode: model.DisplayCode,
                 Sequence: model.Sequence,
                 ParentSectionId: model.ParentSectionId,
                 UpdatedAt: new Date(),
@@ -86,7 +85,7 @@ export class FormSectionService {
         const response = await this.prisma.formSection.update({
             where: {
                 id: id,
-                DeletedAt:null
+                DeletedAt: null
             },
             data: {
                 DeletedAt: new Date(),

@@ -1,8 +1,10 @@
 import { FormType, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
-import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateSearchResponseDto, FormTemplateUpdateModel } from "../domain.types/forms/form.template.domain.types";
+import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from "../domain.types/forms/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
 import { ErrorHandler } from "../common/error.handler";
+import { FormSectionMapper } from "../mappers/form.section.mapper";
+import { QuestionMapper } from "../mappers/question.mapper";
 
 
 export class FormTemplateService {
@@ -66,6 +68,41 @@ export class FormTemplateService {
             },
         });
         return FormTemplateMapper.toDto(response);
+    };
+
+    getDetailsById = async (id: string) => {
+        const template = await this.prisma.formTemplate.findUnique({
+            where: {
+                id: id,
+                DeletedAt: null
+            },
+        });
+        const sections = await this.prisma.formSection.findMany({
+            where: {
+                ParentFormTemplateId: id,
+                DeletedAt: null
+            },
+            include: {
+                ParentFormTemplate: true
+            }
+        });
+        const questions = await this.prisma.question.findMany({
+            where: {
+                ParentTemplateId: id,
+                DeletedAt: null
+            },
+            include: {
+                ParentFormTemplate: true,
+                ParentFormSection: true
+            }
+        });
+
+        const searchResult = {
+            Template: FormTemplateMapper.toDto(template),
+            Sections: sections.map((x) => FormSectionMapper.toDto(x)),
+            Questions: questions.map((x) => QuestionMapper.toDto(x))
+        };
+        return searchResult;
     };
 
 

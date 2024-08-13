@@ -1,4 +1,4 @@
-import joi from 'joi';
+import joi, { optional } from 'joi';
 import express from 'express';
 import {
     ErrorHandler
@@ -15,23 +15,23 @@ export class FormSectionValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request): Promise<FormSectionCreateModel> => {
         try {
             const schema = joi.object({
-                ParentFormTemplateId: joi.string().uuid().required(),
-                SectionIdentifier: joi.string(),
-                Title: joi.string().required(),
-                Description: joi.string(),
-                DisplayCode: joi.string(),
-                Sequence: joi.string(),
-                ParentSectionId: joi.string().uuid(),
+                ParentFormTemplateId: joi.string().uuid().optional(), 
+                Title: joi.string().optional(),
+                Description: joi.string().optional(),
+                SectionIdentifier: joi.string().optional(),
+                DisplayCode: joi.string().optional(),
+                Sequence: joi.string().optional(),
+                ParentSectionId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 ParentFormTemplateId: request.body.ParentFormTemplateId,
-                SectionIdentifier: request.body.SectionIdentifier,
-                Title: request.body.Title,
-                Description: request.body.Description,
+                SectionIdentifier: request.body.SectionIdentifier ?? null,
+                Title: request.body.Title ?? null,
+                Description: request.body.Description ?? null,
                 DisplayCode: request.body.DisplayCode ?? generateDisplayCode(25, 'SECTION_#'),
-                Sequence: request.body.Sequence,
-                ParentSectionId: request.body.ParentSectionId
+                Sequence: request.body.Sequence ?? null,
+                ParentSectionId: request.body.ParentSectionId ?? null
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -45,7 +45,7 @@ export class FormSectionValidator extends BaseValidator {
                 SectionIdentifier: joi.string().optional(),
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
-                DisplayCode: joi.string().optional(),
+                // DisplayCode: joi.string().optional(),
                 Sequence: joi.string().optional(),
                 ParentSectionId: joi.string().uuid().optional()
             });
@@ -54,7 +54,7 @@ export class FormSectionValidator extends BaseValidator {
                 SectionIdentifier: request.body.SectionIdentifier ?? null,
                 Title: request.body.Title ?? null,
                 Description: request.body.Description ?? null,
-                DisplayCode: request.body.DisplayCode ?? null,
+                // DisplayCode: request.body.DisplayCode ?? null,
                 Sequence: request.body.Sequence ?? null,
                 ParentSectionId: request.body.ParentSectionId ?? null,
             };

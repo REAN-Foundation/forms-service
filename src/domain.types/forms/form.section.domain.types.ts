@@ -3,19 +3,19 @@ import { integer } from "../miscellaneous/system.types";
 
 export interface FormSectionCreateModel {
     ParentFormTemplateId: string;
-    SectionIdentifier: string;
-    Title: string;
-    Description: string;
+    SectionIdentifier?: string;
+    Title?: string;
+    Description?: string;
     DisplayCode: string;
-    Sequence: string;
-    ParentSectionId: string;
+    Sequence?: string;
+    ParentSectionId?: string;
 }
 
 export interface FormSectionUpdateModel {
     SectionIdentifier?: string;
     Title?: string;
     Description?: string;
-    DisplayCode?: string;
+    // DisplayCode?: string;
     Sequence?: string;
     ParentSectionId?: string;
 }

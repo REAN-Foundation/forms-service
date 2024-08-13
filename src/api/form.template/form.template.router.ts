@@ -13,6 +13,7 @@ export const register = (app: express.Application): void => {
     router.get('/all', controller.getAll);
     router.post('/', controller.create);
     router.put('/:id', controller.update);
+    router.get('/:id/details', controller.getDetailsById);
     router.get('/:id', controller.getById);
     router.delete('/:id', controller.delete);
     router.get('/:id/submissions', controller.submissions)
