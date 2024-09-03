@@ -39,9 +39,12 @@ export class FormSectionController extends BaseController {
 
     create = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Form.Create', request, response);
-            let model: FormSectionCreateModel = await this._validator.validateCreateRequest(request);
-            const record = await this._service.create(model);
+            const model: FormSectionCreateModel = await this._validator.validateCreateRequest(request);
+            const parentTemplateId: string = request.body.ParentFormTemplateId;
+            const SectionsByTemplateId = await this._service.getByTemplateId(parentTemplateId);
+            const sequence = SectionsByTemplateId.length + 1;
+    
+            const record = await this._service.create(model,sequence);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form section!', error);
             }
@@ -92,7 +95,7 @@ export class FormSectionController extends BaseController {
     getByTemplateId = async (request: express.Request, response: express.Response) => {
         try {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'templateId');
-            var ida :uuid = request.params.templateId;
+            // var ida :uuid = request.params.templateId;
             const record = await this._service.getByTemplateId(id);
             const message = 'Form section by templateId retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
@@ -100,7 +103,7 @@ export class FormSectionController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
-    
+
     search = async (request: express.Request, response: express.Response) => {
         try {
             var filters: FormSectionSearchFilters = await this._validator.validateSearchRequest(request);

@@ -63,10 +63,14 @@ export class QuestionService {
                 Title: model.Title,
                 Description: model.Description,
                 // DisplayCode: model.DisplayCode,
-                ResponseType: model.ResponseType as QueryResponseType,
+                // ResponseType: model.ResponseType as QueryResponseType,
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
                 Hint: model.Hint,
+                Options: JSON.stringify(model.Options),
+                QuestionImageUrl: model.QuestionImageUrl,
+                RangeMax: model.RangeMax,
+                RangeMin: model.RangeMin,
                 UpdatedAt: new Date()
             },
             include: {

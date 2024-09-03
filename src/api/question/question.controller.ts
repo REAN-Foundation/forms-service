@@ -65,7 +65,7 @@ export class QuestionController extends BaseController {
         }
     };
 
-    
+
     getByTemplateId = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);

@@ -55,7 +55,7 @@ export interface QuestionResponseDto {
     QuestionImageUrl: string;
     RangeMin: number;
     RangeMax: number;
-    ParentFormSection: {
+    ParentFormSection?: {
         id: string;
         SectionIdentifier: string;
         Title: string;
@@ -65,7 +65,7 @@ export interface QuestionResponseDto {
         ParentSectionId: string;
         CreatedAt: Date;
     };
-    ParentFormTemplate: {
+    ParentFormTemplate?: {
         id: string;
         Title: string;
         Description: string;

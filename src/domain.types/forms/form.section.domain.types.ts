@@ -1,5 +1,4 @@
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { integer } from "../miscellaneous/system.types";
 
 export interface FormSectionCreateModel {
     ParentFormTemplateId: string;
@@ -7,7 +6,7 @@ export interface FormSectionCreateModel {
     Title?: string;
     Description?: string;
     DisplayCode: string;
-    Sequence?: string;
+    Sequence?: number;
     ParentSectionId?: string;
 }
 
@@ -16,13 +15,13 @@ export interface FormSectionUpdateModel {
     Title?: string;
     Description?: string;
     // DisplayCode?: string;
-    Sequence?: string;
+    // Sequence?: number;
     ParentSectionId?: string;
 }
 
 export interface FormSectionResponseDto {
     id: string;
-    ParentFormTemplate: {
+    ParentFormTemplate?: {
         id: string;
         Title: string;
         Description: string;
@@ -37,7 +36,7 @@ export interface FormSectionResponseDto {
     Title: string;
     Description: string;
     DisplayCode: string;
-    Sequence: string;
+    Sequence: number;
     ParentSectionId: string;
     CreatedAt: Date;
     UpdatedAt: Date;
@@ -50,7 +49,7 @@ export interface FormSectionSearchFilters extends BaseSearchFilters {
     title?: string;
     description?: string;
     displayCode?: string;
-    sequence?: string;
+    sequence?: number;
     parentSectionId?: string;
 }
 
@@ -75,7 +74,7 @@ export interface FormSectionSearchResponseDto extends BaseSearchResults {
     Title: string;
     Description: string;
     DisplayCode: string;
-    Sequence: string;
+    Sequence: number;
     ParentSectionId: string;
     CreatedAt: Date;
     UpdatedAt: Date;

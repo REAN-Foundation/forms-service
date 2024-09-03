@@ -1,6 +1,7 @@
 import express from 'express';
 import { ApiError } from './api.error';
 import { ResponseDto } from '../domain.types/miscellaneous/response.dto';
+import { Logger } from './logger';
 
 export class ResponseHandler {
   constructor() { }
@@ -25,6 +26,7 @@ export class ResponseHandler {
       },
       Data: data ?? null,
     };
+    Logger.instance().log(responseObject)
     response.status(httpCode).send(responseObject);
   }
 
@@ -54,6 +56,7 @@ export class ResponseHandler {
       HttpCode: httpErrorCode ? httpErrorCode : 500,
     };
 
+    Logger.instance().error("failure ", httpErrorCode, msg);
     response.status(httpErrorCode).send(responseObject);
   }
 

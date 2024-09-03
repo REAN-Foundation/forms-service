@@ -20,7 +20,7 @@ export class FormSectionValidator extends BaseValidator {
                 Description: joi.string().optional(),
                 SectionIdentifier: joi.string().optional(),
                 DisplayCode: joi.string().optional(),
-                Sequence: joi.string().optional(),
+                // Sequence: joi.string().optional(),
                 ParentSectionId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
@@ -30,7 +30,7 @@ export class FormSectionValidator extends BaseValidator {
                 Title: request.body.Title ?? null,
                 Description: request.body.Description ?? null,
                 DisplayCode: request.body.DisplayCode ?? generateDisplayCode(25, 'SECTION_#'),
-                Sequence: request.body.Sequence ?? null,
+                // Sequence: request.body.Sequence ?? null,
                 ParentSectionId: request.body.ParentSectionId ?? null
             };
         } catch (error) {
@@ -46,7 +46,7 @@ export class FormSectionValidator extends BaseValidator {
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
                 // DisplayCode: joi.string().optional(),
-                Sequence: joi.string().optional(),
+                // Sequence: joi.string().optional(),
                 ParentSectionId: joi.string().uuid().optional()
             });
             await schema.validateAsync(request.body);
@@ -55,7 +55,7 @@ export class FormSectionValidator extends BaseValidator {
                 Title: request.body.Title ?? null,
                 Description: request.body.Description ?? null,
                 // DisplayCode: request.body.DisplayCode ?? null,
-                Sequence: request.body.Sequence ?? null,
+                // Sequence: request.body.Sequence ?? null,
                 ParentSectionId: request.body.ParentSectionId ?? null,
             };
         } catch (error) {

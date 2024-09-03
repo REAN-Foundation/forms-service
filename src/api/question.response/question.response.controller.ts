@@ -209,15 +209,15 @@ export class QuestionResponseController extends BaseController {
     exportPDF = async (request: express.Request, response: express.Response) => {
         try {
             const record = await this._service.exportPdf();
-      const file = path.resolve(record);
-      response.download(file, 'data.pdf');
-      const message = 'Response fetch successfully!';
-      return response.status(200).json({ message, record });
+            const file = path.resolve(record);
+            response.download(file, 'data.pdf');
+            const message = 'Response fetch successfully!';
+            return response.status(200).json({ message, record });
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
-    
+
     search = async (request: express.Request, response: express.Response) => {
         try {
             var filters: QuestionResponseSearchFilters = await this._validator.validateSearchRequest(request);

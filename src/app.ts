@@ -1,8 +1,9 @@
 import express from 'express';
 import { Router } from './startup/router';
 import { execSync } from 'child_process';
-import { Logger } from './startup/logger';
+// import { Logger } from './startup/logger';
 import mysql from 'mysql2/promise';
+import { Logger } from './common/logger';
 
 export default class Application {
 
@@ -49,7 +50,7 @@ export default class Application {
                 });
             }
             catch (error) {
-                Logger.instance().log("Error in Starting the server");
+                Logger.instance().error("Error in Starting the server", 500, error);
             }
         })
     }
@@ -103,16 +104,17 @@ export default class Application {
                 // Here you would add code to sync with the existing database if needed
             } else {
                 Logger.instance().log(`Database ${database} does not exist. Migrating and syncing...`);
-                execSync('npx prisma migrate deploy');
+                execSync('npx prisma migrate dev --name init');
                 Logger.instance().log('Database migrated and synced successfully!');
             }
 
             await connection.end();
             return true;
         } catch (error) {
-            Logger.instance().log('Migration failed:');
-            Logger.instance().log(error.message);
-            Logger.instance().log(error.stack); // Log stack trace for debugging purposes
+            Logger.instance().error('Migration failed:', 500, error.message);
+            Logger.instance().error('Migration failed:', 500, error.stack);
+            // Logger.instance().log(error.message);
+            // Logger.instance().log(error.stack); // Log stack trace for debugging purposes
             return false;
         }
     };
