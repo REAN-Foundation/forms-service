@@ -1,6 +1,6 @@
 // import { FormType } from "../miscellaneous/system.types";
 
-import { FormType } from "@prisma/client";
+import { FormType, ItemsPerPage } from "@prisma/client";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
 
@@ -9,6 +9,7 @@ export interface FormTemplateCreateModel {
     Description: string;
     CurrentVersion: number;
     Type: FormType;
+    ItemsPerPage:ItemsPerPage;
     DisplayCode: string;
     OwnerUserId?: string;
     RootSectionId?: string;
@@ -20,6 +21,7 @@ export interface FormTemplateUpdateModel {
     Description?: string;
     CurrentVersion?: number;
     Type?: FormType;
+    ItemsPerPage?:ItemsPerPage;
     DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
@@ -32,6 +34,7 @@ export interface FormTemplateResponseDto {
     Description: string;
     CurrentVersion: number;
     Type: FormType;
+    ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
     OwnerUserId: string;
     RootSectionId: string;

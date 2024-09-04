@@ -17,6 +17,7 @@ export class QuestionMapper {
             DisplayCode     : record.DisplayCode ?? null,
             ResponseType    : record.ResponseType,
             Score           : record.Score,
+            Sequence        : record.Sequence,
             CorrectAnswer   : record.CorrectAnswer,
             Hint            : record.Hint,
             Options         : options,

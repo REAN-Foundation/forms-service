@@ -6,7 +6,7 @@ export interface FormSectionCreateModel {
     Title?: string;
     Description?: string;
     DisplayCode: string;
-    Sequence?: number;
+    Sequence?: string;
     ParentSectionId?: string;
 }
 
@@ -15,7 +15,7 @@ export interface FormSectionUpdateModel {
     Title?: string;
     Description?: string;
     // DisplayCode?: string;
-    // Sequence?: number;
+    // Sequence?: string-;
     ParentSectionId?: string;
 }
 
@@ -36,7 +36,7 @@ export interface FormSectionResponseDto {
     Title: string;
     Description: string;
     DisplayCode: string;
-    Sequence: number;
+    Sequence: string;
     ParentSectionId: string;
     CreatedAt: Date;
     UpdatedAt: Date;
@@ -49,7 +49,7 @@ export interface FormSectionSearchFilters extends BaseSearchFilters {
     title?: string;
     description?: string;
     displayCode?: string;
-    sequence?: number;
+    sequence?: string;
     parentSectionId?: string;
 }
 
@@ -74,7 +74,7 @@ export interface FormSectionSearchResponseDto extends BaseSearchResults {
     Title: string;
     Description: string;
     DisplayCode: string;
-    Sequence: number;
+    Sequence: string;
     ParentSectionId: string;
     CreatedAt: Date;
     UpdatedAt: Date;

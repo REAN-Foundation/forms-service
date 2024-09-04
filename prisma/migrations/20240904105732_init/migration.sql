@@ -3,11 +3,12 @@ CREATE TABLE `form_templates` (
     `id` VARCHAR(191) NOT NULL,
     `Title` VARCHAR(191) NOT NULL,
     `Description` VARCHAR(191) NOT NULL,
+    `ItemsPerPage` ENUM('OneQuestion', 'OneSection', 'FiveQuestions', 'TenQuestions', 'AllQuestions', 'AllSections') NOT NULL,
     `CurrentVersion` INTEGER NOT NULL,
     `Type` ENUM('Survey', 'Questionnaire', 'TestPaper', 'DataCollection') NOT NULL,
     `DisplayCode` VARCHAR(191) NOT NULL,
     `OwnerUserId` VARCHAR(191) NOT NULL,
-    `RootSectionId` VARCHAR(191) NOT NULL,
+    `RootSectionId` VARCHAR(191) NULL,
     `DefaultSectionNumbering` BOOLEAN NOT NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `UpdatedAt` DATETIME(3) NULL,
@@ -20,12 +21,12 @@ CREATE TABLE `form_templates` (
 CREATE TABLE `form_sections` (
     `id` VARCHAR(191) NOT NULL,
     `ParentFormTemplateId` VARCHAR(191) NOT NULL,
-    `SectionIdentifier` VARCHAR(191) NOT NULL,
-    `Title` VARCHAR(191) NOT NULL,
-    `Description` VARCHAR(191) NOT NULL,
+    `SectionIdentifier` VARCHAR(191) NULL,
+    `Title` VARCHAR(191) NULL,
+    `Description` VARCHAR(191) NULL,
     `DisplayCode` VARCHAR(191) NOT NULL,
-    `Sequence` VARCHAR(191) NOT NULL,
-    `ParentSectionId` VARCHAR(191) NOT NULL,
+    `Sequence` VARCHAR(191) NULL,
+    `ParentSectionId` VARCHAR(191) NULL,
     `CreatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `UpdatedAt` DATETIME(3) NULL,
     `DeletedAt` DATETIME(3) NULL,
@@ -38,14 +39,15 @@ CREATE TABLE `questions` (
     `id` VARCHAR(191) NOT NULL,
     `ParentTemplateId` VARCHAR(191) NOT NULL,
     `ParentSectionId` VARCHAR(191) NOT NULL,
-    `Title` VARCHAR(191) NOT NULL,
-    `Description` VARCHAR(191) NOT NULL,
-    `DisplayCode` VARCHAR(191) NOT NULL,
-    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None') NOT NULL,
-    `Score` INTEGER NOT NULL,
+    `Title` VARCHAR(191) NULL,
+    `Description` VARCHAR(191) NULL,
+    `DisplayCode` VARCHAR(191) NULL,
+    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None', 'Temperature', 'BloodPressure', 'Glucose', 'BloodOxygenSaturation', 'PulseRate', 'Hematocrit', 'Cholesterol', 'Lipoprotein', 'CReactiveProtein', 'Sleep', 'HemoglobinA1C', 'KidneyFunction', 'WaistCircumference', 'Electrolytes', 'RespiratoryRate', 'Weight', 'Height') NOT NULL,
+    `Score` INTEGER NULL,
+    `Sequence` VARCHAR(191) NULL,
     `CorrectAnswer` VARCHAR(191) NULL,
     `Hint` VARCHAR(191) NULL,
-    `Options` VARCHAR(191) NULL,
+    `Options` VARCHAR(2000) NULL,
     `QuestionImageUrl` VARCHAR(191) NULL,
     `RangeMin` INTEGER NULL,
     `RangeMax` INTEGER NULL,
@@ -76,10 +78,10 @@ CREATE TABLE `question_responses` (
     `id` VARCHAR(191) NOT NULL,
     `FormSubmissionId` VARCHAR(191) NOT NULL,
     `QuestionId` VARCHAR(191) NOT NULL,
-    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None') NOT NULL,
+    `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None', 'Temperature', 'BloodPressure', 'Glucose', 'BloodOxygenSaturation', 'PulseRate', 'Hematocrit', 'Cholesterol', 'Lipoprotein', 'CReactiveProtein', 'Sleep', 'HemoglobinA1C', 'KidneyFunction', 'WaistCircumference', 'Electrolytes', 'RespiratoryRate', 'Weight', 'Height') NOT NULL,
     `IntegerValue` INTEGER NULL,
     `FloatValue` DOUBLE NULL,
-    `BooleanValue` BOOLEAN NULL,
+    `BooleanValue` VARCHAR(191) NULL,
     `DateTimeValue` DATETIME(3) NULL,
     `Url` VARCHAR(191) NULL,
     `FileResourceId` VARCHAR(191) NULL,
@@ -123,6 +125,9 @@ CREATE TABLE `user_login_sessions` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `form_templates` ADD CONSTRAINT `form_templates_OwnerUserId_fkey` FOREIGN KEY (`OwnerUserId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `form_sections` ADD CONSTRAINT `form_sections_ParentFormTemplateId_fkey` FOREIGN KEY (`ParentFormTemplateId`) REFERENCES `form_templates`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

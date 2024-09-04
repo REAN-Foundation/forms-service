@@ -17,6 +17,7 @@ export interface QuestionCreateModel {
     DisplayCode: string;
     ResponseType: QueryResponseType;
     Score: number;
+    Sequence:string;
     CorrectAnswer: string;
     Hint: string;
     Options: string[]; // JSON array of QuestionOption
@@ -48,6 +49,7 @@ export interface QuestionResponseDto {
     DisplayCode?: string;
     ResponseType: QueryResponseType;
     Score: number;
+    Sequence:string;
     CorrectAnswer: string;
     Hint: string;
     Options: string[]; // JSON array of QuestionOption
@@ -110,6 +112,7 @@ export interface QuestionSearchResponseDto extends BaseSearchResults{
     DisplayCode?: string;
     ResponseType: QueryResponseType;
     Score: number;
+    Sequence:string;
     CorrectAnswer: string;
     Hint: string;
     Options: string[]; // JSON array of QuestionOption

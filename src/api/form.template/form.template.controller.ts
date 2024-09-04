@@ -7,6 +7,8 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormTemplateService } from '../../services/form.template.service';
 import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
+import { FormSectionService } from '../../services/form.section.service';
+import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -14,6 +16,8 @@ import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateM
 export class FormTemplateController extends BaseController {
 
     _service: FormTemplateService = new FormTemplateService();
+
+    _section: FormSectionService = new FormSectionService();
 
     _validator: FormTemplateValidator = new FormTemplateValidator();
 
@@ -43,8 +47,22 @@ export class FormTemplateController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
+
+            const displayCode = generateDisplayCode(25, 'SECTION_#');
+            const sectionModel = {
+                ParentFormTemplateId: record.id,
+                SectionIdentifier: "Root Section",
+                Title: "Assessment Root Section",
+                Description: "This is root section for this template Description",
+                DisplayCode: displayCode
+            }
+            const section = await this._section.create(sectionModel, "A1")
             const message = 'Form template added successfully!';
-            return ResponseHandler.success(request, response, message, 201, record);
+            let templateModel = {
+                RootSectionId: section.id
+            }
+            const rec = await this._service.update(record.id,templateModel)
+            return ResponseHandler.success(request, response, message, 201, rec);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

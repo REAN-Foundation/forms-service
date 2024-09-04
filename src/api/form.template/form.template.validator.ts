@@ -14,24 +14,26 @@ export class FormTemplateValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request): Promise<FormTemplateCreateModel> => {
         try {
             const schema = joi.object({
-                Title                  : joi.string().required(),
-                Description            : joi.string().max(512).optional(),
-                CurrentVersion         : joi.number().optional(),
-                Type                   : joi.string().required(),
-                DisplayCode            : joi.string().optional(),
-                OwnerUserId            : joi.string().uuid(),
-                RootSectionId          : joi.string().uuid(),
+                Title: joi.string().required(),
+                Description: joi.string().max(512).optional(),
+                CurrentVersion: joi.number().optional(),
+                Type: joi.string().required(),
+                ItemsPerPage: joi.string().required(),
+                DisplayCode: joi.string().optional(),
+                OwnerUserId: joi.string().uuid(),
+                RootSectionId: joi.string().uuid(),
                 DefaultSectionNumbering: joi.boolean().optional()
             });
             await schema.validateAsync(request.body);
             return {
-                Title                  : request.body.Title,
-                Description            : request.body.Description ?? null,
-                CurrentVersion         : request.body.CurrentVersion ?? 1,
-                Type                   : request.body.Type,
-                DisplayCode            : request.body.DisplayCode ?? generateDisplayCode(30, 'ASSESS_TEMP_#'),
-                OwnerUserId            : request.body.OwnerUserId,
-                RootSectionId          : request.body.RootSectionId,
+                Title: request.body.Title,
+                Description: request.body.Description ?? null,
+                CurrentVersion: request.body.CurrentVersion ?? 1,
+                Type: request.body.Type,
+                ItemsPerPage: request.body.ItemsPerPage,
+                DisplayCode: request.body.DisplayCode ?? generateDisplayCode(30, 'ASSESS_TEMP_#'),
+                OwnerUserId: request.body.OwnerUserId,
+                RootSectionId: request.body.RootSectionId,
                 DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? false,
             };
         } catch (error) {
@@ -42,24 +44,26 @@ export class FormTemplateValidator extends BaseValidator {
     public validateUpdateRequest = async (request: express.Request): Promise<FormTemplateUpdateModel | undefined> => {
         try {
             const schema = joi.object({
-                Title                  : joi.string().optional(),
-                Description            : joi.string().max(512).optional(),
-                CurrentVersion         : joi.number().optional(),
-                Type                   : joi.string().optional(),
-                DisplayCode            : joi.string().max(64).optional(),
-                OwnerUserId            : joi.string().uuid().optional(),
-                RootSectionId          : joi.string().uuid().optional(),
+                Title: joi.string().optional(),
+                Description: joi.string().max(512).optional(),
+                CurrentVersion: joi.number().optional(),
+                Type: joi.string().optional(),
+                ItemsPerPage: joi.string().optional(),
+                DisplayCode: joi.string().max(64).optional(),
+                OwnerUserId: joi.string().uuid().optional(),
+                RootSectionId: joi.string().uuid().optional(),
                 DefaultSectionNumbering: joi.boolean().optional()
             });
             await schema.validateAsync(request.body);
             return {
-                Title                  : request.body.Title ?? null,
-                Description            : request.body.Description ?? null,
-                CurrentVersion         : request.body.CurrentVersion ?? null,
-                Type                   : request.body.Type ?? null,
-                DisplayCode            : request.body.DisplayCode ?? null,
-                OwnerUserId            : request.body.OwnerUserId ?? null,
-                RootSectionId          : request.body.RootSectionId ?? null,
+                Title: request.body.Title ?? null,
+                Description: request.body.Description ?? null,
+                CurrentVersion: request.body.CurrentVersion ?? null,
+                Type: request.body.Type ?? null,
+                ItemsPerPage: request.body.ItemsPerPage ?? null,
+                DisplayCode: request.body.DisplayCode ?? null,
+                OwnerUserId: request.body.OwnerUserId ?? null,
+                RootSectionId: request.body.RootSectionId ?? null,
                 DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? null
             };
         } catch (error) {
@@ -70,7 +74,7 @@ export class FormTemplateValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<FormTemplateSearchFilters> => {
         try {
             const schema = joi.object({
-                id:joi.string().uuid().optional(),
+                id: joi.string().uuid().optional(),
                 title: joi.string().optional(),
                 description: joi.string().optional(),
                 currentVersion: joi.number().optional(),
@@ -78,7 +82,7 @@ export class FormTemplateValidator extends BaseValidator {
                 displayCode: joi.string().optional(),
                 ownerUserId: joi.string().uuid().optional(),
                 rootSectionId: joi.string().uuid().optional(),
-                defaultSectionNumbering : joi.boolean().optional()
+                defaultSectionNumbering: joi.boolean().optional()
             });
 
             await schema.validateAsync(request.query);
@@ -90,7 +94,7 @@ export class FormTemplateValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): FormTemplateSearchFilters => {
-        var filters:any = {};
+        var filters: any = {};
 
         var id = query.id ? query.id : null;
         if (id != null) {

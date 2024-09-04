@@ -1,4 +1,4 @@
-import { FormType, Prisma, PrismaClient } from "@prisma/client";
+import { FormType, ItemsPerPage, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from "../domain.types/forms/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
@@ -29,6 +29,7 @@ export class FormTemplateService {
                 Description: model.Description,
                 CurrentVersion: model.CurrentVersion,
                 Type: model.Type as FormType,
+                ItemsPerPage: model.ItemsPerPage as ItemsPerPage,
                 DisplayCode: model.DisplayCode,
                 OwnerUserId: model.OwnerUserId,
                 RootSectionId: model.RootSectionId,
@@ -50,6 +51,7 @@ export class FormTemplateService {
                 Description: model.Description,
                 CurrentVersion: model.CurrentVersion,
                 Type: model.Type as FormType,
+                ItemsPerPage: model.ItemsPerPage as ItemsPerPage,
                 DisplayCode: model.DisplayCode,
                 OwnerUserId: model.OwnerUserId,
                 RootSectionId: model.RootSectionId,

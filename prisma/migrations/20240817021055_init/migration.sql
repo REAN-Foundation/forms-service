@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE `question_responses` MODIFY `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None', 'Temperature', 'BloodPressure', 'Glucose', 'BloodOxygenSaturation', 'PulseRate', 'Hematocrit', 'Cholesterol', 'Lipoprotein', 'CReactiveProtein', 'Sleep', 'HemoglobinA1C', 'KidneyFunction', 'WaistCircumference', 'Electrolytes', 'RespiratoryRate', 'Weight', 'Height') NOT NULL;
-
--- AlterTable
-ALTER TABLE `questions` MODIFY `ResponseType` ENUM('Text', 'Float', 'Integer', 'Boolean', 'Object', 'TextArray', 'SingleChoiceSelection', 'MultiChoiceSelection', 'File', 'Date', 'DateTime', 'Rating', 'Location', 'Range', 'None', 'Temperature', 'BloodPressure', 'Glucose', 'BloodOxygenSaturation', 'PulseRate', 'Hematocrit', 'Cholesterol', 'Lipoprotein', 'CReactiveProtein', 'Sleep', 'HemoglobinA1C', 'KidneyFunction', 'WaistCircumference', 'Electrolytes', 'RespiratoryRate', 'Weight', 'Height') NOT NULL;

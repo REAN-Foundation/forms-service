@@ -14,15 +14,17 @@ model FormTemplate {
   id                      String           @id @default(uuid())
   Title                   String
   Description             String
+  ItemsPerPage            ItemsPerPage
   CurrentVersion          Int
   Type                    FormType
   DisplayCode             String
   OwnerUserId             String
-  RootSectionId           String
+  RootSectionId           String?
   DefaultSectionNumbering Boolean
   FormSubmissions         FormSubmission[]
   FormSections            FormSection[]
   Questions               Question[]
+  User                    User             @relation(fields: [OwnerUserId], references: [id])
   CreatedAt               DateTime         @default(now())
   UpdatedAt               DateTime?
   DeletedAt               DateTime?
@@ -38,7 +40,7 @@ model FormSection {
   Title                String?
   Description          String?
   DisplayCode          String
-  Sequence             Int?
+  Sequence             String?
   ParentSectionId      String?
   Questions            Question[]
   CreatedAt            DateTime     @default(now())
@@ -59,9 +61,10 @@ model Question {
   DisplayCode        String?
   ResponseType       QueryResponseType
   Score              Int?
+  Sequence           String?
   CorrectAnswer      String?
   Hint               String?
-  Options            String?
+  Options            String?            @db.VarChar(2000)
   QuestionImageUrl   String?
   RangeMin           Int?
   RangeMax           Int?
@@ -128,6 +131,7 @@ model User {
   DeletedAt     DateTime?
   LoginSessions UserLoginSession[]
   Submissions   FormSubmission[]
+  Template      FormTemplate[]
 
   @@map("users")
 }
@@ -151,6 +155,15 @@ enum FormType {
   Questionnaire
   TestPaper
   DataCollection
+}
+
+enum ItemsPerPage {
+  OneQuestion
+  OneSection
+  FiveQuestions
+  TenQuestions
+  AllQuestions
+  AllSections
 }
 
 enum QueryResponseType {

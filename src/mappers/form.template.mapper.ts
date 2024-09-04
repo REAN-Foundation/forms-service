@@ -12,6 +12,7 @@ export class FormTemplateMapper {
             Description: record.Description,
             CurrentVersion: record.CurrentVersion,
             Type: record.Type,
+            ItemsPerPage: record.ItemsPerPage,
             DisplayCode: record.DisplayCode,
             OwnerUserId: record.OwnerUserId,
             RootSectionId: record.RootSectionId,

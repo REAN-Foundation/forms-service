@@ -26,7 +26,7 @@ export class FormSectionService {
 
 
 
-    create = async (model: FormSectionCreateModel,sequence: number) => {
+    create = async (model: FormSectionCreateModel,sequence: string) => {
         const response = await this.prisma.formSection.create({
             data: {
                 ParentFormTemplate: {

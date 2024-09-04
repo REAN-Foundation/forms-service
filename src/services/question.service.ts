@@ -40,6 +40,7 @@ export class QuestionService {
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
                 Hint: model.Hint,
+                Sequence:model.Sequence,
                 Options: JSON.stringify(model.Options),
                 QuestionImageUrl: model.QuestionImageUrl,
                 RangeMax: model.RangeMax,
