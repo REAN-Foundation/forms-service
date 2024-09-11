@@ -15,7 +15,7 @@ export class FormSectionValidator extends BaseValidator {
     public validateCreateRequest = async (request: express.Request): Promise<FormSectionCreateModel> => {
         try {
             const schema = joi.object({
-                ParentFormTemplateId: joi.string().uuid().optional(), 
+                ParentFormTemplateId: joi.string().uuid().optional(),
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
                 SectionIdentifier: joi.string().optional(),

@@ -41,18 +41,19 @@ export class FormSectionController extends BaseController {
         try {
             const model: FormSectionCreateModel = await this._validator.validateCreateRequest(request);
             const parentTemplateId: string = request.body.ParentFormTemplateId;
-            const SectionsByTemplateId = await this._service.getByTemplateId(parentTemplateId);
+            const sectionsByTemplateId = await this._service.getByTemplateId(parentTemplateId);
 
             let sequence;
-            SectionsByTemplateId.forEach(element => {
+            sectionsByTemplateId.forEach(element => {
                 if (element.ParentFormTemplate.DefaultSectionNumbering === true) {
-                    sequence = "A"+ (SectionsByTemplateId.length + 1);
+                    sequence = "A" + (sectionsByTemplateId.length + 1);
                 } else {
                     sequence = request.body.Sequence;
                 }
             });
 
-            const record = await this._service.create(model, sequence);
+            model.Sequence = sequence;
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form section!', error);
             }

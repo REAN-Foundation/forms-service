@@ -2,6 +2,7 @@ import express from 'express';
 import { ApiError } from './api.error';
 import { ResponseDto } from '../domain.types/miscellaneous/response.dto';
 import { Logger } from './logger';
+// import errsole from 'errsole';
 
 export class ResponseHandler {
   constructor() { }
@@ -27,6 +28,8 @@ export class ResponseHandler {
       Data: data ?? null,
     };
     Logger.instance().log(responseObject)
+    // errsole.log('Logging a message');
+    // errsole.meta({ reqBody: request.body, queryResults: responseObject });
     response.status(httpCode).send(responseObject);
   }
 

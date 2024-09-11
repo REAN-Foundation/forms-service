@@ -54,14 +54,15 @@ export class FormTemplateController extends BaseController {
                 SectionIdentifier: "Root Section",
                 Title: "Assessment Root Section",
                 Description: "This is root section for this template Description",
-                DisplayCode: displayCode
+                DisplayCode: displayCode,
+                Sequence: 'A1'
             }
-            const section = await this._section.create(sectionModel, "A1")
+            const section = await this._section.create(sectionModel)
             const message = 'Form template added successfully!';
             let templateModel = {
                 RootSectionId: section.id
             }
-            const rec = await this._service.update(record.id,templateModel)
+            const rec = await this._service.update(record.id, templateModel)
             return ResponseHandler.success(request, response, message, 201, rec);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

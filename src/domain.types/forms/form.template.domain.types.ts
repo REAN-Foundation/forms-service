@@ -9,7 +9,7 @@ export interface FormTemplateCreateModel {
     Description: string;
     CurrentVersion: number;
     Type: FormType;
-    ItemsPerPage:ItemsPerPage;
+    ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
     OwnerUserId?: string;
     RootSectionId?: string;
@@ -21,7 +21,7 @@ export interface FormTemplateUpdateModel {
     Description?: string;
     CurrentVersion?: number;
     Type?: FormType;
-    ItemsPerPage?:ItemsPerPage;
+    ItemsPerPage?: ItemsPerPage;
     DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
@@ -44,7 +44,7 @@ export interface FormTemplateResponseDto {
 }
 
 export interface FormTemplateSearchFilters extends BaseSearchFilters {
-    id?:string;
+    id?: string;
     title?: string;
     description?: string;
     currentVersion?: number;
@@ -60,7 +60,7 @@ export interface FormTemplateSearchResults extends BaseSearchResults {
     Items: FormTemplateSearchResponseDto[];
 }
 
-export interface FormTemplateSearchResponseDto extends BaseSearchResults{
+export interface FormTemplateSearchResponseDto extends BaseSearchResults {
     id: string;
     Title: string;
     Description: string;

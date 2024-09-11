@@ -4,6 +4,8 @@ import { execSync } from 'child_process';
 // import { Logger } from './startup/logger';
 import mysql from 'mysql2/promise';
 import { Logger } from './common/logger';
+// import ErrsoleMySQL from 'errsole-mysql';
+// import errsole from 'errsole';
 
 export default class Application {
 
@@ -29,10 +31,20 @@ export default class Application {
         return this._instance || (this._instance = new this())
     }
 
+
     start = async () => {
         try {
             this._app.use(express.json());
             this._app.use(express.urlencoded());
+
+            // errsole.initialize({
+            //     storage: new ErrsoleMySQL({
+            //         host: 'localhost',
+            //         user: 'root',
+            //         password: process.env.PASSWORD,
+            //         database: process.env.DATABASE
+            //     })
+            // });
 
             this.migrate();
             this._router.init();
