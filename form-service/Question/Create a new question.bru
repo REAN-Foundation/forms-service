@@ -1,0 +1,102 @@
+meta {
+  name: Create a new question
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5555/api/v1/questions
+  body: json
+  auth: none
+}
+
+body:json {
+  // {
+  //     "ParentTemplateId": "d9e0416b-b142-4492-a522-a7fc57f9c224",     //Form Template id
+  //     "ParentSectionId": "36869bba-551f-4aaf-a150-ccafd9567254",      //Form Section Id
+  //     "Title": "Question Two",
+  //     "Description": "Question Two description",
+  //     "DisplayCode": "Question Two Display code",
+  //     "ResponseType": "Integer",
+  //     "Score": 11,
+  //     "CorrectAnswer": "Question Two correct answer",
+  //     "Hint": "Question Two hint",
+  //     "Options":"option1,option2",
+  //     "QuestionImageUrl":"this.is.image",
+  //     "RangeMin":2,
+  //     "RangeMax":4
+  // },
+  // {
+  //     "ParentTemplateId": "d9e0416b-b142-4492-a522-a7fc57f9c224",
+  //     "ParentSectionId": "36869bba-551f-4aaf-a150-ccafd9567254",
+  //     "Title": "range ........!",
+  //     "Description": "Birth Day",
+  //     "ResponseType": "Boolean",
+  //     "Score": 5,
+  //     // "DisplayCode": "2b3b3ea7-d55f-46fb-901f-380a92be0059",
+  //     "CorrectAnswer": "1234",
+  //     "Hint": "date",
+  //     "QuestionImageUrl": "a",
+  //     "RangeMin": 1,
+  //     "RangeMax": 2,
+  //     "Options": "option1, option2"
+  // }
+  // {
+  //     "ParentTemplateId": "5777e0a8-6ba7-4313-ba4a-ff9b5bdb3d4a",
+  //     "ParentSectionId": "a1b31378-59b0-4ca8-8d54-323798bf924e",
+  //     "Title": "qqqqqqqqqqqqqqqq",
+  //     "Description": "qqqqqqqqq",
+  //     "ResponseType": "Text",
+  //     "Score": 1,
+  //     "CorrectAnswer": "qqqqqqqqqqqqqqq",
+  //     "Hint": "qqqqqqqqqqqqq",
+  //     "QuestionImageUrl": "qqqqqqqqqqqq",
+  //     "RangeMin": null,
+  //     "RangeMax": null,
+  //     "Options": [
+  //         "option1",
+  //         "option2"
+  //     ]
+  // }
+  // {
+  //     "ParentTemplateId": "5777e0a8-6ba7-4313-ba4a-ff9b5bdb3d4a",
+  //     "ParentSectionId": "a1b31378-59b0-4ca8-8d54-323798bf924e",
+  //     "Title": "qqqqqqqqqqqqqqqq",
+  //     "Description": "qqqqqqqqqq",
+  //     "ResponseType": "SinglehoiceSelection",
+  //     "Score": 1,
+  //     "CorrectAnswer": "qqqqqqqqqqqqqqq",
+  //     "Hint": "qqqqqqqqqqqqq",
+  //     "QuestionImageUrl": "qqqqqqqqqqqq",
+  //     "RangeMin": null,
+  //     "RangeMax": null,
+  //     "Options": [
+  //         {
+  //             "Text": "qqqqq",
+  //             "Sequence": 1
+  //         },
+  //         {
+  //             "Text": "qqqq",
+  //             "Sequence": 2
+  //         },
+  //         {
+  //             "Text": "qq",
+  //             "Sequence": 3
+  //         }
+  //     ]
+  // }
+  {
+      "ParentTemplateId": "dc02836a-d4fc-4ecd-af31-b60bc720fe23",
+      "ParentSectionId": "7632dcc1-32b0-406f-a53e-7b6a218fa8e6",
+      // "Title": "New assessment for form service",
+      // "Description": "description",
+      "ResponseType": "Boolean"
+      // "Score": 1,
+      // "CorrectAnswer": "qqqqqqqqqqqqqqq",
+      // "Hint": "qqqqqqqqqqqqq",
+      // "QuestionImageUrl": "qqqqqqqqqqqq",
+      // "RangeMax": 2,
+      // "Options": null
+  }
+  
+}

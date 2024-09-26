@@ -1,0 +1,23 @@
+meta {
+  name: New user
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5555/api/v1/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "FirstName": "FirstName",
+      "LastName": "LastName",
+      "CountryCode": 123456,
+      "Phone": "1234567890",
+      "Email": "email@gmail.com",
+      "Username": "Username",
+      "Password": "Password"
+  }
+}

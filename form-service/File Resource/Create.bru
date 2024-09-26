@@ -1,0 +1,26 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:55550/api/v1/file-resources/upload
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Content-Type: multipart/form-data; 
+  Content-Length: <calculated when request is sent>
+  filename: cune.png
+  public: true
+}
+
+body:multipart-form {
+  filename: @file(/C:/Users/Prashant Kharade/Downloads/cube.png)
+  public: '''
+    true
+    
+  '''
+}

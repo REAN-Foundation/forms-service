@@ -19,7 +19,7 @@ export class Router {
         return new Promise((resolve, reject) => {
             try {
                 this._app.get("/api/v1", (req, res) => {
-                    res.send({ message: "Demo api service" })
+                    res.send({ message: "Form service is running successfully" })
                 })
                 form(this._app);
                 formTemplate(this._app);
