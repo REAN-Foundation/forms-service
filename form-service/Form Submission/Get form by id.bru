@@ -1,0 +1,11 @@
+meta {
+  name: Get form by id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/form-submissions/{{SUBMISSION_ID}}
+  body: none
+  auth: none
+}

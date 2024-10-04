@@ -1,0 +1,24 @@
+meta {
+  name: Delete the form section record
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/form-sections/a3fd3b20-473c-4b26-9bd7-b4791c9010d7
+  body: none
+  auth: none
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Section is deleted", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).equals(true);
+  });
+}

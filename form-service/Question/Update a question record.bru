@@ -1,0 +1,67 @@
+meta {
+  name: Update a question record
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{BASE_URL}}/questions/{{QUESTION_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "Title": "Current (referral) cardiac diagnosis/diagnoses?",
+      "ResponseType": "MultiChoiceSelection",
+      "RangeMin": 1,
+      "RangeMax": 2,
+      "Options": [
+          "Acute Coronary Syndrome - STEMI,Acute Coronary Syndrome - NSTEMI,Acute Coronary Syndrome - Unstable Angina,Stable Coronary Artery Disease or Stable Angina,Heart Failure,Atrial Fibrillation/Flutter/SVT,Peripheral Arterial Disease,Percutaneous Cardiac Intervention (TAVI/ASD Repair/Valvotomies),Heart Valve replacement,High cardiovascular risk patient (High CVD risk score, Diabetes, Metabolic syndrome, Chronic Kidney Disease, Multiple risk factors),Other"
+      ]
+  }
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is updated", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data.id).equals('006330fd-c768-4034-90a0-3aa8ce3475f4');
+      expect(jsonRes.Data).to.have.property('ParentTemplateId');
+      expect(jsonRes.Data.ParentTemplateId).equals('163bac66-4af0-40dc-a09f-bfbe866e7e89');
+      expect(jsonRes.Data).to.have.property('ParentSectionId');
+      expect(jsonRes.Data.ParentSectionId).equals('c99e1620-df7a-45ce-b374-325002706f5f');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data.Title).equals('Enter respiratory rate');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data.Description).equals('description');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data.DisplayCode).equals('QUESTION_#RTx8BEH6Zsv8t2V');
+      expect(jsonRes.Data).to.have.property('ResponseType');
+      expect(jsonRes.Data.ResponseType).equals('MultiChoiceSelection');
+      expect(jsonRes.Data).to.have.property('Score');
+      expect(jsonRes.Data.Score).equals(1);
+      expect(jsonRes.Data).to.have.property('Sequence');
+      expect(jsonRes.Data.Sequence).equals('A2');
+      expect(jsonRes.Data).to.have.property('CorrectAnswer');
+      expect(jsonRes.Data.CorrectAnswer).equals('A');
+      expect(jsonRes.Data).to.have.property('CorrectAnswer');
+      expect(jsonRes.Data.CorrectAnswer).equals('CorrectAnswer');
+      expect(jsonRes.Data).to.have.property('Hint');
+      expect(jsonRes.Data.Hint).equals('Hint');
+      expect(jsonRes.Data).to.have.property('Options');
+      expect(jsonRes.Data.Options).equals('["HTML,CSS,JAVASCRIPT,JAVA,PYTHON,C,C++"]');
+      expect(jsonRes.Data).to.have.property('QuestionImageUrl');
+      expect(jsonRes.Data.QuestionImageUrl).equals('QuestionImageUrl');
+      expect(jsonRes.Data).to.have.property('RangeMin');
+      expect(jsonRes.Data.RangeMin).equals(1);
+      expect(jsonRes.Data).to.have.property('RangeMax');
+      expect(jsonRes.Data.RangeMax).equals(2);
+  });
+}

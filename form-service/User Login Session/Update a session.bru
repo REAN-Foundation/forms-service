@@ -1,0 +1,19 @@
+meta {
+  name: Update a session
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{BASE_URL}}/user-login-sessions/6aad120e-4122-4358-b4c5-cffb6fdbb9d3
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "UserId": "05b04a84-ce2d-4c5a-9528-4cc168e0ad0a",
+      "IsActiveSession": false,
+      "ValidTill": "2025-10-30T16:30:00Z"
+  }
+}
