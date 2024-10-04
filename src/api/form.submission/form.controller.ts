@@ -26,18 +26,18 @@ export class FormController extends BaseController {
 
     //#endregion
 
-    getAll = async (request: express.Request, response: express.Response) => {
-        try {
-            const record = await this._service.allForms();
-            if (record === null) {
-                ErrorHandler.throwInternalServerError('Unable to add Form!', error);
-            }
-            const message = 'All form fetched successfully!';
-            return ResponseHandler.success(request, response, message, 201, record);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    }
+    // getAll = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         const record = await this._service.allForms();
+    //         if (record === null) {
+    //             ErrorHandler.throwInternalServerError('Unable to add Form!', error);
+    //         }
+    //         const message = 'All form fetched successfully!';
+    //         return ResponseHandler.success(request, response, message, 201, record);
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // }
 
     create = async (request: express.Request, response: express.Response) => {
         try {

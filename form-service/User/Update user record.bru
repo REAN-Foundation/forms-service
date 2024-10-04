@@ -1,11 +1,11 @@
 meta {
   name: Update user record
   type: http
-  seq: 4
+  seq: 3
 }
 
 put {
-  url: http://localhost:5555/api/v1/users/05b04a84-ce2d-4c5a-9528-4cc168e0ad0a
+  url: {{BASE_URL}}/users/{{USER_ID}}
   body: json
   auth: none
 }
@@ -20,4 +20,31 @@ body:json {
       "Username": "Username",
       "Password": "lakalakalakalaka"
   }
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is updated", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('FirstName');
+      expect(jsonRes.Data.FirstName).equals('FirstName');
+      expect(jsonRes.Data).to.have.property('LastName');
+      expect(jsonRes.Data.LastName).equals('LastName');
+      expect(jsonRes.Data).to.have.property('CountryCode');
+      expect(jsonRes.Data.CountryCode).equals('123456');
+      expect(jsonRes.Data).to.have.property('Phone');
+      expect(jsonRes.Data.Phone).equals('Phone');
+      expect(jsonRes.Data).to.have.property('Email');
+      expect(jsonRes.Data.Email).equals('email@gmail.com');
+      expect(jsonRes.Data).to.have.property('Username');
+      expect(jsonRes.Data.Username).equals('Username');
+      expect(jsonRes.Data).to.have.property('Password');
+      expect(jsonRes.Data.Password).equals('lakalakalakalaka');
+  });
+  
 }

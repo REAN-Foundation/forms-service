@@ -1,0 +1,25 @@
+meta {
+  name: create a form template
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5555/api/v1/form-templates
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "Title": "Assessment First",
+      "Description": "This is description",
+      "CurrentVersion": 1,
+      "Type": "Questionnaire",
+      // "DisplayCode": "xyz1234",
+      "OwnerUserId": "38b2020c-6e7f-45d5-b595-e44ac8e032ca",
+      // "RootSectionId": "9618c6a8-0555-4a14-95ec-1946ec09c8e0",
+      "DefaultSectionNumbering": true,
+      "ItemsPerPage":"OneQuestion"
+  }
+}

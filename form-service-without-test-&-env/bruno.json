@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "form-service-without-test-&-env",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

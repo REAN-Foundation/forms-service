@@ -10,18 +10,18 @@ export class UserLoginSessionService {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
-    allUserLoginSessions = async (): Promise<any> => {
-        const response = await this.prisma.userLoginSession.findMany({
-            include: {
-                User: true,
-            },
-            where: {
-                DeletedAt: null
-            }
-        });
-        return UserLoginSessionMapper.toArrayDto(response);
-        // return response;
-    };
+    // allUserLoginSessions = async (): Promise<any> => {
+    //     const response = await this.prisma.userLoginSession.findMany({
+    //         include: {
+    //             User: true,
+    //         },
+    //         where: {
+    //             DeletedAt: null
+    //         }
+    //     });
+    //     return UserLoginSessionMapper.toArrayDto(response);
+    //     // return response;
+    // };
 
     create = async (model: UserLoginSessionCreateModel) => {
         const response = await this.prisma.userLoginSession.create({

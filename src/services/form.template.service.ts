@@ -13,14 +13,14 @@ export class FormTemplateService {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
-    allFormTemplates = async () => {
-        const response = await this.prisma.formTemplate.findMany({
-            where: {
-                DeletedAt: null,
-            }
-        });
-        return FormTemplateMapper.toArrayDto(response);
-    };
+    // allFormTemplates = async () => {
+    //     const response = await this.prisma.formTemplate.findMany({
+    //         where: {
+    //             DeletedAt: null,
+    //         }
+    //     });
+    //     return FormTemplateMapper.toArrayDto(response);
+    // };
 
     create = async (model: FormTemplateCreateModel) => {
         const response = await this.prisma.formTemplate.create({

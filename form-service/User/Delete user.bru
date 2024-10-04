@@ -1,11 +1,24 @@
 meta {
   name: Delete user
   type: http
-  seq: 3
+  seq: 5
 }
 
 delete {
-  url: http://localhost:5555/api/v1/users/05b04a84-ce2d-4c5a-9528-4cc168e0ad0a
+  url: {{BASE_URL}}/users/{{USER_ID}}
   body: none
   auth: none
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is deleted", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).equals(true);
+  });
 }

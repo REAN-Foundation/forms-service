@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:5555/api/v1/questions
+  url: {{BASE_URL}}/questions
   body: json
   auth: none
 }
@@ -86,17 +86,75 @@ body:json {
   //     ]
   // }
   {
-      "ParentTemplateId": "dc02836a-d4fc-4ecd-af31-b60bc720fe23",
-      "ParentSectionId": "7632dcc1-32b0-406f-a53e-7b6a218fa8e6",
-      // "Title": "New assessment for form service",
-      // "Description": "description",
-      "ResponseType": "Boolean"
-      // "Score": 1,
-      // "CorrectAnswer": "qqqqqqqqqqqqqqq",
-      // "Hint": "qqqqqqqqqqqqq",
-      // "QuestionImageUrl": "qqqqqqqqqqqq",
-      // "RangeMax": 2,
-      // "Options": null
+    "ParentTemplateId": "4fabef36-5992-4f9c-aa7b-2539ae24aa7e",
+    "ParentSectionId": "b8243963-7999-4623-b357-d1d16549d619",
+    "ResponseType": "SingleChoiceSelection",
+    "Options": [
+      {
+        "Text": "qqqqq",
+        "Sequence": "1",
+        "ImageUrl": "asdasfdsf"
+      },
+      {
+        "Text": "qqqqq",
+        "Sequence": "2",
+        "ImageUrl": "asdasfdsf"
+      },
+      {
+        "Text": "qqqqq",
+        "Sequence": "3",
+        "ImageUrl": "asdasfdsf"
+      },
+      {
+        "Text": "qqqqq",
+        "Sequence": "1",
+        "ImageUrl": "asdasfdsf"
+      },
+      {
+        "Text": "qqqqq",
+        "Sequence": "2",
+        "ImageUrl": "asdasfdsf"
+      },
+      {
+        "Text": "qqqqq",
+        "Sequence": "3",
+        "ImageUrl": "asdasfdsf"
+      }
+    ]
+  }
+}
+
+tests {
+  try {
+      var jsonRes = res.getBody();
+      bru.setEnvVar("QUESTION_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+      console.log(error.message);
   }
   
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Question is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('ParentTemplateId');
+      expect(jsonRes.Data).to.have.property('ParentSectionId');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data).to.have.property('ResponseType');
+      expect(jsonRes.Data).to.have.property('Score');
+      expect(jsonRes.Data).to.have.property('CorrectAnswer');
+      expect(jsonRes.Data).to.have.property('Hint');
+      expect(jsonRes.Data).to.have.property('Options');
+      expect(jsonRes.Data).to.have.property('QuestionImageUrl');
+      expect(jsonRes.Data).to.have.property('RangeMin');
+      expect(jsonRes.Data).to.have.property('RangeMax');
+      
+  });
 }

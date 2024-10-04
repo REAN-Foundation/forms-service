@@ -1,0 +1,31 @@
+meta {
+  name: Create new form section
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5555/api/v1/form-sections
+  body: json
+  auth: none
+}
+
+body:json {
+  // {
+  //     "ParentFormTemplateId": "64888ed6-7452-48ad-8f4e-48448f21259f",  //Form template id
+  //     "SectionIdentifier": "SectionIdentifier",
+  //     "Title": "Title.................",
+  //     "Description": "Description",
+  //     // "DisplayCode": "DisplayCode",
+  //     "Sequence": "Sequence three",
+  //     "ParentSectionId": "2ed8ebf0-bfac-462c-9012-9a3ab5f59ba6"   //any uuid value
+  // }
+  {
+      "ParentFormTemplateId": "4fabef36-5992-4f9c-aa7b-2539ae24aa7e",
+       "SectionIdentifier": "new form section 1",
+       "Title": "New form section ",
+       "Description": "sf esdrg",
+       "Sequence":"A2",
+      "ParentSectionId": "4fabef36-5992-4f9c-aa7b-2539ae24aa7e"
+  }
+}

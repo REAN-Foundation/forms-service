@@ -10,7 +10,7 @@ export const register = (app: express.Application): void => {
 
     router.get('/search', controller.search);
     
-    router.get('/all', controller.getAll);
+    // router.get('/all', controller.getAll);
     router.post('/', controller.create);
     router.put('/:id', controller.update);
     router.get('/:id/details', controller.getDetailsById);

@@ -1,11 +1,11 @@
 meta {
   name: Export responses in PDF
   type: http
-  seq: 7
+  seq: 5
 }
 
 get {
-  url: http://localhost:5555/api/v1/question-responses/exportpdf/export
+  url: {{BASE_URL}}/question-responses/exportpdf/export
   body: none
   auth: none
 }

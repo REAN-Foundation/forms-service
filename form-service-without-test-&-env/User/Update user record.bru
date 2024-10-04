@@ -1,0 +1,23 @@
+meta {
+  name: Update user record
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:5555/api/v1/users/05b04a84-ce2d-4c5a-9528-4cc168e0ad0a
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "FirstName": "FirstName",
+      "LastName": "LastName",
+      "CountryCode": 123456,
+      "Phone": "Phone",
+      "Email": "email@gmail.com",
+      "Username": "Username",
+      "Password": "lakalakalakalaka"
+  }
+}

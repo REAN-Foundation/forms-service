@@ -1,11 +1,11 @@
 meta {
   name: Get response by id
   type: http
-  seq: 4
+  seq: 2
 }
 
 get {
-  url: http://localhost:5555/api/v1/question-responses/47b384b7-9f13-400b-8579-8339bda34627
+  url: {{BASE_URL}}/question-responses/{RESPONSE_ID}}
   body: none
   auth: none
 }

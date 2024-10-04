@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:5555/api/v1/form-sections
+  url: {{BASE_URL}}/form-sections
   body: json
   auth: none
 }
@@ -21,11 +21,40 @@ body:json {
   //     "ParentSectionId": "2ed8ebf0-bfac-462c-9012-9a3ab5f59ba6"   //any uuid value
   // }
   {
-      "ParentFormTemplateId": "dc02836a-d4fc-4ecd-af31-b60bc720fe23",
+      "ParentFormTemplateId": "b78158bd-7496-48f1-b625-2c489b9c65a9",
       // "SectionIdentifier": "new form section 1"
       // "Title": "New form section ",
       // "Description": "sf esdrg",
       // "Sequence":"abc"
-      "ParentSectionId": "ede29f90-7820-4625-8cf3-54938defbeff"
+      "ParentSectionId": "d04ca675-d4eb-4c6a-9820-6ba1cce3e625"
   }
+}
+
+tests {
+  try {
+      var jsonRes = res.getBody();
+      bru.setEnvVar("SECTION_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+      console.log(error.message);
+  }
+  
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('ParentFormTemplateId');
+      expect(jsonRes.Data).to.have.property('SectionIdentifier');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data).to.have.property('Sequence');
+      expect(jsonRes.Data).to.have.property('ParentSectionId');
+      
+  });
 }

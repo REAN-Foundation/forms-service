@@ -24,18 +24,18 @@ export class QuestionController extends BaseController {
 
     //#endregion
 
-    getAll = async (request: express.Request, response: express.Response) => {
-        try {
-            const record = await this._service.allQuestions();
-            if (record === null) {
-                ErrorHandler.throwInternalServerError('Unable to add Question!', error);
-            }
-            const message = 'All Questions retrived successfully!';
-            return ResponseHandler.success(request, response, message, 201, record);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    }
+    // getAll = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         const record = await this._service.allQuestions();
+    //         if (record === null) {
+    //             ErrorHandler.throwInternalServerError('Unable to add Question!', error);
+    //         }
+    //         const message = 'All Questions retrived successfully!';
+    //         return ResponseHandler.success(request, response, message, 201, record);
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // }
 
     create = async (request: express.Request, response: express.Response) => {
         try {

@@ -1,11 +1,32 @@
 meta {
   name: Get form section by id
   type: http
-  seq: 4
+  seq: 2
 }
 
 get {
-  url: http://localhost:5555/api/v1/form-sections/06b6464e-fc4e-4996-b87a-0b58b54b98d7
+  url: {{BASE_URL}}/form-sections/{{SECTION_ID}}
   body: none
   auth: none
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('ParentFormTemplateId');
+      expect(jsonRes.Data).to.have.property('SectionIdentifier');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data).to.have.property('Sequence');
+      expect(jsonRes.Data).to.have.property('ParentSectionId');
+      
+  });
 }

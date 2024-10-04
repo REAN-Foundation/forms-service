@@ -14,18 +14,18 @@ export class FormService {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
-    allForms = async (): Promise<any> => {
-        const response = await this.prisma.formSubmission.findMany({
-            include: {
-                FormTemplate: true,
-                Submitter: true
-            },
-            where: {
-                DeletedAt: null
-            }
-        });
-        return FormMapper.toArrayDto(response);
-    };
+    // allForms = async (): Promise<any> => {
+    //     const response = await this.prisma.formSubmission.findMany({
+    //         include: {
+    //             FormTemplate: true,
+    //             Submitter: true
+    //         },
+    //         where: {
+    //             DeletedAt: null
+    //         }
+    //     });
+    //     return FormMapper.toArrayDto(response);
+    // };
 
     create = async (model: FormSubmissionCreateModel) => {
         const response = await this.prisma.formSubmission.create({

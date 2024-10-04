@@ -1,0 +1,24 @@
+meta {
+  name: Update a existing response
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:5555/api/v1/question-responses/47b384b7-9f13-400b-8579-8339bda34627
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "ResponseType": "Boolean",
+      "IntegerValue": 1,
+      "FloatValue": 1.2,
+      "BooleanValue": true,
+      "DateTimeValue": "2024-03-08 18:25:30.843",
+      "Url": "https://meet.google.com/zrb-tyni-rdz",
+      "FileResourceId": "0c9ea637-cb8d-468e-b4c7-303d2604c1b5",
+      "TextValue": "hjsj1234-erhh233"
+  }
+}

@@ -1,11 +1,24 @@
 meta {
   name: Delete a form record
   type: http
-  seq: 5
+  seq: 7
 }
 
 delete {
-  url: http://localhost:5555/api/v1/form-submissions/75b05230-36f8-4233-bb20-bc3fa342efe1
+  url: {{BASE_URL}}/form-submissions/{{SUBMISSION_ID}}
   body: none
   auth: none
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form Submission is deleted", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).equals(true);
+  });
 }

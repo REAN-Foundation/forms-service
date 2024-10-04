@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient, QueryResponseType } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { QuestionMapper } from "../mappers/question.mapper";
-import { QuestionCreateModel, QuestionSearchFilters, QuestionSearchResponseDto, QuestionUpdateModel } from "../domain.types/forms/question.domain.types";
+import { QuestionCreateModel, QuestionOption, QuestionSearchFilters, QuestionSearchResponseDto, QuestionUpdateModel } from "../domain.types/forms/question.domain.types";
 import { ErrorHandler } from "../common/error.handler";
 
 
@@ -11,27 +11,79 @@ export class QuestionService {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
-    allQuestions = async (): Promise<any> => {
-        const response = await this.prisma.question.findMany({
-            include: {
-                ParentFormTemplate: true,
-                ParentFormSection: true
-            },
-            where: {
-                DeletedAt: null
-            }
-        });
-        return QuestionMapper.toArrayDto(response);
-    };
+    // allQuestions = async (): Promise<any> => {
+    //     const response = await this.prisma.question.findMany({
+    //         include: {
+    //             ParentFormTemplate: true,
+    //             ParentFormSection: true
+    //         },
+    //         where: {
+    //             DeletedAt: null
+    //         }
+    //     });
+    //     return QuestionMapper.toArrayDto(response);
+    // };
 
+    // create = async (model: QuestionCreateModel) => {
+
+    //     const jsonData: Prisma.JsonValue = {
+    //         Sequence: model.Options.Sequence,
+    //         Option: model.Options.Data,
+    //         ImageUrl: model.Options.ImageUrl,
+    //     } as Prisma.JsonObject;
+
+    //     const response = await this.prisma.question.create({
+    //         data: {
+    //             ParentFormTemplate: {
+    //                 connect: { id: model.ParentTemplateId }
+    //             },
+    //             ParentFormSection: {
+    //                 connect: { id: model.ParentSectionId }
+    //             },
+    //             Title: model.Title,
+    //             Description: model.Description,
+    //             DisplayCode: model.DisplayCode,
+    //             ResponseType: model.ResponseType as QueryResponseType,
+    //             Score: model.Score,
+    //             CorrectAnswer: model.CorrectAnswer,
+    //             Hint: model.Hint,
+    //             Sequence: model.Sequence,
+    //             Options: jsonData,
+    //             QuestionImageUrl: model.QuestionImageUrl,
+    //             RangeMax: model.RangeMax,
+    //             RangeMin: model.RangeMin,
+    //             CreatedAt: new Date(),
+    //             // UpdatedAt: new Date(),
+    //             // DeletedAt: null,
+    //         },
+    //         include: {
+    //             ParentFormTemplate: true,
+    //             ParentFormSection: true
+    //         }
+    //     });
+    //     return QuestionMapper.toDto(response);
+
+    // };
     create = async (model: QuestionCreateModel) => {
+        let jsonData: Prisma.JsonValue | undefined;
+
+        // Map model.Options to the appropriate structure for JSON storage
+        if (model.Options && model.Options.length > 0) {
+            jsonData = model.Options.map((option) => ({
+                Text: option.Text,
+                Sequence: option.Sequence,
+                ImageUrl: option.ImageUrl,
+            })) as Prisma.JsonArray;
+        }
+
+        // Create a new question in the database
         const response = await this.prisma.question.create({
             data: {
                 ParentFormTemplate: {
-                    connect: { id: model.ParentTemplateId }
+                    connect: { id: model.ParentTemplateId },
                 },
                 ParentFormSection: {
-                    connect: { id: model.ParentSectionId }
+                    connect: { id: model.ParentSectionId },
                 },
                 Title: model.Title,
                 Description: model.Description,
@@ -41,24 +93,38 @@ export class QuestionService {
                 CorrectAnswer: model.CorrectAnswer,
                 Hint: model.Hint,
                 Sequence: model.Sequence,
-                Options: JSON.stringify(model.Options),
+                Options: jsonData, // Only assign if jsonData is defined
                 QuestionImageUrl: model.QuestionImageUrl,
                 RangeMax: model.RangeMax,
                 RangeMin: model.RangeMin,
                 CreatedAt: new Date(),
-                // UpdatedAt: new Date(),
-                // DeletedAt: null,
+                // UpdatedAt: new Date(), // Uncomment and modify as needed
+                // DeletedAt: null, // Uncomment and modify as needed
             },
             include: {
                 ParentFormTemplate: true,
-                ParentFormSection: true
-            }
+                ParentFormSection: true,
+            },
         });
-        return QuestionMapper.toDto(response);
 
+        // Convert response to DTO
+        return QuestionMapper.toDto(response);
     };
 
+
+
+
     update = async (id: string, model: QuestionUpdateModel) => {
+        let jsonData: Prisma.JsonValue | undefined;
+
+        // Map model.Options to the appropriate structure for JSON storage
+        if (model.Options && model.Options.length > 0) {
+            jsonData = model.Options.map((option) => ({
+                Text: option.Text,
+                Sequence: option.Sequence,
+                ImageUrl: option.ImageUrl,
+            })) as Prisma.JsonArray;
+        }
         const response = await this.prisma.question.update({
             data: {
                 Title: model.Title,
@@ -68,7 +134,7 @@ export class QuestionService {
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
                 Hint: model.Hint,
-                Options: JSON.stringify(model.Options),
+                Options: jsonData, // Only assign if jsonData is defined
                 QuestionImageUrl: model.QuestionImageUrl,
                 RangeMax: model.RangeMax,
                 RangeMin: model.RangeMin,

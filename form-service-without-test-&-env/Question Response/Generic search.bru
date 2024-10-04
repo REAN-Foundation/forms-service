@@ -1,0 +1,17 @@
+meta {
+  name: Generic search
+  type: http
+  seq: 8
+}
+
+get {
+  url: http://localhost:5555/api/v1/question-responses/search?responseType=Text
+  body: none
+  auth: none
+}
+
+params:query {
+  responseType: Text
+  ~formSubmissionId: a8b15839-1592-43b7-b586-89765cf99222
+  ~questionId: b56027ee-bdba-4182-bed6-d544a5bcc8e4
+}

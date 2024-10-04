@@ -21,18 +21,18 @@ export class ResponseService {
         }
     }
 
-    allResponses = async (): Promise<any> => {
-        const response = await this.prisma.questionResponse.findMany({
-            include: {
-                FormSubmission: true,
-                Question: true
-            },
-            where: {
-                DeletedAt: null
-            }
-        });
-        return ResponseMapper.toArrayDto(response);
-    };
+    // allResponses = async (): Promise<any> => {
+    //     const response = await this.prisma.questionResponse.findMany({
+    //         include: {
+    //             FormSubmission: true,
+    //             Question: true
+    //         },
+    //         where: {
+    //             DeletedAt: null
+    //         }
+    //     });
+    //     return ResponseMapper.toArrayDto(response);
+    // };
 
     create = async (model: QuestionResponseCreateModel) => {
         const response = await this.prisma.questionResponse.create({

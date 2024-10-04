@@ -1,11 +1,11 @@
 meta {
   name: Generic search
   type: http
-  seq: 8
+  seq: 6
 }
 
 get {
-  url: http://localhost:5555/api/v1/question-responses/search?responseType=Text
+  url: {{BASE_URL}}/question-responses/search?responseType=Text
   body: none
   auth: none
 }
@@ -14,4 +14,17 @@ params:query {
   responseType: Text
   ~formSubmissionId: a8b15839-1592-43b7-b586-89765cf99222
   ~questionId: b56027ee-bdba-4182-bed6-d544a5bcc8e4
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User records are returned", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data.Items.length).greaterThan(0);
+  });
 }

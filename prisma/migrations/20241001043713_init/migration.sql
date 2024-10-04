@@ -47,7 +47,7 @@ CREATE TABLE `questions` (
     `Sequence` VARCHAR(191) NULL,
     `CorrectAnswer` VARCHAR(191) NULL,
     `Hint` VARCHAR(191) NULL,
-    `Options` VARCHAR(2000) NULL,
+    `Options` JSON NULL,
     `QuestionImageUrl` VARCHAR(191) NULL,
     `RangeMin` INTEGER NULL,
     `RangeMax` INTEGER NULL,

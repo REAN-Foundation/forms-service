@@ -11,17 +11,17 @@ export class FormSectionService {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
-    allFormSections = async (): Promise<any> => {
-        const response = await this.prisma.formSection.findMany({
-            include: {
-                ParentFormTemplate: true
-            },
-            where: {
-                DeletedAt: null,
-            }
-        });
-        return FormSectionMapper.toArrayDto(response);
-    };
+    // allFormSections = async (): Promise<any> => {
+    //     const response = await this.prisma.formSection.findMany({
+    //         include: {
+    //             ParentFormTemplate: true
+    //         },
+    //         where: {
+    //             DeletedAt: null,
+    //         }
+    //     });
+    //     return FormSectionMapper.toArrayDto(response);
+    // };
 
 
 

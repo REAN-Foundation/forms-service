@@ -12,8 +12,56 @@ import { ParsedQs } from 'qs';
 
 export class QuestionValidator extends BaseValidator {
 
+    // public validateCreateRequest = async (request: express.Request): Promise<QuestionCreateModel> => {
+    //     try {
+    //         const schema = joi.object({
+    //             ParentTemplateId: joi.string().uuid().required(),
+    //             ParentSectionId: joi.string().uuid().required(),
+    //             Title: joi.string(),
+    //             Description: joi.string().optional(),
+    //             DisplayCode: joi.string().optional(),
+    //             ResponseType: joi.string().required(),
+    //             Score: joi.number().optional(),
+    //             CorrectAnswer: joi.string().optional(),
+    //             Hint: joi.string().optional(),
+    //             Sequence: joi.string().optional(),
+    //             Options: joi.array().optional(),
+    //             // FileResourceId  : joi.string().uuid(),
+    //             QuestionImageUrl: joi.string().optional(),
+    //             RangeMin: joi.string().optional(),
+    //             RangeMax: joi.number().optional()
+    //         });
+    //         await schema.validateAsync(request.body);
+    //         return {
+    //             ParentTemplateId: request.body.ParentTemplateId,
+    //             ParentSectionId: request.body.ParentSectionId,
+    //             Title: request.body.Title,
+    //             Description: request.body.Description,
+    //             DisplayCode: request.body.DisplayCode ?? generateDisplayCode(25, 'QUESTION_#'),
+    //             ResponseType: request.body.ResponseType,
+    //             Score: request.body.Score,
+    //             Sequence: request.body.Sequence,
+    //             CorrectAnswer: request.body.CorrectAnswer,
+    //             Hint: request.body.Hint,
+    //             Options: request.body.Options,
+    //             // FileResourceId  : request.body.FileResourceId,
+    //             QuestionImageUrl: request.body.QuestionImageUrl,
+    //             RangeMin: request.body.RangeMin ?? null,
+    //             RangeMax: request.body.RangeMax ?? null
+    //         };
+    //     } catch (error) {
+    //         ErrorHandler.handleValidationError(error);
+    //     }
+    // };
+
     public validateCreateRequest = async (request: express.Request): Promise<QuestionCreateModel> => {
         try {
+            const optionSchema = joi.object({
+                Text: joi.string().required(),
+                Sequence: joi.string().required(),
+                ImageUrl: joi.string().optional(),
+            });
+
             const schema = joi.object({
                 ParentTemplateId: joi.string().uuid().required(),
                 ParentSectionId: joi.string().uuid().required(),
@@ -24,13 +72,14 @@ export class QuestionValidator extends BaseValidator {
                 Score: joi.number().optional(),
                 CorrectAnswer: joi.string().optional(),
                 Hint: joi.string().optional(),
-                Sequence:joi.string().optional(),
-                Options: joi.array().items(joi.string()).optional(),
-                // FileResourceId  : joi.string().uuid(),
+                Sequence: joi.string().optional(),
+                Options: joi.array().items(optionSchema).optional(), // Validate Options as an array of objects
+                // FileResourceId: joi.string().uuid(),
                 QuestionImageUrl: joi.string().optional(),
-                RangeMin: joi.string().optional(),
-                RangeMax: joi.number().optional()
+                RangeMin: joi.number().optional(), // Should be a number to match the type in QuestionCreateModel
+                RangeMax: joi.number().optional(),
             });
+
             await schema.validateAsync(request.body);
             return {
                 ParentTemplateId: request.body.ParentTemplateId,
@@ -40,22 +89,28 @@ export class QuestionValidator extends BaseValidator {
                 DisplayCode: request.body.DisplayCode ?? generateDisplayCode(25, 'QUESTION_#'),
                 ResponseType: request.body.ResponseType,
                 Score: request.body.Score,
-                Sequence:request.body.Sequence,
+                Sequence: request.body.Sequence,
                 CorrectAnswer: request.body.CorrectAnswer,
                 Hint: request.body.Hint,
-                Options: request.body.Options,
-                // FileResourceId  : request.body.FileResourceId,
+                Options: request.body.Options, // Options should now be an array of QuestionOption
+                // FileResourceId: request.body.FileResourceId,
                 QuestionImageUrl: request.body.QuestionImageUrl,
                 RangeMin: request.body.RangeMin ?? null,
-                RangeMax: request.body.RangeMax ?? null
+                RangeMax: request.body.RangeMax ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
+
     public validateUpdateRequest = async (request: express.Request): Promise<QuestionUpdateModel | undefined> => {
         try {
+            const optionSchema = joi.object({
+                Text: joi.string().required(),
+                Sequence: joi.string().required(),
+                ImageUrl: joi.string().optional(),
+            });
             const schema = joi.object({
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
@@ -64,7 +119,8 @@ export class QuestionValidator extends BaseValidator {
                 Score: joi.number().optional(),
                 CorrectAnswer: joi.string().optional(),
                 Hint: joi.string().optional(),
-                Options: joi.array().items(joi.string().optional()).optional(),
+                // Options: joi.array().items(joi.string().optional()).optional(),
+                Options: joi.array().items(optionSchema).optional(), // Validate Options as an array of objects
                 // FileResourceId  : joi.string().uuid().optional(),
                 QuestionImageUrl: joi.string().optional(),
                 RangeMin: joi.number().optional(),

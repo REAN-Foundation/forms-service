@@ -64,7 +64,7 @@ model Question {
   Sequence           String?
   CorrectAnswer      String?
   Hint               String?
-  Options            String?            @db.VarChar(2000)
+  Options            Json?           
   QuestionImageUrl   String?
   RangeMin           Int?
   RangeMax           Int?

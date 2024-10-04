@@ -5,16 +5,41 @@ meta {
 }
 
 post {
-  url: http://localhost:55550/api/v1/form-submissions
+  url: {{BASE_URL}}/form-submissions
   body: json
   auth: none
 }
 
 body:json {
   {
-      "FormTemplateId":"c17f6654-4ca3-47a1-8761-986f4f23d95e"        //Form Template Id
+      "FormTemplateId":"163bac66-4af0-40dc-a09f-bfbe866e7e89"        //Form Template Id
       // "FormUrl": "This is Third form",
       // "AnsweredByUserId": "c9e5b365-a0ff-4f73-b168-f3a4263b777e",     //Submitter / User Id
       // "Status": "InProgress"
   }
+}
+
+tests {
+  try {
+      var jsonRes = res.getBody();
+      bru.setEnvVar("SUBMISSION_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+      console.log(error.message);
+  }
+  
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Question is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('ParentFormTemplateId');
+      expect(jsonRes.Data).to.have.property('FormUrl');
+      expect(jsonRes.Data).to.have.property('SubmissionTimestamp');
+         
+  });
 }

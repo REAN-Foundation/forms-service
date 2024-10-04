@@ -5,7 +5,7 @@ meta {
 }
 
 put {
-  url: http://localhost:5555/api/v1/form-submissions/b50852db-8242-4cbe-a467-7b3261e55666
+  url: {{BASE_URL}}/form-submissions/{{SUBMISSION_ID}}
   body: json
   auth: none
 }
@@ -17,4 +17,29 @@ body:json {
       "AnsweredByUserId": "05b04a84-ce2d-4c5a-9528-4cc168e0ad0a",
       "Status": "LinkShared"
   }
+}
+
+tests {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is updated", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data.id).equals('03ad39c3-d959-4843-bb08-122b06ed37a1');
+      expect(jsonRes.Data).to.have.property('FormTemplateId');
+      expect(jsonRes.Data.FormTemplateId).equals('163bac66-4af0-40dc-a09f-bfbe866e7e89');
+      expect(jsonRes.Data).to.have.property('FormUrl');
+      expect(jsonRes.Data.FormUrl).equals('FormUrl');
+      expect(jsonRes.Data).to.have.property('AnsweredByUserId');
+      expect(jsonRes.Data.AnsweredByUserId).equals('03ad39c3-d959-4843-bb08-122b06ed37a1');
+      expect(jsonRes.Data).to.have.property('Status');
+      expect(jsonRes.Data.Status).equals('LinkShared');
+      expect(jsonRes.Data).to.have.property('SubmissionTimestamp');
+      expect(jsonRes.Data.SubmissionTimestamp).equals('2024-09-12 12:36:51.712');
+  
+  });
 }

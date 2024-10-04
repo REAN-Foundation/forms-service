@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:55550/api/v1/question-responses/save
+  url: {{BASE_URL}}/question-responses/save
   body: json
   auth: none
 }
@@ -101,6 +101,31 @@ body:json {
           // "d397554c-3ac5-4a25-8824-92bffb33e644": ["Prashant", "Pandurang", "Kharade"],
           "02f21e5d-787f-409b-8456-f2ed691bc2b1": "true"
       },
-      "FormSubmissionId": "6f8f7dcb-d5dd-4b8d-8243-116b73b4b68b"
+      "FormSubmissionId": "8df8d6a5-5f35-46d8-8cae-4838a7a43d41"
   }
+}
+
+tests {
+  try {
+      var jsonRes = res.getBody();
+      bru.setEnvVar("RESPONSE_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+      console.log(error.message);
+  }
+  
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Question is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('ParentFormTemplateId');
+      expect(jsonRes.Data).to.have.property('FormUrl');
+      expect(jsonRes.Data).to.have.property('SubmissionTimestamp');
+         
+  });
 }
