@@ -19,7 +19,7 @@ export class Router {
         return new Promise((resolve, reject) => {
             try {
                 this._app.get("/api/v1", (req, res) => {
-                    res.send({ message: "Form service is running successfully" })
+                    res.send({ message: `Form service is running successfully on port ${process.env.PORT}` })
                 })
                 form(this._app);
                 formTemplate(this._app);

@@ -14,6 +14,7 @@ model FormTemplate {
   id                      String           @id @default(uuid())
   Title                   String
   Description             String
+  TenantCode              String
   ItemsPerPage            ItemsPerPage
   CurrentVersion          Int
   Type                    FormType
@@ -64,7 +65,7 @@ model Question {
   Sequence           String?
   CorrectAnswer      String?
   Hint               String?
-  Options            Json?           
+  Options            Json?
   QuestionImageUrl   String?
   RangeMin           Int?
   RangeMax           Int?

@@ -28,6 +28,7 @@ export class FormTemplateService {
                 Title: model.Title,
                 Description: model.Description,
                 CurrentVersion: model.CurrentVersion,
+                TenantCode: model.TenantCode,
                 Type: model.Type as FormType,
                 ItemsPerPage: model.ItemsPerPage as ItemsPerPage,
                 DisplayCode: model.DisplayCode,
@@ -50,6 +51,7 @@ export class FormTemplateService {
                 Title: model.Title,
                 Description: model.Description,
                 CurrentVersion: model.CurrentVersion,
+                TenantCode: model.TenantCode,
                 Type: model.Type as FormType,
                 ItemsPerPage: model.ItemsPerPage as ItemsPerPage,
                 DisplayCode: model.DisplayCode,
@@ -223,6 +225,11 @@ export class FormTemplateService {
         if (filters.title) {
             where.Title = {
                 equals: filters.title,
+            };
+        }
+        if (filters.tenantCode) {
+            where.TenantCode = {
+                equals: filters.tenantCode,
             };
         }
 

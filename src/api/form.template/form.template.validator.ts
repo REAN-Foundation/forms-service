@@ -17,6 +17,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Title: joi.string().required(),
                 Description: joi.string().max(512).optional(),
                 CurrentVersion: joi.number().optional(),
+                TenantCode: joi.string().optional(),
                 Type: joi.string().required(),
                 ItemsPerPage: joi.string().required(),
                 DisplayCode: joi.string().optional(),
@@ -29,6 +30,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Title: request.body.Title,
                 Description: request.body.Description ?? null,
                 CurrentVersion: request.body.CurrentVersion ?? 1,
+                TenantCode: request.body.TenantCode,
                 Type: request.body.Type,
                 ItemsPerPage: request.body.ItemsPerPage,
                 DisplayCode: request.body.DisplayCode ?? generateDisplayCode(30, 'ASSESS_TEMP_#'),
@@ -47,6 +49,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Title: joi.string().optional(),
                 Description: joi.string().max(512).optional(),
                 CurrentVersion: joi.number().optional(),
+                TenantCode: joi.string().optional(),
                 Type: joi.string().optional(),
                 ItemsPerPage: joi.string().optional(),
                 DisplayCode: joi.string().max(64).optional(),
@@ -59,6 +62,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Title: request.body.Title ?? null,
                 Description: request.body.Description ?? null,
                 CurrentVersion: request.body.CurrentVersion ?? null,
+                TenantCode: request.body.TenantCode ?? null,
                 Type: request.body.Type ?? null,
                 ItemsPerPage: request.body.ItemsPerPage ?? null,
                 DisplayCode: request.body.DisplayCode ?? null,
@@ -105,6 +109,12 @@ export class FormTemplateValidator extends BaseValidator {
         if (title != null) {
             filters['title'] = title;
         }
+
+        var tenantCode = query.tenantCode ? query.tenantCode : null;
+        if (tenantCode != null) {
+            filters['tenantCode'] = tenantCode;
+        }
+
         var description = query.description ? query.description : null;
         if (description != null) {
             filters['description'] = description;

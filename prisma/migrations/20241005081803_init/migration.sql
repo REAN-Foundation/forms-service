@@ -3,6 +3,7 @@ CREATE TABLE `form_templates` (
     `id` VARCHAR(191) NOT NULL,
     `Title` VARCHAR(191) NOT NULL,
     `Description` VARCHAR(191) NOT NULL,
+    `TenantCode` VARCHAR(191) NOT NULL,
     `ItemsPerPage` ENUM('OneQuestion', 'OneSection', 'FiveQuestions', 'TenQuestions', 'AllQuestions', 'AllSections') NOT NULL,
     `CurrentVersion` INTEGER NOT NULL,
     `Type` ENUM('Survey', 'Questionnaire', 'TestPaper', 'DataCollection') NOT NULL,
