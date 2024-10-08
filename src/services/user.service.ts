@@ -200,7 +200,7 @@ export class UserService {
 
 
     private getSearchModel = (filters: UserSearchFilters): Prisma.UserWhereInput => {
-        const where: Prisma.UserWhereInput = {};
+        const where: Prisma.UserWhereInput = { DeletedAt: null };
 
         if (filters.firstName) {
             where.FirstName = {

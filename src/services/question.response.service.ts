@@ -337,7 +337,9 @@ export class ResponseService {
 
 
     private getSearchModel = (filters: QuestionResponseSearchFilters): Prisma.QuestionResponseWhereInput => {
-        const where: Prisma.QuestionResponseWhereInput = {};
+        const where: Prisma.QuestionResponseWhereInput = {
+            DeletedAt: null
+        };
 
         if (filters.formSubmissionId) {
             where.FormSubmissionId = {

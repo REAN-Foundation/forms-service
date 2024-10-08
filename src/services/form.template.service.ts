@@ -214,7 +214,9 @@ export class FormTemplateService {
 
 
     private getSearchModel = (filters: FormTemplateSearchFilters): Prisma.FormTemplateWhereInput => {
-        const where: Prisma.FormTemplateWhereInput = {};
+        const where: Prisma.FormTemplateWhereInput = {
+            DeletedAt: null
+        };
 
         if (filters.id) {
             where.id = {

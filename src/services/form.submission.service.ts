@@ -247,7 +247,9 @@ export class FormService {
 
 
     private getSearchModel = (filters: FormSubmissionSearchFilters): Prisma.FormSubmissionWhereInput => {
-        const where: Prisma.FormSubmissionWhereInput = {};
+        const where: Prisma.FormSubmissionWhereInput = {
+            DeletedAt: null
+        };
 
         if (filters.id) {
             where.id = {

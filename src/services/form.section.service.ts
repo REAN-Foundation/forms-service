@@ -201,7 +201,9 @@ export class FormSectionService {
 
 
     private getSearchModel = (filters: FormSectionSearchFilters): Prisma.FormSectionWhereInput => {
-        const where: Prisma.FormSectionWhereInput = {};
+        const where: Prisma.FormSectionWhereInput = {
+            DeletedAt: null
+        };
 
         if (filters.id) {
             where.id = {
