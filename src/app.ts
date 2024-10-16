@@ -91,16 +91,15 @@ export default class Application {
         }
 
         // Parse the database URL to extract connection parameters
-        const regex = /mysql:\/\/(.*?):(.*?)@(.*?)@(.*?):(.*?)\/(.*?)$/;
+        const regex = /mysql:\/\/(.*?):(.*?)@(.*?):(.*?)\/(.*?)$/;
         const matches = databaseUrl.match(regex);
 
         if (!matches) {
             throw new Error('DATABASE_URL format is incorrect');
         }
 
-        const [_, user, pass, tail, host, port, database] = matches;
+        const [_, user, password, host, port, database] = matches;
 
-        const password = pass + '@' + tail;
         try {
             const connection = await mysql.createConnection({
                 host,
