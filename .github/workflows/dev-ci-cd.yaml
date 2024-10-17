@@ -1,0 +1,84 @@
+name: Build an Deploy to EC2
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  S3_CONFIG_BUCKET: form-service-configs
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Copy config files
+      shell: bash
+      run: |
+        touch .env
+        aws s3 cp s3://form-service-configs/form_service_env ./.env
+        ls -a
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: form-builder
+        path: ./
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: form-builder
+        path: ./
+
+    - name: Copy files via SSH
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
+        source: "./"
+        target: "/home/ubuntu/form-builder/"
+
+    - name: SSH into EC2 and deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
+        script: |
+          cd /home/ubuntu/form-builder
+          npm install
+          npx prisma migrate deploy
+          npx prisma generate
+          pm2 stop form-builder-service
+          pm2 start /home/ubuntu/form-builder/dist/index.js --name form-builder-service -f
+          pm2 startup systemd -u ubuntu --hp /home/ubuntu
+          pm2 save
