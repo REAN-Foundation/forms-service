@@ -30,19 +30,20 @@ jobs:
     - name: Copy config files
       shell: bash
       run: |
-        aws s3 cp s3://${{ env.S3_CONFIG_BUCKET }}/form_service_env ./.env
+        touch .env
+        aws s3 cp s3://form-service-configs/form_service_env ./.env
 
     - name: Install dependencies
       run: npm install
+
+    - name: Build project
+      run: npm run build
 
     - name: Prisma migrate deploy
       run: npx prisma migrate deploy
 
     - name: Prisma generate
       run: npx prisma generate
-
-    - name: Build project
-      run: npm run build
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
