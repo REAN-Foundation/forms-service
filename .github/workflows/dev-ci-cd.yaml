@@ -80,6 +80,6 @@ jobs:
         script: |
           cd /home/ubuntu/form-builder
           pm2 stop form-builder-service
-          pm2 start /home/ubuntu/form-builder/src/index.js --name form-builder-service -f
+          pm2 start /home/ubuntu/form-builder/dist/index.js --name form-builder-service -f
           pm2 startup systemd -u ubuntu --hp /home/ubuntu
           pm2 save
