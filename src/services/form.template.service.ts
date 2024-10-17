@@ -110,15 +110,25 @@ export class FormTemplateService {
     };
 
 
+    // delete = async (id: string) => {
+    //     const response = await this.prisma.formTemplate.update({
+    //         where: {
+    //             id: id,
+    //             DeletedAt: null
+    //         },
+    //         data: {
+    //             DeletedAt: new Date(),
+    //         }
+    //     });
+    //     return FormTemplateMapper.toDto(response);
+    // };
     delete = async (id: string) => {
-        const response = await this.prisma.formTemplate.update({
+        const response = await this.prisma.formTemplate.delete({
             where: {
                 id: id,
-                DeletedAt: null
-            },
-            data: {
-                DeletedAt: new Date(),
+
             }
+
         });
         return FormTemplateMapper.toDto(response);
     };
