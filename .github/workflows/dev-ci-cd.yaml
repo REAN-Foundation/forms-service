@@ -48,7 +48,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: form-builder
-        path: ./dist
+        path: ./
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: form-builder
-        path: ./dist
+        path: ./
 
     - name: Copy files via SSH
       uses: appleboy/scp-action@master
@@ -67,7 +67,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         port: 22
-        source: "./dist"
+        source: "./"
         target: "/home/ubuntu/form-builder/"
 
     - name: SSH into EC2 and deploy
