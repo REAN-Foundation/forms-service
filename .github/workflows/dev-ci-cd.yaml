@@ -32,18 +32,13 @@ jobs:
       run: |
         touch .env
         aws s3 cp s3://form-service-configs/form_service_env ./.env
+        ls -a
 
     - name: Install dependencies
       run: npm install
 
     - name: Build project
       run: npm run build
-
-    - name: Prisma migrate deploy
-      run: npx prisma migrate deploy
-
-    - name: Prisma generate
-      run: npx prisma generate
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
@@ -80,6 +75,9 @@ jobs:
         port: 22
         script: |
           cd /home/ubuntu/form-builder
+          npm install
+          npx prisma migrate deploy
+          npx prisma generate
           pm2 stop form-builder-service
           pm2 start /home/ubuntu/form-builder/dist/index.js --name form-builder-service -f
           pm2 startup systemd -u ubuntu --hp /home/ubuntu
