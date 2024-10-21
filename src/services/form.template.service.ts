@@ -25,6 +25,9 @@ export class FormTemplateService {
     create = async (model: FormTemplateCreateModel) => {
         const response = await this.prisma.formTemplate.create({
             data: {
+                User:{
+                    connect: { id: model.OwnerUserId }
+                },
                 Title: model.Title,
                 Description: model.Description,
                 CurrentVersion: model.CurrentVersion,
@@ -32,7 +35,7 @@ export class FormTemplateService {
                 Type: model.Type as FormType,
                 ItemsPerPage: model.ItemsPerPage as ItemsPerPage,
                 DisplayCode: model.DisplayCode,
-                OwnerUserId: model.OwnerUserId,
+                // OwnerUserId: model.OwnerUserId,
                 RootSectionId: model.RootSectionId,
                 DefaultSectionNumbering: model.DefaultSectionNumbering,
                 // DeletedAt              : null
@@ -122,7 +125,6 @@ export class FormTemplateService {
         });
         return FormTemplateMapper.toDto(response);
     };
-
 
     submissions = async (id: string) => {
         const response = await this.prisma.formTemplate.findMany({

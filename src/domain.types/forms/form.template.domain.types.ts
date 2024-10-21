@@ -6,12 +6,12 @@ import { uuid } from "../miscellaneous/system.types";
 
 export interface FormTemplateCreateModel {
     Title: string;
-    Description: string;
-    CurrentVersion: number;
-    TenantCode: string;
+    Description?: string;
+    CurrentVersion?: number;
+    TenantCode?: string;
     Type: FormType;
     ItemsPerPage: ItemsPerPage;
-    DisplayCode: string;
+    DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
     DefaultSectionNumbering: boolean
