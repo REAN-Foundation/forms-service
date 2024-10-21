@@ -98,8 +98,9 @@ export default class Application {
             throw new Error('DATABASE_URL format is incorrect');
         }
 
-        const [_, user, password, host, port, database] = matches;
+        const [_, user, pass, tail, host, port, database] = matches;
 
+        const password = pass + '@' + tail;
         try {
             const connection = await mysql.createConnection({
                 host,
