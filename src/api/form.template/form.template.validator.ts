@@ -28,7 +28,7 @@ export class FormTemplateValidator extends BaseValidator {
             await schema.validateAsync(request.body);
             return {
                 Title: request.body.Title,
-                Description: request.body.Description ?? null,
+                Description: request.body.Description,
                 CurrentVersion: request.body.CurrentVersion ?? 1,
                 TenantCode: request.body.TenantCode,
                 Type: request.body.Type,

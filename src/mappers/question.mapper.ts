@@ -1,4 +1,7 @@
-import { QuestionOption, QuestionResponseDto } from "../domain.types/forms/question.domain.types";
+import {
+    QuestionOption,
+    QuestionResponseDto,
+} from "../domain.types/forms/question.domain.types";
 
 // export class QuestionMapper {
 //     static toDto = (record: any): QuestionResponseDto => {
@@ -60,7 +63,6 @@ import { QuestionOption, QuestionResponseDto } from "../domain.types/forms/quest
 //     }
 // }
 
-
 export class QuestionMapper {
     static toDto = (record: any): QuestionResponseDto => {
         if (record === null) {
@@ -88,28 +90,33 @@ export class QuestionMapper {
             QuestionImageUrl: record.QuestionImageUrl,
             RangeMin: record.RangeMin,
             RangeMax: record.RangeMax,
-            ParentFormSection: record.ParentFormSection ? {
-                id: record.ParentFormSection.id,
-                SectionIdentifier: record.ParentFormSection.SectionIdentifier,
-                Title: record.ParentFormSection.Title,
-                Description: record.ParentFormSection.Description,
-                DisplayCode: record.ParentFormSection.DisplayCode,
-                Sequence: record.ParentFormSection.Sequence,
-                ParentSectionId: record.ParentFormSection.ParentSectionId,
-                CreatedAt: record.ParentFormSection.CreatedAt,
-            } : null,
-            ParentFormTemplate: record.ParentFormTemplate ? {
-                id: record.ParentFormTemplate.id,
-                Title: record.ParentFormTemplate.Title,
-                Description: record.ParentFormTemplate.Description,
-                CurrentVersion: record.ParentFormTemplate.CorrectAnswer,
-                Type: record.ParentFormTemplate.Type,
-                DisplayCode: record.ParentFormTemplate.DisplayCode,
-                OwnerUserId: record.ParentFormTemplate.OwnerUserId,
-                RootSectionId: record.ParentFormTemplate.RootSectionId,
-                DefaultSectionNumbering: record.ParentFormTemplate.DefaultSectionNumbering,
-                CreatedAt: record.ParentFormTemplate.CreatedAt,
-            } : null,
+            ParentFormSection: record.ParentFormSection
+                ? {
+                    id: record.ParentFormSection.id,
+                    SectionIdentifier: record.ParentFormSection.SectionIdentifier,
+                    Title: record.ParentFormSection.Title,
+                    Description: record.ParentFormSection.Description,
+                    DisplayCode: record.ParentFormSection.DisplayCode,
+                    Sequence: record.ParentFormSection.Sequence,
+                    ParentSectionId: record.ParentFormSection.ParentSectionId,
+                    CreatedAt: record.ParentFormSection.CreatedAt,
+                }
+                : null,
+            ParentFormTemplate: record.ParentFormTemplate
+                ? {
+                    id: record.ParentFormTemplate.id,
+                    Title: record.ParentFormTemplate.Title,
+                    Description: record.ParentFormTemplate.Description,
+                    CurrentVersion: record.ParentFormTemplate.CorrectAnswer,
+                    Type: record.ParentFormTemplate.Type,
+                    DisplayCode: record.ParentFormTemplate.DisplayCode,
+                    OwnerUserId: record.ParentFormTemplate.OwnerUserId,
+                    RootSectionId: record.ParentFormTemplate.RootSectionId,
+                    DefaultSectionNumbering:
+                        record.ParentFormTemplate.DefaultSectionNumbering,
+                    CreatedAt: record.ParentFormTemplate.CreatedAt,
+                }
+                : null,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };
@@ -121,6 +128,39 @@ export class QuestionMapper {
         if (records === null) {
             return [];
         }
-        return records.map(record => QuestionMapper.toDto(record));
+        return records.map((record) => QuestionMapper.toDto(record));
     }
+
+    static exportDto = (record: any): QuestionResponseDto => {
+        if (record === null) {
+            return null;
+        }
+
+        // Parse the Options JSON if it's present
+        let options: QuestionOption[] = [];
+        if (record.Options !== null && record.Options !== undefined) {
+            options = record.Options as QuestionOption[];
+        }
+
+        // Map the record to QuestionResponseDto
+        const dto: QuestionResponseDto = {
+            id: record.id,
+            Title: record.Title,
+            Description: record.Description,
+            DisplayCode: record.DisplayCode ?? null,
+            ResponseType: record.ResponseType,
+            Score: record.Score,
+            Sequence: record.Sequence,
+            CorrectAnswer: record.CorrectAnswer,
+            Hint: record.Hint,
+            Options: options,
+            QuestionImageUrl: record.QuestionImageUrl,
+            RangeMin: record.RangeMin,
+            RangeMax: record.RangeMax,
+            CreatedAt: record.CreatedAt,
+            UpdatedAt: record.UpdatedAt,
+        };
+
+        return dto;
+    };
 }

@@ -91,7 +91,7 @@ export default class Application {
         }
 
         // Parse the database URL to extract connection parameters
-        const regex = /mysql:\/\/(.*?):(.*?)@(.*?):(.*?)\/(.*?)$/;
+        const regex = /mysql:\/\/(.*?):(.*?)@(.*?)@(.*?):(.*?)\/(.*?)$/;
         const matches = databaseUrl.match(regex);
 
         if (!matches) {

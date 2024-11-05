@@ -6,10 +6,12 @@ import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormTemplateService } from '../../services/form.template.service';
-import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
+import { ExportFormTemplateDto, FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
 import { FormSectionService } from '../../services/form.section.service';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
-
+import { ApiError } from '../../common/api.error';
+import { Helper } from '../../domain.types/miscellaneous/helper';
+import fs from 'fs';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -85,6 +87,35 @@ export class FormTemplateController extends BaseController {
             const record = await this._service.getDetailsById(id);
             const message = 'Form template and its data retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    export = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+
+            const id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+
+            const assessmentTemplate = await this._service.getById(id);
+            if (assessmentTemplate == null) {
+                throw new ApiError('Cannot find assessment Template!', 404, error);
+            }
+
+
+            var templateObj: ExportFormTemplateDto = await this._service.readTemplateObjToExport(assessmentTemplate.id);
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { dateFolder, filename, sourceFileLocation }
+                = await Helper.storeTemplateToFileLocally(templateObj);
+
+            var mimeType = Helper.getMimeType(sourceFileLocation);
+            response.setHeader('Content-type', mimeType);
+            response.setHeader('Content-disposition', 'attachment; filename=' + filename);
+
+            var filestream = fs.createReadStream(sourceFileLocation);
+            filestream.pipe(response);
+
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
