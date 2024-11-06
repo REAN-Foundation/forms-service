@@ -6,7 +6,11 @@ import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormTemplateService } from '../../services/form.template.service';
+<<<<<<< Updated upstream
 import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
+=======
+import { ExportFormTemplateDto, FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel, TemplateDto } from '../../domain.types/forms/form.template.domain.types';
+>>>>>>> Stashed changes
 import { FormSectionService } from '../../services/form.section.service';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 
@@ -90,6 +94,39 @@ export class FormTemplateController extends BaseController {
         }
     };
 
+<<<<<<< Updated upstream
+=======
+    exportTemplate = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            // Validate 'id' as a UUID
+            const id: string = await this._validator.validateParamAsUUID(request, 'id');
+
+            // Fetch assessment template
+            const assessmentTemplate = await this._service.getById(id);
+            if (!assessmentTemplate) {
+                throw new ApiError('Cannot find assessment template!', 404);
+            }
+
+            // Retrieve and prepare the template object for export
+            const templateObj = await this._service.readTemplateObjToExport(assessmentTemplate.id);
+
+            // Store template as a file locally
+            const { dateFolder, filename, sourceFileLocation } = await Helper.storeTemplateToFileLocally(templateObj);
+
+            // Set response headers for file download
+            const mimeType = Helper.getMimeType(sourceFileLocation);
+            response.setHeader('Content-Type', mimeType);
+            response.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+
+            // Stream the file to the response
+            const filestream = fs.createReadStream(sourceFileLocation);
+            filestream.pipe(response);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+>>>>>>> Stashed changes
     update = async (request: express.Request, response: express.Response) => {
         try {
             const id = await this._validator.validateParamAsUUID(request, 'id');

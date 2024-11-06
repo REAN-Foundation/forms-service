@@ -1,0 +1,32 @@
+{
+  "Template": {
+    "id": "c56e452e-a746-460b-9fbc-1814368891d6",
+    "Title": "Test assessment 1",
+    "Description": "description",
+    "CurrentVersion": 1,
+    "TenantCode": "1",
+    "Type": "Survey",
+    "ItemsPerPage": "OneSection",
+    "DisplayCode": "ASSESS_TEMP_#BtfHLtt8W6bKfeXie",
+    "OwnerUserId": "8d6827ca-c1b8-4b03-a8c6-72835982567f",
+    "RootSectionId": "fe8084c4-b963-4ab1-909a-f51d988b7ed0",
+    "DefaultSectionNumbering": true,
+    "CreatedAt": "2024-10-22T11:07:32.827Z",
+    "UpdatedAt": "2024-10-22T11:07:32.912Z",
+    "Sections": [
+      {
+        "id": "fe8084c4-b963-4ab1-909a-f51d988b7ed0",
+        "SectionIdentifier": "Root Section",
+        "Title": "Assessment Root Section",
+        "Description": "This is root section for this template Description",
+        "DisplayCode": "SECTION_#8IJdi0ScYkY1nqGm",
+        "Sequence": "A1",
+        "ParentSectionId": null,
+        "CreatedAt": "2024-10-22T11:07:32.898Z",
+        "UpdatedAt": null,
+        "Subsections": [],
+        "Questions": []
+      }
+    ]
+  }
+}

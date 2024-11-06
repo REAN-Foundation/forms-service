@@ -1,0 +1,65 @@
+{
+  "Template": {
+    "id": "c6b2b8fd-ee31-4f9e-a49a-ba9bf219dbb4",
+    "Title": "Assessment First",
+    "Description": "This is description",
+    "CurrentVersion": 1,
+    "TenantCode": "xyz1234",
+    "Type": "Questionnaire",
+    "ItemsPerPage": "OneQuestion",
+    "DisplayCode": "ASSESS_TEMP_#WcR1ZZNDHp0taAU4Y",
+    "OwnerUserId": "8d6827ca-c1b8-4b03-a8c6-72835982567f",
+    "RootSectionId": "089f4185-187a-4a42-b8a3-cfcc21ee06b5",
+    "DefaultSectionNumbering": true,
+    "CreatedAt": "2024-10-21T12:21:06.093Z",
+    "UpdatedAt": "2024-10-21T12:21:06.132Z",
+    "Sections": [
+      {
+        "id": "089f4185-187a-4a42-b8a3-cfcc21ee06b5",
+        "SectionIdentifier": "Root Section",
+        "Title": "Assessment Root Section",
+        "Description": "This is root section for this template Description",
+        "DisplayCode": "SECTION_#aNAzyL7yJ2ND9JAT",
+        "Sequence": "A1",
+        "ParentSectionId": null,
+        "CreatedAt": "2024-10-21T12:21:06.114Z",
+        "UpdatedAt": null,
+        "Subsections": [
+          {
+            "id": "31e6c06f-1817-422b-94a8-271aecb4a13c",
+            "SectionIdentifier": "second section",
+            "Title": "New assessment for form service",
+            "Description": "description",
+            "DisplayCode": "SECTION_#nG8glwlg80DYM7Km",
+            "Sequence": "A2",
+            "ParentSectionId": "089f4185-187a-4a42-b8a3-cfcc21ee06b5",
+            "CreatedAt": "2024-10-22T03:12:07.940Z",
+            "UpdatedAt": "2024-10-22T10:31:35.106Z",
+            "Questions": [
+              {
+                "id": "b4fcbfbb-2bfc-49db-a7d7-09b67d866920",
+                "Title": "Test assessment 1",
+                "Description": "description",
+                "DisplayCode": "QUESTION_#bJ622dnagS0AJAn",
+                "ResponseType": "Text",
+                "Score": null,
+                "Sequence": "A1",
+                "CorrectAnswer": null,
+                "Hint": null,
+                "Options": [],
+                "QuestionImageUrl": null,
+                "RangeMin": null,
+                "RangeMax": null,
+                "ParentFormSection": null,
+                "ParentFormTemplate": null,
+                "CreatedAt": "2024-10-22T03:16:49.976Z",
+                "UpdatedAt": "2024-10-23T03:21:52.679Z"
+              }
+            ]
+          }
+        ],
+        "Questions": []
+      }
+    ]
+  }
+}
