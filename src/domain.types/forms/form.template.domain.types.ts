@@ -78,3 +78,86 @@ export interface FormTemplateSearchResponseDto extends BaseSearchResults {
     CreatedAt: Date;
     UpdatedAt: Date;
 }
+<<<<<<< Updated upstream
+=======
+
+export interface ExportFormTemplateDto  {
+
+    Template: TemplateDto;
+}
+
+export interface TemplateDto extends FormTemplateResponseDto {
+    Sections: SectionDto[];
+}
+
+export interface SectionDto {
+    id: string;
+    SectionIdentifier: string;
+    Title: string;
+    Description: string;
+    DisplayCode: string;
+    Sequence: string;
+    ParentSectionId: string | null;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+    Questions: QuestionDto[];
+    Subsections: SubsectionDto[];
+}
+
+export interface SubsectionDto {
+    id: string;
+    SectionIdentifier: string;
+    Title: string;
+    Description: string;
+    DisplayCode: string;
+    Sequence: string;
+    ParentSectionId: string;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+    Questions: QuestionDto[];
+}
+
+export interface QuestionDto {
+    id: string;
+    Title: string;
+    Description?: string;
+    DisplayCode: string | null;
+    ResponseType: QueryResponseType;
+    Score: number;
+    Sequence: string;
+    CorrectAnswer: string;
+    Hint: string;
+    Options: QuestionOption[];
+    QuestionImageUrl: string;
+    RangeMin: number;
+    RangeMax: number | null;
+    CreatedAt: Date;
+    UpdatedAt?: Date;
+}
+
+
+
+// {
+//     Template: {
+//         Sections: [
+//             {
+//                 Subsections:[
+//                     {
+//                         Questions: []
+//                     },
+//                     {
+//                         Questions: []
+//                     },
+//                     {
+//                         Questions: []
+//                     }
+//                    ]
+//                }
+//             ],
+//                 Questions: []
+//             },
+
+//         ]
+//     }
+// }
+>>>>>>> Stashed changes
