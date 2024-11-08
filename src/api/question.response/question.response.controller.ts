@@ -82,10 +82,10 @@ export class QuestionResponseController extends BaseController {
                 }
 
                 if (questionResponseType === 'Integer') {
-                    finalModel.IntegerValue = model[key]
+                    finalModel.IntegerValue = parseInt(model[key])
                 }
                 if (questionResponseType === 'Float') {
-                    finalModel.FloatValue = model[key]
+                    finalModel.FloatValue = parseFloat(model[key])
                 }
                 if (questionResponseType === 'Boolean') {
                     finalModel.BooleanValue = model[key]
