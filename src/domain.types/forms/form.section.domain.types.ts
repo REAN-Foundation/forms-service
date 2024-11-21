@@ -32,7 +32,7 @@ export interface FormSectionResponseDto {
         RootSectionId: string;
         DefaultSectionNumbering: Boolean
     }
-    SectionIdentifier: number;
+    SectionIdentifier: string;
     Title: string;
     Description: string;
     DisplayCode: string;
@@ -70,7 +70,7 @@ export interface FormSectionSearchResponseDto extends BaseSearchResults {
         RootSectionId: string;
         DefaultSectionNumbering: Boolean
     }
-    SectionIdentifier: number;
+    SectionIdentifier: string;
     Title: string;
     Description: string;
     DisplayCode: string;

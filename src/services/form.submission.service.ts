@@ -36,7 +36,7 @@ export class FormService {
                 // Submitter: {
                 //     connect: { id: model.AnsweredByUserId }
                 // },
-                // FormUrl: model.FormUrl,
+                FormUrl: model.FormUrl,
                 Status: 'LinkShared',
                 CreatedAt: new Date(),
                 // SubmissionTimestamp: null,

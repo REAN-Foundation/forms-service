@@ -1,10 +1,11 @@
 import { FormType, ItemsPerPage, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
-import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from "../domain.types/forms/form.template.domain.types";
+import { ExportFormTemplateDto, FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel, SectionDto, SubsectionDto, TemplateDto } from "../domain.types/forms/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
 import { ErrorHandler } from "../common/error.handler";
 import { FormSectionMapper } from "../mappers/form.section.mapper";
 import { QuestionMapper } from "../mappers/question.mapper";
+import { uuid } from "../domain.types/miscellaneous/system.types";
 
 
 export class FormTemplateService {
@@ -25,7 +26,7 @@ export class FormTemplateService {
     create = async (model: FormTemplateCreateModel) => {
         const response = await this.prisma.formTemplate.create({
             data: {
-                User:{
+                User: {
                     connect: { id: model.OwnerUserId }
                 },
                 Title: model.Title,
@@ -112,6 +113,102 @@ export class FormTemplateService {
         return searchResult;
     };
 
+    readTemplateObjToExport = async (id: string): Promise<ExportFormTemplateDto> => {
+        // Fetch main template
+        const template = await this.prisma.formTemplate.findUnique({
+            where: { id, DeletedAt: null }
+        });
+        if (!template) {
+            throw new Error(`Template with ID ${id} not found`);
+        }
+
+        // Define the Template DTO with required fields
+        const templateDto: TemplateDto = {
+            id: template.id,
+            Title: template.Title,
+            Description: template.Description,
+            CurrentVersion: template.CurrentVersion,
+            TenantCode: template.TenantCode,
+            Type: template.Type,
+            ItemsPerPage: template.ItemsPerPage,
+            DisplayCode: template.DisplayCode,
+            OwnerUserId: template.OwnerUserId,
+            RootSectionId: template.RootSectionId,
+            DefaultSectionNumbering: template.DefaultSectionNumbering,
+            CreatedAt: template.CreatedAt,
+            UpdatedAt: template.UpdatedAt,
+            Sections: []
+        };
+
+        // Fetch all top-level sections related to the template
+        const sections = await this.prisma.formSection.findMany({
+            where: { ParentFormTemplateId: id, ParentSectionId: null, DeletedAt: null },
+            include: { ParentFormTemplate: true }
+        });
+
+        // For each section, fetch subsections and questions
+        for (const section of sections) {
+            const dtoSection: SectionDto = {
+                id: section.id,
+                SectionIdentifier: section.SectionIdentifier,
+                Title: section.Title,
+                Description: section.Description,
+                DisplayCode: section.DisplayCode,
+                Sequence: section.Sequence,
+                ParentSectionId: section.ParentSectionId,
+                CreatedAt: section.CreatedAt,
+                UpdatedAt: section.UpdatedAt,
+                Subsections: [],
+                Questions: []
+            };
+
+            // Fetch and map questions associated with this section
+            const sectionQuestions = await this.prisma.question.findMany({
+                where: { ParentSectionId: section.id, DeletedAt: null }
+            });
+            dtoSection.Questions = sectionQuestions.map(question => QuestionMapper.toDto(question));
+
+            // Fetch and map subsections
+            const subsections = await this.prisma.formSection.findMany({
+                where: { ParentSectionId: section.id, DeletedAt: null }
+            });
+
+            for (const subsection of subsections) {
+                const dtoSubsection: SubsectionDto = {
+                    id: subsection.id,
+                    SectionIdentifier: subsection.SectionIdentifier,
+                    Title: subsection.Title,
+                    Description: subsection.Description,
+                    DisplayCode: subsection.DisplayCode,
+                    Sequence: subsection.Sequence,
+                    ParentSectionId: subsection.ParentSectionId,
+                    CreatedAt: subsection.CreatedAt,
+                    UpdatedAt: subsection.UpdatedAt,
+                    Questions: []
+                };
+
+                // Fetch questions for this subsection
+                const subsectionQuestions = await this.prisma.question.findMany({
+                    where: { ParentSectionId: subsection.id, DeletedAt: null }
+                });
+                dtoSubsection.Questions = subsectionQuestions.map(question => QuestionMapper.toDto(question));
+
+                // Add the subsection to the parent section
+                dtoSection.Subsections.push(dtoSubsection);
+            }
+
+            // Add the section to the Template DTO
+            templateDto.Sections.push(dtoSection);
+        }
+
+        // Flatten Sections to top-level property as required by ExportFormTemplateDto
+        const exportDto: ExportFormTemplateDto = {
+            Template: templateDto,
+            Sections: templateDto.Sections // Explicitly include Sections at the top level
+        };
+
+        return exportDto;
+    }
 
     delete = async (id: string) => {
         const response = await this.prisma.formTemplate.update({
@@ -178,7 +275,6 @@ export class FormTemplateService {
         return { search, pageIndex, limit, order, orderByColumn };
     };
 
-
     public search = async (filters: FormTemplateSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
@@ -211,10 +307,6 @@ export class FormTemplateService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
     };
-
-
-
-
 
     private getSearchModel = (filters: FormTemplateSearchFilters): Prisma.FormTemplateWhereInput => {
         const where: Prisma.FormTemplateWhereInput = {
