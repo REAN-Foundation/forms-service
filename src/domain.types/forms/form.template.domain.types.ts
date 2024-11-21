@@ -1,8 +1,9 @@
 // import { FormType } from "../miscellaneous/system.types";
 
-import { FormType, ItemsPerPage } from "@prisma/client";
+import { FormType, ItemsPerPage, QueryResponseType } from "@prisma/client";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
+import { QuestionOption } from "./question.domain.types";
 
 export interface FormTemplateCreateModel {
     Title: string;
@@ -78,11 +79,10 @@ export interface FormTemplateSearchResponseDto extends BaseSearchResults {
     CreatedAt: Date;
     UpdatedAt: Date;
 }
-<<<<<<< Updated upstream
-=======
 
-export interface ExportFormTemplateDto  {
 
+export interface ExportFormTemplateDto {
+    Sections: any;
     Template: TemplateDto;
 }
 
@@ -160,4 +160,3 @@ export interface QuestionDto {
 //         ]
 //     }
 // }
->>>>>>> Stashed changes

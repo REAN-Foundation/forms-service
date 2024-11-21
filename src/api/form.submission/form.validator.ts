@@ -16,7 +16,7 @@ export class FormValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 FormTemplateId: joi.string().uuid().required(),
-                // FormUrl: joi.string(),
+                FormUrl: joi.string().optional(),
                 // AnsweredByUserId: joi.string().uuid(),
                 // Status: joi.string(),
                 // SubmissionTimestamp: joi.date(),

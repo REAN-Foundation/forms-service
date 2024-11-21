@@ -6,14 +6,12 @@ import { ErrorHandler } from '../../common/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormTemplateService } from '../../services/form.template.service';
-<<<<<<< Updated upstream
 import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
-=======
-import { ExportFormTemplateDto, FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel, TemplateDto } from '../../domain.types/forms/form.template.domain.types';
->>>>>>> Stashed changes
 import { FormSectionService } from '../../services/form.section.service';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
-
+import { ApiError } from '../../common/api.error';
+import { Helper } from '../../domain.types/miscellaneous/helper';
+import fs from 'fs';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -83,6 +81,7 @@ export class FormTemplateController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
     getDetailsById = async (request: express.Request, response: express.Response) => {
         try {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
@@ -94,8 +93,6 @@ export class FormTemplateController extends BaseController {
         }
     };
 
-<<<<<<< Updated upstream
-=======
     exportTemplate = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             // Validate 'id' as a UUID
@@ -126,7 +123,6 @@ export class FormTemplateController extends BaseController {
         }
     };
 
->>>>>>> Stashed changes
     update = async (request: express.Request, response: express.Response) => {
         try {
             const id = await this._validator.validateParamAsUUID(request, 'id');
@@ -149,6 +145,7 @@ export class FormTemplateController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
     submissions = async (request: express.Request, response: express.Response) => {
         try {
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
