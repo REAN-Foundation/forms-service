@@ -30,7 +30,7 @@ export class UserController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add user!', error);
             }
-            const message = 'User created successfully!';
+            const message = 'Fetch all users successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -45,7 +45,7 @@ export class UserController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to update record!', error);
             }
-            const message = 'User updated successfully!';
+            const message = 'User created successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -70,7 +70,7 @@ export class UserController extends BaseController {
             const id = await this._validator.validateParamAsUUID(request, 'id');
             var model: UserUpdateModel = await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
-            const message = 'Form updated successfully!';
+            const message = 'User updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -82,7 +82,7 @@ export class UserController extends BaseController {
             // await this.authorize('Form.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const result = await this._service.delete(id);
-            const message = 'Form deleted successfully!';
+            const message = 'User deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
