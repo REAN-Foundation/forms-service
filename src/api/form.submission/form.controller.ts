@@ -91,6 +91,7 @@ export class FormController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
     getByTemplateId = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);

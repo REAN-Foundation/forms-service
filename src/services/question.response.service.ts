@@ -245,8 +245,6 @@ export class ResponseService {
         return pdfPath;
     };
 
-
-
     protected addSortingAndPagination = (
         search: Prisma.QuestionResponseFindManyArgs,
         filters: QuestionResponseSearchFilters
@@ -288,12 +286,6 @@ export class ResponseService {
 
         return { search, pageIndex, limit, order, orderByColumn };
     };
-
-
-
-
-
-
 
     public search = async (filters: QuestionResponseSearchFilters) => {
         try {

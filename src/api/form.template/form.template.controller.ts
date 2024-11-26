@@ -167,5 +167,4 @@ export class FormTemplateController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
-
 }

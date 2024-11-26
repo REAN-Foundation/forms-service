@@ -23,9 +23,6 @@ export class FormSectionService {
     //     return FormSectionMapper.toArrayDto(response);
     // };
 
-
-
-
     create = async (model: FormSectionCreateModel) => {
         const response = await this.prisma.formSection.create({
             data: {

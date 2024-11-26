@@ -102,8 +102,7 @@ export class QuestionValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-
-
+    
     public validateUpdateRequest = async (request: express.Request): Promise<QuestionUpdateModel | undefined> => {
         try {
             const optionSchema = joi.object({

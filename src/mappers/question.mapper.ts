@@ -59,8 +59,6 @@ import { QuestionOption, QuestionResponseDto } from "../domain.types/forms/quest
 //         return records.map(record => QuestionMapper.toDto(record));
 //     }
 // }
-
-
 export class QuestionMapper {
     static toDto = (record: any): QuestionResponseDto => {
         if (record === null) {

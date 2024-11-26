@@ -64,6 +64,7 @@ export class QuestionService {
     //     return QuestionMapper.toDto(response);
 
     // };
+
     create = async (model: QuestionCreateModel) => {
         let jsonData: Prisma.JsonValue | undefined;
 
@@ -110,9 +111,6 @@ export class QuestionService {
         // Convert response to DTO
         return QuestionMapper.toDto(response);
     };
-
-
-
 
     update = async (id: string, model: QuestionUpdateModel) => {
         let jsonData: Prisma.JsonValue | undefined;
@@ -197,7 +195,6 @@ export class QuestionService {
         return QuestionMapper.toDto(response);
     };
 
-
     protected addSortingAndPagination = (
         search: Prisma.QuestionFindManyArgs,
         filters: QuestionSearchFilters
@@ -240,12 +237,6 @@ export class QuestionService {
         return { search, pageIndex, limit, order, orderByColumn };
     };
 
-
-
-
-
-
-
     public search = async (filters: QuestionSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
@@ -282,10 +273,6 @@ export class QuestionService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
     };
-
-
-
-
 
     private getSearchModel = (filters: QuestionSearchFilters): Prisma.QuestionWhereInput => {
         const where: Prisma.QuestionWhereInput = { DeletedAt: null };

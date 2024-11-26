@@ -62,7 +62,6 @@ export class QuestionController extends BaseController {
         }
     };
     
-
     getById = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);
@@ -74,7 +73,6 @@ export class QuestionController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
-
 
     getByTemplateId = async (request: express.Request, response: express.Response) => {
         try {

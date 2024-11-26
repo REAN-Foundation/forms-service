@@ -66,9 +66,6 @@ export class UserService {
         return UserMapper.toDto(response);
     };
 
-
-
-
     delete = async (id: string) => {
         const response = await this.prisma.user.update({
             where: {
@@ -81,38 +78,6 @@ export class UserService {
         });
         return UserMapper.toDto(response);
     };
-
-
-    // getByTemplateId = async (id: string) => {
-    //     const response = await this.prisma.user.findMany({
-    //         where: {
-    //             FormTemplateId: id,
-    //         },
-    //     });
-    //     return UserMapper.toArrayDto(response);
-    // };
-
-    // getByResponse = async (phone: string) => {
-    //     const response = await this.prisma.user.findMany({
-    //         where: {
-    //             Phone: phone,
-    //         },
-    //     });
-    //     return response;
-    // };
-
-    // submit = async (model: UserUpdateModel) => {
-    //     const response = await this.prisma.user.create({
-    //         data: {
-    //             FormTemplateId: model.FormTemplateId,
-    //             FormUrl: model.FormUrl,
-    //             AnsweredByUserId: model.AnsweredByUserId,
-    //             Status: model.Status,
-    //         },
-    //     });
-    //     return UserMapper.toDto(response);
-    // };
-
 
     protected addSortingAndPagination = (
         search: Prisma.UserFindManyArgs,

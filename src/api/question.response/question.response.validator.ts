@@ -11,6 +11,7 @@ import { ParsedQs } from 'qs';
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class QuestionResponseValidator extends BaseValidator {
+
     public validateCreateRequest = async (
         request: express.Request
     ): Promise<QuestionResponseCreateModel> => {
@@ -91,7 +92,6 @@ export class QuestionResponseValidator extends BaseValidator {
         }
     };
 
-
     public validateSearchRequest = async (request: express.Request): Promise<QuestionResponseSearchFilters> => {
         try {
             const schema = joi.object({
@@ -102,8 +102,8 @@ export class QuestionResponseValidator extends BaseValidator {
                 floatValue: joi.string().optional(),
                 booleanValue: joi.boolean().optional(),
                 url: joi.string().optional(),
-                fileResourceId : joi.string().optional(),
-                textValue:joi.string().optional()
+                fileResourceId: joi.string().optional(),
+                textValue: joi.string().optional()
             });
 
             await schema.validateAsync(request.query);
@@ -115,7 +115,7 @@ export class QuestionResponseValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): QuestionResponseSearchFilters => {
-        var filters:any = {};
+        var filters: any = {};
 
         var formSubmissionId = query.formSubmissionId ? query.formSubmissionId : null;
         if (formSubmissionId != null) {

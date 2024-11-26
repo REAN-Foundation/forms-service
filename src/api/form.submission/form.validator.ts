@@ -16,7 +16,7 @@ export class FormValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 FormTemplateId: joi.string().uuid().required(),
-                // FormUrl: joi.string(),
+                FormUrl: joi.string(),
                 // AnsweredByUserId: joi.string().uuid(),
                 // Status: joi.string(),
                 // SubmissionTimestamp: joi.date(),
@@ -39,12 +39,12 @@ export class FormValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 Status: joi.string().optional(),
-                AnsweredByUserId:joi.string(),
+                AnsweredByUserId: joi.string(),
             });
             await schema.validateAsync(request.body);
             return {
                 Status: request.body.Status ?? null,
-                AnsweredByUserId:request.body.AnsweredByUserId ?? null
+                AnsweredByUserId: request.body.AnsweredByUserId ?? null
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -54,7 +54,7 @@ export class FormValidator extends BaseValidator {
     public validateSearchRequest = async (request: express.Request): Promise<FormSubmissionSearchFilters> => {
         try {
             const schema = joi.object({
-                id:joi.string().uuid().optional(),
+                id: joi.string().uuid().optional(),
                 formTemplateId: joi.string().uuid().optional(),
                 formUrl: joi.string().optional(),
                 answeredByUserId: joi.string().uuid().optional(),
@@ -71,13 +71,13 @@ export class FormValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): FormSubmissionSearchFilters => {
-        var filters:any = {};
+        var filters: any = {};
 
         var id = query.id ? query.id : null;
         if (id != null) {
             filters['id'] = id;
         }
-        
+
         var formTemplateId = query.formTemplateId ? query.formTemplateId : null;
         if (formTemplateId != null) {
             filters['formTemplateId'] = formTemplateId;
@@ -114,5 +114,4 @@ export class FormValidator extends BaseValidator {
         }
         return filters;
     };
-
 }

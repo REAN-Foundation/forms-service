@@ -36,7 +36,7 @@ export class FormService {
                 // Submitter: {
                 //     connect: { id: model.AnsweredByUserId }
                 // },
-                // FormUrl: model.FormUrl,
+                FormUrl: model.FormUrl,
                 Status: 'LinkShared',
                 CreatedAt: new Date(),
                 // SubmissionTimestamp: null,
@@ -87,7 +87,6 @@ export class FormService {
         // return response;
         return FormMapper.toDto(response);
     };
-
 
     delete = async (id: string) => {
         const response = await this.prisma.formSubmission.update({
@@ -199,12 +198,6 @@ export class FormService {
         return { search, pageIndex, limit, order, orderByColumn };
     };
 
-
-
-
-
-
-
     public search = async (filters: FormSubmissionSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
@@ -241,10 +234,6 @@ export class FormService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
     };
-
-
-
-
 
     private getSearchModel = (filters: FormSubmissionSearchFilters): Prisma.FormSubmissionWhereInput => {
         const where: Prisma.FormSubmissionWhereInput = {
