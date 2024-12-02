@@ -24,5 +24,6 @@ CMD ["sh", "-c", "npx prisma migrate deploy"]
 # CMD ["pm2", "start", "dist/index.js"]
 
 # RUN dos2unix /app/entrypoint.sh
-# RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
 ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
