@@ -160,3 +160,34 @@ export interface QuestionDto {
 //         ]
 //     }
 // }
+
+export interface SectionPreviewDto {
+    id: string;
+    SectionIdentifier: string;
+    Title: string;
+    Description: string;
+    DisplayCode: string;
+    Sequence: string;
+    ParentSectionId: string | null;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+    Questions: QuestionDto[];
+    Sections: SubsectionDto[];
+}
+
+export interface TemplatePreviewDto {
+    id: string;
+    Title: string;
+    Description: string;
+    CurrentVersion: number;
+    TenantCode: string;
+    Type: FormType;
+    ItemsPerPage: ItemsPerPage;
+    DisplayCode: string;
+    OwnerUserId: string;
+    RootSectionId: string;
+    DefaultSectionNumbering: boolean
+    CreatedAt: Date;
+    UpdatedAt: Date;
+    RootSection: SectionPreviewDto[];
+}

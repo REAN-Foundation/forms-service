@@ -1,12 +1,22 @@
 import { FormType, ItemsPerPage, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
-import { ExportFormTemplateDto, FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel, SectionDto, SubsectionDto, TemplateDto } from "../domain.types/forms/form.template.domain.types";
+import {
+    ExportFormTemplateDto,
+    FormTemplateCreateModel,
+    FormTemplateSearchFilters,
+    FormTemplateUpdateModel,
+    SectionDto,
+    SectionPreviewDto,
+    SubsectionDto,
+    TemplateDto,
+    TemplatePreviewDto
+} from "../domain.types/forms/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
 import { ErrorHandler } from "../common/error.handler";
 import { FormSectionMapper } from "../mappers/form.section.mapper";
 import { QuestionMapper } from "../mappers/question.mapper";
-import { uuid } from "../domain.types/miscellaneous/system.types";
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormTemplateService {
     prisma: PrismaClient = null;
@@ -209,6 +219,104 @@ export class FormTemplateService {
 
         return exportDto;
     }
+
+    previewTemplate = async (id: string) => {
+        const template = await this.prisma.formTemplate.findUnique({
+            where: { id, DeletedAt: null },
+        });
+
+        if (!template) {
+            throw new Error(`Template with ID ${id} not found`);
+        }
+
+        const templateDto: TemplatePreviewDto = {
+            id: template.id,
+            Title: template.Title,
+            Description: template.Description,
+            CurrentVersion: template.CurrentVersion,
+            TenantCode: template.TenantCode,
+            Type: template.Type,
+            ItemsPerPage: template.ItemsPerPage,
+            DisplayCode: template.DisplayCode,
+            OwnerUserId: template.OwnerUserId,
+            RootSectionId: template.RootSectionId,
+            DefaultSectionNumbering: template.DefaultSectionNumbering,
+            CreatedAt: template.CreatedAt,
+            UpdatedAt: template.UpdatedAt,
+            RootSection: [],
+        };
+
+        const rootSection = await this.prisma.formSection.findFirst({
+            where: {
+                ParentFormTemplateId: id,
+                Title: 'Assessment Root Section',
+                DeletedAt: null,
+            },
+        });
+
+        if (!rootSection) {
+            throw new Error(`No section found with Title 'Assessment Root Section' for template ID ${id}`);
+        }
+
+        const rootSectionId = rootSection.id;
+
+        const mapSections = async (parentId: string | null): Promise<SectionPreviewDto[]> => {
+            const sections = await this.prisma.formSection.findMany({
+                where: { ParentSectionId: parentId, ParentFormTemplateId: id, DeletedAt: null },
+            });
+
+            return Promise.all(
+                sections.map(async (section) => {
+                    const sectionDto: SectionPreviewDto = {
+                        id: section.id,
+                        SectionIdentifier: section.SectionIdentifier,
+                        Title: section.Title,
+                        Description: section.Description,
+                        DisplayCode: section.DisplayCode,
+                        Sequence: section.Sequence,
+                        ParentSectionId: section.ParentSectionId,
+                        CreatedAt: section.CreatedAt,
+                        UpdatedAt: section.UpdatedAt,
+                        Questions: [],
+                        Sections: [],
+                    };
+
+                    const questions = await this.prisma.question.findMany({
+                        where: { ParentSectionId: section.id, DeletedAt: null },
+                    });
+                    sectionDto.Questions = questions.map((q) => QuestionMapper.toDto(q));
+
+                    const subSections = await mapSections(section.id);
+                    if (subSections.length > 0) {
+                        sectionDto.Sections = subSections;
+                    }
+
+                    return sectionDto;
+                })
+            );
+        };
+
+        const rootSectionDto: SectionPreviewDto = {
+            id: rootSection.id,
+            SectionIdentifier: rootSection.SectionIdentifier,
+            Title: rootSection.Title,
+            Description: rootSection.Description,
+            DisplayCode: rootSection.DisplayCode,
+            Sequence: rootSection.Sequence,
+            ParentSectionId: rootSection.ParentSectionId,
+            CreatedAt: rootSection.CreatedAt,
+            UpdatedAt: rootSection.UpdatedAt,
+            Questions: [],
+            Sections: await mapSections(rootSection.id),
+        };
+
+        templateDto.RootSection.push(rootSectionDto);
+
+        return templateDto;
+    };
+
+
+
 
     delete = async (id: string) => {
         const response = await this.prisma.formTemplate.update({

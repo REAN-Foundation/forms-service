@@ -43,11 +43,10 @@ export class QuestionController extends BaseController {
             const parentSectionId = request.body.ParentSectionId;
             const allQuestions = await this._service.search({ parentSectionId });
     
-            // Set the sequence based on the number of questions
             if (allQuestions.Items.length === 0) {
-                model.Sequence = "A1";
+                model.Sequence = "Q1";
             } else {
-                model.Sequence = "A" + (allQuestions.Items.length + 1);
+                model.Sequence = "Q" + (allQuestions.Items.length + 1);
             }
     
             const record = await this._service.create(model);
