@@ -145,15 +145,9 @@ export class FormSectionService {
         if (Object.keys(whereClause).length > 0) {
             search.where = whereClause;
         }
-
+        
         return { search, pageIndex, limit, order, orderByColumn };
     };
-
-
-
-
-
-
 
     public search = async (filters: FormSectionSearchFilters) => {
         try {
@@ -184,7 +178,6 @@ export class FormSectionService {
                 OrderedBy: orderByColumn,
                 Items: list.map((x) => FormSectionMapper.toDto(x)),
                 // Items: FormSectionMapper.toArrayDto(list),
-
             };
 
             return searchResults;
@@ -192,10 +185,6 @@ export class FormSectionService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
     };
-
-
-
-
 
     private getSearchModel = (filters: FormSectionSearchFilters): Prisma.FormSectionWhereInput => {
         const where: Prisma.FormSectionWhereInput = {
@@ -242,7 +231,6 @@ export class FormSectionService {
                 equals: filters.parentSectionId,
             };
         }
-
         return where;
     };
 }

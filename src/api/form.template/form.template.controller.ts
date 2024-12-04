@@ -95,29 +95,40 @@ export class FormTemplateController extends BaseController {
 
     exportTemplate = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            // Validate 'id' as a UUID
             const id: string = await this._validator.validateParamAsUUID(request, 'id');
 
-            // Fetch assessment template
             const assessmentTemplate = await this._service.getById(id);
             if (!assessmentTemplate) {
                 throw new ApiError('Cannot find assessment template!', 404);
             }
 
-            // Retrieve and prepare the template object for export
             const templateObj = await this._service.readTemplateObjToExport(assessmentTemplate.id);
 
-            // Store template as a file locally
             const { dateFolder, filename, sourceFileLocation } = await Helper.storeTemplateToFileLocally(templateObj);
 
-            // Set response headers for file download
             const mimeType = Helper.getMimeType(sourceFileLocation);
             response.setHeader('Content-Type', mimeType);
             response.setHeader('Content-Disposition', `attachment; filename=${filename}`);
 
-            // Stream the file to the response
             const filestream = fs.createReadStream(sourceFileLocation);
             filestream.pipe(response);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    previewTemplate = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            const id: string = await this._validator.validateParamAsUUID(request, 'id');
+
+            const templateObj = await this._service.previewTemplate(id);
+
+            if (!templateObj) {
+                throw new ApiError('Cannot find assessment template!', 404);
+            }
+
+            const message = 'Form templated retrived successfully!';
+            ResponseHandler.success(request, response, message, 200, templateObj);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
