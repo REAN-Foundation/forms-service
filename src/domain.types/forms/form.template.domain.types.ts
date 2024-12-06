@@ -80,43 +80,6 @@ export interface FormTemplateSearchResponseDto extends BaseSearchResults {
     UpdatedAt: Date;
 }
 
-
-export interface ExportFormTemplateDto {
-    Sections: any;
-    Template: TemplateDto;
-}
-
-export interface TemplateDto extends FormTemplateResponseDto {
-    Sections: SectionDto[];
-}
-
-export interface SectionDto {
-    id: string;
-    SectionIdentifier: string;
-    Title: string;
-    Description: string;
-    DisplayCode: string;
-    Sequence: string;
-    ParentSectionId: string | null;
-    CreatedAt: Date;
-    UpdatedAt: Date;
-    Questions: QuestionDto[];
-    Subsections: SubsectionDto[];
-}
-
-export interface SubsectionDto {
-    id: string;
-    SectionIdentifier: string;
-    Title: string;
-    Description: string;
-    DisplayCode: string;
-    Sequence: string;
-    ParentSectionId: string;
-    CreatedAt: Date;
-    UpdatedAt: Date;
-    Questions: QuestionDto[];
-}
-
 export interface QuestionDto {
     id: string;
     Title: string;
@@ -161,7 +124,7 @@ export interface QuestionDto {
 //     }
 // }
 
-export interface SectionPreviewDto {
+export interface SubSectionPreviewDto {
     id: string;
     SectionIdentifier: string;
     Title: string;
@@ -172,7 +135,32 @@ export interface SectionPreviewDto {
     CreatedAt: Date;
     UpdatedAt: Date;
     Questions: QuestionDto[];
-    Sections: SubsectionDto[];
+}
+export interface MainSectionPreviewDto {
+    id: string;
+    SectionIdentifier: string;
+    Title: string;
+    Description: string;
+    DisplayCode: string;
+    Sequence: string;
+    ParentSectionId: string | null;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+    Questions: QuestionDto[];
+    SubSections: SubSectionPreviewDto[];
+}
+
+export interface RootSectionPreviewDto {
+    id: string;
+    SectionIdentifier: string;
+    Title: string;
+    Description: string;
+    DisplayCode: string;
+    Sequence: string;
+    ParentSectionId: string | null;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+    MainSections: MainSectionPreviewDto[];
 }
 
 export interface TemplatePreviewDto {
@@ -189,5 +177,5 @@ export interface TemplatePreviewDto {
     DefaultSectionNumbering: boolean
     CreatedAt: Date;
     UpdatedAt: Date;
-    RootSection: SectionPreviewDto[];
+    RootSection: RootSectionPreviewDto[];
 }
