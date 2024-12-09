@@ -1,30 +1,52 @@
 import express from 'express';
-// import { Authorizer } from '../auth/authorizer';
-import { ErrorHandler } from '../common/error.handler';
-import { error } from 'console';
-// import { Loader } from '../startup/loader';
+import { uuid } from '../domain.types/miscellaneous/system.types';
+import { Injector } from '../startup/injector';
+import { UserService } from '../services/user.service';
+import { PermissionHandler } from '../auth/custom/permission.handler';
+import { ApiError } from '../common/api.error';
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class BaseController {
 
-    constructor() {
-    }
-
-    authorize = async (
-        context: string,
+    public authorizeOne = async (
         request: express.Request,
-        response: express.Response,
-        authorize = true) => {
+        resourceOwnerUserId?: uuid,
+        resourceTenantId?: uuid): Promise<void> => {
 
-        if (context === undefined || context === null) {
-            ErrorHandler.throwInternalServerError('Invalid request context', error);
-        }
-        const tokens = context.split('.');
-        if (tokens.length < 2) {
-            ErrorHandler.throwInternalServerError('Invalid request context', error);
+        if (request.currentClient?.IsPrivileged) {
+            return;
         }
 
+        let ownerUserId = resourceOwnerUserId ?? null;
+        let tenantId = resourceTenantId ?? null;
+
+        if (ownerUserId) {
+            const userService = Injector.Container.resolve(UserService);
+            const user = await userService.getById(ownerUserId);
+            if (user) {
+                ownerUserId = user.id;
+                tenantId = tenantId ?? user.TenantId;
+            }
+        }
+
+        if (tenantId == null) {
+            // If tenant is not provided, get the default tenant
+            const tenantService = Injector.Container.resolve(TenantService);
+            const tenant = await tenantService.getTenantWithCode('default');
+            if (tenant) {
+                tenantId = tenant.id;
+            }
+        }
+
+        request.resourceOwnerUserId = ownerUserId;
+        request.resourceTenantId = tenantId;
+
+        const permitted = await PermissionHandler.checkFineGrained(request);
+        if (!permitted) {
+            throw new ApiError(403, 'Permission denied.');
+        }
     };
 
 }

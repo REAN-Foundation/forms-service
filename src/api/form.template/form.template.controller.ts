@@ -45,6 +45,7 @@ export class FormTemplateController extends BaseController {
     create = async (request: express.Request, response: express.Response) => {
         try {
             let model: FormTemplateCreateModel = await this._validator.validateCreateRequest(request);
+            await this.authorizeOne(request, model.OwnerUserId);
             const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);

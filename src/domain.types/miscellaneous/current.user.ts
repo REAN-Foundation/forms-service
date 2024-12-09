@@ -1,5 +1,6 @@
 
 export interface CurrentUser {
+    TenantId: string;
     UserId: string;
     FirstName: string;
     LastName: string;
