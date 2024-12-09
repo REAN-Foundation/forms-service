@@ -121,4 +121,39 @@ export class QuestionMapper {
         }
         return records.map(record => QuestionMapper.toDto(record));
     }
+
+    static toPreviewDto = (record: any): QuestionResponseDto => {
+        if (record === null) {
+            return null;
+        }
+
+        // Parse the Options JSON if it's present
+        let options: QuestionOption[] = [];
+        if (record.Options !== null && record.Options !== undefined) {
+            options = record.Options as QuestionOption[];
+        }
+
+        // Map the record to QuestionResponseDto
+        const dto: QuestionResponseDto = {
+            id: record.id,
+            Title: record.Title,
+            Description: record.Description,
+            DisplayCode: record.DisplayCode ?? null,
+            ResponseType: record.ResponseType,
+            Score: record.Score,
+            Sequence: record.Sequence,
+            CorrectAnswer: record.CorrectAnswer,
+            Hint: record.Hint,
+            Options: options,
+            QuestionImageUrl: record.QuestionImageUrl,
+            RangeMin: record.RangeMin,
+            RangeMax: record.RangeMax,
+            ParentFormSection: record.ParentFormSection.id,
+            ParentFormTemplate: record.ParentFormTemplate.id,
+            CreatedAt: record.CreatedAt,
+            UpdatedAt: record.UpdatedAt,
+        };
+
+        return dto;
+    };
 }

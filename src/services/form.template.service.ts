@@ -194,7 +194,7 @@ export class FormTemplateService {
                                 ParentSectionId: subSection.ParentSectionId,
                                 CreatedAt: subSection.CreatedAt,
                                 UpdatedAt: subSection.UpdatedAt,
-                                Questions: subQuestions.map((q) => QuestionMapper.toDto(q)),
+                                Questions: subQuestions.map((q) => QuestionMapper.toPreviewDto(q)),
                             } as SubSectionPreviewDto;
                         })
                     );
@@ -209,7 +209,7 @@ export class FormTemplateService {
                         ParentSectionId: mainSection.ParentSectionId,
                         CreatedAt: mainSection.CreatedAt,
                         UpdatedAt: mainSection.UpdatedAt,
-                        Questions: questions.map((q) => QuestionMapper.toDto(q)),
+                        Questions: questions.map((q) => QuestionMapper.toPreviewDto(q)),
                         SubSections: subSectionDtos,
                     } as MainSectionPreviewDto;
                 })
@@ -276,26 +276,34 @@ export class FormTemplateService {
         const findMainSections = async (parentSectionId: string): Promise<MainSectionPreviewDto[]> => {
             const mainSections = await this.prisma.formSection.findMany({
                 where: { ParentSectionId: parentSectionId, ParentFormTemplateId: id, DeletedAt: null },
-                orderBy: { Sequence: 'asc' }, 
+                orderBy: { Sequence: 'asc' },
             });
 
             return Promise.all(
                 mainSections.map(async (mainSection) => {
                     const questions = await this.prisma.question.findMany({
                         where: { ParentSectionId: mainSection.id, DeletedAt: null },
-                        orderBy: { Sequence: 'asc' }, 
+                        include: {
+                            ParentFormSection: true,
+                            ParentFormTemplate: true
+                        },
+                        orderBy: { Sequence: 'asc' },
                     });
 
                     const subSections = await this.prisma.formSection.findMany({
                         where: { ParentSectionId: mainSection.id, ParentFormTemplateId: id, DeletedAt: null },
-                        orderBy: { Sequence: 'asc' }, 
+                        orderBy: { Sequence: 'asc' },
                     });
 
                     const subSectionDtos = await Promise.all(
                         subSections.map(async (subSection) => {
                             const subQuestions = await this.prisma.question.findMany({
                                 where: { ParentSectionId: subSection.id, DeletedAt: null },
-                                orderBy: { Sequence: 'asc' }, 
+                                include: {
+                                    ParentFormSection: true,
+                                    ParentFormTemplate: true
+                                },
+                                orderBy: { Sequence: 'asc' },
                             });
 
                             return {
@@ -308,7 +316,7 @@ export class FormTemplateService {
                                 ParentSectionId: subSection.ParentSectionId,
                                 CreatedAt: subSection.CreatedAt,
                                 UpdatedAt: subSection.UpdatedAt,
-                                Questions: subQuestions.map((q) => QuestionMapper.toDto(q)),
+                                Questions: subQuestions.map((q) => QuestionMapper.toPreviewDto(q)),
                             } as SubSectionPreviewDto;
                         })
                     );
@@ -323,7 +331,7 @@ export class FormTemplateService {
                         ParentSectionId: mainSection.ParentSectionId,
                         CreatedAt: mainSection.CreatedAt,
                         UpdatedAt: mainSection.UpdatedAt,
-                        Questions: questions.map((q) => QuestionMapper.toDto(q)),
+                        Questions: questions.map((q) => QuestionMapper.toPreviewDto(q)),
                         SubSections: subSectionDtos,
                     } as MainSectionPreviewDto;
                 })

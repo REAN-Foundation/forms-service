@@ -70,6 +70,7 @@ export class FormSectionController extends BaseController {
             }
 
             model.Sequence = sequence;
+            model.SectionIdentifier = this.generateSectionIdentifier(sequence);
 
             const record = await this._service.create(model);
 
@@ -85,6 +86,17 @@ export class FormSectionController extends BaseController {
         }
     };
 
+    // Helper function to generate the SectionIdentifier
+    private generateSectionIdentifier(sequence: string): string {
+        const numberMap = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth'];
+
+        const isSubSection = sequence.startsWith('SS');
+        const sequenceNumber = parseInt(sequence.replace(/[^\d]/g, ''), 10);
+
+        const ordinal = numberMap[sequenceNumber - 1] || `${sequenceNumber}th`;
+
+        return isSubSection ? `${ordinal} SubSection` : `${ordinal} Section`;
+    }
 
     /*
     find all sectios by template id
