@@ -121,12 +121,6 @@ export class UserService {
         return { search, pageIndex, limit, order, orderByColumn };
     };
 
-
-
-
-
-
-
     public search = async (filters: UserSearchFilters) => {
         try {
             const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
@@ -159,10 +153,6 @@ export class UserService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
     };
-
-
-
-
 
     private getSearchModel = (filters: UserSearchFilters): Prisma.UserWhereInput => {
         const where: Prisma.UserWhereInput = { DeletedAt: null };

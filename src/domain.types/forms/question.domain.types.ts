@@ -3,30 +3,6 @@
 import { QueryResponseType } from "@prisma/client";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
-// export interface QuestionOption {
-//     Sequence: string;
-//     Data: string;
-//     ImageUrl: string;
-// }
-
-// export interface QuestionCreateModel {
-//     ParentTemplateId: string;
-//     ParentSectionId: string;
-//     Title: string;
-//     Description?: string;
-//     DisplayCode: string;
-//     ResponseType: QueryResponseType;
-//     Score: number;
-//     Sequence: string;
-//     CorrectAnswer: string;
-//     Hint: string;
-//     Options: QuestionOption;
-//     // FileResourceId   : string;
-//     QuestionImageUrl: string;
-//     RangeMin: number;
-//     RangeMax: number | null;
-// }
-
 export interface QuestionOption {
     Text: string;
     Sequence: string;

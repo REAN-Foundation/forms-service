@@ -1,11 +1,7 @@
 import mime = require('mime-types');
 import fs from 'fs';
 import path from "path";
-import { ExportFormTemplateDto } from '../forms/form.template.domain.types';
-// import { ExportFormTemplateDto, TemplateDto } from '../forms/form.template.domain.types';
-// import { TimeHelper } from './time.helper';
-// import { DateStringFormat } from './time.types';
-
+import { TemplatePreviewDto } from '../forms/form.template.domain.types';
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -15,8 +11,8 @@ export class Helper {
         return mimeType;
     };
 
-    public static storeTemplateToFileLocally = async (templateObj: ExportFormTemplateDto): Promise<{ dateFolder: string, filename: string, sourceFileLocation: string }> => {
-        const title = templateObj.Template.Title;
+    public static storeTemplateToFileLocally = async (templateObj: TemplatePreviewDto): Promise<{ dateFolder: string, filename: string, sourceFileLocation: string }> => {
+        const title = templateObj.Title;
         const filename = Helper.strToFilename(title, 'json', '-');
         const tempDownloadFolder = Helper.downloadTemporaryFolder();
         const timestamp = Helper.getTimestamp();

@@ -68,7 +68,6 @@ export class QuestionService {
     create = async (model: QuestionCreateModel) => {
         let jsonData: Prisma.JsonValue | undefined;
 
-        // Map model.Options to the appropriate structure for JSON storage
         if (model.Options && model.Options.length > 0) {
             jsonData = model.Options.map((option) => ({
                 Text: option.Text,
@@ -77,7 +76,6 @@ export class QuestionService {
             })) as Prisma.JsonArray;
         }
 
-        // Create a new question in the database
         const response = await this.prisma.question.create({
             data: {
                 ParentFormTemplate: {
@@ -99,8 +97,8 @@ export class QuestionService {
                 RangeMax: model.RangeMax,
                 RangeMin: model.RangeMin,
                 CreatedAt: new Date(),
-                // UpdatedAt: new Date(), // Uncomment and modify as needed
-                // DeletedAt: null, // Uncomment and modify as needed
+                // UpdatedAt: new Date(),
+                // DeletedAt: null, 
             },
             include: {
                 ParentFormTemplate: true,
@@ -115,7 +113,6 @@ export class QuestionService {
     update = async (id: string, model: QuestionUpdateModel) => {
         let jsonData: Prisma.JsonValue | undefined;
 
-        // Map model.Options to the appropriate structure for JSON storage
         if (model.Options && model.Options.length > 0) {
             jsonData = model.Options.map((option) => ({
                 Text: option.Text,

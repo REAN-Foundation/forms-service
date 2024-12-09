@@ -1,14 +1,12 @@
 import { FormType, ItemsPerPage, Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import {
-    ExportFormTemplateDto,
     FormTemplateCreateModel,
     FormTemplateSearchFilters,
     FormTemplateUpdateModel,
-    SectionDto,
-    SectionPreviewDto,
-    SubsectionDto,
-    TemplateDto,
+    MainSectionPreviewDto,
+    RootSectionPreviewDto,
+    SubSectionPreviewDto,
     TemplatePreviewDto
 } from "../domain.types/forms/form.template.domain.types";
 import { FormTemplateMapper } from "../mappers/form.template.mapper";
@@ -123,104 +121,7 @@ export class FormTemplateService {
         return searchResult;
     };
 
-    readTemplateObjToExport = async (id: string): Promise<ExportFormTemplateDto> => {
-        // Fetch main template
-        const template = await this.prisma.formTemplate.findUnique({
-            where: { id, DeletedAt: null }
-        });
-        if (!template) {
-            throw new Error(`Template with ID ${id} not found`);
-        }
-
-        // Define the Template DTO with required fields
-        const templateDto: TemplateDto = {
-            id: template.id,
-            Title: template.Title,
-            Description: template.Description,
-            CurrentVersion: template.CurrentVersion,
-            TenantCode: template.TenantCode,
-            Type: template.Type,
-            ItemsPerPage: template.ItemsPerPage,
-            DisplayCode: template.DisplayCode,
-            OwnerUserId: template.OwnerUserId,
-            RootSectionId: template.RootSectionId,
-            DefaultSectionNumbering: template.DefaultSectionNumbering,
-            CreatedAt: template.CreatedAt,
-            UpdatedAt: template.UpdatedAt,
-            Sections: []
-        };
-
-        // Fetch all top-level sections related to the template
-        const sections = await this.prisma.formSection.findMany({
-            where: { ParentFormTemplateId: id, ParentSectionId: null, DeletedAt: null },
-            include: { ParentFormTemplate: true }
-        });
-
-        // For each section, fetch subsections and questions
-        for (const section of sections) {
-            const dtoSection: SectionDto = {
-                id: section.id,
-                SectionIdentifier: section.SectionIdentifier,
-                Title: section.Title,
-                Description: section.Description,
-                DisplayCode: section.DisplayCode,
-                Sequence: section.Sequence,
-                ParentSectionId: section.ParentSectionId,
-                CreatedAt: section.CreatedAt,
-                UpdatedAt: section.UpdatedAt,
-                Subsections: [],
-                Questions: []
-            };
-
-            // Fetch and map questions associated with this section
-            const sectionQuestions = await this.prisma.question.findMany({
-                where: { ParentSectionId: section.id, DeletedAt: null }
-            });
-            dtoSection.Questions = sectionQuestions.map(question => QuestionMapper.toDto(question));
-
-            // Fetch and map subsections
-            const subsections = await this.prisma.formSection.findMany({
-                where: { ParentSectionId: section.id, DeletedAt: null }
-            });
-
-            for (const subsection of subsections) {
-                const dtoSubsection: SubsectionDto = {
-                    id: subsection.id,
-                    SectionIdentifier: subsection.SectionIdentifier,
-                    Title: subsection.Title,
-                    Description: subsection.Description,
-                    DisplayCode: subsection.DisplayCode,
-                    Sequence: subsection.Sequence,
-                    ParentSectionId: subsection.ParentSectionId,
-                    CreatedAt: subsection.CreatedAt,
-                    UpdatedAt: subsection.UpdatedAt,
-                    Questions: []
-                };
-
-                // Fetch questions for this subsection
-                const subsectionQuestions = await this.prisma.question.findMany({
-                    where: { ParentSectionId: subsection.id, DeletedAt: null }
-                });
-                dtoSubsection.Questions = subsectionQuestions.map(question => QuestionMapper.toDto(question));
-
-                // Add the subsection to the parent section
-                dtoSection.Subsections.push(dtoSubsection);
-            }
-
-            // Add the section to the Template DTO
-            templateDto.Sections.push(dtoSection);
-        }
-
-        // Flatten Sections to top-level property as required by ExportFormTemplateDto
-        const exportDto: ExportFormTemplateDto = {
-            Template: templateDto,
-            Sections: templateDto.Sections // Explicitly include Sections at the top level
-        };
-
-        return exportDto;
-    }
-
-    previewTemplate = async (id: string) => {
+    readTemplateObjToExport = async (id: string): Promise<TemplatePreviewDto> => {
         const template = await this.prisma.formTemplate.findUnique({
             where: { id, DeletedAt: null },
         });
@@ -258,45 +159,186 @@ export class FormTemplateService {
             throw new Error(`No section found with Title 'Assessment Root Section' for template ID ${id}`);
         }
 
-        const rootSectionId = rootSection.id;
-
-        const mapSections = async (parentId: string | null): Promise<SectionPreviewDto[]> => {
-            const sections = await this.prisma.formSection.findMany({
-                where: { ParentSectionId: parentId, ParentFormTemplateId: id, DeletedAt: null },
+        const findMainSections = async (parentSectionId: string): Promise<MainSectionPreviewDto[]> => {
+            const mainSections = await this.prisma.formSection.findMany({
+                where: { ParentSectionId: parentSectionId, ParentFormTemplateId: id, DeletedAt: null },
+                orderBy: { Sequence: 'asc' }, // Explicit database ordering
             });
 
             return Promise.all(
-                sections.map(async (section) => {
-                    const sectionDto: SectionPreviewDto = {
-                        id: section.id,
-                        SectionIdentifier: section.SectionIdentifier,
-                        Title: section.Title,
-                        Description: section.Description,
-                        DisplayCode: section.DisplayCode,
-                        Sequence: section.Sequence,
-                        ParentSectionId: section.ParentSectionId,
-                        CreatedAt: section.CreatedAt,
-                        UpdatedAt: section.UpdatedAt,
-                        Questions: [],
-                        Sections: [],
-                    };
-
+                mainSections.map(async (mainSection) => {
                     const questions = await this.prisma.question.findMany({
-                        where: { ParentSectionId: section.id, DeletedAt: null },
+                        where: { ParentSectionId: mainSection.id, DeletedAt: null },
+                        orderBy: { Sequence: 'asc' }, // Explicit database ordering
                     });
-                    sectionDto.Questions = questions.map((q) => QuestionMapper.toDto(q));
 
-                    const subSections = await mapSections(section.id);
-                    if (subSections.length > 0) {
-                        sectionDto.Sections = subSections;
-                    }
+                    const subSections = await this.prisma.formSection.findMany({
+                        where: { ParentSectionId: mainSection.id, ParentFormTemplateId: id, DeletedAt: null },
+                        orderBy: { Sequence: 'asc' }, // Explicit database ordering
+                    });
 
-                    return sectionDto;
+                    const subSectionDtos = await Promise.all(
+                        subSections.map(async (subSection) => {
+                            const subQuestions = await this.prisma.question.findMany({
+                                where: { ParentSectionId: subSection.id, DeletedAt: null },
+                                orderBy: { Sequence: 'asc' }, // Explicit database ordering
+                            });
+
+                            return {
+                                id: subSection.id,
+                                SectionIdentifier: subSection.SectionIdentifier,
+                                Title: subSection.Title,
+                                Description: subSection.Description,
+                                DisplayCode: subSection.DisplayCode,
+                                Sequence: subSection.Sequence,
+                                ParentSectionId: subSection.ParentSectionId,
+                                CreatedAt: subSection.CreatedAt,
+                                UpdatedAt: subSection.UpdatedAt,
+                                Questions: subQuestions.map((q) => QuestionMapper.toPreviewDto(q)),
+                            } as SubSectionPreviewDto;
+                        })
+                    );
+
+                    return {
+                        id: mainSection.id,
+                        SectionIdentifier: mainSection.SectionIdentifier,
+                        Title: mainSection.Title,
+                        Description: mainSection.Description,
+                        DisplayCode: mainSection.DisplayCode,
+                        Sequence: mainSection.Sequence,
+                        ParentSectionId: mainSection.ParentSectionId,
+                        CreatedAt: mainSection.CreatedAt,
+                        UpdatedAt: mainSection.UpdatedAt,
+                        Questions: questions.map((q) => QuestionMapper.toPreviewDto(q)),
+                        SubSections: subSectionDtos,
+                    } as MainSectionPreviewDto;
                 })
             );
         };
 
-        const rootSectionDto: SectionPreviewDto = {
+        const rootSectionDto: RootSectionPreviewDto = {
+            id: rootSection.id,
+            SectionIdentifier: rootSection.SectionIdentifier,
+            Title: rootSection.Title,
+            Description: rootSection.Description,
+            DisplayCode: 'Root',
+            Sequence: rootSection.Sequence,
+            ParentSectionId: rootSection.ParentSectionId,
+            CreatedAt: rootSection.CreatedAt,
+            UpdatedAt: rootSection.UpdatedAt,
+            MainSections: await findMainSections(rootSection.id),
+        };
+
+        templateDto.RootSection.push(rootSectionDto);
+
+        return templateDto;
+    };
+
+
+    previewTemplate = async (id: string): Promise<TemplatePreviewDto> => {
+        const template = await this.prisma.formTemplate.findUnique({
+            where: { id, DeletedAt: null },
+        });
+
+        if (!template) {
+            throw new Error(`Template with ID ${id} not found`);
+        }
+
+        const templateDto: TemplatePreviewDto = {
+            id: template.id,
+            Title: template.Title,
+            Description: template.Description,
+            CurrentVersion: template.CurrentVersion,
+            TenantCode: template.TenantCode,
+            Type: template.Type,
+            ItemsPerPage: template.ItemsPerPage,
+            DisplayCode: template.DisplayCode,
+            OwnerUserId: template.OwnerUserId,
+            RootSectionId: template.RootSectionId,
+            DefaultSectionNumbering: template.DefaultSectionNumbering,
+            CreatedAt: template.CreatedAt,
+            UpdatedAt: template.UpdatedAt,
+            RootSection: [],
+        };
+
+        const rootSection = await this.prisma.formSection.findFirst({
+            where: {
+                ParentFormTemplateId: id,
+                Title: 'Assessment Root Section',
+                DeletedAt: null,
+            },
+        });
+
+        if (!rootSection) {
+            throw new Error(`No section found with Title 'Assessment Root Section' for template ID ${id}`);
+        }
+
+        const findMainSections = async (parentSectionId: string): Promise<MainSectionPreviewDto[]> => {
+            const mainSections = await this.prisma.formSection.findMany({
+                where: { ParentSectionId: parentSectionId, ParentFormTemplateId: id, DeletedAt: null },
+                orderBy: { Sequence: 'asc' },
+            });
+
+            return Promise.all(
+                mainSections.map(async (mainSection) => {
+                    const questions = await this.prisma.question.findMany({
+                        where: { ParentSectionId: mainSection.id, DeletedAt: null },
+                        include: {
+                            ParentFormSection: true,
+                            ParentFormTemplate: true
+                        },
+                        orderBy: { Sequence: 'asc' },
+                    });
+
+                    const subSections = await this.prisma.formSection.findMany({
+                        where: { ParentSectionId: mainSection.id, ParentFormTemplateId: id, DeletedAt: null },
+                        orderBy: { Sequence: 'asc' },
+                    });
+
+                    const subSectionDtos = await Promise.all(
+                        subSections.map(async (subSection) => {
+                            const subQuestions = await this.prisma.question.findMany({
+                                where: { ParentSectionId: subSection.id, DeletedAt: null },
+                                include: {
+                                    ParentFormSection: true,
+                                    ParentFormTemplate: true
+                                },
+                                orderBy: { Sequence: 'asc' },
+                            });
+
+                            return {
+                                id: subSection.id,
+                                SectionIdentifier: subSection.SectionIdentifier,
+                                Title: subSection.Title,
+                                Description: subSection.Description,
+                                DisplayCode: subSection.DisplayCode,
+                                Sequence: subSection.Sequence,
+                                ParentSectionId: subSection.ParentSectionId,
+                                CreatedAt: subSection.CreatedAt,
+                                UpdatedAt: subSection.UpdatedAt,
+                                Questions: subQuestions.map((q) => QuestionMapper.toPreviewDto(q)),
+                            } as SubSectionPreviewDto;
+                        })
+                    );
+
+                    return {
+                        id: mainSection.id,
+                        SectionIdentifier: mainSection.SectionIdentifier,
+                        Title: mainSection.Title,
+                        Description: mainSection.Description,
+                        DisplayCode: mainSection.DisplayCode,
+                        Sequence: mainSection.Sequence,
+                        ParentSectionId: mainSection.ParentSectionId,
+                        CreatedAt: mainSection.CreatedAt,
+                        UpdatedAt: mainSection.UpdatedAt,
+                        Questions: questions.map((q) => QuestionMapper.toPreviewDto(q)),
+                        SubSections: subSectionDtos,
+                    } as MainSectionPreviewDto;
+                })
+            );
+        };
+
+        const rootSectionDto: RootSectionPreviewDto = {
             id: rootSection.id,
             SectionIdentifier: rootSection.SectionIdentifier,
             Title: rootSection.Title,
@@ -306,17 +348,13 @@ export class FormTemplateService {
             ParentSectionId: rootSection.ParentSectionId,
             CreatedAt: rootSection.CreatedAt,
             UpdatedAt: rootSection.UpdatedAt,
-            Questions: [],
-            Sections: await mapSections(rootSection.id),
+            MainSections: await findMainSections(rootSection.id),
         };
 
         templateDto.RootSection.push(rootSectionDto);
 
         return templateDto;
     };
-
-
-
 
     delete = async (id: string) => {
         const response = await this.prisma.formTemplate.update({
@@ -477,9 +515,6 @@ export class FormTemplateService {
                 equals: filters.defaultSectionNumbering,
             };
         }
-
-
         return where;
     };
-
 }
