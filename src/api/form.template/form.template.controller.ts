@@ -84,8 +84,12 @@ export class FormTemplateController extends BaseController {
 
     getDetailsById = async (request: express.Request, response: express.Response) => {
         try {
-            var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
-            const record = await this._service.getDetailsById(id);
+            var formTemplateId: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            const isRecordExists = await this._service.getById(formTemplateId);
+            if (!isRecordExists) {
+                throw new ApiError('Cannot find form template!', 404);
+            }
+            const record = await this._service.getDetailsById(formTemplateId);
             const message = 'Form template and its data retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
