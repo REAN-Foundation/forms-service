@@ -37,6 +37,84 @@ export class FormSectionController extends BaseController {
     //     }
     // }
 
+    // create = async (request: express.Request, response: express.Response) => {
+    //     try {
+    //         // Validate the request body
+    //         const model: FormSectionCreateModel = await this._validator.validateCreateRequest(request);
+
+    //         const parentTemplateId: string = request.body.ParentFormTemplateId;
+    //         const parentSectionId: string = request.body.ParentSectionId;
+
+    //         let sequence: string;
+
+    //         // Fetch sections by parentTemplateId
+    //         const sectionsByTemplateId = await this._service.getByTemplateId(parentTemplateId);
+
+    //         // Check if DefaultSectionNumbering is false
+    //         if (sectionsByTemplateId[0]?.ParentFormTemplate.DefaultSectionNumbering === false) {
+    //             // Use the sequence provided in the request body
+    //             sequence = request.body.Sequence;
+    //         } else {
+    //             // Check if parentSectionId exists
+    //             if (parentSectionId) {
+    //                 // Fetch the parent section details
+    //                 const parentSectionResponse = await this._service.search({ parentSectionId });
+
+    //                 // Debugging log to check the items
+    //                 console.log('ParentSectionId:', parentSectionId);
+    //                 console.log('ParentSectionResponse Items:', parentSectionResponse?.Items);
+
+    //                 // Initialize parentSection as null
+    //                 let parentSection = null;
+
+    //                 // Iterate through Items to find the matching parentSectionId
+    //                 for (const section of parentSectionResponse?.Items || []) {
+    //                     if (section.id === parentSectionId) {
+    //                         parentSection = section;
+    //                         break; // Exit the loop once the section is found
+    //                     }
+    //                 }
+
+    //                 if (!parentSection) {
+    //                     throw new Error(`Parent section with ID ${parentSectionId} not found.`);
+    //                 }
+
+    //                 // Check if the parent section is 'Assessment Root Section'
+    //                 if (parentSection.Title === 'Assessment Root Section') {
+    //                     // Fetch all child sections of this parentSectionId
+    //                     const childSections = parentSectionResponse?.Items || [];
+
+    //                     // Calculate sequence for root sections (S1, S2, ...)
+    //                     sequence = `S${childSections.length + 1}`;
+    //                 } else {
+    //                     // Fetch all child sections of this parentSectionId
+    //                     const childSections = parentSectionResponse?.Items || [];
+
+    //                     // Calculate sequence for non-root sections (SS1, SS2, ...)
+    //                     sequence = `SS${childSections.length + 1}`;
+    //                 }
+    //             }
+    //             else {
+    //                 // If no parentSectionId, calculate sequence using ParentTemplateId
+    //                 sequence = `A${sectionsByTemplateId.length + 1}`;
+    //             }
+    //         }
+
+    //         model.Sequence = sequence;
+
+    //         // Create the section record
+    //         const record = await this._service.create(model);
+
+    //         if (record === null) {
+    //             ErrorHandler.throwInternalServerError('Unable to add Form section!', error);
+    //         }
+
+    //         const message = 'Form section added successfully!';
+    //         return ResponseHandler.success(request, response, message, 201, record);
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
     create = async (request: express.Request, response: express.Response) => {
         try {
             const model: FormSectionCreateModel = await this._validator.validateCreateRequest(request);

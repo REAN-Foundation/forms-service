@@ -100,10 +100,6 @@ export default class Application {
 
         const [_, user, password, host, port, database] = matches;
 
-        console.log("matches: ", matches)
-
-        console.log("db-host: ", host)
-
         try {
             const connection = await mysql.createConnection({
                 host,
