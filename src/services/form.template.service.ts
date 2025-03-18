@@ -89,39 +89,96 @@ export class FormTemplateService {
     };
 
     getDetailsById = async (id: string) => {
-        const template = await this.prisma.formTemplate.findUnique({
+        const record = await this.prisma.formTemplate.findUnique({
             where: {
                 id: id,
                 DeletedAt: null
             },
-        });
-        const sections = await this.prisma.formSection.findMany({
-            where: {
-                ParentFormTemplateId: id,
-                DeletedAt: null
-            },
             include: {
-                ParentFormTemplate: true
+                FormSections: {
+                    where: {
+                        DeletedAt: null
+                    },
+                    orderBy: {
+                        CreatedAt: 'asc' // Sort sections within each template
+                    },
+                    include: {
+                        Questions: {
+                            where: {
+                                DeletedAt: null
+                            },
+                            orderBy: {
+                                CreatedAt: 'asc' // Sort questions within each section
+                            }
+                        },
+                        ParentFormTemplate: true
+                    }
+                }
             }
+        })
+
+        const subsections =  await this.mapSections(record.FormSections);
+        record.FormSections = subsections;
+
+        return record;
+        // const template = await this.prisma.formTemplate.findUnique({
+        //     where: {
+        //         id: id,
+        //         DeletedAt: null
+        //     },
+        // });
+        // const sections = await this.prisma.formSection.findMany({
+        //     where: {
+        //         ParentFormTemplateId: id,
+        //         DeletedAt: null
+        //     },
+        //     include: {
+        //         ParentFormTemplate: true
+        //     }
+        // });
+        // const questions = await this.prisma.question.findMany({
+        //     where: {
+        //         ParentTemplateId: id,
+        //         DeletedAt: null
+        //     },
+        //     include: {
+        //         ParentFormTemplate: true,
+        //         ParentFormSection: true
+        //     }
+        // });
+
+        // const searchResult = {
+        //     Template: FormTemplateMapper.toDto(template),
+        //     Sections: sections.map((x) => FormSectionMapper.toDto(x)),
+        //     Questions: questions.map((x) => QuestionMapper.toDto(x))
+        // };
+        // return searchResult;
+    };
+
+    mapSections = async (sections: any[]) => {
+        const sectionMap = new Map();
+
+        // Initialize sections and assign an empty array for Subsections
+        sections.forEach((section) => {
+            sectionMap.set(section.id, { ...section, Subsections: [] });
         });
-        const questions = await this.prisma.question.findMany({
-            where: {
-                ParentTemplateId: id,
-                DeletedAt: null
-            },
-            include: {
-                ParentFormTemplate: true,
-                ParentFormSection: true
+
+        const rootSections: any[] = [];
+
+        // Assign subsections to their respective parents
+        sections.forEach((section) => {
+            if (section.ParentSectionId !== null) {
+                const parent = sectionMap.get(section.ParentSectionId);
+                if (parent) {
+                    parent.Subsections.push(sectionMap.get(section.id));
+                }
+            } else {
+                rootSections.push(sectionMap.get(section.id));
             }
         });
 
-        const searchResult = {
-            Template: FormTemplateMapper.toDto(template),
-            Sections: sections.map((x) => FormSectionMapper.toDto(x)),
-            Questions: questions.map((x) => QuestionMapper.toDto(x))
-        };
-        return searchResult;
-    };
+        return rootSections;
+    }
 
     readTemplateObjToExport = async (id: string): Promise<ExportFormTemplateDto> => {
         // Fetch main template
@@ -246,6 +303,15 @@ export class FormTemplateService {
             RootSection: [],
         };
 
+        // const sections = await this.prisma.formSection.findMany({
+        //     where: { ParentFormTemplateId: id, DeletedAt: null },
+        //     include: {
+        //         ParentFormTemplate: true,
+
+        //         Questions: true
+        //     }
+        // })
+        // console.log('****', JSON.stringify(sections))
         const rootSection = await this.prisma.formSection.findFirst({
             where: {
                 ParentFormTemplateId: id,
@@ -259,6 +325,25 @@ export class FormTemplateService {
         }
 
         const rootSectionId = rootSection.id;
+        const allSections = await this.prisma.formSection.findMany({
+            where: { ParentFormTemplateId: id, DeletedAt: null },
+            include: {
+                ParentFormTemplate: true,
+                Questions: {
+                    orderBy: {
+                        CreatedAt: 'asc' // Sort questions within each section
+                    }
+                }
+            },
+            orderBy: {
+                CreatedAt: 'asc' // Sorting in ascending order
+            }
+        })
+        // return allSections;
+        return await this.mapSections1(allSections);
+
+
+        console.log('****', JSON.stringify(allSections))
 
         const mapSections = async (parentId: string | null): Promise<SectionPreviewDto[]> => {
             const sections = await this.prisma.formSection.findMany({
@@ -296,6 +381,8 @@ export class FormTemplateService {
             );
         };
 
+
+
         const rootSectionDto: SectionPreviewDto = {
             id: rootSection.id,
             SectionIdentifier: rootSection.SectionIdentifier,
@@ -316,7 +403,30 @@ export class FormTemplateService {
     };
 
 
+    mapSections1 = async (sections: any[]) => {
+        const sectionMap = new Map();
 
+        // Initialize sections and assign an empty array for Subsections
+        sections.forEach((section) => {
+            sectionMap.set(section.id, { ...section, Subsections: [] });
+        });
+
+        const rootSections: any[] = [];
+
+        // Assign subsections to their respective parents
+        sections.forEach((section) => {
+            if (section.ParentSectionId !== null) {
+                const parent = sectionMap.get(section.ParentSectionId);
+                if (parent) {
+                    parent.Subsections.push(sectionMap.get(section.id));
+                }
+            } else {
+                rootSections.push(sectionMap.get(section.id));
+            }
+        });
+
+        return rootSections;
+    }
 
     delete = async (id: string) => {
         const response = await this.prisma.formTemplate.update({
