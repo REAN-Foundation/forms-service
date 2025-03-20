@@ -100,16 +100,16 @@ export class QuestionResponseController extends BaseController {
                     finalModel.TextValue = model[key]
                 }
                 if (questionResponseType === 'MultiChoiceSelection') {
-                    finalModel.TextValue = model[key] + '' //convert array to string 
+                    finalModel.TextValue = model[key] 
                 }
-                // if (questionResponseType === 'TextArray') {
-                //     finalModel.TextValue = model[key]
-                // }
+                if (questionResponseType === 'Object') {
+                    finalModel.TextValue = model[key]
+                }
                 if (questionResponseType === 'File') {
                     finalModel.FileResourceId = model[key]
                 }
                 if (questionResponseType === 'Date') {
-                    finalModel.DateTimeValue = model[key]
+                    finalModel.DateTimeValue = new Date(model[key])
                 }
                 if (questionResponseType === 'DateTime') {
                     finalModel.DateTimeValue = new Date(model[key])
@@ -121,7 +121,7 @@ export class QuestionResponseController extends BaseController {
                     finalModel.DateTimeValue = model[key]
                 }
                 if (questionResponseType === 'Range') {
-                    finalModel.DateTimeValue = model[key]
+                    finalModel.IntegerValue = model[key]
                 }
 
                 // for (let index = 0; index < model.length; index++) {
