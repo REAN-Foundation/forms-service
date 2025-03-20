@@ -92,7 +92,7 @@ export class QuestionValidator extends BaseValidator {
                 Score: request.body.Score,
                 Sequence: request.body.Sequence,
                 CorrectAnswer: request.body.CorrectAnswer,
-                IsRequired: request.body.IsRequired,
+                IsRequired: request.body.IsRequired ?? false,
                 Hint: request.body.Hint,
                 Options: request.body.Options, // Options should now be an array of QuestionOption
                 // FileResourceId: request.body.FileResourceId,
