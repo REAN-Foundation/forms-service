@@ -43,6 +43,7 @@ export interface QuestionCreateModel {
     Score?: number;
     Sequence?: string;
     CorrectAnswer: string;
+    IsRequired?: boolean;
     Hint: string;
     Options?: QuestionOption[]; // Change from QuestionOption to QuestionOption[]
     // FileResourceId: string;
@@ -59,6 +60,7 @@ export interface QuestionUpdateModel {
     ResponseType?: QueryResponseType;
     Score?: number;
     CorrectAnswer?: string;
+    IsRequired?: boolean;
     Hint?: string;
     Options?: QuestionOption[];
     // FileResourceId  ?: string;
@@ -117,6 +119,7 @@ export interface QuestionResponseDto {
     Score: number;
     Sequence: string;
     CorrectAnswer: string;
+    IsRequired?: boolean;
     Hint: string;
     Options: QuestionOption[]; // Update this to an array type
     QuestionImageUrl: string;
@@ -158,6 +161,7 @@ export interface QuestionSearchFilters extends BaseSearchFilters {
     responseType?: QueryResponseType;
     score?: number;
     correctAnswer?: string;
+    isRequired?: boolean;
     hint?: string;
     options?: QuestionOption[];
     // FileResourceId   : string;
@@ -179,6 +183,7 @@ export interface QuestionSearchResponseDto extends BaseSearchResults {
     Score: number;
     Sequence: string;
     CorrectAnswer: string;
+    IsRequired?: boolean;
     Hint: string;
     Options: QuestionOption;
     // FileResourceId  : string;

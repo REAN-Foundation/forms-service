@@ -42,25 +42,25 @@ export class QuestionController extends BaseController {
             let model: QuestionCreateModel = await this._validator.validateCreateRequest(request);
             const parentSectionId = request.body.ParentSectionId;
             const allQuestions = await this._service.search({ parentSectionId });
-    
+
             if (allQuestions.Items.length === 0) {
                 model.Sequence = "Q1";
             } else {
                 model.Sequence = "Q" + (allQuestions.Items.length + 1);
             }
-    
+
             const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError('Unable to add Form!', error);
             }
-    
+
             const message = 'Question added successfully!';
             return ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
-    
+
     getById = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);

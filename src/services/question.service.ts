@@ -92,6 +92,7 @@ export class QuestionService {
                 ResponseType: model.ResponseType as QueryResponseType,
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
+                IsRequired: model.IsRequired,
                 Hint: model.Hint,
                 Sequence: model.Sequence,
                 Options: jsonData, // Only assign if jsonData is defined
@@ -131,6 +132,7 @@ export class QuestionService {
                 // ResponseType: model.ResponseType as QueryResponseType,
                 Score: model.Score,
                 CorrectAnswer: model.CorrectAnswer,
+                IsRequired: model.IsRequired,
                 Hint: model.Hint,
                 Options: jsonData, // Only assign if jsonData is defined
                 QuestionImageUrl: model.QuestionImageUrl,
@@ -322,6 +324,13 @@ export class QuestionService {
                 equals: filters.score,
             };
         }
+
+        if (filters.isRequired) {
+            where.IsRequired = {
+                equals: filters.isRequired,
+            };
+        }
+
         if (filters.hint) {
             where.Hint = {
                 equals: filters.hint,
