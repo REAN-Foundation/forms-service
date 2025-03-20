@@ -64,6 +64,7 @@ model Question {
   Score              Int?
   Sequence           String?
   CorrectAnswer      String?
+  IsRequired         Boolean?
   Hint               String?
   Options            Json?
   QuestionImageUrl   String?

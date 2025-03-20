@@ -81,6 +81,7 @@ export class QuestionMapper {
             Score: record.Score,
             Sequence: record.Sequence,
             CorrectAnswer: record.CorrectAnswer,
+            IsRequired:record.IsRequired,
             Hint: record.Hint,
             Options: options,
             QuestionImageUrl: record.QuestionImageUrl,

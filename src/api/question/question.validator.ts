@@ -71,6 +71,7 @@ export class QuestionValidator extends BaseValidator {
                 ResponseType: joi.string().required(),
                 Score: joi.number().optional(),
                 CorrectAnswer: joi.string().optional(),
+                IsRequired: joi.boolean().optional(),
                 Hint: joi.string().optional(),
                 Sequence: joi.string().optional(),
                 Options: joi.array().items(optionSchema).optional(), // Validate Options as an array of objects
@@ -91,6 +92,7 @@ export class QuestionValidator extends BaseValidator {
                 Score: request.body.Score,
                 Sequence: request.body.Sequence,
                 CorrectAnswer: request.body.CorrectAnswer,
+                IsRequired: request.body.IsRequired ?? false,
                 Hint: request.body.Hint,
                 Options: request.body.Options, // Options should now be an array of QuestionOption
                 // FileResourceId: request.body.FileResourceId,
@@ -102,7 +104,7 @@ export class QuestionValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-    
+
     public validateUpdateRequest = async (request: express.Request): Promise<QuestionUpdateModel | undefined> => {
         try {
             const optionSchema = joi.object({
@@ -117,6 +119,7 @@ export class QuestionValidator extends BaseValidator {
                 ResponseType: joi.string().optional(),
                 Score: joi.number().optional(),
                 CorrectAnswer: joi.string().optional(),
+                IsRequired: joi.boolean().optional(),
                 Hint: joi.string().optional(),
                 // Options: joi.array().items(joi.string().optional()).optional(),
                 Options: joi.array().items(optionSchema).optional(), // Validate Options as an array of objects
@@ -133,6 +136,7 @@ export class QuestionValidator extends BaseValidator {
                 ResponseType: request.body.ResponseType ?? null,
                 Score: request.body.Score ?? null,
                 CorrectAnswer: request.body.CorrectAnswer ?? null,
+                IsRequired: request.body.IsRequired ?? null,
                 Hint: request.body.Hint ?? null,
                 Options: request.body.Options ?? null,
                 // FileResourceId  : request.body.FileResourceId ?? null,
@@ -157,6 +161,7 @@ export class QuestionValidator extends BaseValidator {
                 responseType: joi.string().optional(),
                 score: joi.number().optional(),
                 correctAnswer: joi.string().optional(),
+                isRequired: joi.boolean().optional(),
                 hint: joi.string().optional(),
                 options: joi.array().items(joi.string().optional()).optional(),
                 // FileResourceId  : joi.string().uuid().optional(),
@@ -209,10 +214,13 @@ export class QuestionValidator extends BaseValidator {
         if (score != null) {
             filters['score'] = score;
         }
-
         var correctAnswer = query.correctAnswer ? query.correctAnswer : null;
         if (correctAnswer != null) {
             filters['correctAnswer'] = correctAnswer;
+        }
+        var isRequired = query.isRequired ? query.isRequired : null;
+        if (isRequired != null) {
+            filters['isRequired'] = isRequired;
         }
         var hint = query.hint ? query.hint : null;
         if (hint != null) {
