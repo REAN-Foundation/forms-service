@@ -47,13 +47,13 @@ export class FormController extends BaseController {
 
             const formSubmissionUpdateModel: FormSubmissionUpdateModel = {};
 
-            formSubmissionUpdateModel.Encrypted = this.generateUniqueKey(`id=${record.id}${model.UserId ? `$userId=${record.UserId}` : ''}`);
+            formSubmissionUpdateModel.Encrypted = this.generateUniqueKey(`id=${record.id}${model.UserId ? `&userId=${record.UserId}` : ''}`);
             
             if (!formSubmissionUpdateModel.Encrypted) {
                 ErrorHandler.throwInternalServerError('Unable to generate form link!', {});
             }
 
-            formSubmissionUpdateModel.Unencrypted = `id=${record.id}${model.UserId ? `$userId=${record.UserId}` : ''}`;
+            formSubmissionUpdateModel.Unencrypted = `id=${record.id}${model.UserId ? `&userId=${record.UserId}` : ''}`;
             formSubmissionUpdateModel.Link = `${process.env.BASE_URL}/form/submission/${formSubmissionUpdateModel.Encrypted}`;
             formSubmissionUpdateModel.LinkQueryParams = JSON.stringify({
                 id: record.id,
