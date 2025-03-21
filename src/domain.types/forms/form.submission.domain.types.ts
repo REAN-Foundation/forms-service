@@ -1,59 +1,59 @@
-import { FormStatus } from "@prisma/client";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
 export interface FormSubmissionCreateModel {
     FormTemplateId: string;
-    FormUrl: string;
-    AnsweredByUserId: string;
-    Status: FormStatus;
-}
-
-// Only status will be updated
-export interface FormSubmissionUpdateModel {
+    UserId?: string;
+    Encrypted? : string;
+    Unencrypted? : string;
+    Link? : string;
+    LinkQueryParams? : LinkQueryParams;
+    ValidTill? : Date;
+    SubmittedAt? : Date;
     Status?: FormStatus;
-    AnsweredByUserId:string;
+    Category: FormType;
 }
 
-export interface FormSubmissionResponseDto {
-    id: string;
-    ParentFormTemplateId: string,
-    ParentFormTemplate: {
-        id: string;
-        Title: string;
-        Description: string;
-        CurrentVersion: number;
-        Type: string;
-        DisplayCode: string;
-        OwnerUserId: string;
-        RootSectionId: string;
-        DefaultSectionNumbering: boolean
-        CreatedAt: Date;
-        UpdatedAt: Date;
-    };
-    // Submitter: {
-    //     id: string;
-    //     FirstName: string;
-    //     LastName: string;
-    //     Phone: string;
-    //     Email: string;
-    //     UserName: string
-    //     CountryCode: string
-    // }
-    FormUrl: string;
-    AnsweredByUserId?: string;
-    Status: string;
-    SubmissionTimestamp: Date;
-    CreatedAt: Date;
-    UpdatedAt: Date;
+export interface LinkQueryParams {
+    id?: string;
+    UserId?: string;
+    Category?: string;
+    ExpiresOn?: Date;
+}
+
+export interface FormSubmissionUpdateModel {
+    UserId?: string;
+    Encrypted? : string;
+    Unencrypted? : string;
+    Link? : string;
+    QueryParams? : LinkQueryParams;
+    LinkQueryParams? : string;
+    ValidTill? : Date;
+    SubmittedAt? : Date;
+    Status?: FormStatus;
+    Category?: FormType;
+}
+
+export interface FormSubmissionDto {
+    id?: string;
+    FormTemplateId?: string;
+    UserId?: string;
+    Encrypted? : string;
+    Unencrypted? : string;
+    Link? : string;
+    LinkQueryParams? : LinkQueryParams;
+    SubmittedAt? : Date;
+    ValidTill? : Date;
+    Status?: FormStatus;
+    Category?: FormType;
 }
 
 export interface FormSubmissionSearchFilters extends BaseSearchFilters {
-    id?:string
-    formTemplateId?: string;
-    formUrl?: string;
-    answeredByUserId?: string;
-    status?: FormStatus;
-    submissionTimestamp?:Date;
+    FormTemplateId?: string;
+    UserId?: string;
+    Encrypted?: string;
+    Status?: FormStatus;
+    ValidTill?: Date;
+    SubmittedAt?:Date;
 }
 
 export interface FormSubmissionSearchResults extends BaseSearchResults {
@@ -82,4 +82,18 @@ export interface FormSubmissionSearchResponseDto extends BaseSearchResults{
     SubmissionTimestamp: Date;
     CreatedAt: Date;
     UpdatedAt: Date;
-}
+};
+
+export enum FormStatus {
+    LinkShared = "LinkShared",
+    Presented = "Presented",
+    InProgress = "InProgress",
+    Submitted = "Submitted",
+  }
+
+  export enum FormType {
+    Survey = "Survey",
+    Questionnaire = "Questionnaire",
+    TestPaper = "TestPaper",
+    DataCollection = "DataCollection"
+  }
