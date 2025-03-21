@@ -1,7 +1,7 @@
 {
-  "name": "practice",
+  "name": "form-service",
   "version": "1.0.0",
-  "description": "last try",
+  "description": "form-service",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/prashantkharade/project#readme",
   "dependencies": {
-    "@prisma/client": "^5.19.1",
+    "@prisma/client": "^5.22.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "csv-writer": "^1.6.0",
@@ -29,6 +29,7 @@
     "moment-timezone": "^0.5.45",
     "mysql2": "^3.10.0",
     "pdfkit": "^0.15.0",
+    "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0"
   },
   "devDependencies": {
