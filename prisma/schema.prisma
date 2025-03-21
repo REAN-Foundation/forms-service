@@ -80,14 +80,19 @@ model Question {
 
 model FormSubmission {
   id                  String             @id @default(uuid())
-  FormTemplate        FormTemplate       @relation(fields: [FormTemplateId], references: [id])
   FormTemplateId      String //one-to-many relation with form_templates
-  FormUrl             String?
-  Submitter           User?              @relation(fields: [AnsweredByUserId], references: [id])
-  AnsweredByUserId    String? // one-to-many relation with user
+  UserId              String? // one-to-many relation with user
+  Encrypted           String?
+  Unencrypted         String?
+  Link                String?
+  LinkQueryParams     Json?
   Status              FormStatus
-  SubmissionTimestamp DateTime?
+  ValidTill           DateTime
+  SubmittedAt         DateTime?
   QuestionResponses   QuestionResponse[]
+
+  FormTemplate        FormTemplate       @relation(fields: [FormTemplateId], references: [id])
+    
   CreatedAt           DateTime           @default(now())
   UpdatedAt           DateTime?
   DeletedAt           DateTime?
@@ -132,7 +137,6 @@ model User {
   UpdatedAt     DateTime?
   DeletedAt     DateTime?
   LoginSessions UserLoginSession[]
-  Submissions   FormSubmission[]
   Template      FormTemplate[]
 
   @@map("users")

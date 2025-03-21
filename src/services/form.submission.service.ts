@@ -1,31 +1,18 @@
-import { FormStatus, Prisma, PrismaClient } from "@prisma/client";
+import { FormStatus, PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
 import { FormMapper } from "../mappers/form.submission.mapper"
-import { FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionSearchResponseDto, FormSubmissionUpdateModel } from "../domain.types/forms/form.submission.domain.types";
-import moment from "moment";
+import { FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from "../domain.types/forms/form.submission.domain.types";
 import { uuid } from "../domain.types/miscellaneous/system.types";
 import { ErrorHandler } from "../common/error.handler";
+import { autoInjectable } from "tsyringe";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
+@autoInjectable()
 export class FormService {
     prisma: PrismaClient = null;
     constructor() {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
-
-    // allForms = async (): Promise<any> => {
-    //     const response = await this.prisma.formSubmission.findMany({
-    //         include: {
-    //             FormTemplate: true,
-    //             Submitter: true
-    //         },
-    //         where: {
-    //             DeletedAt: null
-    //         }
-    //     });
-    //     return FormMapper.toArrayDto(response);
-    // };
 
     create = async (model: FormSubmissionCreateModel) => {
         const response = await this.prisma.formSubmission.create({
@@ -33,40 +20,28 @@ export class FormService {
                 FormTemplate: {
                     connect: { id: model.FormTemplateId }
                 },
-                // Submitter: {
-                //     connect: { id: model.AnsweredByUserId }
-                // },
-                FormUrl: model.FormUrl,
-                Status: 'LinkShared',
-                CreatedAt: new Date(),
-                // SubmissionTimestamp: null,
-                // DeletedAt: null
+                UserId: model.UserId,
+                Status: model.Status,
+                ValidTill: model.ValidTill,
             },
             include: {
                 FormTemplate: true,
-                Submitter: true
             }
         });
+        
         return FormMapper.toDto(response);
-        // return response;
     };
 
     update = async (id: string, model: FormSubmissionUpdateModel) => {
+        
         const response = await this.prisma.formSubmission.update({
             where: {
                 id: id,
                 DeletedAt: null
             },
-            data: {
-                Status: model.Status,
-                UpdatedAt: new Date(),
-                Submitter: {
-                    connect: { id: model.AnsweredByUserId }
-                },
-            },
+            data: model,
             include: {
                 FormTemplate: true,
-                Submitter: true,
 
             },
         });
@@ -77,14 +52,12 @@ export class FormService {
         const response = await this.prisma.formSubmission.findUnique({
             include: {
                 FormTemplate: true,
-                Submitter: true
             },
             where: {
                 id: id,
                 DeletedAt: null
             },
         });
-        // return response;
         return FormMapper.toDto(response);
     };
 
@@ -98,24 +71,9 @@ export class FormService {
             },
             include: {
                 FormTemplate: true,
-                Submitter: true
             }
         });
         return FormMapper.toDto(response);
-    };
-
-    getByTemplateId = async (id: string) => {
-        const response = await this.prisma.formSubmission.findMany({
-            where: {
-                FormTemplateId: id,
-                DeletedAt: null
-            },
-            include: {
-                FormTemplate: true,
-                Submitter: true
-            },
-        });
-        return FormMapper.toArrayDto(response);
     };
 
     submit = async (id: uuid) => {
@@ -125,107 +83,34 @@ export class FormService {
                 DeletedAt: null
             },
             data: {
-                SubmissionTimestamp: new Date(),
+                SubmittedAt: new Date(),
                 Status: FormStatus.Submitted,
                 UpdatedAt: new Date()
             },
             include: {
                 FormTemplate: true,
-                Submitter: true
             },
         });
         return FormMapper.toDto(response);
     };
 
-    getByDate = async (date: string) => {
-        const startDate = moment(date).startOf('day').toDate();
-        const endDate = moment(date).endOf('day').toDate();
-
-        const response = await this.prisma.formSubmission.findMany({
-            include: {
-                FormTemplate: true,
-                Submitter: true
-            },
-            where: {
-                CreatedAt: {
-                    gte: startDate,
-                    lte: endDate,
-                },
-            },
-        });
-        return FormMapper.toArrayDto(response);
-    };
-
-    protected addSortingAndPagination = (
-        search: Prisma.FormSubmissionFindManyArgs,
-        filters: FormSubmissionSearchFilters
-    ) => {
-        // Sorting
-        let orderByColumn: keyof typeof Prisma.FormSubmissionScalarFieldEnum = 'CreatedAt';
-        if (filters.OrderBy) {
-            orderByColumn = filters.OrderBy as keyof typeof Prisma.FormSubmissionScalarFieldEnum;
-        }
-        let order: Prisma.SortOrder = 'asc';
-        if (filters.Order === 'descending') {
-            order = 'desc';
-        }
-
-        search.orderBy = {
-            [orderByColumn]: order,
-        };
-
-        // Pagination
-        let limit = 25;
-        if (filters.ItemsPerPage) {
-            limit = filters.ItemsPerPage;
-        }
-        let offset = 0;
-        let pageIndex = 1;
-        if (filters.PageIndex) {
-            pageIndex = filters.PageIndex < 1 ? 1 : filters.PageIndex;
-            offset = (pageIndex - 1) * limit;
-        }
-
-        search.take = limit;
-        search.skip = offset;
-
-        // Update where clause
-        const whereClause = this.getSearchModel(filters);
-        if (Object.keys(whereClause).length > 0) {
-            search.where = whereClause;
-        }
-
-        return { search, pageIndex, limit, order, orderByColumn };
-    };
-
     public search = async (filters: FormSubmissionSearchFilters) => {
         try {
-            const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
-
-            const list = await this.prisma.formSubmission.findMany({
-                where: prismaSearch.where,
-                include: {
-                    FormTemplate: true,
-                    Submitter: true
-                },
-                take: limit,
-                skip: (pageIndex - 1) * limit,
-                orderBy: {
-                    [orderByColumn]: order === 'desc' ? 'desc' : 'asc',
-                },
-            });
+            const search = this.getSearchModel(filters);
+            
+            const list = await this.prisma.formSubmission.findMany(search);
 
             const count = await this.prisma.formSubmission.count({
-                where: prismaSearch.where,
+                where: search.where,
             });
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'desc' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
+                PageIndex: filters.PageIndex,
+                ItemsPerPage: filters.ItemsPerPage,
+                Order: filters.Order,
+                OrderedBy: filters.OrderBy,
                 Items: list.map((x) => FormMapper.toDto(x)),
             };
 
@@ -235,43 +120,61 @@ export class FormService {
         }
     };
 
-    private getSearchModel = (filters: FormSubmissionSearchFilters): Prisma.FormSubmissionWhereInput => {
-        const where: Prisma.FormSubmissionWhereInput = {
-            DeletedAt: null
-        };
-
-        if (filters.id) {
-            where.id = {
-                equals: filters.id,
-            };
+    private getSearchModel = (filters: FormSubmissionSearchFilters) => {
+        const searchFilter = {
+            where: {}
+        }
+        
+        if (filters.FormTemplateId) {
+            searchFilter.where["FormTemplateId"] = filters.FormTemplateId
         }
 
-        if (filters.formTemplateId) {
-            where.FormTemplateId = {
-                equals: filters.formTemplateId,
-            };
+        if (filters.UserId) {
+            searchFilter.where["UserId"] = filters.UserId
         }
 
-        if (filters.formUrl) {
-            where.FormUrl = {
-                equals: filters.formUrl,
-            };
+        if (filters.Encrypted) {
+            searchFilter.where["Encrypted"] = filters.Encrypted
         }
 
-        if (filters.answeredByUserId) {
-            where.AnsweredByUserId = {
-                equals: filters.answeredByUserId,
-            };
+        if (filters.Status) {
+            searchFilter.where["Status"] = filters.Status
         }
 
-        if (filters.submissionTimestamp) {
-            where.SubmissionTimestamp = {
-                equals: filters.submissionTimestamp,
-            };
+        if (filters.ValidTill) {
+            searchFilter.where["ValidTill"] = filters.ValidTill
         }
 
+        if (filters.SubmittedAt) {
+            searchFilter.where["SubmittedAt"] = filters.SubmittedAt
+        }
 
-        return where;
+        let limit = 25;
+        if (filters.ItemsPerPage) {
+            limit = filters.ItemsPerPage;
+        }
+
+        let order = 'asc';
+        if (filters.Order === 'descending') {
+            order = 'desc';
+        }
+
+        let orderByColum = 'CreatedAt';
+        if (filters.OrderBy) {
+           searchFilter['orderBy'] = {
+               [orderByColum]: order
+           }
+        }
+
+        let offset = 0;
+        let pageIndex = 0;
+        if (filters.PageIndex) {
+            pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+            offset = pageIndex * limit;
+        }
+        searchFilter['take'] = limit;
+        searchFilter['skip'] = offset;
+        return searchFilter;
     };
 
 }

@@ -1,4 +1,5 @@
 import express from 'express';
+import "reflect-metadata";
 import { Router } from './startup/router';
 import { execSync } from 'child_process';
 // import { Logger } from './startup/logger';

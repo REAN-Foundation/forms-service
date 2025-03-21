@@ -7,8 +7,9 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { FormService } from '../../services/form.submission.service';
 import { FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
 import { error } from 'console';
-import moment from 'moment-timezone';
-
+import { FormTemplateService } from '../../services/form.template.service';
+import * as crypto from "crypto";
+import { container } from 'tsyringe';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -16,7 +17,9 @@ export class FormController extends BaseController {
 
     //#region member variables and constructors
 
-    _service: FormService = new FormService();
+    _service: FormService = container.resolve(FormService);
+
+    _formTemplateService = container.resolve(FormTemplateService);
 
     _validator: FormValidator = new FormValidator();
 
@@ -26,29 +29,47 @@ export class FormController extends BaseController {
 
     //#endregion
 
-    // getAll = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         const record = await this._service.allForms();
-    //         if (record === null) {
-    //             ErrorHandler.throwInternalServerError('Unable to add Form!', error);
-    //         }
-    //         const message = 'All form fetched successfully!';
-    //         return ResponseHandler.success(request, response, message, 201, record);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // }
-
     create = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Form.Create', request, response);
             let model: FormSubmissionCreateModel = await this._validator.validateCreateRequest(request);
-            const record = await this._service.create(model);
-            if (record === null) {
-                ErrorHandler.throwInternalServerError('Unable to add Form!', error);
+            
+            const template = await this._formTemplateService.getById(model.FormTemplateId);
+
+            if (!template) {
+                ErrorHandler.throwNotFoundError('Template not found!');
             }
-            const message = 'Form added successfully!';
-            return ResponseHandler.success(request, response, message, 201, record);
+
+            const record = await this._service.create(model);
+
+            if (record === null) {
+                ErrorHandler.throwInternalServerError('Unable to generate form link!', error);
+            }
+
+            const formSubmissionUpdateModel: FormSubmissionUpdateModel = {};
+
+            formSubmissionUpdateModel.Encrypted = this.generateUniqueKey(`id=${record.id}${model.UserId ? `&userId=${record.UserId}` : ''}`);
+            
+            if (!formSubmissionUpdateModel.Encrypted) {
+                ErrorHandler.throwInternalServerError('Unable to generate form link!', {});
+            }
+
+            formSubmissionUpdateModel.Unencrypted = `id=${record.id}${model.UserId ? `&userId=${record.UserId}` : ''}`;
+            formSubmissionUpdateModel.Link = `${process.env.BASE_URL}/form/submission/${formSubmissionUpdateModel.Encrypted}`;
+            formSubmissionUpdateModel.LinkQueryParams = JSON.stringify({
+                id: record.id,
+                UserId: record.UserId,
+                Category: model.Category,
+                ExpiresOn: record.ValidTill
+            });
+
+            const updatedRecord = await this._service.update(record.id, formSubmissionUpdateModel);
+            if (!updatedRecord) {
+                ErrorHandler.throwInternalServerError('Unable to generate form link!', {});
+            }
+
+            const message = 'Form submission link generated successfully!';
+
+            return ResponseHandler.success(request, response, message, 201, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
@@ -56,10 +77,11 @@ export class FormController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Form.GetById', request, response);
-            // var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
-            const id = request.params.id;
+            const id: uuid = await this._validator.validateParamAsUUID(request, 'id');
             const record = await this._service.getById(id);
+            if (!record) {
+                ErrorHandler.throwNotFoundError('Form not found!');
+            }
             const message = 'Form retrieved successfully!';
             return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
@@ -69,9 +91,21 @@ export class FormController extends BaseController {
 
     update = async (request: express.Request, response: express.Response) => {
         try {
-            // await this.authorize('Form.Update', request, response);
             const id = await this._validator.validateParamAsUUID(request, 'id');
+
+            const formSubmission = await this._service.getById(id); 
+
+            if (!formSubmission) {
+                ErrorHandler.throwNotFoundError('Form submission not found!');
+            }
+
             var model: FormSubmissionUpdateModel = await this._validator.validateUpdateRequest(request);
+            
+            if (model.UserId) {
+                formSubmission.LinkQueryParams.UserId = model.UserId;
+                model.LinkQueryParams = JSON.stringify(formSubmission.LinkQueryParams);
+            }
+
             const updatedRecord = await this._service.update(id, model);
             const message = 'Form updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -82,24 +116,17 @@ export class FormController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            // await this.authorize('Form.Delete', request, response);
             var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            const formSubmission = await this._service.getById(id);
+            if (!formSubmission) {
+                ErrorHandler.throwNotFoundError('Form submission not found!');
+            }
             const result = await this._service.delete(id);
+            if(!result) {
+                ErrorHandler.throwNotFoundError('Form not found!');
+            }
             const message = 'Form deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
-    getByTemplateId = async (request: express.Request, response: express.Response) => {
-        try {
-            // await this.authorize('Form.GetById', request, response);
-            // var id: uuid = await this._validator.validateParamAsUUID(request, 'templateId');
-            var id: uuid = request.params.templateId;
-            const record = await this._service.getByTemplateId(id);
-            const message = 'Form submission by templateId retrieved successfully!';
-            return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
@@ -119,29 +146,6 @@ export class FormController extends BaseController {
         }
     };
 
-    getFormByDate = async (request: express.Request, response: express.Response) => {
-        const dateString = request.params.date;
-        const parsedDate = moment(dateString, 'YYYY-MM-DD HH:mm:ss.SSSSSS');
-
-        // if (!parsedDate.isValid()) {
-        //     console.log('Invalid date format:', dateString);
-        //     return ResponseHandler.handleError(request, response, error);
-        // }
-        try {
-            const utcDate = parsedDate;
-            const istDate = utcDate.tz('Asia/Kolkata');
-            const formattedDate = istDate.format('YYYY-MM-DD HH:mm:ss.SSS');
-            const records = await this._service.getByDate(formattedDate);
-            if (records === null) {
-                ErrorHandler.throwInternalServerError('Unable to add Form!', error);
-            }
-            const message = 'Form added successfully!';
-            return ResponseHandler.success(request, response, message, 201, records);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
     search = async (request: express.Request, response: express.Response) => {
         try {
             var filters: FormSubmissionSearchFilters = await this._validator.validateSearchRequest(request);
@@ -152,4 +156,17 @@ export class FormController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
+    private generateUniqueKey = (input: string): string =>{
+        try {
+            const privateKey = process.env.PRIVATE_KEY;
+            return crypto.createHmac("sha256", privateKey)
+            .update(input)
+            .digest("hex");
+        }
+        catch (error) {
+            return null;
+        }
+        
+    }
 }
