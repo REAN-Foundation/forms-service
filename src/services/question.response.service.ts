@@ -245,76 +245,24 @@ export class ResponseService {
         return pdfPath;
     };
 
-    protected addSortingAndPagination = (
-        search: Prisma.QuestionResponseFindManyArgs,
-        filters: QuestionResponseSearchFilters
-    ) => {
-        // Sorting
-        let orderByColumn: keyof typeof Prisma.QuestionResponseScalarFieldEnum = 'CreatedAt';
-        if (filters.OrderBy) {
-            orderByColumn = filters.OrderBy as keyof typeof Prisma.QuestionResponseScalarFieldEnum;
-        }
-        let order: Prisma.SortOrder = 'asc';
-        if (filters.Order === 'descending') {
-            order = 'desc';
-        }
-
-        search.orderBy = {
-            [orderByColumn]: order,
-        };
-
-        // Pagination
-        let limit = 25;
-        if (filters.ItemsPerPage) {
-            limit = filters.ItemsPerPage;
-        }
-        let offset = 0;
-        let pageIndex = 1;
-        if (filters.PageIndex) {
-            pageIndex = filters.PageIndex < 1 ? 1 : filters.PageIndex;
-            offset = (pageIndex - 1) * limit;
-        }
-
-        search.take = limit;
-        search.skip = offset;
-
-        // Update where clause
-        const whereClause = this.getSearchModel(filters);
-        if (Object.keys(whereClause).length > 0) {
-            search.where = whereClause;
-        }
-
-        return { search, pageIndex, limit, order, orderByColumn };
-    };
 
     public search = async (filters: QuestionResponseSearchFilters) => {
         try {
-            const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
-
-            const list = await this.prisma.questionResponse.findMany({
-                where: prismaSearch.where,
-                include: {
-                    FormSubmission: true,
-                    Question: true,
-                },
-                take: limit,
-                skip: (pageIndex - 1) * limit,
-                orderBy: {
-                    [orderByColumn]: order === 'desc' ? 'desc' : 'asc',
-                },
-            });
+            // const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
+            const search = this.getSearchModel(filters);
+            const list = await this.prisma.questionResponse.findMany(search);
 
             const count = await this.prisma.questionResponse.count({
-                where: prismaSearch.where,
+                where: search.where,
             });
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'desc' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
+                PageIndex: filters.PageIndex,
+                ItemsPerPage: filters.ItemsPerPage,
+                Order: filters.Order,
+                OrderedBy: filters.OrderBy,
                 Items: list.map((x) => ResponseMapper.toDto(x)),
             };
 
@@ -328,63 +276,75 @@ export class ResponseService {
 
 
 
-    private getSearchModel = (filters: QuestionResponseSearchFilters): Prisma.QuestionResponseWhereInput => {
-        const where: Prisma.QuestionResponseWhereInput = {
-            DeletedAt: null
+    private getSearchModel = (filters: QuestionResponseSearchFilters) => {
+        const searchFilter = {
+            where : {},
+            include: {
+                FormSubmission: true,
+                Question: true,
+            },
         };
 
-        if (filters.formSubmissionId) {
-            where.FormSubmissionId = {
-                equals: filters.formSubmissionId,
-            };
+        if (filters.FormSubmissionId) {
+            searchFilter.where['FormSubmissionId'] = filters.FormSubmissionId;
         }
 
-        if (filters.questionId) {
-            where.QuestionId = {
-                equals: filters.questionId,
-            };
+        if (filters.QuestionId) {
+            searchFilter.where['QuestionId'] = filters.QuestionId;
         }
 
-        if (filters.responseType) {
-            where.ResponseType = {
-                equals: filters.responseType,
-            };
+        if (filters.ResponseType) {
+            searchFilter.where['ResponseType'] = filters.ResponseType;
         }
 
-        if (filters.integerValue) {
-            where.IntegerValue = {
-                equals: filters.integerValue,
-            };
+        if (filters.IntegerValue) {
+            searchFilter.where['IntegerValue'] = filters.IntegerValue;
         }
 
-        if (filters.floatValue) {
-            where.FloatValue = {
-                equals: filters.floatValue,
-            };
+        if (filters.FloatValue) {
+            searchFilter.where['FloatValue'] = filters.FloatValue;
         }
 
-        if (filters.booleanValue) {
-            where.BooleanValue = {
-                equals: filters.booleanValue,
-            };
+        if (filters.BooleanValue) {
+            searchFilter.where['BooleanValue'] = filters.BooleanValue;
         }
-        if (filters.url) {
-            where.Url = {
-                equals: filters.url,
-            };
+        if (filters.Url) {
+            searchFilter.where['Url'] = filters.Url;
         }
-        if (filters.fileResourceId) {
-            where.FileResourceId = {
-                equals: filters.fileResourceId,
-            };
+        if (filters.FileResourceId) {
+            searchFilter.where['FileResourceId'] = filters.FileResourceId;
         }
-        if (filters.textValue) {
-            where.TextValue = {
-                equals: filters.textValue,
-            };
+        if (filters.TextValue) {
+            searchFilter.where['TextValue'] = filters.TextValue;
         }
 
-        return where;
+        let limit = 25;
+        if (filters.ItemsPerPage) {
+            limit = filters.ItemsPerPage;
+        }
+
+        let order = 'asc';
+        if (filters.Order === 'descending') {
+            order = 'desc';
+        }
+
+        let orderByColum = 'CreatedAt';
+        if (filters.OrderBy) {
+           searchFilter['orderBy'] = {
+               [orderByColum]: order
+           }
+        }
+
+        let offset = 0;
+        let pageIndex = 0;
+        if (filters.PageIndex) {
+            pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+            offset = pageIndex * limit;
+        }
+        searchFilter['take'] = limit;
+        searchFilter['skip'] = offset;
+        return searchFilter;
+
     };
 
 }
