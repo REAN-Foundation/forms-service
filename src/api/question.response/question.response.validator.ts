@@ -119,45 +119,45 @@ export class QuestionResponseValidator extends BaseValidator {
 
         var formSubmissionId = query.formSubmissionId ? query.formSubmissionId : null;
         if (formSubmissionId != null) {
-            filters['formSubmissionId'] = formSubmissionId;
+            filters['FormSubmissionId'] = formSubmissionId;
         }
         var questionId = query.questionId ? query.questionId : null;
         if (questionId != null) {
-            filters['questionId'] = questionId;
+            filters['QuestionId'] = questionId;
         }
         var responseType = query.responseType ? query.responseType : null;
         if (responseType != null) {
-            filters['responseType'] = responseType;
+            filters['ResponseType'] = responseType;
         }
         var integerValue = query.integerValue ? query.integerValue : null;
         if (integerValue != null) {
-            filters['integerValue'] = integerValue;
+            filters['IntegerValue'] = integerValue;
         }
 
         var floatValue = query.floatValue ? query.floatValue : null;
         if (floatValue != null) {
-            filters['floatValue'] = floatValue;
+            filters['FloatValue'] = floatValue;
         }
         var booleanValue = query.booleanValue ? query.booleanValue : null;
         if (booleanValue != null) {
-            filters['booleanValue'] = booleanValue;
+            filters['BooleanValue'] = booleanValue;
         }
         var url = query.url ? query.url : null;
         if (url != null) {
-            filters['url'] = url;
+            filters['Url'] = url;
         }
         var fileResourceId = query.fileResourceId ? query.fileResourceId : null;
         if (fileResourceId != null) {
-            filters['fileResourceId'] = fileResourceId;
+            filters['FileResourceId'] = fileResourceId;
         }
         var textValue = query.textValue ? query.textValue : null;
         if (textValue != null) {
-            filters['textValue'] = textValue;
+            filters['TextValue'] = textValue;
         }
 
         var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
         if (itemsPerPage != null) {
-            filters['ItemsPerPage'] = itemsPerPage;
+            filters['ItemsPerPage'] = Number(itemsPerPage);
         }
         var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
         if (orderBy != null) {
@@ -167,6 +167,12 @@ export class QuestionResponseValidator extends BaseValidator {
         if (order != null) {
             filters['Order'] = order;
         }
+
+        const pageIndex = query.pageIndex ? query.pageIndex : 0;
+        if (pageIndex != null) {
+            filters['PageIndex'] = pageIndex;
+        }
+
         return filters;
     };
 

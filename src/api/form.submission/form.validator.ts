@@ -121,7 +121,7 @@ export class FormValidator extends BaseValidator {
             filters['Order'] = order;
         }
 
-        const pageIndex = query.pageIndex ? query.pageIndex : 1;
+        const pageIndex = query.pageIndex ? query.pageIndex : 0;
         if (pageIndex != null) {
             filters['PageIndex'] = pageIndex;
         }

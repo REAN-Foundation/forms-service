@@ -70,17 +70,17 @@ export interface QuestionResponseResponseDto {
 }
 
 export interface QuestionResponseSearchFilters extends BaseSearchFilters {
-    formSubmissionId?: string;
-    questionId      ?: string;
-    responseType    ?: QueryResponseType;
-    integerValue    ?: number;
-    floatValue      ?: GLfloat;
+    FormSubmissionId?: string;
+    QuestionId      ?: string;
+    ResponseType    ?: QueryResponseType;
+    IntegerValue    ?: number;
+    FloatValue      ?: GLfloat;
     // BooleanValue    ?: boolean;
-    booleanValue    ?: string;
-    dateTimeValue   ?: Date;
-    url             ?: string;
-    fileResourceId  ?: string;
-    textValue       ?: string;
+    BooleanValue    ?: string;
+    DateTimeValue   ?: Date;
+    Url             ?: string;
+    FileResourceId  ?: string;
+    TextValue       ?: string;
 }
 
 
