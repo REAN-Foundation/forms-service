@@ -1,6 +1,6 @@
 // import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
 
-import { FormStatus, QueryResponseType } from "@prisma/client";
+import { FormStatus} from "@prisma/client";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
 export interface QuestionResponseCreateModel {
@@ -8,7 +8,7 @@ export interface QuestionResponseCreateModel {
     QuestionId      : string;
     ResponseType    : QueryResponseType;
     IntegerValue    : number;
-    FloatValue      : GLfloat;
+    FloatValue      : number;
     // BooleanValue    : boolean;
     BooleanValue    : string;
     DateTimeValue   : Date;
@@ -18,11 +18,12 @@ export interface QuestionResponseCreateModel {
 }
 
 export interface QuestionResponseUpdateModel {
+    id?             : string;
     FormSubmissionId?: string;
     QuestionId      ?: string;
     ResponseType    ?: QueryResponseType;
     IntegerValue    ?: number;
-    FloatValue      ?: GLfloat;
+    FloatValue      ?: number;
     // BooleanValue    ?: boolean;
     BooleanValue    ?: string;
     DateTimeValue   ?: Date;
@@ -31,9 +32,14 @@ export interface QuestionResponseUpdateModel {
     TextValue       ?: string;
 }
 
+export interface QuestionResponseSaveModel {
+    QuestionResponses: QuestionResponseUpdateModel[]
+    FormSubmissionKey: string,
+}
+
 export interface QuestionResponseResponseDto {
     id            : string;
-    FormSubmission: {
+    FormSubmission?: {
         id                 : string;
         TemplateId         : string;
         FormUrl            : string;
@@ -42,7 +48,7 @@ export interface QuestionResponseResponseDto {
         SubmissionTimestamp: Date;
         CreatedAt          : Date;
     }
-    Question: {
+    Question?: {
         id           : string;
         Title        : string;
         Description  : string;
@@ -125,3 +131,5 @@ export interface QuestionResponseSearchResponseDto extends BaseSearchResults{
     SubmissionTimestamp: Date;
     LastSaveTimestamp  : Date
 }
+
+export type QueryResponseType = "Text" | "Float" | "Integer" | "Boolean" | "Object" | "TextArray" | "SingleChoiceSelection" | "MultiChoiceSelection" | "File" | "Date" | "DateTime" | "Rating" | "Location" | "Url" | "Range"; 

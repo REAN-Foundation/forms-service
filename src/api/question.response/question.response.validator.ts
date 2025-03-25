@@ -4,6 +4,7 @@ import { ErrorHandler } from "../../common/error.handler";
 import BaseValidator from "../base.validator";
 import {
     QuestionResponseCreateModel,
+    QuestionResponseSaveModel,
     QuestionResponseSearchFilters,
     QuestionResponseUpdateModel,
 } from "../../domain.types/forms/response.domain.types";
@@ -113,6 +114,45 @@ export class QuestionResponseValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    public validateSaveRequest = async (request: express.Request): Promise<QuestionResponseSaveModel> => {
+        try {
+            const schema = joi.object({
+                QuestionResponses: joi.array().items(joi.object({
+                    id: joi.string().uuid().optional().allow(null),
+                    FormSubmissionId: joi.string().uuid().required(),
+                    QuestionId: joi.string().uuid().required(),
+                    ResponseType: joi.string().required(),
+                    IntegerValue: joi.number().optional().allow(null),
+                    FloatValue: joi.number().optional().allow(null),
+                    BooleanValue: joi.string().optional().allow(null),  
+                    DateTimeValue: joi.date().optional().allow(null),
+                    Url: joi.string().optional().allow(null),
+                    FileResourceId: joi.string().optional().allow(null),
+                    TextValue: joi.string().optional().allow(null),
+                })).min(0).required(),
+            
+                FormSubmissionKey: joi.string().length(64).required().messages({
+                    'string.length': 'Invalid FormSubmissionKey, must be exactly 64 characters.',
+                    'string.base': 'FormSubmissionKey must be a string.',
+                    'any.required': 'FormSubmissionKey is required.'
+                })
+            });
+            await schema.validateAsync(request.body);
+            const model = this.getQuestionResponseSaveModel(request.body);
+            return model;
+        } catch (error) {
+            ErrorHandler.handleValidationError(error);
+        }
+    }
+
+    private getQuestionResponseSaveModel = (body: any): QuestionResponseSaveModel => {
+        const model: QuestionResponseSaveModel = {
+            QuestionResponses: body.QuestionResponses,
+            FormSubmissionKey: body.FormSubmissionKey
+        };
+        return model;
+    }
 
     private getSearchFilters = (query: ParsedQs): QuestionResponseSearchFilters => {
         var filters: any = {};

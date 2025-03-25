@@ -39,7 +39,9 @@ export class FormService {
                 id: id,
                 DeletedAt: null
             },
-            data: model,
+            data: { ...model,
+                UpdatedAt: new Date()
+            },
             include: {
                 FormTemplate: true,
 

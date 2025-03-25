@@ -6,10 +6,13 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionResponseValidator } from './question.response.validator';
 import { ResponseService } from '../../services/question.response.service';
-import { QuestionResponseCreateModel, QuestionResponseSearchFilters, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
+import { QuestionResponseCreateModel, QuestionResponseSaveModel, QuestionResponseSearchFilters, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
 import { QueryResponseType } from '@prisma/client';
 import * as path from 'path';
 import * as fs from 'fs';
+import { container } from 'tsyringe';
+import { FormService } from '../../services/form.submission.service';
+import { FormStatus } from '../../domain.types/forms/form.submission.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,6 +21,8 @@ export class QuestionResponseController extends BaseController {
     //#region member variables and constructors
 
     _service: ResponseService = new ResponseService();
+
+    _formService: FormService = container.resolve(FormService);
 
     _validator: QuestionResponseValidator = new QuestionResponseValidator();
 
@@ -57,92 +62,64 @@ export class QuestionResponseController extends BaseController {
     };
 
     save = async (request: express.Request, response: express.Response) => {
-        var responseArray: any[] = [];
         try {
-            // let model = await this._validator.validateResponseRequest(request);
-            let FormSubmissionId = request.body.FormSubmissionId;
-            let model = request.body.Data;
+            let model: QuestionResponseSaveModel = await this._validator.validateSaveRequest(request);
+            
+            const searchResult = await this._formService.search(
+                {
+                    Encrypted: model.FormSubmissionKey
+                }
+            );
 
-
-            for (let key in model) {
-                const questionResponseType = await this.getQuestionById(key);
-
-
-                const finalModel: QuestionResponseUpdateModel = {
-                    FormSubmissionId: FormSubmissionId,
-                    ResponseType: questionResponseType,
-                    QuestionId: key,
-                    IntegerValue: null,
-                    FloatValue: null,
-                    BooleanValue: null,
-                    DateTimeValue: null,
-                    Url: null,
-                    TextValue: null,
-                    FileResourceId: null
-                }
-
-                if (questionResponseType === 'Integer') {
-                    finalModel.IntegerValue = parseInt(model[key])
-                }
-                if (questionResponseType === 'Float') {
-                    finalModel.FloatValue = parseFloat(model[key])
-                }
-                if (questionResponseType === 'Boolean') {
-                    finalModel.BooleanValue = model[key]
-                }
-                if (questionResponseType === 'Text') {
-                    finalModel.TextValue = model[key]
-                }
-                if (questionResponseType === 'TextArray') {
-                    finalModel.TextValue = model[key]
-                }
-                if (questionResponseType === 'SingleChoiceSelection') {
-                    finalModel.TextValue = model[key]
-                }
-                if (questionResponseType === 'MultiChoiceSelection') {
-                    finalModel.TextValue = model[key] 
-                }
-                if (questionResponseType === 'Object') {
-                    finalModel.TextValue = model[key]
-                }
-                if (questionResponseType === 'File') {
-                    finalModel.FileResourceId = model[key]
-                }
-                if (questionResponseType === 'Date') {
-                    finalModel.DateTimeValue = new Date(model[key])
-                }
-                if (questionResponseType === 'DateTime') {
-                    finalModel.DateTimeValue = new Date(model[key])
-                }
-                if (questionResponseType === 'Rating') {
-                    finalModel.IntegerValue = model[key]
-                }
-                if (questionResponseType === 'Location') {
-                    finalModel.DateTimeValue = model[key]
-                }
-                if (questionResponseType === 'Range') {
-                    finalModel.IntegerValue = model[key]
-                }
-
-                // for (let index = 0; index < model.length; index++) {
-                //     const element = model[index];
-
-
-
-                const record = await this._service.save(finalModel);
-
-                if (record === null) {
-                    ErrorHandler.throwInternalServerError('Unable to add response!', error);
-                }
-                responseArray.push(record);
+            if (searchResult.Items.length !== 1) {  
+                ErrorHandler.throwNotFoundError('Form submission not found!');
             }
+
+            const formSubmissionId = searchResult.Items[0]?.id;
+
+            for (let questionResponse in model.QuestionResponses) {
+                await this.recordResponses(model.QuestionResponses[questionResponse]);
+            }
+
+            const update = await this._formService.update(formSubmissionId, {
+                Status: FormStatus.InProgress
+            })
+
+            if (!update) {
+                ErrorHandler.throwInternalServerError('Unable to update form submission!', {});
+            }
+
             const message = 'Response saved successfully!';
-            return ResponseHandler.success(request, response, message, 201, responseArray);
+            return ResponseHandler.success(request, response, message, 201, null);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
 
+    private recordResponses = async (model: QuestionResponseUpdateModel) => {
+        try {
+            if (model.id) {
+                await this._service.update(model.id, model);
+            } else {
+                const createModel: QuestionResponseCreateModel = {
+                    FormSubmissionId: model.FormSubmissionId,
+                    QuestionId: model.QuestionId,
+                    ResponseType: model.ResponseType,
+                    IntegerValue: model.IntegerValue,
+                    FloatValue: model.FloatValue,
+                    BooleanValue: model.BooleanValue ,
+                    DateTimeValue: model.DateTimeValue,
+                    Url: model.Url,
+                    FileResourceId: model.FileResourceId,
+                    TextValue: model.TextValue
+                }
+                await this._service.create(createModel);
+            }
+
+        } catch (error) {
+            console.log(`Errror in save Response ${model}:`, error);
+        }
+    }
     getQuestionById = async (id: uuid) => {
         // try {
         const question = await this._service.getQuestionById(id);
