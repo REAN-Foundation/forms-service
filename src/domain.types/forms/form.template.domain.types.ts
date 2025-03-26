@@ -49,15 +49,15 @@ export interface FormTemplateResponseDto {
 
 export interface FormTemplateSearchFilters extends BaseSearchFilters {
     id?: string;
-    title?: string;
-    description?: string;
-    currentVersion?: number;
-    tenantCode: string;
-    type?: FormType;
-    displayCode?: string;
-    ownerUserId?: uuid;
-    rootSectionId?: uuid;
-    defaultSectionNumbering?: boolean
+    Title?: string;
+    Description?: string;
+    CurrentVersion?: number;
+    TenantCode: string;
+    Type?: FormType;
+    DisplayCode?: string;
+    OwnerUserId?: uuid;
+    RootSectionId?: uuid;
+    DefaultSectionNumbering?: boolean
 }
 
 

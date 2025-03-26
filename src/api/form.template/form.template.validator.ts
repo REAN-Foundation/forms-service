@@ -86,7 +86,11 @@ export class FormTemplateValidator extends BaseValidator {
                 displayCode: joi.string().optional(),
                 ownerUserId: joi.string().uuid().optional(),
                 rootSectionId: joi.string().uuid().optional(),
-                defaultSectionNumbering: joi.boolean().optional()
+                defaultSectionNumbering: joi.boolean().optional(),
+                itemsPerPage: joi.number().optional(),
+                pageIndex: joi.number().optional(),
+                orderBy: joi.string().optional(),
+                order:joi.string().optional()
             });
 
             await schema.validateAsync(request.query);
@@ -107,48 +111,48 @@ export class FormTemplateValidator extends BaseValidator {
 
         var title = query.title ? query.title : null;
         if (title != null) {
-            filters['title'] = title;
+            filters['Title'] = title;
         }
 
         var tenantCode = query.tenantCode ? query.tenantCode : null;
         if (tenantCode != null) {
-            filters['tenantCode'] = tenantCode;
+            filters['TenantCode'] = tenantCode;
         }
 
         var description = query.description ? query.description : null;
         if (description != null) {
-            filters['description'] = description;
+            filters['Description'] = description;
         }
         var currentVersion = query.currentVersion ? query.currentVersion : null;
         if (currentVersion != null) {
-            filters['currentVersion'] = currentVersion;
+            filters['CurrentVersion'] = currentVersion;
         }
         var type = query.type ? query.type : null;
         if (type != null) {
-            filters['type'] = type;
+            filters['Type'] = type;
         }
 
         var displayCode = query.displayCode ? query.displayCode : null;
         if (displayCode != null) {
-            filters['displayCode'] = displayCode;
+            filters['DisplayCode'] = displayCode;
         }
         var ownerUserId = query.ownerUserId ? query.ownerUserId : null;
         if (ownerUserId != null) {
-            filters['ownerUserId'] = ownerUserId;
+            filters['OwnerUserId'] = ownerUserId;
         }
         var rootSectionId = query.rootSectionId ? query.rootSectionId : null;
         if (rootSectionId != null) {
-            filters['rootSectionId'] = rootSectionId;
+            filters['RootSectionId'] = rootSectionId;
         }
         var defaultSectionNumbering = query.defaultSectionNumbering ? query.defaultSectionNumbering : null;
         if (defaultSectionNumbering != null) {
-            filters['defaultSectionNumbering'] = defaultSectionNumbering;
+            filters['DefaultSectionNumbering'] = defaultSectionNumbering;
         }
 
 
         var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
         if (itemsPerPage != null) {
-            filters['ItemsPerPage'] = itemsPerPage;
+            filters['ItemsPerPage'] = Number(itemsPerPage);
         }
         var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
         if (orderBy != null) {
@@ -157,6 +161,11 @@ export class FormTemplateValidator extends BaseValidator {
         var order = query.order ? query.order : 'ASC';
         if (order != null) {
             filters['Order'] = order;
+        }
+
+        const pageIndex = query.pageIndex ? query.pageIndex : 0;
+        if (pageIndex != null) {
+            filters['PageIndex'] = pageIndex;
         }
         return filters;
     };

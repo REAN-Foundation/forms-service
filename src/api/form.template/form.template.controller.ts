@@ -12,14 +12,15 @@ import { generateDisplayCode } from '../../domain.types/miscellaneous/display.co
 import { ApiError } from '../../common/api.error';
 import { Helper } from '../../domain.types/miscellaneous/helper';
 import fs from 'fs';
+import { container } from 'tsyringe';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class FormTemplateController extends BaseController {
 
-    _service: FormTemplateService = new FormTemplateService();
+    _service: FormTemplateService =  container.resolve(FormTemplateService);
 
-    _section: FormSectionService = new FormSectionService();
+    _section: FormSectionService = container.resolve(FormSectionService);
 
     _validator: FormTemplateValidator = new FormTemplateValidator();
 
