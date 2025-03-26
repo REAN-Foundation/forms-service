@@ -28,12 +28,12 @@ export class FormService {
                 FormTemplate: true,
             }
         });
-        
+
         return FormMapper.toDto(response);
     };
 
     update = async (id: string, model: FormSubmissionUpdateModel) => {
-        
+
         const response = await this.prisma.formSubmission.update({
             where: {
                 id: id,
@@ -97,7 +97,7 @@ export class FormService {
     public search = async (filters: FormSubmissionSearchFilters) => {
         try {
             const search = this.getSearchModel(filters);
-            
+
             const list = await this.prisma.formSubmission.findMany(search);
 
             const count = await this.prisma.formSubmission.count({
@@ -124,7 +124,7 @@ export class FormService {
         const searchFilter = {
             where: {}
         }
-        
+
         if (filters.FormTemplateId) {
             searchFilter.where["FormTemplateId"] = filters.FormTemplateId
         }
@@ -161,9 +161,9 @@ export class FormService {
 
         let orderByColum = 'CreatedAt';
         if (filters.OrderBy) {
-           searchFilter['orderBy'] = {
-               [orderByColum]: order
-           }
+            searchFilter['orderBy'] = {
+                [orderByColum]: order
+            }
         }
 
         let offset = 0;

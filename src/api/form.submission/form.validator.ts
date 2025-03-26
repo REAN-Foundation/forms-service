@@ -23,7 +23,7 @@ export class FormValidator extends BaseValidator {
             });
 
             await schema.validateAsync(request.body);
-            
+
             const model = this.getFormSubmissionCreateModel(request);
             return model;
         } catch (error) {
@@ -41,7 +41,7 @@ export class FormValidator extends BaseValidator {
                 LinkQueryParams: joi.object().optional(),
                 Status: joi.string().optional(),
                 SubmittedAt: joi.date().optional(),
-                
+
             });
 
             await schema.validateAsync(request.body);
@@ -135,7 +135,7 @@ export class FormValidator extends BaseValidator {
             UserId: request.body.UserId ?? null,
             Status: request.body.Status ?? FormStatus.LinkShared,
             Category: request.body.FormCategory as FormType ?? FormType.Survey,
-            
+
         };
 
         const validTill = TimeHelper.addDuration(new Date(), 1, DurationType.Day);
@@ -169,8 +169,8 @@ export class FormValidator extends BaseValidator {
         if (request.body.Status) {
             model.Status = request.body.Status;
         }
-  
-        if(request.body.SubmittedAt){
+
+        if (request.body.SubmittedAt) {
             model.SubmittedAt = request.body.SubmittedAt
         }
         return model;

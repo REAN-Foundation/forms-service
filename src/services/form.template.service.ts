@@ -117,7 +117,7 @@ export class FormTemplateService {
             }
         })
 
-        const subsections =  await this.mapSections(record.FormSections);
+        const subsections = await this.mapSections(record.FormSections);
         record.FormSections = subsections;
 
         return record;
@@ -451,72 +451,66 @@ export class FormTemplateService {
         return FormTemplateMapper.toArrayDto(response);
     };
 
-    protected addSortingAndPagination = (
-        search: Prisma.FormTemplateFindManyArgs,
-        filters: FormTemplateSearchFilters
-    ) => {
-        // Sorting
-        let orderByColumn: keyof typeof Prisma.FormTemplateScalarFieldEnum = 'CreatedAt';
-        if (filters.OrderBy) {
-            orderByColumn = filters.OrderBy as keyof typeof Prisma.FormTemplateScalarFieldEnum;
-        }
-        let order: Prisma.SortOrder = 'asc';
-        if (filters.Order === 'descending') {
-            order = 'desc';
-        }
+    // protected addSortingAndPagination = (
+    //     search: Prisma.FormTemplateFindManyArgs,
+    //     filters: FormTemplateSearchFilters
+    // ) => {
+    //     // Sorting
+    //     let orderByColumn: keyof typeof Prisma.FormTemplateScalarFieldEnum = 'CreatedAt';
+    //     if (filters.OrderBy) {
+    //         orderByColumn = filters.OrderBy as keyof typeof Prisma.FormTemplateScalarFieldEnum;
+    //     }
+    //     let order: Prisma.SortOrder = 'asc';
+    //     if (filters.Order === 'descending') {
+    //         order = 'desc';
+    //     }
 
-        search.orderBy = {
-            [orderByColumn]: order,
-        };
+    //     search.orderBy = {
+    //         [orderByColumn]: order,
+    //     };
 
-        // Pagination
-        let limit = 25;
-        if (filters.ItemsPerPage) {
-            limit = filters.ItemsPerPage;
-        }
-        let offset = 0;
-        let pageIndex = 1;
-        if (filters.PageIndex) {
-            pageIndex = filters.PageIndex < 1 ? 1 : filters.PageIndex;
-            offset = (pageIndex - 1) * limit;
-        }
+    //     // Pagination
+    //     let limit = 25;
+    //     if (filters.ItemsPerPage) {
+    //         limit = filters.ItemsPerPage;
+    //     }
+    //     let offset = 0;
+    //     let pageIndex = 1;
+    //     if (filters.PageIndex) {
+    //         pageIndex = filters.PageIndex < 1 ? 1 : filters.PageIndex;
+    //         offset = (pageIndex - 1) * limit;
+    //     }
 
-        search.take = limit;
-        search.skip = offset;
+    //     search.take = limit;
+    //     search.skip = offset;
 
-        // Update where clause
-        const whereClause = this.getSearchModel(filters);
-        if (Object.keys(whereClause).length > 0) {
-            search.where = whereClause;
-        }
+    //     // Update where clause
+    //     const whereClause = this.getSearchModel(filters);
+    //     if (Object.keys(whereClause).length > 0) {
+    //         search.where = whereClause;
+    //     }
 
-        return { search, pageIndex, limit, order, orderByColumn };
-    };
+    //     return { search, pageIndex, limit, order, orderByColumn };
+    // };
+
 
     public search = async (filters: FormTemplateSearchFilters) => {
         try {
-            const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
+            const search = this.getSearchModel(filters);
 
-            const list = await this.prisma.formTemplate.findMany({
-                where: prismaSearch.where,
-                take: limit,
-                skip: (pageIndex - 1) * limit,
-                orderBy: {
-                    [orderByColumn]: order === 'desc' ? 'desc' : 'asc',
-                },
-            });
+            const list = await this.prisma.formTemplate.findMany(search);
 
             const count = await this.prisma.formTemplate.count({
-                where: prismaSearch.where,
+                where: search.where,
             });
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'desc' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
+                PageIndex: filters.PageIndex,
+                ItemsPerPage: filters.ItemsPerPage,
+                Order: filters.Order,
+                OrderedBy: filters.OrderBy,
                 Items: list.map((x) => FormTemplateMapper.toDto(x)),
             };
 
@@ -525,71 +519,117 @@ export class FormTemplateService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
     };
+    // public search = async (filters: FormTemplateSearchFilters) => {
+    //     try {
+    //         const { search: prismaSearch, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination({}, filters);
 
-    private getSearchModel = (filters: FormTemplateSearchFilters): Prisma.FormTemplateWhereInput => {
-        const where: Prisma.FormTemplateWhereInput = {
-            DeletedAt: null
-        };
+    //         const list = await this.prisma.formTemplate.findMany({
+    //             where: prismaSearch.where,
+    //             take: limit,
+    //             skip: (pageIndex - 1) * limit,
+    //             orderBy: {
+    //                 [orderByColumn]: order === 'desc' ? 'desc' : 'asc',
+    //             },
+    //         });
+
+    //         const count = await this.prisma.formTemplate.count({
+    //             where: prismaSearch.where,
+    //         });
+
+    //         const searchResults = {
+    //             TotalCount: count,
+    //             RetrievedCount: list.length,
+    //             PageIndex: pageIndex,
+    //             ItemsPerPage: limit,
+    //             Order: order === 'desc' ? 'descending' : 'ascending',
+    //             OrderedBy: orderByColumn,
+    //             Items: list.map((x) => FormTemplateMapper.toDto(x)),
+    //         };
+
+    //         return searchResults;
+    //     } catch (error) {
+    //         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+    //     }
+    // };
+
+    private getSearchModel = (filters: FormTemplateSearchFilters) => {
+        // const where: Prisma.FormTemplateWhereInput = {
+        //     DeletedAt: null
+        // };
+        const searchFilter = {
+            where: {
+                DeletedAt: null,
+            }
+        }
 
         if (filters.id) {
-            where.id = {
-                equals: filters.id,
-            };
+            searchFilter.where['id'] = filters.id
         }
 
-        if (filters.title) {
-            where.Title = {
-                equals: filters.title,
-            };
-        }
-        if (filters.tenantCode) {
-            where.TenantCode = {
-                equals: filters.tenantCode,
-            };
+        if (filters.Title) {
+            searchFilter.where['Title'] = filters.Title
         }
 
-        if (filters.description) {
-            where.Description = {
-                equals: filters.description,
-            };
+        if (filters.TenantCode) {
+            searchFilter.where['TenantCode'] = filters.TenantCode
         }
 
-        if (filters.currentVersion) {
-            where.CurrentVersion = {
-                equals: filters.currentVersion,
-            };
+        if (filters.Description) {
+            searchFilter.where['Description'] = filters.Description
         }
 
-        if (filters.type) {
-            where.Type = {
-                equals: filters.type,
-            };
+        if (filters.CurrentVersion) {
+            searchFilter.where['CurrentVersion'] = filters.CurrentVersion
         }
 
-        if (filters.displayCode) {
-            where.DisplayCode = {
-                equals: filters.displayCode,
-            };
+        if (filters.Type) {
+            searchFilter.where['Type'] = filters.Type
         }
 
-        if (filters.ownerUserId) {
-            where.OwnerUserId = {
-                equals: filters.ownerUserId,
-            };
-        }
-        if (filters.rootSectionId) {
-            where.RootSectionId = {
-                equals: filters.rootSectionId,
-            };
-        }
-        if (filters.defaultSectionNumbering) {
-            where.DefaultSectionNumbering = {
-                equals: filters.defaultSectionNumbering,
-            };
+        if (filters.DisplayCode) {
+            searchFilter.where['DisplayCode'] = filters.DisplayCode
         }
 
+        if (filters.OwnerUserId) {
+            searchFilter.where['OwnerUserId'] = filters.OwnerUserId
+        }
+        if (filters.RootSectionId) {
+            searchFilter.where['RootSectionId'] = filters.RootSectionId
+        }
+        if (filters.DefaultSectionNumbering) {
+            searchFilter.where['DefaultSectionNumbering'] = filters.DefaultSectionNumbering
+        }
 
-        return where;
+        let limit = 25;
+        if (filters.ItemsPerPage) {
+            limit = filters.ItemsPerPage;
+        }
+
+        let order = 'asc';
+        if (filters.Order === 'descending') {
+            order = 'desc';
+        }
+
+        let orderByColum = 'CreatedAt';
+        if (filters.OrderBy) {
+            searchFilter['orderBy'] = {
+                [orderByColum]: order
+            }
+        }
+
+        let offset = 0;
+
+        let pageIndex = 0;
+
+        if (filters.PageIndex) {
+            pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+            offset = pageIndex * limit;
+        }
+
+        searchFilter['take'] = limit;
+        searchFilter['skip'] = offset;
+
+        return searchFilter;
     };
 
 }
