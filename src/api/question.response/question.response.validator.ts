@@ -9,6 +9,8 @@ import {
     QuestionResponseUpdateModel,
 } from "../../domain.types/forms/response.domain.types";
 import { ParsedQs } from 'qs';
+import { FormStatus, FormSubmissionDto } from "../../domain.types/forms/form.submission.domain.types";
+import { ApiError } from "../../common/api.error";
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class QuestionResponseValidator extends BaseValidator {
@@ -114,6 +116,21 @@ export class QuestionResponseValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    public _validateSubmission(submission: FormSubmissionDto) {
+        if(!submission) {
+            throw new ApiError('Form not found!', 404);
+        }
+
+        if (submission.Status === FormStatus.Submitted || submission.SubmittedAt !== null) {
+            throw new ApiError('Form already submitted!', 409);
+        }
+    
+        if (submission.ValidTill < new Date()) {
+            throw new ApiError('Form link is expired!', 400);
+        }
+    
+    }
 
     public validateSaveRequest = async (request: express.Request): Promise<QuestionResponseSaveModel> => {
         try {

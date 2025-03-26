@@ -71,11 +71,13 @@ export class QuestionResponseController extends BaseController {
                 }
             );
 
-            if (searchResult.Items.length !== 1) {  
+            if (searchResult?.Items?.length !== 1) {  
                 ErrorHandler.throwNotFoundError('Form submission not found!');
             }
 
-            const formSubmissionId = searchResult.Items[0]?.id;
+            const formSubmissionId = searchResult?.Items[0]?.id;
+
+            this._validator._validateSubmission(searchResult?.Items[0]);
 
             for (let questionResponse in model.QuestionResponses) {
                 await this.recordResponses(model.QuestionResponses[questionResponse]);

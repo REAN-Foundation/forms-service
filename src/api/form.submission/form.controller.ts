@@ -134,13 +134,25 @@ export class FormController extends BaseController {
 
     submit = async (request: express.Request, response: express.Response) => {
         try {
-            var id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            const SubmissionKey = await this._validator.validateSubmitRequest(request);
+
+            const formSubmission = await this._service.search({Encrypted: SubmissionKey});
+
+            if (formSubmission.Items?.length !== 1) {
+                ErrorHandler.throwNotFoundError('Form submission not found!');  
+            }
+
+            const submission = formSubmission.Items[0];
+            const id = submission?.id;
+
+            this._validator._validateSubmission(submission);
+
             const record = await this._service.submit(id);
             if (record === null) {
-                ErrorHandler.throwInternalServerError('Unable to add Form!', error);
+                ErrorHandler.throwInternalServerError('Unable to add Form!', {});
             }
             const message = 'Form submission done successfully!';
-            return ResponseHandler.success(request, response, message, 201, record);
+            return ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
