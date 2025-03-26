@@ -4,11 +4,11 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import BaseValidator from '../base.validator';
-import { FormStatus, FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionUpdateModel, FormType } from '../../domain.types/forms/form.submission.domain.types';
+import { FormStatus, FormSubmissionCreateModel, FormSubmissionDto, FormSubmissionSearchFilters, FormSubmissionUpdateModel, FormType } from '../../domain.types/forms/form.submission.domain.types';
 import { ParsedQs } from 'qs';
-import * as crypto from "crypto";
 import { TimeHelper } from '../../common/time.helper';
 import { DurationType } from '../../miscellaneous/time.types';
+import { ApiError } from '../../common/api.error';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,6 +52,18 @@ export class FormValidator extends BaseValidator {
         }
     };
 
+    public validateSubmitRequest = async (request: express.Request): Promise<string> => {
+        try {
+            const schema = joi.object({
+                SubmissionKey: joi.string().length(64).required(),
+           });
+
+            await schema.validateAsync(request.body);
+           return request.body.SubmissionKey;
+        } catch (error) {
+            ErrorHandler.handleValidationError(error);
+        }
+    }
     public validateSearchRequest = async (request: express.Request): Promise<FormSubmissionSearchFilters> => {
         try {
             const schema = joi.object({
@@ -74,6 +86,24 @@ export class FormValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    public _validateSubmission(submission: FormSubmissionDto) {
+        if(!submission) {
+            throw new ApiError('Form not found!', 404);
+        }
+
+        if (submission.Status === FormStatus.Submitted || submission.SubmittedAt !== null) {
+            throw new ApiError('Form already submitted!', 409);
+        }
+    
+        if (submission.ValidTill < new Date()) {
+            throw new ApiError('Form link is expired!', 400);
+        }
+    
+        if (submission.Status !== FormStatus.InProgress) {
+            throw new ApiError('Please save the form first!', 400);
+        }
+    }
 
     private getSearchFilters = (query: ParsedQs): FormSubmissionSearchFilters => {
         var filters: any = {};
