@@ -68,10 +68,10 @@ export class FormTemplateService {
                 TenantCode: model.TenantCode,
                 Type: model.Type as FormType,
                 ItemsPerPage: model.ItemsPerPage as ItemsPerPage,
-                DisplayCode: model.DisplayCode,
-                OwnerUserId: model.OwnerUserId,
-                RootSectionId: model.RootSectionId,
-                DefaultSectionNumbering: model.DefaultSectionNumbering,
+                // DisplayCode: model.DisplayCode,
+                // OwnerUserId: model.OwnerUserId,
+                // RootSectionId: model.RootSectionId,
+                // DefaultSectionNumbering: model.DefaultSectionNumbering,
                 UpdatedAt: new Date()
             },
         });
