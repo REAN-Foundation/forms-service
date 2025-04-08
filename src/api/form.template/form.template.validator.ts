@@ -52,10 +52,6 @@ export class FormTemplateValidator extends BaseValidator {
                 TenantCode: joi.string().optional(),
                 Type: joi.string().optional(),
                 ItemsPerPage: joi.string().optional(),
-                DisplayCode: joi.string().max(64).optional(),
-                OwnerUserId: joi.string().uuid().optional(),
-                RootSectionId: joi.string().uuid().optional(),
-                DefaultSectionNumbering: joi.boolean().optional()
             });
             await schema.validateAsync(request.body);
             return {
@@ -64,11 +60,7 @@ export class FormTemplateValidator extends BaseValidator {
                 CurrentVersion: request.body.CurrentVersion ?? null,
                 TenantCode: request.body.TenantCode ?? null,
                 Type: request.body.Type ?? null,
-                ItemsPerPage: request.body.ItemsPerPage ?? null,
-                DisplayCode: request.body.DisplayCode ?? null,
-                OwnerUserId: request.body.OwnerUserId ?? null,
-                RootSectionId: request.body.RootSectionId ?? null,
-                DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? null
+                ItemsPerPage: request.body.ItemsPerPage ?? null
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);

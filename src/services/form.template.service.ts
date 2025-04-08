@@ -24,15 +24,6 @@ export class FormTemplateService {
         this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
-    // allFormTemplates = async () => {
-    //     const response = await this.prisma.formTemplate.findMany({
-    //         where: {
-    //             DeletedAt: null,
-    //         }
-    //     });
-    //     return FormTemplateMapper.toArrayDto(response);
-    // };
-
     create = async (model: FormTemplateCreateModel) => {
         const response = await this.prisma.formTemplate.create({
             data: {
@@ -68,10 +59,6 @@ export class FormTemplateService {
                 TenantCode: model.TenantCode,
                 Type: model.Type as FormType,
                 ItemsPerPage: model.ItemsPerPage as ItemsPerPage,
-                // DisplayCode: model.DisplayCode,
-                // OwnerUserId: model.OwnerUserId,
-                // RootSectionId: model.RootSectionId,
-                // DefaultSectionNumbering: model.DefaultSectionNumbering,
                 UpdatedAt: new Date()
             },
         });
