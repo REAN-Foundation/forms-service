@@ -25,6 +25,7 @@ export interface FormTemplateUpdateModel {
     TenantCode?: string;
     Type?: FormType;
     ItemsPerPage?: ItemsPerPage;
+    RootSectionId?: string;
 }
 
 export interface FormTemplateResponseDto {
