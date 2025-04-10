@@ -9,7 +9,7 @@ export interface FormTemplateCreateModel {
     Title: string;
     Description?: string;
     CurrentVersion?: number;
-    TenantCode?: string;
+    TenantId?: string;
     Type: FormType;
     ItemsPerPage: ItemsPerPage;
     DisplayCode?: string;
@@ -22,7 +22,7 @@ export interface FormTemplateUpdateModel {
     Title?: string;
     Description?: string;
     CurrentVersion?: number;
-    TenantCode?: string;
+    TenantId?: string;
     Type?: FormType;
     ItemsPerPage?: ItemsPerPage;
     RootSectionId?: string;
@@ -33,7 +33,7 @@ export interface FormTemplateResponseDto {
     Title: string;
     Description: string;
     CurrentVersion: number;
-    TenantCode: string;
+    TenantId: string;
     Type: FormType;
     ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
@@ -49,7 +49,7 @@ export interface FormTemplateSearchFilters extends BaseSearchFilters {
     Title?: string;
     Description?: string;
     CurrentVersion?: number;
-    TenantCode: string;
+    TenantId: string;
     Type?: FormType;
     DisplayCode?: string;
     OwnerUserId?: uuid;
@@ -67,7 +67,7 @@ export interface FormTemplateSearchResponseDto extends BaseSearchResults {
     Title: string;
     Description: string;
     CurrentVersion: number;
-    TenantCode: string;
+    TenantId: string;
     Type: FormType;
     DisplayCode: string;
     OwnerUserId: string;
@@ -177,7 +177,7 @@ export interface TemplatePreviewDto {
     Title: string;
     Description: string;
     CurrentVersion: number;
-    TenantCode: string;
+    TenantId: string;
     Type: FormType;
     ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
