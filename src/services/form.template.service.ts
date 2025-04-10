@@ -87,7 +87,7 @@ export class FormTemplateService {
                         DeletedAt: null
                     },
                     orderBy: {
-                        CreatedAt: 'asc' // Sort sections within each template
+                        Sequence: "asc" // Sort sections within each template
                     },
                     include: {
                         Questions: {
@@ -95,7 +95,7 @@ export class FormTemplateService {
                                 DeletedAt: null
                             },
                             orderBy: {
-                                CreatedAt: 'asc' // Sort questions within each section
+                                Sequence: 'asc' // Sort questions within each section
                             }
                         },
                         ParentFormTemplate: true
@@ -108,51 +108,17 @@ export class FormTemplateService {
         record.FormSections = subsections;
 
         return record;
-        // const template = await this.prisma.formTemplate.findUnique({
-        //     where: {
-        //         id: id,
-        //         DeletedAt: null
-        //     },
-        // });
-        // const sections = await this.prisma.formSection.findMany({
-        //     where: {
-        //         ParentFormTemplateId: id,
-        //         DeletedAt: null
-        //     },
-        //     include: {
-        //         ParentFormTemplate: true
-        //     }
-        // });
-        // const questions = await this.prisma.question.findMany({
-        //     where: {
-        //         ParentTemplateId: id,
-        //         DeletedAt: null
-        //     },
-        //     include: {
-        //         ParentFormTemplate: true,
-        //         ParentFormSection: true
-        //     }
-        // });
-
-        // const searchResult = {
-        //     Template: FormTemplateMapper.toDto(template),
-        //     Sections: sections.map((x) => FormSectionMapper.toDto(x)),
-        //     Questions: questions.map((x) => QuestionMapper.toDto(x))
-        // };
-        // return searchResult;
     };
 
     mapSections = async (sections: any[]) => {
         const sectionMap = new Map();
 
-        // Initialize sections and assign an empty array for Subsections
         sections.forEach((section) => {
             sectionMap.set(section.id, { ...section, Subsections: [] });
         });
 
         const rootSections: any[] = [];
 
-        // Assign subsections to their respective parents
         sections.forEach((section) => {
             if (section.ParentSectionId !== null) {
                 const parent = sectionMap.get(section.ParentSectionId);
@@ -168,7 +134,6 @@ export class FormTemplateService {
     }
 
     readTemplateObjToExport = async (id: string): Promise<ExportFormTemplateDto> => {
-        // Fetch main template
         const template = await this.prisma.formTemplate.findUnique({
             where: { id, DeletedAt: null }
         });
@@ -176,7 +141,6 @@ export class FormTemplateService {
             throw new Error(`Template with ID ${id} not found`);
         }
 
-        // Define the Template DTO with required fields
         const templateDto: TemplateDto = {
             id: template.id,
             Title: template.Title,

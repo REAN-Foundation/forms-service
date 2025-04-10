@@ -73,7 +73,7 @@ export class QuestionValidator extends BaseValidator {
                 CorrectAnswer: joi.string().optional(),
                 IsRequired: joi.boolean().optional(),
                 Hint: joi.string().optional(),
-                Sequence: joi.string().optional(),
+                Sequence: joi.number().optional(),
                 Options: joi.array().items(optionSchema).optional(), // Validate Options as an array of objects
                 // FileResourceId: joi.string().uuid(),
                 QuestionImageUrl: joi.string().optional(),
@@ -121,6 +121,8 @@ export class QuestionValidator extends BaseValidator {
                 CorrectAnswer: joi.string().optional(),
                 IsRequired: joi.boolean().optional(),
                 Hint: joi.string().optional(),
+                Sequence: joi.number().optional(),
+                ParentSectionId: joi.string().uuid().optional(),
                 // Options: joi.array().items(joi.string().optional()).optional(),
                 Options: joi.array().items(optionSchema).optional(), // Validate Options as an array of objects
                 // FileResourceId  : joi.string().uuid().optional(),
@@ -139,6 +141,8 @@ export class QuestionValidator extends BaseValidator {
                 IsRequired: request.body.IsRequired ?? null,
                 Hint: request.body.Hint ?? null,
                 Options: request.body.Options ?? null,
+                Sequence: request.body.Sequence ?? null,
+                ParentSectionId: request.body.ParentSectionId ?? null,
                 // FileResourceId  : request.body.FileResourceId ?? null,
                 QuestionImageUrl: request.body.QuestionImageUrl ?? null,
                 RangeMin: request.body.RangeMin ?? null,
@@ -163,6 +167,7 @@ export class QuestionValidator extends BaseValidator {
                 correctAnswer: joi.string().optional(),
                 isRequired: joi.boolean().optional(),
                 hint: joi.string().optional(),
+                sequence: joi.number().optional(),
                 options: joi.array().items(joi.string().optional()).optional(),
                 // FileResourceId  : joi.string().uuid().optional(),
                 questionImageUrl: joi.string().optional(),
@@ -225,6 +230,10 @@ export class QuestionValidator extends BaseValidator {
         var hint = query.hint ? query.hint : null;
         if (hint != null) {
             filters['hint'] = hint;
+        }
+        var sequence = query.sequence ? query.sequence : null;
+        if (sequence != null) {
+            filters['sequence'] = sequence;
         }
         var options = query.options ? query.options : null;
         if (options != null) {
