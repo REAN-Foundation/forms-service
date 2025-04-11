@@ -17,7 +17,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Title: joi.string().required(),
                 Description: joi.string().max(512).optional(),
                 CurrentVersion: joi.number().optional(),
-                TenantCode: joi.string().optional(),
+                TenantId: joi.string().optional(),
                 Type: joi.string().required(),
                 ItemsPerPage: joi.string().required(),
                 DisplayCode: joi.string().optional(),
@@ -30,7 +30,7 @@ export class FormTemplateValidator extends BaseValidator {
                 Title: request.body.Title,
                 Description: request.body.Description ?? null,
                 CurrentVersion: request.body.CurrentVersion ?? 1,
-                TenantCode: request.body.TenantCode,
+                TenantId: request.body.TenantId,
                 Type: request.body.Type,
                 ItemsPerPage: request.body.ItemsPerPage,
                 DisplayCode: request.body.DisplayCode ?? generateDisplayCode(30, 'ASSESS_TEMP_#'),
@@ -49,26 +49,18 @@ export class FormTemplateValidator extends BaseValidator {
                 Title: joi.string().optional(),
                 Description: joi.string().max(512).optional(),
                 CurrentVersion: joi.number().optional(),
-                TenantCode: joi.string().optional(),
+                TenantId: joi.string().optional(),
                 Type: joi.string().optional(),
                 ItemsPerPage: joi.string().optional(),
-                DisplayCode: joi.string().max(64).optional(),
-                OwnerUserId: joi.string().uuid().optional(),
-                RootSectionId: joi.string().uuid().optional(),
-                DefaultSectionNumbering: joi.boolean().optional()
             });
             await schema.validateAsync(request.body);
             return {
                 Title: request.body.Title ?? null,
                 Description: request.body.Description ?? null,
                 CurrentVersion: request.body.CurrentVersion ?? null,
-                TenantCode: request.body.TenantCode ?? null,
+                TenantId: request.body.TenantId ?? null,
                 Type: request.body.Type ?? null,
-                ItemsPerPage: request.body.ItemsPerPage ?? null,
-                DisplayCode: request.body.DisplayCode ?? null,
-                OwnerUserId: request.body.OwnerUserId ?? null,
-                RootSectionId: request.body.RootSectionId ?? null,
-                DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? null
+                ItemsPerPage: request.body.ItemsPerPage ?? null
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -84,6 +76,7 @@ export class FormTemplateValidator extends BaseValidator {
                 currentVersion: joi.number().optional(),
                 type: joi.string().optional(),
                 displayCode: joi.string().optional(),
+                tenantId: joi.string().uuid().optional(),
                 ownerUserId: joi.string().uuid().optional(),
                 rootSectionId: joi.string().uuid().optional(),
                 defaultSectionNumbering: joi.boolean().optional(),
@@ -116,7 +109,7 @@ export class FormTemplateValidator extends BaseValidator {
 
         var tenantCode = query.tenantCode ? query.tenantCode : null;
         if (tenantCode != null) {
-            filters['TenantCode'] = tenantCode;
+            filters['TenantId'] = tenantCode;
         }
 
         var description = query.description ? query.description : null;

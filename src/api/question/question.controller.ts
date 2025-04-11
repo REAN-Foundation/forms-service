@@ -44,9 +44,9 @@ export class QuestionController extends BaseController {
             const allQuestions = await this._service.search({ parentSectionId });
 
             if (allQuestions.Items.length === 0) {
-                model.Sequence = "Q1";
+                model.Sequence = 1;
             } else {
-                model.Sequence = "Q" + (allQuestions.Items.length + 1);
+                model.Sequence = allQuestions.Items.length + 1;
             }
 
             const record = await this._service.create(model);
@@ -97,6 +97,39 @@ export class QuestionController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
+    updateSequence = async (request: express.Request, response: express.Response) => {
+        try {
+            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const model = await this._validator.validateUpdateRequest(request);
+
+            const questionRecord = await this._service.getById(id);
+            const oldSeq = Number(questionRecord.Sequence);
+            const newSeq = Number(model.Sequence);
+            const parentSectionId = model.ParentSectionId;
+
+            if (oldSeq < newSeq) {
+                await this._service.decrementSequenceInRange(oldSeq + 1, newSeq, parentSectionId);
+            } else if (oldSeq > newSeq) {
+                await this._service.incrementSequenceInRange(newSeq, oldSeq - 1, parentSectionId);
+            }
+
+            const updatedRecord = await this._service.updateSequence(id, {
+                ...model,
+                Sequence: newSeq
+            });
+
+            ResponseHandler.success(request, response, 'Sequence updated', 200, updatedRecord);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+
+
+
+
+
 
     delete = async (request: express.Request, response: express.Response): Promise<void> => {
         try {

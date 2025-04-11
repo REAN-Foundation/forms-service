@@ -18,7 +18,7 @@ import { container } from 'tsyringe';
 
 export class FormTemplateController extends BaseController {
 
-    _service: FormTemplateService =  container.resolve(FormTemplateService);
+    _service: FormTemplateService = container.resolve(FormTemplateService);
 
     _section: FormSectionService = container.resolve(FormSectionService);
 
@@ -27,21 +27,6 @@ export class FormTemplateController extends BaseController {
     constructor() {
         super();
     }
-
-    //#endregion
-
-    // getAll = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         const record = await this._service.allFormTemplates();
-    //         if (record === null) {
-    //             ErrorHandler.throwInternalServerError('Unable to add Form!', error);
-    //         }
-    //         const message = 'All Form templates retrived successfully!';
-    //         return ResponseHandler.success(request, response, message, 201, record);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // }
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -98,46 +83,7 @@ export class FormTemplateController extends BaseController {
         }
     };
 
-    exportTemplate = async (request: express.Request, response: express.Response): Promise<void> => {
-        try {
-            const id: string = await this._validator.validateParamAsUUID(request, 'id');
 
-            const assessmentTemplate = await this._service.getById(id);
-            if (!assessmentTemplate) {
-                throw new ApiError('Cannot find assessment template!', 404);
-            }
-
-            const templateObj = await this._service.readTemplateObjToExport(assessmentTemplate.id);
-
-            const { dateFolder, filename, sourceFileLocation } = await Helper.storeTemplateToFileLocally(templateObj);
-
-            const mimeType = Helper.getMimeType(sourceFileLocation);
-            response.setHeader('Content-Type', mimeType);
-            response.setHeader('Content-Disposition', `attachment; filename=${filename}`);
-
-            const filestream = fs.createReadStream(sourceFileLocation);
-            filestream.pipe(response);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
-    previewTemplate = async (request: express.Request, response: express.Response): Promise<void> => {
-        try {
-            const id: string = await this._validator.validateParamAsUUID(request, 'id');
-
-            const templateObj = await this._service.previewTemplate(id);
-
-            if (!templateObj) {
-                throw new ApiError('Cannot find assessment template!', 404);
-            }
-
-            const message = 'Form templated retrived successfully!';
-            ResponseHandler.success(request, response, message, 200, templateObj);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
 
     update = async (request: express.Request, response: express.Response) => {
         try {

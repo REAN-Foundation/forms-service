@@ -14,7 +14,7 @@ model FormTemplate {
   id                      String           @id @default(uuid())
   Title                   String
   Description             String?
-  TenantCode              String?
+  TenantId              String?
   ItemsPerPage            ItemsPerPage
   CurrentVersion          Int?
   Type                    FormType
@@ -62,7 +62,7 @@ model Question {
   DisplayCode        String?
   ResponseType       QueryResponseType
   Score              Int?
-  Sequence           String?
+  Sequence           Int?
   CorrectAnswer      String?
   IsRequired         Boolean?
   Hint               String?

@@ -152,6 +152,50 @@ export class QuestionService {
         return QuestionMapper.toDto(response);
     };
 
+    async updateSequence(id: string, data: QuestionUpdateModel) {
+        return this.prisma.question.update({
+            where: { id },
+            data:{
+                Sequence: data.Sequence
+            }
+        });
+    }
+
+    async decrementSequenceInRange(start: number, end: number, parentSectionId: string) {
+        return this.prisma.question.updateMany({
+            where: {
+                Sequence: {
+                    gt: start - 1,
+                    lte: end
+                },
+                ParentSectionId: parentSectionId
+            },
+            data: {
+                Sequence: {
+                    decrement: 1
+                }
+            }
+        });
+    }
+
+    async incrementSequenceInRange(start: number, end: number, parentSectionId: string) {
+        return this.prisma.question.updateMany({
+            where: {
+                Sequence: {
+                    gte: start,
+                    lt: end + 1
+                },
+                ParentSectionId: parentSectionId
+            },
+            data: {
+                Sequence: {
+                    increment: 1
+                }
+            }
+        });
+    }
+
+
     getById = async (id: string) => {
         const response = await this.prisma.question.findUnique({
             where: {
