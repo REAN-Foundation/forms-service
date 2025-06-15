@@ -1,12 +1,13 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormSectionValidator } from './form.section.validator';
-import { FormSectionService } from '../../services/form.section.service';
+import { FormSectionService } from '../../services/form.section/form.section.service';
 import { FormSectionCreateModel, FormSectionSearchFilters, FormSectionUpdateModel } from '../../domain.types/forms/form.section.domain.types';
+import { Injector } from '../../startup/injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -14,7 +15,9 @@ export class FormSectionController extends BaseController {
 
     //#region member variables and constructors
 
-    _service: FormSectionService = new FormSectionService();
+    // _service: FormSectionService = new FormSectionService();
+
+    _service: FormSectionService = Injector.Container.resolve(FormSectionService);
 
     _validator: FormSectionValidator = new FormSectionValidator();
 

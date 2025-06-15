@@ -2,7 +2,7 @@ import joi from 'joi';
 import express from 'express';
 import {
     ErrorHandler
-} from '../common/error.handler';
+} from '../common/handlers/error.handler';
 import { uuid } from '../domain.types/miscellaneous/system.types';
 
 //////////////////////////////////////////////////////////////////

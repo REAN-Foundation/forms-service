@@ -2,7 +2,7 @@ import joi, { optional } from 'joi';
 import express from 'express';
 import {
     ErrorHandler
-} from '../../common/error.handler';
+} from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
 import { FormSectionCreateModel, FormSectionSearchFilters, FormSectionUpdateModel } from '../../domain.types/forms/form.section.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';

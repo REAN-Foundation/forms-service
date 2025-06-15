@@ -1,15 +1,15 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { FormValidator } from './form.validator';
 import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { FormService } from '../../services/form.submission.service';
+import { FormService } from '../../services/form.submission/form.submission.service';
 import { FormSubmissionCreateModel, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
 import { error } from 'console';
-import { FormTemplateService } from '../../services/form.template.service';
+import { FormTemplateService } from '../../services/form.template/form.template.service';
 import * as crypto from "crypto";
-import { container } from 'tsyringe';
+import { Injector } from '../../startup/injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -17,9 +17,9 @@ export class FormController extends BaseController {
 
     //#region member variables and constructors
 
-    _service: FormService = container.resolve(FormService);
+    _service: FormService = Injector.Container.resolve(FormService);
 
-    _formTemplateService = container.resolve(FormTemplateService);
+    _formTemplateService = Injector.Container.resolve(FormTemplateService);
 
     _validator: FormValidator = new FormValidator();
 

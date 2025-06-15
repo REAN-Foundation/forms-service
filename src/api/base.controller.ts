@@ -1,6 +1,6 @@
 import express from 'express';
 // import { Authorizer } from '../auth/authorizer';
-import { ErrorHandler } from '../common/error.handler';
+import { ErrorHandler } from '../common/handlers/error.handler';
 import { error } from 'console';
 // import { Loader } from '../startup/loader';
 

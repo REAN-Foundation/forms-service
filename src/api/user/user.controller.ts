@@ -1,12 +1,13 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { UserValidator } from './user.validator';
 import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { UserCreateModel, UserSearchFilters, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../services/user/user.service';
+import { Injector } from '../../startup/injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -14,7 +15,7 @@ export class UserController extends BaseController {
 
     //#region member variables and constructors
 
-    _service: UserService = new UserService();
+    _service: UserService = Injector.Container.resolve(UserService);
 
     _validator: UserValidator = new UserValidator();
 

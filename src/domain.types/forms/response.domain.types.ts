@@ -1,6 +1,7 @@
 // import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
 
 import { FormStatus} from "@prisma/client";
+import { QueryResponseType } from "../../database/sql/typeorm/models/question/question.model";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
 export interface QuestionResponseCreateModel {
@@ -132,4 +133,4 @@ export interface QuestionResponseSearchResponseDto extends BaseSearchResults{
     LastSaveTimestamp  : Date
 }
 
-export type QueryResponseType = "Text" | "Float" | "Integer" | "Boolean" | "Object" | "TextArray" | "SingleChoiceSelection" | "MultiChoiceSelection" | "File" | "Date" | "DateTime" | "Rating" | "Location" | "Url" | "Range"; 
+// export type QueryResponseType = "Text" | "Float" | "Integer" | "Boolean" | "Object" | "TextArray" | "SingleChoiceSelection" | "MultiChoiceSelection" | "File" | "Date" | "DateTime" | "Rating" | "Location" | "Url" | "Range"; 

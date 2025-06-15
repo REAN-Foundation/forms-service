@@ -34,4 +34,24 @@ export class Logger {
         console.log(temp_str);
     };
 
+    logQuery(query: string, parameters?: any[]) {
+    console.log(`Query: ${query}`, parameters);
+  }
+  
+  logQueryError(error: string, query: string, parameters?: any[]) {
+    console.error(`Error: ${error}`, query, parameters);
+  }
+  
+  logQuerySlow(time: number, query: string, parameters?: any[]) {
+    console.warn(`Slow query (${time}ms): ${query}`, parameters);
+  }
+  
+  logSchemaBuild(message: string) {
+    console.log(message);
+  }
+  
+  logMigration(message: string) {
+    console.log(message);
+  }
+
 }

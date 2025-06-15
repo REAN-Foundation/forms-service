@@ -1,6 +1,7 @@
 // import { FormType } from "../miscellaneous/system.types";
 
-import { FormType, ItemsPerPage, QueryResponseType } from "@prisma/client";
+// import { FormType, ItemsPerPage, QueryResponseType } from "@prisma/client";
+import { FormType } from "../../database/sql/typeorm/models/form.template/form.template.model";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
 import { QuestionOption } from "./question.domain.types";
@@ -9,9 +10,9 @@ export interface FormTemplateCreateModel {
     Title: string;
     Description?: string;
     CurrentVersion?: number;
-    TenantId?: string;
+    TenantCode?: string;
     Type: FormType;
-    ItemsPerPage: ItemsPerPage;
+    // ItemsPerPage: ItemsPerPage;
     DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
@@ -22,22 +23,25 @@ export interface FormTemplateUpdateModel {
     Title?: string;
     Description?: string;
     CurrentVersion?: number;
-    TenantId?: string;
+    TenantCode?: string;
     Type?: FormType;
-    ItemsPerPage?: ItemsPerPage;
+    // ItemsPerPage?: ItemsPerPage;
+    DisplayCode?: string;
+    OwnerUserId?: string;
     RootSectionId?: string;
+    DefaultSectionNumbering?: boolean
 }
 
 export interface FormTemplateResponseDto {
     id: string;
     Title: string;
     Description: string;
-    CurrentVersion: number;
-    TenantId: string;
+    CurrentVersion?: number;
+    TenantCode?: string;
     Type: FormType;
-    ItemsPerPage: ItemsPerPage;
+    // ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
-    OwnerUserId: string;
+    OwnerUserId?: string;
     RootSectionId: string;
     DefaultSectionNumbering: boolean
     CreatedAt: Date;
@@ -49,7 +53,7 @@ export interface FormTemplateSearchFilters extends BaseSearchFilters {
     Title?: string;
     Description?: string;
     CurrentVersion?: number;
-    TenantId: string;
+    TenantCode: string;
     Type?: FormType;
     DisplayCode?: string;
     OwnerUserId?: uuid;
@@ -67,7 +71,7 @@ export interface FormTemplateSearchResponseDto extends BaseSearchResults {
     Title: string;
     Description: string;
     CurrentVersion: number;
-    TenantId: string;
+    TenantCode: string;
     Type: FormType;
     DisplayCode: string;
     OwnerUserId: string;
@@ -89,25 +93,26 @@ export interface TemplateDto extends FormTemplateResponseDto {
 
 export interface SectionDto {
     id: string;
-    SectionIdentifier: string;
+    SectionIdentifier? : string;
     Title: string;
     Description: string;
     DisplayCode: string;
-    Sequence: string;
-    ParentSectionId: string | null;
+    Sequence?: string;
+    ParentSectionId?: string | null;
     CreatedAt: Date;
     UpdatedAt: Date;
-    Questions: QuestionDto[];
-    Subsections: SubsectionDto[];
+    Questions?: QuestionDto[];
+    Subsections?: SubsectionDto[];
 }
 
 export interface SubsectionDto {
     id: string;
-    SectionIdentifier: string;
+    SectionIdentifier?: string;
     Title: string;
     Description: string;
     DisplayCode: string;
-    Sequence: string;
+    // Sequence: string;
+    Sequence: number;
     ParentSectionId: string;
     CreatedAt: Date;
     UpdatedAt: Date;
@@ -119,7 +124,7 @@ export interface QuestionDto {
     Title: string;
     Description?: string;
     DisplayCode: string | null;
-    ResponseType: QueryResponseType;
+    // ResponseType: QueryResponseType;
     Score: number;
     Sequence: string;
     CorrectAnswer: string;
@@ -160,11 +165,12 @@ export interface QuestionDto {
 
 export interface SectionPreviewDto {
     id: string;
-    SectionIdentifier: string;
+    SectionIdentifier?: string;
     Title: string;
     Description: string;
     DisplayCode: string;
-    Sequence: string;
+    // Sequence: string;
+    Sequence: number;
     ParentSectionId: string | null;
     CreatedAt: Date;
     UpdatedAt: Date;
@@ -176,12 +182,12 @@ export interface TemplatePreviewDto {
     id: string;
     Title: string;
     Description: string;
-    CurrentVersion: number;
-    TenantId: string;
+    CurrentVersion?: number;
+    TenantCode?: string;
     Type: FormType;
-    ItemsPerPage: ItemsPerPage;
+    // ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
-    OwnerUserId: string;
+    OwnerUserId?: string;
     RootSectionId: string;
     DefaultSectionNumbering: boolean
     CreatedAt: Date;

@@ -1,10 +1,18 @@
 import express from 'express';
 import "reflect-metadata";
+import cors from 'cors';
 import { Router } from './startup/router';
 import { execSync } from 'child_process';
 // import { Logger } from './startup/logger';
 import mysql from 'mysql2/promise';
 import { Logger } from './common/logger';
+import helmet from 'helmet';
+import { ConfigurationManager } from './config/configuration.manager';
+import { Loader } from './startup/loader';
+import { Injector } from './startup/injector';
+import { DatabaseClient } from './common/database.utils/dialect.clients/database.client';
+import { DatabaseSchemaType } from './common/database.utils/database.config';
+import { PrimaryDatabaseConnector } from './database/database.connector';
 // import ErrsoleMySQL from 'errsole-mysql';
 // import errsole from 'errsole';
 
@@ -33,10 +41,8 @@ export default class Application {
     }
 
 
-    start = async () => {
+    start = async (): Promise<void> => {
         try {
-            this._app.use(express.json());
-            this._app.use(express.urlencoded());
 
             // errsole.initialize({
             //     storage: new ErrsoleMySQL({
@@ -47,13 +53,56 @@ export default class Application {
             //     })
             // });
 
-            this.migrate();
-            this._router.init();
-            this.listen();
+             //Load configurations
+            ConfigurationManager.loadConfigurations();
+
+             //Load the modules
+            await Loader.init();
+
+             //Set-up middlewares
+            await this.setupMiddlewares();
+
+             //Connect databases
+            await connectDatabase_Primary();
+
+
+
+            // this.migrate();
+
+
+            //Set the routes
+            await this._router.init();
+
+            //Seed the service
+            // await Loader.seeder.init();
+
+            //Start listening
+            await this.listen();
         }
         catch (error) {
+            Logger.instance().log('An error occurred while starting reancare-api service.' + error.message);
         }
     }
+
+    private setupMiddlewares = async (): Promise<boolean> => {
+
+        return new Promise((resolve, reject) => {
+            try {
+                this._app.use(express.urlencoded({ limit: '50mb', extended: true }));
+                this._app.use(express.json( { limit: '50mb' }));
+                this._app.use(helmet());
+                this._app.use(cors());
+
+                //TODO: Move this to upload specific routes. Use router.use() method
+                // this.useFileUploadMiddleware();
+                
+                resolve(true);
+            }
+            catch (error) {
+                reject(error);
+            }
+        });
+    };
 
     private listen = async () => {
         return new Promise((resolve, reject) => {
@@ -130,4 +179,13 @@ export default class Application {
     };
 
 
+}
+
+async function connectDatabase_Primary() {
+    if (process.env.NODE_ENV === 'test') {
+        const databaseClient = Injector.Container.resolve(DatabaseClient);
+        await databaseClient.dropDb(DatabaseSchemaType.Primary);
+    }
+    const primaryDatabaseConnector = Injector.Container.resolve(PrimaryDatabaseConnector);
+    await primaryDatabaseConnector.init();
 }

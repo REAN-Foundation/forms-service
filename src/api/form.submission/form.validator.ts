@@ -2,9 +2,11 @@ import joi from 'joi';
 import express from 'express';
 import {
     ErrorHandler
-} from '../../common/error.handler';
+} from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { FormStatus, FormSubmissionCreateModel, FormSubmissionDto, FormSubmissionSearchFilters, FormSubmissionUpdateModel, FormType } from '../../domain.types/forms/form.submission.domain.types';
+import { FormSubmissionCreateModel, FormSubmissionDto, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
+import { FormStatus } from '../../database/sql/typeorm/models/form.submission/form.submission.model';
+import { FormType } from '../../database/sql/typeorm/models/form.template/form.template.model';
 import { ParsedQs } from 'qs';
 import { TimeHelper } from '../../common/time.helper';
 import { DurationType } from '../../miscellaneous/time.types';
@@ -100,9 +102,9 @@ export class FormValidator extends BaseValidator {
             throw new ApiError('Form link is expired!', 400);
         }
     
-        if (submission.Status !== FormStatus.InProgress) {
-            throw new ApiError('Please save the form first!', 400);
-        }
+        // if (submission.Status !== FormStatus.InProgress) {
+        //     throw new ApiError('Please save the form first!', 400);
+        // }
     }
 
     private getSearchFilters = (query: ParsedQs): FormSubmissionSearchFilters => {

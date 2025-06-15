@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientInit } from "../startup/prisma.client.init";
-import { UserLoginSessionMapper } from "../mappers/user.login.mapper";
+import { UserLoginSessionMapper } from "../database/sql/typeorm/mappers/user.login.mapper";
 import { UserLoginSessionCreateModel, UserLoginSessionUpdateModel } from "../domain.types/forms/user.login.session.domain.types";
 
 

@@ -1,6 +1,6 @@
 import joi from "joi";
 import express from "express";
-import { ErrorHandler } from "../../common/error.handler";
+import { ErrorHandler } from "../../common/handlers/error.handler";
 import BaseValidator from "../base.validator";
 import {
     QuestionResponseCreateModel,
@@ -9,7 +9,8 @@ import {
     QuestionResponseUpdateModel,
 } from "../../domain.types/forms/response.domain.types";
 import { ParsedQs } from 'qs';
-import { FormStatus, FormSubmissionDto } from "../../domain.types/forms/form.submission.domain.types";
+import { FormSubmissionDto } from "../../domain.types/forms/form.submission.domain.types";
+import { FormStatus } from "../../database/sql/typeorm/models/form.submission/form.submission.model";
 import { ApiError } from "../../common/api.error";
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

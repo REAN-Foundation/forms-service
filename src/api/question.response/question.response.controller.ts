@@ -1,18 +1,20 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { QuestionResponseValidator } from './question.response.validator';
-import { ResponseService } from '../../services/question.response.service';
+import { ResponseService } from '../../services/question.response/question.response.service';
 import { QuestionResponseCreateModel, QuestionResponseSaveModel, QuestionResponseSearchFilters, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
-import { QueryResponseType } from '@prisma/client';
+// import { QueryResponseType } from '@prisma/client';
+import { QueryResponseType } from '../../database/sql/typeorm/models/question/question.model';
 import * as path from 'path';
 import * as fs from 'fs';
 import { container } from 'tsyringe';
-import { FormService } from '../../services/form.submission.service';
-import { FormStatus } from '../../domain.types/forms/form.submission.domain.types';
+import { FormService } from '../../services/form.submission/form.submission.service';
+import { FormStatus } from '../../database/sql/typeorm/models/form.submission/form.submission.model';
+import { Injector } from '../../startup/injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,9 +22,9 @@ export class QuestionResponseController extends BaseController {
 
     //#region member variables and constructors
 
-    _service: ResponseService = new ResponseService();
+    _service: ResponseService = Injector.Container.resolve(ResponseService);
 
-    _formService: FormService = container.resolve(FormService);
+    _formService: FormService = Injector.Container.resolve(FormService);
 
     _validator: QuestionResponseValidator = new QuestionResponseValidator();
 

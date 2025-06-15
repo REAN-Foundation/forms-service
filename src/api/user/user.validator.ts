@@ -2,7 +2,7 @@ import joi from 'joi';
 import express from 'express';
 import {
     ErrorHandler
-} from '../../common/error.handler';
+} from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
 import { UserCreateModel, UserSearchFilters, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
 import { ParsedQs } from 'qs';

@@ -14,8 +14,8 @@ export interface FormSectionUpdateModel {
     SectionIdentifier?: string;
     Title?: string;
     Description?: string;
-    // DisplayCode?: string;
-    // Sequence?: string-;
+    DisplayCode?: string;
+    Sequence?: string;
     ParentSectionId?: string;
 }
 

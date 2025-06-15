@@ -1,6 +1,7 @@
 // import { QueryResponseType } from "../miscellaneous/system.types";
 
-import { QueryResponseType } from "@prisma/client";
+// import { QueryResponseType } from "@prisma/client";
+import { QueryResponseType } from "../../database/sql/typeorm/models/question/question.model";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
 // export interface QuestionOption {
@@ -41,6 +42,7 @@ export interface QuestionCreateModel {
     DisplayCode: string;
     ResponseType: QueryResponseType;
     Score?: number;
+    // Sequence?: string;
     Sequence?: number;
     CorrectAnswer: string;
     IsRequired?: boolean;
@@ -62,8 +64,6 @@ export interface QuestionUpdateModel {
     CorrectAnswer?: string;
     IsRequired?: boolean;
     Hint?: string;
-    Sequence?: number;
-    ParentSectionId?: string;
     Options?: QuestionOption[];
     // FileResourceId  ?: string;
     QuestionImageUrl?: string;
@@ -165,7 +165,6 @@ export interface QuestionSearchFilters extends BaseSearchFilters {
     correctAnswer?: string;
     isRequired?: boolean;
     hint?: string;
-    sequence?: number;
     options?: QuestionOption[];
     // FileResourceId   : string;
     questionImageUrl?: string;
