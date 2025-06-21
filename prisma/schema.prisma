@@ -210,6 +210,14 @@ enum QueryResponseType {
   RespiratoryRate
   Weight
   Height
+
+  PhoneNumber
+  Age
+  Email
+  Address
+  BirthDate
+  Gender
+  Name
 }
 
 enum FormStatus {
