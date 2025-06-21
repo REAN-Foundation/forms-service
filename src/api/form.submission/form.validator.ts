@@ -37,6 +37,7 @@ export class FormValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 UserId: joi.string().uuid().optional(),
+                FormTemplateId: joi.string().uuid().optional(),
                 Encrypted: joi.string().optional(),
                 Unencrypted: joi.string().optional(),
                 Link: joi.string().optional(),
@@ -164,6 +165,7 @@ export class FormValidator extends BaseValidator {
     private getFormSubmissionCreateModel = (request: express.Request): FormSubmissionCreateModel => {
         const model: FormSubmissionCreateModel = {
             FormTemplateId: request.body.FormTemplateId,
+            Title: request.body.Title ?? null,
             UserId: request.body.UserId ?? null,
             Status: request.body.Status ?? FormStatus.LinkShared,
             Category: request.body.FormCategory as FormType ?? FormType.Survey,
@@ -181,6 +183,10 @@ export class FormValidator extends BaseValidator {
         if (request.body.UserId) {
             model.UserId = request.body.UserId;
         }
+
+         if (request.body.FormTemplateId) {
+            model.FormTemplateId = request.body.FormTemplateId;
+         }
 
         if (request.body.Encrypted) {
             model.Encrypted = request.body.Encrypted;

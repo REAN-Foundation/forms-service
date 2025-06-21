@@ -1,11 +1,17 @@
-import { DatabaseSchemaType } from "../database.config";
+// import { DatabaseSchemaType } from "../database.config";
 
 export interface IDatabaseClient {
 
-    createDb(schemaType: DatabaseSchemaType): Promise<boolean>;
+    // createDb(schemaType: DatabaseSchemaType): Promise<boolean>;
 
-    dropDb(schemaType: DatabaseSchemaType): Promise<boolean>;
+    // dropDb(schemaType: DatabaseSchemaType): Promise<boolean>;
 
-    execute(schemaType: DatabaseSchemaType, query: string): Promise<boolean>;
+    // execute(schemaType: DatabaseSchemaType, query: string): Promise<boolean>;
+
+    createDb(): Promise<void>;
+
+    dropDb(): Promise<void>;
+
+    executeQuery(query: string): Promise<unknown>;
 
 }

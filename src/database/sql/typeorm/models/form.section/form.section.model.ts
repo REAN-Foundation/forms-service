@@ -26,7 +26,7 @@ export class FormSection extends BaseEntity {
     Description?: string;
 
     //Represent sequence within parent section
-    @Column({type: 'number', default: 0, nullable: false })
+    @Column({type: 'int', default: 0, nullable: false })
     Sequence?: number;
 
     // @Column({ type : 'enum', enum: SectionNodeType, nullable: false })

@@ -1,7 +1,7 @@
 // import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
 
-import { FormStatus} from "@prisma/client";
-import { QueryResponseType } from "../../database/sql/typeorm/models/question/question.model";
+import { FormStatus } from "../../database/sql/typeorm/models/form.submission/form.submission.model";
+import { QueryResponseType } from "./query.response.types";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
 export interface QuestionResponseCreateModel {

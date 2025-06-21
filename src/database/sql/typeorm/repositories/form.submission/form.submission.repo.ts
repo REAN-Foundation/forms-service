@@ -24,7 +24,8 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo{
                     //  FormTemplate: {
                     //     connect: { id: model.FormTemplateId }
                     //    },
-                      
+                      FormTemplateId: model.FormTemplateId,
+                      Title: model.Title,
                       UserId: model.UserId,
                       Status: model.Status,
                       ValidTill: model.ValidTill,

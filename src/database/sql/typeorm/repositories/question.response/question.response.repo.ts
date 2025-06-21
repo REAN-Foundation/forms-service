@@ -1,5 +1,5 @@
 import { QuestionResponseCreateModel } from "../../../../../domain.types/forms/response.domain.types";
-import { QueryResponseType } from "../../models/question/question.model";
+import { QueryResponseType } from "../../../../../domain.types/forms/query.response.types";
 import { IResponseRepo } from "../../../../repository.interfaces/question.response/question.response.repo.interface";
 import { QuestionResponseUpdateModel } from "../../../../../domain.types/forms/response.domain.types";
 import { QuestionResponseResponseDto } from "../../../../../domain.types/forms/response.domain.types";
@@ -28,6 +28,8 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo{
        create=async (model: QuestionResponseCreateModel) : Promise<QuestionResponseResponseDto> => {
          try {
                      const data = await this._responseRepo.create({
+                       FormSubmissionId: model.FormSubmissionId,
+                       QuestionId: model.QuestionId,
                        ResponseType: model.ResponseType as QueryResponseType,
                        IntegerValue: model.IntegerValue,
                        FloatValue: model.FloatValue,

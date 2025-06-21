@@ -1,7 +1,7 @@
 // import { QueryResponseType } from "../miscellaneous/system.types";
 
 // import { QueryResponseType } from "@prisma/client";
-import { QueryResponseType } from "../../database/sql/typeorm/models/question/question.model";
+import { QueryResponseType } from "./query.response.types";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
 // export interface QuestionOption {

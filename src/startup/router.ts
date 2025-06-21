@@ -19,7 +19,7 @@ export class Router {
         return new Promise((resolve, reject) => {
             try {
                 this._app.get("/api/v1", (req, res) => {
-                    res.send({ message: `Form service is running successfully on port ${process.env.PORT}` })
+                    res.send({ message: `Form service is running successfully on port ${process.env.PORT}` });
                 })
                 form(this._app);
                 formTemplate(this._app);
@@ -27,8 +27,10 @@ export class Router {
                 formSection(this._app);
                 question(this._app);
                 Response(this._app);
+                resolve(true);
             } catch (error) {
                 console.log("Error initilizing the routes")
+                reject(false);
             }
         });
     }

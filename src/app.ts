@@ -11,8 +11,9 @@ import { ConfigurationManager } from './config/configuration.manager';
 import { Loader } from './startup/loader';
 import { Injector } from './startup/injector';
 import { DatabaseClient } from './common/database.utils/dialect.clients/database.client';
-import { DatabaseSchemaType } from './common/database.utils/database.config';
+// import { DatabaseSchemaType } from './common/database.utils/database.config';
 import { PrimaryDatabaseConnector } from './database/database.connector';
+import { DBConnector } from './database/sql/typeorm/database.connector.typeorm';
 // import ErrsoleMySQL from 'errsole-mysql';
 // import errsole from 'errsole';
 
@@ -59,11 +60,13 @@ export default class Application {
              //Load the modules
             await Loader.init();
 
+            //Connect databases
+            await connectDatabase_Primary();
+
              //Set-up middlewares
             await this.setupMiddlewares();
 
-             //Connect databases
-            await connectDatabase_Primary();
+             
 
 
 
@@ -80,7 +83,7 @@ export default class Application {
             await this.listen();
         }
         catch (error) {
-            Logger.instance().log('An error occurred while starting reancare-api service.' + error.message);
+            Logger.instance().log('An error occurred while starting Forms Service.' + error.message);
         }
     }
 
@@ -133,59 +136,61 @@ export default class Application {
     // };
 
 
-    public migrate = async () => {
-        const databaseUrl = process.env.DATABASE_URL;
+    // public migrate = async () => {
+    //     const databaseUrl = process.env.DATABASE_URL;
 
-        if (!databaseUrl) {
-            throw new Error('DATABASE_URL is not defined in the .env file');
-        }
+    //     if (!databaseUrl) {
+    //         throw new Error('DATABASE_URL is not defined in the .env file');
+    //     }
 
-        // Parse the database URL to extract connection parameters
-        const regex = /mysql:\/\/(.*?):(.*?)@(.*?):(.*?)\/(.*?)$/;
-        const matches = databaseUrl.match(regex);
-        if (!matches) {
-            throw new Error('DATABASE_URL format is incorrect');
-        }
-        const [_, user, password, host, port, database] = matches;
+    //     // Parse the database URL to extract connection parameters
+    //     const regex = /mysql:\/\/(.*?):(.*?)@(.*?):(.*?)\/(.*?)$/;
+    //     const matches = databaseUrl.match(regex);
+    //     if (!matches) {
+    //         throw new Error('DATABASE_URL format is incorrect');
+    //     }
+    //     const [_, user, password, host, port, database] = matches;
 
-        try {
-            const connection = await mysql.createConnection({
-                host,
-                port: parseInt(port),
-                user,
-                password
-            });
-            // Directly construct the query string without placeholders
-            const query = `SHOW DATABASES LIKE '${database}'`;
-            const [rows]: [mysql.RowDataPacket[], mysql.FieldPacket[]] = await connection.execute(query);
-            if (rows.length > 0) {
-                Logger.instance().log(`Database ${database} already exists. Connecting and syncing...`);
-                // Here you would add code to sync with the existing database if needed
-            } else {
-                Logger.instance().log(`Database ${database} does not exist. Migrating and syncing...`);
-                execSync('npx prisma migrate dev --name init');
-                Logger.instance().log('Database migrated and synced successfully!');
-            }
+    //     try {
+    //         const connection = await mysql.createConnection({
+    //             host,
+    //             port: parseInt(port),
+    //             user,
+    //             password
+    //         });
+    //         // Directly construct the query string without placeholders
+    //         const query = `SHOW DATABASES LIKE '${database}'`;
+    //         const [rows]: [mysql.RowDataPacket[], mysql.FieldPacket[]] = await connection.execute(query);
+    //         if (rows.length > 0) {
+    //             Logger.instance().log(`Database ${database} already exists. Connecting and syncing...`);
+    //             // Here you would add code to sync with the existing database if needed
+    //         } else {
+    //             Logger.instance().log(`Database ${database} does not exist. Migrating and syncing...`);
+    //             execSync('npx prisma migrate dev --name init');
+    //             Logger.instance().log('Database migrated and synced successfully!');
+    //         }
 
-            await connection.end();
-            return true;
-        } catch (error) {
-            Logger.instance().error('Migration failed:', 500, error.message);
-            Logger.instance().error('Migration failed:', 500, error.stack);
-            // Logger.instance().log(error.message);
-            // Logger.instance().log(error.stack); // Log stack trace for debugging purposes
-            return false;
-        }
-    };
+    //         await connection.end();
+    //         return true;
+    //     } catch (error) {
+    //         Logger.instance().error('Migration failed:', 500, error.message);
+    //         Logger.instance().error('Migration failed:', 500, error.stack);
+    //         // Logger.instance().log(error.message);
+    //         // Logger.instance().log(error.stack); // Log stack trace for debugging purposes
+    //         return false;
+    //     }
+    // };
 
 
 }
 
 async function connectDatabase_Primary() {
     if (process.env.NODE_ENV === 'test') {
-        const databaseClient = Injector.Container.resolve(DatabaseClient);
-        await databaseClient.dropDb(DatabaseSchemaType.Primary);
+        // const databaseClient = Injector.Container.resolve(DatabaseClient);
+        // await databaseClient.dropDb(DatabaseSchemaType.Primary);
+        await DatabaseClient.dropDatabase();
     }
-    const primaryDatabaseConnector = Injector.Container.resolve(PrimaryDatabaseConnector);
-    await primaryDatabaseConnector.init();
+    // const primaryDatabaseConnector = Injector.Container.resolve(PrimaryDatabaseConnector);
+    DatabaseClient.createDatabase();
+    await DBConnector.initialize();
 }

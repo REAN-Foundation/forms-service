@@ -5,7 +5,7 @@ dotenv.config();
 
 (async () => {
     const app = Application.instance();
-    app.start();
+    await app.start();
 })();
 
 

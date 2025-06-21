@@ -5,14 +5,14 @@ import { FormSectionMapper } from "../../mappers/form.section.mapper";
 import { Source } from "../../database.connector.typeorm";
 import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { Logger } from "../../../../../common/logger";
-import { FindManyOptions } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { BaseRepo } from "../base.repo";
 
 
 
 export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
 
-   _formSectionRepo = Source.getRepository(FormSection);
+   _formSectionRepo : Repository<FormSection> = Source.getRepository(FormSection);
 
     create= async(model: FormSectionCreateModel): Promise<FormSectionResponseDto> =>{
        
@@ -34,10 +34,11 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
                 //     connect: { id: model.ParentFormTemplateId }
                 // },
                 // SectionIdentifier: model.SectionIdentifier,
+                FormTemplateId: model.ParentFormTemplateId,
                 Title: model.Title,
                 Description: model.Description,
                 DisplayCode: model.DisplayCode,
-                Sequence: parseInt(model.Sequence),
+                Sequence: model.Sequence,
                 ParentSectionId: model.ParentSectionId,
             });
             const record = await this._formSectionRepo.save(data);

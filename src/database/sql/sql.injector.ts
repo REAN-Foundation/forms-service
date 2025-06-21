@@ -11,7 +11,7 @@ export class SQLInjector
     static registerInjections(container: DependencyContainer) {
 
         const databaseORM = ConfigurationManager.DatabaseORM();
-        if (databaseORM === 'Sequelize') {
+        if (databaseORM === 'TypeORM') {
             TypeOrmInjector.registerInjections(container);
         }
 

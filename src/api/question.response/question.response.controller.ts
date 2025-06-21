@@ -8,7 +8,7 @@ import { QuestionResponseValidator } from './question.response.validator';
 import { ResponseService } from '../../services/question.response/question.response.service';
 import { QuestionResponseCreateModel, QuestionResponseSaveModel, QuestionResponseSearchFilters, QuestionResponseUpdateModel } from '../../domain.types/forms/response.domain.types';
 // import { QueryResponseType } from '@prisma/client';
-import { QueryResponseType } from '../../database/sql/typeorm/models/question/question.model';
+import { QueryResponseType } from '../../domain.types/forms/query.response.types';
 import * as path from 'path';
 import * as fs from 'fs';
 import { container } from 'tsyringe';

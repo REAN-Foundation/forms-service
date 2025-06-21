@@ -4,6 +4,7 @@ import { FormStatus } from "../../database/sql/typeorm/models/form.submission/fo
 export interface FormSubmissionCreateModel {
     FormTemplateId: string;
     UserId?: string;
+    Title?: string;
     Encrypted? : string;
     Unencrypted? : string;
     Link? : string;
@@ -23,6 +24,7 @@ export interface LinkQueryParams {
 
 export interface FormSubmissionUpdateModel {
     UserId?: string;
+    FormTemplateId?: string;
     Encrypted? : string;
     Unencrypted? : string;
     Link? : string;
@@ -38,6 +40,7 @@ export interface FormSubmissionDto {
     id?: string;
     FormTemplateId?: string;
     UserId?: string;
+    Title?: string;
     Encrypted? : string;
     Unencrypted? : string;
     Link? : string;

@@ -18,9 +18,9 @@ export class FormSectionValidator extends BaseValidator {
                 ParentFormTemplateId: joi.string().uuid().optional(),
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
-                SectionIdentifier: joi.string().optional(),
+                // SectionIdentifier: joi.string().optional(),
                 DisplayCode: joi.string().optional(),
-                Sequence: joi.string().optional(),
+                Sequence: joi.number().optional(),
                 ParentSectionId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);

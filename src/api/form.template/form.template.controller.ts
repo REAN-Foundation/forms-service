@@ -59,7 +59,8 @@ export class FormTemplateController extends BaseController {
                 Title: "Assessment Root Section",
                 Description: "This is root section for this template Description",
                 DisplayCode: displayCode,
-                Sequence: 'A1'
+                // Sequence: 'A1'
+                Sequence: 1
             }
             const section = await this._section.create(sectionModel)
             const message = 'Form template added successfully!';

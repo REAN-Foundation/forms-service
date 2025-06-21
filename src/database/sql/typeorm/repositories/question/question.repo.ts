@@ -10,7 +10,7 @@ import { Logger } from "../../../../../common/logger";
 import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { FindManyOptions } from "typeorm";
 import { BaseRepo } from "../base.repo";
-import { QueryResponseType } from "../../models/question/question.model";
+import { QueryResponseType } from "../../../../../domain.types/forms/query.response.types";
 
 export class QuestionRepo extends BaseRepo implements IQuestionRepo{
 
@@ -35,6 +35,8 @@ export class QuestionRepo extends BaseRepo implements IQuestionRepo{
                 const data = await this._questionRepo.create({
                   Title: model.Title,
                   Description: model.Description,
+                  TemplateId: model.ParentTemplateId,
+                  ParentSectionId: model.ParentSectionId,
                   DisplayCode: model.DisplayCode,
                   ResponseType: model.ResponseType as QueryResponseType,
                   Score: model.Score,
@@ -224,7 +226,7 @@ export class QuestionRepo extends BaseRepo implements IQuestionRepo{
             }
     
             if (filters.parentTemplateId) {
-                search.where['ParentTemplateId'] = filters.parentTemplateId
+                search.where['TemplateId'] = filters.parentTemplateId
             }
     
             if (filters.parentSectionId) {

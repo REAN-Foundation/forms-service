@@ -8,12 +8,12 @@ import { User } from "../../models/user/user.model";
 import { UserMapper } from "../../mappers/user.mapper";
 import { Logger } from "../../../../../common/logger";
 import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { FindManyOptions } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { BaseRepo } from "../base.repo";
 
 export class UserRepo extends BaseRepo implements IUserRepo{
 
-    _userRepo = Source.getRepository(User);
+    _userRepo : Repository<User> = Source.getRepository(User);
 
     allUsers = async () => {
         const response = await this._userRepo.find({
@@ -27,7 +27,7 @@ export class UserRepo extends BaseRepo implements IUserRepo{
 
     create=async (model: UserCreateModel) : Promise<UserResponseDto> => {
            try {
-                     const data = await this._userRepo.create({
+                     const data = this._userRepo.create({
                          FirstName: model.FirstName,
                          LastName: model.LastName,
                          CountryCode: model.CountryCode,

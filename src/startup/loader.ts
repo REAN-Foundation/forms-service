@@ -52,7 +52,7 @@ export class Loader {
 
             // Loader._seeder = container.resolve(Seeder);
 
-            const ehrEnabled = ConfigurationManager.EhrEnabled();
+            // const ehrEnabled = ConfigurationManager.EhrEnabled();
             // if (ehrEnabled) {
             //     Loader._ehrStore = container.resolve(StorageService);
             //     await Loader._ehrStore.init();

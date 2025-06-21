@@ -9,6 +9,7 @@ export class FormMapper {
         const dto: FormSubmissionDto = {
             id: record.id,
             FormTemplateId: record.FormTemplateId,
+            Title: record.Title,
             UserId: record.UserId,
             Encrypted: record.Encrypted,
             Unencrypted: record.Unencrypted,

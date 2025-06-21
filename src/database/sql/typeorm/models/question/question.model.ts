@@ -4,24 +4,25 @@ import { FormSection } from '../form.section/form.section.model';
 import { BaseEntity } from '../base.entity';
 import { QuestionResponse } from '../question.response/question.response.model';
 import { InputUnitList } from '../input.unit.list/input.unit.list.model';
+import { QueryResponseType } from '../../../../../domain.types/forms/query.response.types';
 
-export enum QueryResponseType {
-    Text = "Text",
-    Float = "Float",
-    Integer = "Integer",
-    Boolean = "Boolean",
-    Object = "Object",
-    TextArray = "TextArray",
-    SingleChoiceSelection = "SingleChoiceSelection",
-    MultiChoiceSelection = "MultiChoiceSelection",
-    File = "File",
-    Date = "Date",
-    DateTime = "DateTime",
-    Rating = "Rating",
-    Location = "Location",
-    Url = "Url",
-    Range = "Range"
-  }
+// export enum QueryResponseType {
+//     Text = "Text",
+//     Float = "Float",
+//     Integer = "Integer",
+//     Boolean = "Boolean",
+//     Object = "Object",
+//     TextArray = "TextArray",
+//     SingleChoiceSelection = "SingleChoiceSelection",
+//     MultiChoiceSelection = "MultiChoiceSelection",
+//     File = "File",
+//     Date = "Date",
+//     DateTime = "DateTime",
+//     Rating = "Rating",
+//     Location = "Location",
+//     Url = "Url",
+//     Range = "Range"
+//   }
 
 @Entity({ name: 'questions' })
 export class Question extends BaseEntity {
@@ -44,10 +45,10 @@ export class Question extends BaseEntity {
   @Column({ type: 'enum', enum: QueryResponseType })
   ResponseType: QueryResponseType;
 
-  @Column({type: 'number', nullable: true })
+  @Column({type: 'int', nullable: true })
   Score: number;
 
-  @Column({type: 'number', nullable: true })
+  @Column({type: 'int', nullable: true })
   Sequence: number;
 
   @Column({type: 'varchar', nullable: true })
@@ -65,10 +66,10 @@ export class Question extends BaseEntity {
   @Column({type: 'uuid', nullable: true })
   ImageResourceId?: string;
 
-  @Column({type: 'number', nullable: true })
+  @Column({type: 'int', nullable: true })
   RangeMin: number;
 
-  @Column({type: 'number', nullable: true })
+  @Column({type: 'int', nullable: true })
   RangeMax: number;
 
   @Column({type: 'varchar', nullable: true })

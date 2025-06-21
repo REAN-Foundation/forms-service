@@ -1,7 +1,8 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormSubmission } from '../form.submission/form.submission.model';
-import { QueryResponseType, Question } from '../question/question.model';
+import { QueryResponseType } from '../../../../../domain.types/forms/query.response.types';
+import { Question } from '../question/question.model';
 
 
 @Entity('question_responses')
@@ -15,10 +16,10 @@ export class QuestionResponse extends BaseEntity {
     @Column({ type: 'enum', enum: QueryResponseType, nullable: false, default: QueryResponseType.SingleChoiceSelection })
     ResponseType: QueryResponseType;
 
-    @Column({type: 'number', nullable: true })
+    @Column({type: 'int', nullable: true })
     Sequence: number;
     
-    @Column({type: 'number', nullable: true })
+    @Column({type: 'int', nullable: true })
     IntegerValue?: number;
 
     @Column({ nullable: true, type: 'float' })
@@ -43,7 +44,10 @@ export class QuestionResponse extends BaseEntity {
     @Column({type: 'text', nullable: true })
     UserResponse: string;
 
-    @Column()
+    // @Column()
+    // SubmissionTimestamp: Date;
+
+     @Column({nullable: true})
     SubmissionTimestamp: Date;
 
     @Column()

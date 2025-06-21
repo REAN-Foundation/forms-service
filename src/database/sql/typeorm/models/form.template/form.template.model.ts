@@ -18,7 +18,7 @@ export enum NavigationStrategy {
     Paginated = 'Paginated'
 }
 
-@Entity('form_templates')
+@Entity({name: 'form_templates'})
 export class FormTemplate extends BaseEntity {
     @Column({type: 'uuid', nullable: true })
     TenantId?: string;
@@ -31,6 +31,9 @@ export class FormTemplate extends BaseEntity {
 
     @Column({ type: 'varchar', length: 128, default: 'Survey', nullable: false })
     Type: string;
+
+    @Column({type: 'uuid', nullable: true })
+    OwnerUserId?: string;
 
     @Column({type: 'varchar', length: 128, nullable: false })
     Title: string;

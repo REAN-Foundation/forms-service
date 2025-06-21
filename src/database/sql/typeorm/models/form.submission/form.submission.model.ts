@@ -18,7 +18,7 @@ export class FormSubmission extends BaseEntity {
     FormTemplateId: string;
 
     @Column({type: 'varchar', length: 128, nullable: false })
-    Title: string;
+    Title?: string;
 
     @Column({ type: 'varchar', length: 128, default: 'General', nullable: false })
     Type: string;
@@ -29,7 +29,10 @@ export class FormSubmission extends BaseEntity {
     @Column({type: 'uuid', nullable: true })
     UserId?: string;
 
-    @Column({type: 'json', length: 2048, nullable: true })
+    // @Column({type: 'json', length: 2048, nullable: true })
+    // UserMetaData?: string;
+
+    @Column({type: 'json', nullable: true })
     UserMetaData?: string;
 
     @Column({type: 'varchar', length: 1024, nullable: true })
@@ -53,7 +56,7 @@ export class FormSubmission extends BaseEntity {
     @Column({type: 'timestamp', nullable: true })
     SubmittedAt?: Date;
 
-    @Column({type: 'number', nullable: true })
+    @Column({type: 'int', nullable: true })
     Score?: number;
 
     @ManyToOne(() => FormTemplate, (template) => template.FormSubmissions)

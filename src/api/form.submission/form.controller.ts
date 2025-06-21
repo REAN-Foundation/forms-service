@@ -39,6 +39,11 @@ export class FormController extends BaseController {
                 ErrorHandler.throwNotFoundError('Template not found!');
             }
 
+            if(model.Title == null)
+            {
+              model.Title=template.Title;  
+            }
+
             const record = await this._service.create(model);
 
             if (record === null) {

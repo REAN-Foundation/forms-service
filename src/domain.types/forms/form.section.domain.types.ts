@@ -6,7 +6,8 @@ export interface FormSectionCreateModel {
     Title?: string;
     Description?: string;
     DisplayCode: string;
-    Sequence?: string;
+    // Sequence?: string;
+    Sequence?: number;
     ParentSectionId?: string;
 }
 
@@ -21,17 +22,18 @@ export interface FormSectionUpdateModel {
 
 export interface FormSectionResponseDto {
     id: string;
-    ParentFormTemplate?: {
-        id: string;
-        Title: string;
-        Description: string;
-        CurrentVersion: number;
-        Type: string;
-        DisplayCode: string;
-        OwnerUserId: string;
-        RootSectionId: string;
-        DefaultSectionNumbering: Boolean
-    }
+    FormTemplateId: string;
+    // ParentFormTemplate?: {
+    //     id: string;
+    //     Title: string;
+    //     Description: string;
+    //     CurrentVersion: number;
+    //     Type: string;
+    //     DisplayCode: string;
+    //     OwnerUserId: string;
+    //     RootSectionId: string;
+    //     DefaultSectionNumbering: Boolean
+    // }
     SectionIdentifier: string;
     Title: string;
     Description: string;

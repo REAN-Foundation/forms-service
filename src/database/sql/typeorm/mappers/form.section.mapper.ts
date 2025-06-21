@@ -7,18 +7,20 @@ export class FormSectionMapper {
         }
 
         const dto: FormSectionResponseDto = {
+            // id: record.id,
+            // ParentFormTemplate: {
+            //     id: record.ParentFormTemplate.id,
+            //     Title: record.ParentFormTemplate.Title,
+            //     Description: record.ParentFormTemplate.Description,
+            //     CurrentVersion: record.ParentFormTemplate.CurrentVersion,
+            //     Type: record.ParentFormTemplate.Type,
+            //     DisplayCode: record.ParentFormTemplate.DisplayCode,
+            //     OwnerUserId: record.ParentFormTemplate.OwnerUserId,
+            //     RootSectionId: record.ParentFormTemplate.RootSectionId,
+            //     DefaultSectionNumbering: record.ParentFormTemplate.DefaultSectionNumbering
+            // },
             id: record.id,
-            ParentFormTemplate: {
-                id: record.ParentFormTemplate.id,
-                Title: record.ParentFormTemplate.Title,
-                Description: record.ParentFormTemplate.Description,
-                CurrentVersion: record.ParentFormTemplate.CurrentVersion,
-                Type: record.ParentFormTemplate.Type,
-                DisplayCode: record.ParentFormTemplate.DisplayCode,
-                OwnerUserId: record.ParentFormTemplate.OwnerUserId,
-                RootSectionId: record.ParentFormTemplate.RootSectionId,
-                DefaultSectionNumbering: record.ParentFormTemplate.DefaultSectionNumbering
-            },
+            FormTemplateId: record.FormTemplateId,
             SectionIdentifier: record.SectionIdentifier,
             Title: record.Title,
             Description: record.Description,

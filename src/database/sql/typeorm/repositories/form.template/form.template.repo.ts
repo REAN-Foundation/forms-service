@@ -10,46 +10,52 @@ import { FormTemplateMapper } from "../../mappers/form.template.mapper";
 import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { Logger } from "../../../../../common/logger";
 import { BaseRepo } from "../base.repo";
-import { FindManyOptions, IsNull } from "typeorm";
+import { FindManyOptions, IsNull, Repository } from "typeorm";
 import { Question } from "../../models/question/question.model";
 import { QuestionMapper } from "../../mappers/question.mapper";
 import { FormSection } from "../../models/form.section/form.section.model";
 
 export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
-  _formTemplateRepo = Source.getRepository(FormTemplate);
 
-  _question = Source.getRepository(Question);
+  _formTemplateRepo : Repository<FormTemplate> = Source.getRepository(FormTemplate);
 
-  _formSection = Source.getRepository(FormSection);
+  _question: Repository<Question> = Source.getRepository(Question);
 
-  create = async (
-    model: FormTemplateCreateModel
-  ): Promise<FormTemplateResponseDto> => {
+  _formSection : Repository<FormSection> = Source.getRepository(FormSection);
+
+  create = async ( model: FormTemplateCreateModel): Promise<FormTemplateResponseDto> => {
+
+      Logger.instance().log(
+            `${FormTemplate}`
+          );
+
+       Logger.instance().log(
+            `${FormType}`
+          );    
+          
     try {
-      const data = await this._formTemplateRepo.create({
-        //  FormTemplate: {
-        //     connect: { id: model.ParentFormTemplateId }
-        // },
-        // SectionIdentifier: model.SectionIdentifier,
-        //  FormTemplate: {
-        //     connect: { id: model.FormTemplateId }
-        //    },
-        Title: model.Title,
-        Description: model.Description,
-        // CurrentVersion: model.CurrentVersion,
-        // TenantCode: model.TenantCode,
-        Type: model.Type as FormType,
-        // ItemsPerPage: model.ItemsPerPage,
-        DisplayCode: model.DisplayCode,
-        // OwnerUserId: model.OwnerUserId,
-        RootSectionId: model.RootSectionId,
-        DefaultSectionNumbering: model.DefaultSectionNumbering,
-      });
-      const record = await this._formTemplateRepo.save(data);
-      return FormTemplateMapper.toDto(record);
-    } catch (error) {
-      ErrorHandler.throwInternalServerError(error.message, 500);
-    }
+      
+      const data = this._formTemplateRepo.create({
+          Title: model.Title,
+          Description: model.Description,
+          // CurrentVersion: model.CurrentVersion,
+          // TenantCode: model.TenantCode,
+          Type: model.Type as FormType,
+          // ItemsPerPage: model.ItemsPerPage,
+          DisplayCode: model.DisplayCode,
+          // OwnerUserId: model.OwnerUserId,
+          RootSectionId: model.RootSectionId,
+          DefaultSectionNumbering: model.DefaultSectionNumbering,
+       });
+
+       const record = await this._formTemplateRepo.save(data);
+       return FormTemplateMapper.toDto(record);
+      } 
+      
+      catch (error) 
+      {
+        ErrorHandler.throwInternalServerError(error.message, 500);
+      }
   };
 
   update = async (
