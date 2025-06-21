@@ -25,14 +25,7 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
 
   create = async ( model: FormTemplateCreateModel): Promise<FormTemplateResponseDto> => {
 
-      Logger.instance().log(
-            `${FormTemplate}`
-          );
-
-       Logger.instance().log(
-            `${FormType}`
-          );    
-          
+              
     try {
       
       const data = this._formTemplateRepo.create({

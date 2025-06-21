@@ -191,6 +191,6 @@ async function connectDatabase_Primary() {
         await DatabaseClient.dropDatabase();
     }
     // const primaryDatabaseConnector = Injector.Container.resolve(PrimaryDatabaseConnector);
-    DatabaseClient.createDatabase();
+    await DatabaseClient.createDatabase();
     await DBConnector.initialize();
 }

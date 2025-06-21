@@ -173,33 +173,23 @@ export class UserRepo extends BaseRepo implements IUserRepo{
          };
 
         if (filters.lastName) {
-            search.where["LastName"] = {
-                equals: filters.lastName,
-            };
+            search.where["LastName"] = filters.lastName;
         }
 
         if (filters.countryCode) {
-            search.where["CountryCode"] = {
-                equals: filters.countryCode,
-            };
+            search.where["CountryCode"] = filters.countryCode;
         }
 
         if (filters.email) {
-            search.where["Email"] = {
-                equals: filters.email,
-            };
+            search.where["Email"] = filters.email;
         }
 
         if (filters.username) {
-            search.where["Username"] = {
-                equals: filters.username,
-            };
+            search.where["Username"] = filters.username;
         }
 
         if (filters.password) {
-           search.where["Password"] = {
-                equals: filters.password,
-            };
+           search.where["Password"] = filters.password;
         }
 
         return search;
