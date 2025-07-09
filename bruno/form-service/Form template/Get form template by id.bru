@@ -1,0 +1,33 @@
+meta {
+  name: Get form template by id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/form-templates/{{TEMPLATE_ID}}
+  body: none
+  auth: none
+}
+
+script:post-response {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User retrived successful", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data).to.have.property('CurrentVersion');
+      expect(jsonRes.Data).to.have.property('Type');
+      expect(jsonRes.Data).to.have.property('ItemsPerPage');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data).to.have.property('OwnerUserId');
+      expect(jsonRes.Data).to.have.property('RootSectionId');
+      expect(jsonRes.Data).to.have.property('DefaultSectionNumbering');
+  });
+}

@@ -20,7 +20,7 @@ export class FormSectionController extends BaseController {
 
     _service: FormSectionService = Injector.Container.resolve(FormSectionService);
 
-    _templService: FormTemplateService=Injector.Container.resolve(FormTemplateService);
+    _templService: FormTemplateService = Injector.Container.resolve(FormTemplateService);
 
     _validator: FormSectionValidator = new FormSectionValidator();
 
@@ -137,16 +137,15 @@ export class FormSectionController extends BaseController {
             //     }
             // });
 
-            const templateData=await this._templService.getById(parentTemplateId);
+            const templateData = await this._templService.getById(parentTemplateId);
 
-            if(templateData.DefaultSectionNumbering === true)
-            {
-              sequence = (Object.keys(sectionsByTemplateId).length + 1);
+            if (templateData.DefaultSectionNumbering === true) {
+                sequence = (Object.keys(sectionsByTemplateId).length + 1);
             }
-            else{
+            else {
                 sequence = request.body.Sequence;
             }
-            
+
             model.Sequence = sequence;
             const record = await this._service.create(model);
             if (record === null) {

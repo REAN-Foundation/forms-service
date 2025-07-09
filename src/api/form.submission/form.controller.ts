@@ -32,16 +32,15 @@ export class FormController extends BaseController {
     create = async (request: express.Request, response: express.Response) => {
         try {
             let model: FormSubmissionCreateModel = await this._validator.validateCreateRequest(request);
-            
+
             const template = await this._formTemplateService.getById(model.FormTemplateId);
 
             if (!template) {
                 ErrorHandler.throwNotFoundError('Template not found!');
             }
 
-            if(model.Title == null)
-            {
-              model.Title=template.Title;  
+            if (model.Title == null) {
+                model.Title = template.Title;
             }
 
             const record = await this._service.create(model);
@@ -53,7 +52,7 @@ export class FormController extends BaseController {
             const formSubmissionUpdateModel: FormSubmissionUpdateModel = {};
 
             formSubmissionUpdateModel.Encrypted = this.generateUniqueKey(`id=${record.id}${model.UserId ? `&userId=${record.UserId}` : ''}`);
-            
+
             if (!formSubmissionUpdateModel.Encrypted) {
                 ErrorHandler.throwInternalServerError('Unable to generate form link!', {});
             }
@@ -98,14 +97,14 @@ export class FormController extends BaseController {
         try {
             const id = await this._validator.validateParamAsUUID(request, 'id');
 
-            const formSubmission = await this._service.getById(id); 
+            const formSubmission = await this._service.getById(id);
 
             if (!formSubmission) {
                 ErrorHandler.throwNotFoundError('Form submission not found!');
             }
 
             var model: FormSubmissionUpdateModel = await this._validator.validateUpdateRequest(request);
-            
+
             if (model.UserId) {
                 formSubmission.LinkQueryParams.UserId = model.UserId;
                 model.LinkQueryParams = JSON.stringify(formSubmission.LinkQueryParams);
@@ -127,7 +126,7 @@ export class FormController extends BaseController {
                 ErrorHandler.throwNotFoundError('Form submission not found!');
             }
             const result = await this._service.delete(id);
-            if(!result) {
+            if (!result) {
                 ErrorHandler.throwNotFoundError('Form not found!');
             }
             const message = 'Form deleted successfully!';
@@ -141,10 +140,10 @@ export class FormController extends BaseController {
         try {
             const SubmissionKey = await this._validator.validateSubmitRequest(request);
 
-            const formSubmission = await this._service.search({Encrypted: SubmissionKey});
+            const formSubmission = await this._service.search({ Encrypted: SubmissionKey });
 
             if (formSubmission.Items?.length !== 1) {
-                ErrorHandler.throwNotFoundError('Form submission not found!');  
+                ErrorHandler.throwNotFoundError('Form submission not found!');
             }
 
             const submission = formSubmission.Items[0];
@@ -174,16 +173,16 @@ export class FormController extends BaseController {
         }
     };
 
-    private generateUniqueKey = (input: string): string =>{
+    private generateUniqueKey = (input: string): string => {
         try {
             const privateKey = process.env.PRIVATE_KEY;
             return crypto.createHmac("sha256", privateKey)
-            .update(input)
-            .digest("hex");
+                .update(input)
+                .digest("hex");
         }
         catch (error) {
             return null;
         }
-        
+
     }
 }

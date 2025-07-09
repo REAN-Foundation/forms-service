@@ -1,0 +1,30 @@
+meta {
+  name: Generic search
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/form-templates/search?id={{TEMPLATE_ID}}
+  body: none
+  auth: none
+}
+
+params:query {
+  id: {{TEMPLATE_ID}}
+  ~title: What is your full name
+  ~description: about testing the assessment
+}
+
+script:post-response {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Template retrived successful", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data.Items.length).greaterThan(0);
+  });
+}

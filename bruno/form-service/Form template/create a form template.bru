@@ -1,0 +1,55 @@
+meta {
+  name: create a form template
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/form-templates
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "Title": "Assessment First",
+      "Description": "This is description",
+      "CurrentVersion": 1,
+      "Type": "Questionnaire",
+      // "DisplayCode": "xyz1234",
+      "OwnerUserId": "ad693c12-3141-45e7-ab3a-59d03306757f",
+      // "RootSectionId": "9618c6a8-0555-4a14-95ec-1946ec09c8e0",
+      "DefaultSectionNumbering": true,
+      "ItemsPerPage":"OneQuestion"
+  }
+}
+
+script:post-response {
+  try {
+      var jsonRes = res.getBody();
+      bru.setEnvVar("TEMPLATE_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+      console.log(error.message);
+  }
+  
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Template is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data).to.have.property('CurrentVersion');
+      expect(jsonRes.Data).to.have.property('Type');
+      expect(jsonRes.Data).to.have.property('ItemsPerPage');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data).to.have.property('OwnerUserId');
+      expect(jsonRes.Data).to.have.property('RootSectionId');
+      expect(jsonRes.Data).to.have.property('DefaultSectionNumbering');    
+  });
+}

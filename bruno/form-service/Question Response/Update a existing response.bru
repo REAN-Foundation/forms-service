@@ -1,0 +1,62 @@
+meta {
+  name: Update a existing response
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{BASE_URL}}/question-responses/{{RESPONSE_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "ResponseType": "Boolean",
+      "IntegerValue": 1,
+      "FloatValue": 1.2,
+      "BooleanValue": true,
+      "DateTimeValue": "2024-03-08 18:25:30.843",
+      "Url": "https://meet.google.com/zrb-tyni-rdz",
+      "FileResourceId": "0c9ea637-cb8d-468e-b4c7-303d2604c1b5",
+      "TextValue": "hjsj1234-erhh233"
+  }
+}
+
+script:post-response {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is updated", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data.id).equals('03ad39c3-d959-4843-bb08-122b06ed37a1');
+      expect(jsonRes.Data).to.have.property('FormSubmissionId');
+      expect(jsonRes.Data.FormSubmissionId).equals('163bac66-4af0-40dc-a09f-bfbe866e7e89');
+      expect(jsonRes.Data).to.have.property('QuestionId');
+      expect(jsonRes.Data.QuestionId).equals('6eddc7f6-bfae-4ee9-914e-2f48cfe3c825');
+      expect(jsonRes.Data).to.have.property('ResponseType');
+      expect(jsonRes.Data.ResponseType).equals('Text');
+      expect(jsonRes.Data).to.have.property('IntegerValue');
+      expect(jsonRes.Data.IntegerValue).equals(1);
+      expect(jsonRes.Data).to.have.property('FloatValue');
+      expect(jsonRes.Data.FloatValue).equals(1.2);
+      expect(jsonRes.Data).to.have.property('BooleanValue');
+      expect(jsonRes.Data.BooleanValue).equals(true);
+          expect(jsonRes.Data).to.have.property('DateTimeValue');
+      expect(jsonRes.Data.DateTimeValue).equals('2024-09-12 12:36:51.712');
+      expect(jsonRes.Data).to.have.property('Url');
+      expect(jsonRes.Data.Url).equals('url');
+      expect(jsonRes.Data).to.have.property('FileResourceId');
+      expect(jsonRes.Data.FileResourceId).equals('6eddc7f6-bfae-4ee9-914e-2f48cfe3c825');
+      expect(jsonRes.Data).to.have.property('TextValue');
+      expect(jsonRes.Data.TextValue).equals('text value');
+           expect(jsonRes.Data).to.have.property('SubmissionTimestamp');
+      expect(jsonRes.Data.SubmissionTimestamp).equals('2024-09-12 12:36:51.712');
+           expect(jsonRes.Data).to.have.property('LastSaveTimestamp');
+      expect(jsonRes.Data.LastSaveTimestamp).equals('2024-09-12 12:36:51.712');
+  });
+}

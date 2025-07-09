@@ -1,0 +1,115 @@
+{
+    "OperationCreateModel": {
+        "Name": "string",
+        "Description": "string",
+        "ParentRuleId": "uuid",
+        "ParentConditionId": "uuid",
+        "OperatorType": "OperatorType",
+        "LogicalOperatorType": "LogicalOperatorType",
+        "CompositionOperatorType": "CompositionOperatorType",
+        "MathematicalOperatorType": "MathematicalOperatorType",
+        "FirstOperand": "Operand",
+        "SecondOperand": "Operand",
+        "ThirdOperand": "Operand"
+    },
+    "OperatorType": {
+        "Logical": "Logical",
+        "Mathematical": "Mathematical",
+        "Composition": "Composition",
+        "Iterate": "Iterate"
+    },
+    "LogicalOperatorType": {
+        "Equal": "Equal",
+        "NotEqual": "NotEqual",
+        "GreaterThan": "GreaterThan",
+        "GreaterThanOrEqual": "GreaterThanOrEqual",
+        "LessThan": "LessThan",
+        "LessThanOrEqual": "LessThanOrEqual",
+        "In": "In",
+        "NotIn": "NotIn",
+        "Contains": "Contains",
+        "DoesNotContain": "DoesNotContain",
+        "Between": "Between",
+        "IsTrue": "IsTrue",
+        "IsFalse": "IsFalse",
+        "Exists": "Exists",
+        "HasConsecutiveOccurrences": "HasConsecutiveOccurrences",
+        "RangesOverlap": "RangesOverlap",
+        "None": "None"
+    },
+    "CompositionOperatorType": {
+        "And": "And",
+        "Or": "Or",
+        "Xor": "Xor",
+        "None": "None"
+    },
+    "MathematicalOperatorType": {
+        "Add": "Add",
+        "Subtract": "Subtract",
+        "Divide": "Divide",
+        "Multiply": "Multiply",
+        "Percentage": "Percentage",
+        "None": "None"
+    },
+    "OperandDataType": {
+        "Float": "Float",
+        "Integer": "Integer",
+        "Boolean": "Boolean",
+        "Text": "Text",
+        "Array": "Array",
+        "Object": "Object",
+        "Date": "Date"
+    },
+    "AssessmentNodeType": {
+        "Message": "Message",
+        "Question": "Question",
+        "NodeList": "Node list"
+    },
+    "Rule": {
+        "Id": "uuid",
+        "Name": "string",
+        "Description": "string",
+        "SkipMessage": "string",
+        "ParentRuleId": "uuid",
+        "ParentConditionId": "uuid",
+        "ConditionRules": "Rules"
+    },
+    "Question": {
+        "Name": "string",
+        "Description": "string",
+        "Skip": "boolean",
+        "SkipMessage": "string",
+        "SkipRuleId": "uuid",
+        "CalculationLogicId": "uuid",
+        "CalculationLogicType": "CalculationLogicType",
+        "ConditionRules": "Rules",
+        "ValidationLogic": "string",
+        "ValidationLogicId": "uuid",
+        "ValidationLogicType": "ValidationLogicType"
+    },
+    "CalculationLogicType": {
+        "Title": "string",
+        "Description": "string",
+        "Rule": "Rule",
+        "FallbackRule": "Rule"
+    },
+    "ValidationLogic": {
+        "Title": "string",
+        "Description": "string",
+        "Rule": "Rule",
+        "RuleType": "RuleType",
+        "FallbackRule": "Rule"
+    },
+    "RuleType": {
+        "Rule": "Rule",
+        "FallbackRule": "FallbackRule",
+        "RegEx": "RegEx"
+    },
+    "RegEx": {
+        "Title": "string",
+        "Description": "string",
+        "RegEx": "string",
+        "RegExType": "RegExType",
+        "FallbackRegEx": "string"
+    }
+}

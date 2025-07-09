@@ -1,6 +1,11 @@
-import { FormSectionCreateModel, FormSectionResponseDto, FormSectionSearchFilters, FormSectionUpdateModel } from "../../../domain.types/forms/form.section.domain.types";
+import {
+  FormSectionCreateModel,
+  FormSectionResponseDto,
+  FormSectionSearchFilters,
+  FormSectionUpdateModel
+} from "../../../domain.types/forms/form.section.domain.types";
 
-export interface IFormSectionRepo{
+export interface IFormSectionRepo {
 
   create(model: FormSectionCreateModel): Promise<FormSectionResponseDto>;
 
@@ -12,6 +17,6 @@ export interface IFormSectionRepo{
 
   getByTemplateId(id: string): Promise<FormSectionResponseDto>;
 
-  search(filters: FormSectionSearchFilters) : Promise<any>;
+  search(filters: FormSectionSearchFilters): Promise<any>;
 
 }

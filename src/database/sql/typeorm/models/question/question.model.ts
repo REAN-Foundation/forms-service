@@ -27,55 +27,55 @@ import { QueryResponseType } from '../../../../../domain.types/forms/query.respo
 @Entity({ name: 'questions' })
 export class Question extends BaseEntity {
 
-  @Column({type: 'uuid', nullable: true })
+  @Column({ type: 'uuid', nullable: true })
   TemplateId: string;
 
-  @Column({type: 'uuid', nullable: false })
+  @Column({ type: 'uuid', nullable: false })
   ParentSectionId: string;
 
-  @Column({type: 'varchar',length: 128, nullable: true })
+  @Column({ type: 'varchar', length: 128, nullable: true })
   Title: string;
 
-  @Column({type: 'varchar',length: 512, nullable: true })
+  @Column({ type: 'varchar', length: 512, nullable: true })
   Description: string;
 
-  @Column({type: 'varchar',length: 128, nullable: false })
+  @Column({ type: 'varchar', length: 128, nullable: false })
   DisplayCode: string;
 
   @Column({ type: 'enum', enum: QueryResponseType })
   ResponseType: QueryResponseType;
 
-  @Column({type: 'int', nullable: true })
+  @Column({ type: 'int', nullable: true })
   Score: number;
 
-  @Column({type: 'int', nullable: true })
+  @Column({ type: 'int', nullable: true })
   Sequence: number;
 
-  @Column({type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   ExpectedAnswer: string;
 
-  @Column({type: 'boolean', nullable: true })
+  @Column({ type: 'boolean', nullable: true })
   IsRequired: boolean;
 
-  @Column({type: 'varchar', length: 512, nullable: true })
+  @Column({ type: 'varchar', length: 512, nullable: true })
   Hint: string;
 
   @Column({ type: 'json', nullable: true })
   Options: string;
 
-  @Column({type: 'uuid', nullable: true })
+  @Column({ type: 'uuid', nullable: true })
   ImageResourceId?: string;
 
-  @Column({type: 'int', nullable: true })
+  @Column({ type: 'int', nullable: true })
   RangeMin: number;
 
-  @Column({type: 'int', nullable: true })
+  @Column({ type: 'int', nullable: true })
   RangeMax: number;
 
-  @Column({type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   DefaultExpectedUnit: string;
 
-  @Column({type: 'boolean', nullable: false, default: false })
+  @Column({ type: 'boolean', nullable: false, default: false })
   PageBreakAfter: boolean;
 
   @OneToMany(() => QuestionResponse, (response) => response.Question)

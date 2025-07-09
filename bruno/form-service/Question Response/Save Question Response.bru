@@ -1,0 +1,31 @@
+meta {
+  name: Save Question Response
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{BASE_URL}}/question-responses/save
+  body: text
+  auth: none
+}
+
+body:text {
+  {
+      "QuestionResponses":  [{
+          "id": "a9ee5e15-cb9a-4989-8709-293c33563045",
+          "FormSubmissionId": "{{SUBMISSION_ID}}",
+          "QuestionId": "{{QUESTION_ID}}",
+          "ResponseType": "Text",
+          "IntegerValue": 1,
+          "FloatValue": 1.2,
+          "BooleanValue": "1",
+          "DateTimeValue": "2024-03-08T12:55:31.000Z",
+          "Url": "https://meet.google.com/zrb-tyni-rdz",
+          "FileResourceId": "0c9ea637-cb8d-468e-b4c7-303d2604c1b5",
+          "SubmissionTimestamp": null,
+          "LastSaveTimestamp": "2025-06-21T11:43:57.000Z"
+      }],
+      "FormSubmissionKey": "{{SUBMISSION_KEY}}"
+  }
+}

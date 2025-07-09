@@ -16,6 +16,7 @@ export interface QuestionResponseCreateModel {
     Url             : string;
     FileResourceId  : string;
     TextValue       : string;
+    UserResponse    : string;
 }
 
 export interface QuestionResponseUpdateModel {
@@ -31,6 +32,7 @@ export interface QuestionResponseUpdateModel {
     Url             ?: string;
     FileResourceId  ?: string;
     TextValue       ?: string;
+    UserResponse    ?: string;
 }
 
 export interface QuestionResponseSaveModel {

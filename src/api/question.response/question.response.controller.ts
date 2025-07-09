@@ -115,7 +115,8 @@ export class QuestionResponseController extends BaseController {
                     DateTimeValue: model.DateTimeValue,
                     Url: model.Url,
                     FileResourceId: model.FileResourceId,
-                    TextValue: model.TextValue
+                    TextValue: model.TextValue,
+                    UserResponse: model.UserResponse ?? null
                 }
                 await this._service.create(createModel);
             }

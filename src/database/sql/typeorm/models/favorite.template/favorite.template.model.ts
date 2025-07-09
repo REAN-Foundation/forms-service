@@ -9,5 +9,5 @@ export class FavoriteTemplate extends BaseEntity {
 
     @Column({ type: 'uuid', nullable: false })
     TemplateId: string
-  
+
 }

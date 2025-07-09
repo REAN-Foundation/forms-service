@@ -1,0 +1,46 @@
+meta {
+  name: Update a form record
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{BASE_URL}}/form-submissions/{{SUBMISSION_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "FormTemplateId":"{{TEMPLATE_ID}}",
+      // "FormUrl": "This is Third form",
+      // "AnsweredByUserId": "05b04a84-ce2d-4c5a-9528-4cc168e0ad0a",
+      "UserId": "6e0793de-49f0-4bce-b4e0-de0c808f3037",
+      "Status": "LinkShared"
+  }
+}
+
+script:post-response {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("User is updated", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data.id).equals('03ad39c3-d959-4843-bb08-122b06ed37a1');
+      expect(jsonRes.Data).to.have.property('FormTemplateId');
+      expect(jsonRes.Data.FormTemplateId).equals('163bac66-4af0-40dc-a09f-bfbe866e7e89');
+      expect(jsonRes.Data).to.have.property('FormUrl');
+      expect(jsonRes.Data.FormUrl).equals('FormUrl');
+      expect(jsonRes.Data).to.have.property('AnsweredByUserId');
+      expect(jsonRes.Data.AnsweredByUserId).equals('03ad39c3-d959-4843-bb08-122b06ed37a1');
+      expect(jsonRes.Data).to.have.property('Status');
+      expect(jsonRes.Data.Status).equals('LinkShared');
+      expect(jsonRes.Data).to.have.property('SubmissionTimestamp');
+      expect(jsonRes.Data.SubmissionTimestamp).equals('2024-09-12 12:36:51.712');
+  
+  });
+}

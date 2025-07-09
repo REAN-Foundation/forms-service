@@ -5,6 +5,9 @@ import { register as user } from '../api/user/user.router';
 import { register as formSection } from '../api/form.section/form.section.router'
 import { register as question }  from '../api/question/question.router';
 import { register as Response }  from '../api/question.response/question.response.router';
+import { register as favoriteTemplate } from '../api/favorite.template/favorite.template.router';
+import { register as formTemplateApproval } from '../api/form.template.approval/form.template.approval.router';
+import { register as templateFolder } from '../api/template.folder/template.folder.router';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +30,9 @@ export class Router {
                 formSection(this._app);
                 question(this._app);
                 Response(this._app);
+                favoriteTemplate(this._app);
+                formTemplateApproval(this._app);
+                templateFolder(this._app);
                 resolve(true);
             } catch (error) {
                 console.log("Error initilizing the routes")

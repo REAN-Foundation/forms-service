@@ -1,0 +1,24 @@
+meta {
+  name: Delete a question record
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/questions/{{QUESTION_ID}}
+  body: none
+  auth: none
+}
+
+script:post-response {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Question is deleted", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).equals(true);
+  });
+}

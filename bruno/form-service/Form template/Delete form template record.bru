@@ -1,0 +1,24 @@
+meta {
+  name: Delete form template record
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{BASE_URL}}/form-templates/db5a31aa-9908-4413-9c74-f9929d41a861
+  body: none
+  auth: none
+}
+
+script:post-response {
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Template is deleted", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).equals(true);
+  });
+}

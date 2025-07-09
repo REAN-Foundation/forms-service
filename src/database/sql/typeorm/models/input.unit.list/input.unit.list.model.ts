@@ -9,9 +9,8 @@ export class InputUnitList extends BaseEntity {
 
     @Column({ type: 'varchar', length: 512, nullable: false })
     Description: string
-  
+
     // Units represents JSON array
     @Column({ type: 'json', nullable: false })
     Units: string
 }
- 

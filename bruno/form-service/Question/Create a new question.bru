@@ -1,0 +1,384 @@
+meta {
+  name: Create a new question
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/questions
+  body: json
+  auth: none
+}
+
+body:json {
+  // {
+  //     "ParentTemplateId": "d9e0416b-b142-4492-a522-a7fc57f9c224",     //Form Template id
+  //     "ParentSectionId": "36869bba-551f-4aaf-a150-ccafd9567254",      //Form Section Id
+  //     "Title": "Question Two",
+  //     "Description": "Question Two description",
+  //     "DisplayCode": "Question Two Display code",
+  //     "ResponseType": "Integer",
+  //     "Score": 11,
+  //     "CorrectAnswer": "Question Two correct answer",
+  //     "Hint": "Question Two hint",
+  //     "Options":"option1,option2",
+  //     "QuestionImageUrl":"this.is.image",
+  //     "RangeMin":2,
+  //     "RangeMax":4
+  // },
+  // {
+  //     "ParentTemplateId": "d9e0416b-b142-4492-a522-a7fc57f9c224",
+  //     "ParentSectionId": "36869bba-551f-4aaf-a150-ccafd9567254",
+  //     "Title": "range ........!",
+  //     "Description": "Birth Day",
+  //     "ResponseType": "Boolean",
+  //     "Score": 5,
+  //     // "DisplayCode": "2b3b3ea7-d55f-46fb-901f-380a92be0059",
+  //     "CorrectAnswer": "1234",
+  //     "Hint": "date",
+  //     "QuestionImageUrl": "a",
+  //     "RangeMin": 1,
+  //     "RangeMax": 2,
+  //     "Options": "option1, option2"
+  // }
+  // {
+  //     "ParentTemplateId": "5777e0a8-6ba7-4313-ba4a-ff9b5bdb3d4a",
+  //     "ParentSectionId": "a1b31378-59b0-4ca8-8d54-323798bf924e",
+  //     "Title": "qqqqqqqqqqqqqqqq",
+  //     "Description": "qqqqqqqqq",
+  //     "ResponseType": "Text",
+  //     "Score": 1,
+  //     "CorrectAnswer": "qqqqqqqqqqqqqqq",
+  //     "Hint": "qqqqqqqqqqqqq",
+  //     "QuestionImageUrl": "qqqqqqqqqqqq",
+  //     "RangeMin": null,
+  //     "RangeMax": null,
+  //     "Options": [
+  //         "option1",
+  //         "option2"
+  //     ]
+  // }
+  // {
+  //     "ParentTemplateId": "5777e0a8-6ba7-4313-ba4a-ff9b5bdb3d4a",
+  //     "ParentSectionId": "a1b31378-59b0-4ca8-8d54-323798bf924e",
+  //     "Title": "qqqqqqqqqqqqqqqq",
+  //     "Description": "qqqqqqqqqq",
+  //     "ResponseType": "SinglehoiceSelection",
+  //     "Score": 1,
+  //     "CorrectAnswer": "qqqqqqqqqqqqqqq",
+  //     "Hint": "qqqqqqqqqqqqq",
+  //     "QuestionImageUrl": "qqqqqqqqqqqq",
+  //     "RangeMin": null,
+  //     "RangeMax": null,
+  //     "Options": [
+  //         {
+  //             "Text": "qqqqq",
+  //             "Sequence": 1
+  //         },
+  //         {
+  //             "Text": "qqqq",
+  //             "Sequence": 2
+  //         },
+  //         {
+  //             "Text": "qq",
+  //             "Sequence": 3
+  //         }
+  //     ]
+  // }
+  {
+      "ParentTemplateId": "{{TEMPLATE_ID}}",
+      "ParentSectionId": "{{PARENT_SECTION_ID}}",
+      "ResponseType": "SingleChoiceSelection",
+      "Options": [
+          {
+              "Text": "qqqqq",
+              "Sequence": "1",
+              "ImageUrl": "asdasfdsf"
+          },
+          {
+              "Text": "qqqqq",
+              "Sequence": "2",
+              "ImageUrl": "asdasfdsf"
+          },
+          {
+              "Text": "qqqqq",
+              "Sequence": "3",
+              "ImageUrl": "asdasfdsf"
+          },
+          {
+              "Text": "qqqqq",
+              "Sequence": "1",
+              "ImageUrl": "asdasfdsf"
+          },
+          {
+              "Text": "qqqqq",
+              "Sequence": "2",
+              "ImageUrl": "asdasfdsf"
+          },
+          {
+              "Text": "qqqqq",
+              "Sequence": "3",
+              "ImageUrl": "asdasfdsf"
+          }
+      ]
+  }
+  
+  
+  
+  // {
+  //     "Title": "What is your full name",
+  //     "Description": "description",
+  //     "ResponseType": "SingleChoiceSelection",
+  //     "Options": [
+  //         {
+  //             "Text": "sdfg",
+  //             "Sequence": "a1",
+  //             "ImageUrl": "wererterytryur"
+  //         },
+  //         {
+  //             "Text": "sdagdf",
+  //             "Sequence": "a2",
+  //             "ImageUrl": "asdf"
+  //         },
+  //         {
+  //             "Text": "dzfg",
+  //             "Sequence": "a3",
+  //             "ImageUrl": "zsdfg"
+  //         },
+  //         {
+  //             "Text": "zdfgdfg",
+  //             "Sequence": "a4",
+  //             "ImageUrl": "dfg"
+  //         }
+  //     ]
+  // }
+}
+
+script:post-response {
+  try {
+      var jsonRes = res.getBody();
+      bru.setEnvVar("QUESTION_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+      console.log(error.message);
+  }
+  
+  test("Request is successfull", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Question is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('ParentTemplateId');
+      expect(jsonRes.Data).to.have.property('ParentSectionId');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data).to.have.property('ResponseType');
+      expect(jsonRes.Data).to.have.property('Score');
+      expect(jsonRes.Data).to.have.property('CorrectAnswer');
+      expect(jsonRes.Data).to.have.property('Hint');
+      expect(jsonRes.Data).to.have.property('Options');
+      expect(jsonRes.Data).to.have.property('QuestionImageUrl');
+      expect(jsonRes.Data).to.have.property('RangeMin');
+      expect(jsonRes.Data).to.have.property('RangeMax');
+      
+  });
+  var template = `
+  <style type="text/css">
+      .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}
+      .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}
+      .tftable tr {background-color:#ffffff;}
+      .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}
+      .tftable tr:hover {background-color:#e0ffff;}
+  </style>
+  
+  <table class="tftable" border="1">
+      <tr>
+          <th>Field</th>
+          <th>Value</th>
+      </tr>
+      <tr>
+          <td>Status</td>
+          <td>{{response.Status}}</td>
+      </tr>
+      <tr>
+          <td>Message</td>
+          <td>{{response.Message}}</td>
+      </tr>
+      <tr>
+          <td>HttpCode</td>
+          <td>{{response.HttpCode}}</td>
+      </tr>
+      <tr>
+          <td>Request Method</td>
+          <td>{{response.Request.Method}}</td>
+      </tr>
+      <tr>
+          <td>Request Host</td>
+          <td>{{response.Request.Host}}</td>
+      </tr>
+      <tr>
+          <td>Request Body - ParentTemplateId</td>
+          <td>{{response.Request.Body.ParentTemplateId}}</td>
+      </tr>
+      <tr>
+          <td>Request Body - ParentSectionId</td>
+          <td>{{response.Request.Body.ParentSectionId}}</td>
+      </tr>
+      <tr>
+          <td>Request Body - ResponseType</td>
+          <td>{{response.Request.Body.ResponseType}}</td>
+      </tr>
+      <tr>
+          <td>Request Body - Options</td>
+          <td>{{response.Request.Body.Options}}</td>
+      </tr>
+      <tr>
+          <td>Request Url</td>
+          <td>{{response.Request.Url}}</td>
+      </tr>
+      <tr>
+          <td>Request Params</td>
+          <td>{{response.Request.Params}}</td>
+      </tr>
+      <tr>
+          <td>Data ID</td>
+          <td>{{response.Data.id}}</td>
+      </tr>
+      <tr>
+          <td>Data Title</td>
+          <td>{{response.Data.Title}}</td>
+      </tr>
+      <tr>
+          <td>Data Description</td>
+          <td>{{response.Data.Description}}</td>
+      </tr>
+      <tr>
+          <td>Data DisplayCode</td>
+          <td>{{response.Data.DisplayCode}}</td>
+      </tr>
+      <tr>
+          <td>Data ResponseType</td>
+          <td>{{response.Data.ResponseType}}</td>
+      </tr>
+      <tr>
+          <td>Data Score</td>
+          <td>{{response.Data.Score}}</td>
+      </tr>
+      <tr>
+          <td>Data Sequence</td>
+          <td>{{response.Data.Sequence}}</td>
+      </tr>
+      <tr>
+          <td>Data CorrectAnswer</td>
+          <td>{{response.Data.CorrectAnswer}}</td>
+      </tr>
+      <tr>
+          <td>Data Hint</td>
+          <td>{{response.Data.Hint}}</td>
+      </tr>
+      <tr>
+          <td>Data Options</td>
+          <td>{{response.Data.Options}}</td>
+      </tr>
+      <tr>
+          <td>Data QuestionImageUrl</td>
+          <td>{{response.Data.QuestionImageUrl}}</td>
+      </tr>
+      <tr>
+          <td>Data RangeMin</td>
+          <td>{{response.Data.RangeMin}}</td>
+      </tr>
+      <tr>
+          <td>Data RangeMax</td>
+          <td>{{response.Data.RangeMax}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection ID</td>
+          <td>{{response.Data.ParentFormSection.id}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection SectionIdentifier</td>
+          <td>{{response.Data.ParentFormSection.SectionIdentifier}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection Title</td>
+          <td>{{response.Data.ParentFormSection.Title}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection Description</td>
+          <td>{{response.Data.ParentFormSection.Description}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection DisplayCode</td>
+          <td>{{response.Data.ParentFormSection.DisplayCode}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection Sequence</td>
+          <td>{{response.Data.ParentFormSection.Sequence}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection ParentSectionId</td>
+          <td>{{response.Data.ParentFormSection.ParentSectionId}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormSection CreatedAt</td>
+          <td>{{response.Data.ParentFormSection.CreatedAt}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate ID</td>
+          <td>{{response.Data.ParentFormTemplate.id}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate Title</td>
+          <td>{{response.Data.ParentFormTemplate.Title}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate Description</td>
+          <td>{{response.Data.ParentFormTemplate.Description}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate Type</td>
+          <td>{{response.Data.ParentFormTemplate.Type}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate DisplayCode</td>
+          <td>{{response.Data.ParentFormTemplate.DisplayCode}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate OwnerUserId</td>
+          <td>{{response.Data.ParentFormTemplate.OwnerUserId}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate RootSectionId</td>
+          <td>{{response.Data.ParentFormTemplate.RootSectionId}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate DefaultSectionNumbering</td>
+          <td>{{response.Data.ParentFormTemplate.DefaultSectionNumbering}}</td>
+      </tr>
+      <tr>
+          <td>Data ParentFormTemplate CreatedAt</td>
+          <td>{{response.Data.ParentFormTemplate.CreatedAt}}</td>
+      </tr>
+      <tr>
+          <td>Data CreatedAt</td>
+          <td>{{response.Data.CreatedAt}}</td>
+      </tr>
+      <tr>
+          <td>Data UpdatedAt</td>
+          <td>{{response.Data.UpdatedAt}}</td>
+      </tr>
+  </table>
+  `;
+  
+  function constructVisualizerPayload() {
+      return {response: res.getBody()};
+  }
+  
+  // pm.visualizer.set(template, constructVisualizerPayload());
+}

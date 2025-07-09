@@ -31,6 +31,7 @@ export class QuestionResponseValidator extends BaseValidator {
                 Url: joi.string().optional(),
                 FileResourceId: joi.string().optional(),
                 TextValue: joi.string().optional(),
+                UserResponse: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -44,6 +45,7 @@ export class QuestionResponseValidator extends BaseValidator {
                 Url: request.body.Url ?? null,
                 FileResourceId: request.body.FileResourceId ?? null,
                 TextValue: request.body.TextValue ?? null,
+                UserResponse: request.body.UserResponse ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
