@@ -1,36 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { LogicType } from '../../../../engine/enums';
-
-// Base Logic Interface
-export interface BaseLogic {
-    id: string;
-    Type: LogicType;
-    FieldId: string;
-    Enabled: boolean;
-}
+import { Entity, Column } from 'typeorm';
+import { BaseEntity } from '../base.entity';
+import { LogicType } from './logic.types';
 
 // Base Logic Entity (Abstract - no table)
-export abstract class BaseLogicEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
+export abstract class BaseLogicEntity extends BaseEntity {
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    FieldId: string;
 
-    @Column({
-        type: 'varchar',
-        length: 255,
-        nullable: false
-    })
-    FieldId!: string;
-
-    @Column({
-        type: 'boolean',
-        nullable: false,
-        default: true
-    })
-    Enabled!: boolean;
-
-    @CreateDateColumn()
-    CreatedAt!: Date;
-
-    @UpdateDateColumn()
-    UpdatedAt!: Date;
+    @Column({ type: 'boolean', nullable: false, default: true })
+    Enabled: boolean;
 } 
