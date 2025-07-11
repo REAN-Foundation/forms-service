@@ -31,7 +31,7 @@
     "mysql2": "^3.10.0",
     "pdfkit": "^0.15.0",
     "reflect-metadata": "^0.2.2",
-    "tsyringe": "^4.8.0"
+    "tsyringe": "^4.10.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
