@@ -29,7 +29,7 @@
     "joi": "^17.12.2",
     "moment-timezone": "^0.5.45",
     "mysql2": "^3.10.0",
-    "pdfkit": "^0.15.0",
+    "pdfkit": "^0.17.1",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0"
   },
