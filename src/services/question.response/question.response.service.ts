@@ -5,57 +5,9 @@ import { QuestionResponseDto } from "../../domain.types/forms/question.domain.ty
 
 @injectable()
 export class ResponseService {
-   // prisma: PrismaClient = null;
-   // private exportDirectory = path.join(__dirname, '../exports');
 
    constructor(@inject('IResponseRepo') private _respRepo: IResponseRepo) {
-      // this.prisma = PrismaClientInit.instance().getPrismaInstance();
-      // if (!fs.existsSync(this.exportDirectory)) {
-      //     fs.mkdirSync(this.exportDirectory);
-      // }
    }
-
-   // allResponses = async (): Promise<any> => {
-   //     const response = await this.prisma.questionResponse.findMany({
-   //         include: {
-   //             FormSubmission: true,
-   //             Question: true
-   //         },
-   //         where: {
-   //             DeletedAt: null
-   //         }
-   //     });
-   //     return ResponseMapper.toArrayDto(response);
-   // };
-
-   // create = async (model: QuestionResponseCreateModel) => {
-   //     const response = await this.prisma.questionResponse.create({
-   //         data: {
-   //             Question: {
-   //                 connect: { id: model.QuestionId }
-   //             },
-   //             FormSubmission: {
-   //                 connect: { id: model.FormSubmissionId }
-   //             },
-   //             ResponseType: model.ResponseType as QueryResponseType,
-   //             IntegerValue: model.IntegerValue,
-   //             FloatValue: model.FloatValue,
-   //             BooleanValue: model.BooleanValue,
-   //             DateTimeValue: model.DateTimeValue,
-   //             Url: model.Url,
-   //             FileResourceId: model.FileResourceId,
-   //             TextValue: model.TextValue,
-   //             SubmissionTimestamp: null,
-   //             LastSaveTimestamp: new Date(),
-   //             // DeletedAt          : null,
-   //         },
-   //         include: {
-   //             FormSubmission: true,
-   //             Question: true
-   //         }
-   //     });
-   //     return ResponseMapper.toDto(response);
-   // };
 
    create = async (model: QuestionResponseCreateModel): Promise<QuestionResponseResponseDto> => {
       const dto = await this._respRepo.create(model);

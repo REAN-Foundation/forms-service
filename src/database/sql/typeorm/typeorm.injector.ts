@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { DependencyContainer } from 'tsyringe';
-// import { DatabaseConnector_TypeOrm } from './database.connector.typeorm';
 import { FormSectionRepo } from './repositories/form.section/form.section.repo';
 import { FormSubmissionRepo } from './repositories/form.submission/form.submission.repo';
 import { FormTemplateRepo } from './repositories/form.template/form.template.repo';
@@ -23,15 +22,11 @@ import { SkipRuleRepo } from './repositories/field.rules/field.rules.skip.repo';
 import { CalculationRuleRepo } from './repositories/field.rules/field.rules.calculation.repo';
 import { ValidationRuleRepo } from './repositories/field.rules/field.rules.validation.repo';
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 
 export class TypeOrmInjector {
 
     static registerInjections(container: DependencyContainer) {
-
-        // container.register('IPrimaryDatabaseConnector', DatabaseConnector_TypeOrm);
 
         container.register('IFormSectionRepo', FormSectionRepo);
         container.register('IFormSubmissionRepo', FormSubmissionRepo);
@@ -55,7 +50,5 @@ export class TypeOrmInjector {
         container.register('ISkipRuleRepo', SkipRuleRepo);
         container.register('ICalculationRuleRepo', CalculationRuleRepo);
         container.register('IValidationRuleRepo', ValidationRuleRepo);
-
-
     }
 }

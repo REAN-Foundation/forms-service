@@ -1,6 +1,3 @@
-// import { FormType } from "../miscellaneous/system.types";
-
-// import { FormType, ItemsPerPage, QueryResponseType } from "@prisma/client";
 import { FormType } from "./form.template.enums";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
@@ -12,7 +9,6 @@ export interface FormTemplateCreateModel {
     CurrentVersion?: number;
     TenantCode?: string;
     Type: FormType;
-    // ItemsPerPage: ItemsPerPage;
     DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
@@ -25,7 +21,6 @@ export interface FormTemplateUpdateModel {
     CurrentVersion?: number;
     TenantCode?: string;
     Type?: FormType;
-    // ItemsPerPage?: ItemsPerPage;
     DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
@@ -39,7 +34,6 @@ export interface FormTemplateResponseDto {
     CurrentVersion?: number;
     TenantCode?: string;
     Type: FormType;
-    // ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
     OwnerUserId?: string;
     RootSectionId: string;
@@ -111,7 +105,6 @@ export interface SubsectionDto {
     Title: string;
     Description: string;
     DisplayCode: string;
-    // Sequence: string;
     Sequence: number;
     ParentSectionId: string;
     CreatedAt: Date;
@@ -124,7 +117,6 @@ export interface QuestionDto {
     Title: string;
     Description?: string;
     DisplayCode: string | null;
-    // ResponseType: QueryResponseType;
     Score: number;
     Sequence: string;
     CorrectAnswer: string;
@@ -137,39 +129,12 @@ export interface QuestionDto {
     UpdatedAt?: Date;
 }
 
-
-
-// {
-//     Template: {
-//         Sections: [
-//             {
-//                 Subsections:[
-//                     {
-//                         Questions: []
-//                     },
-//                     {
-//                         Questions: []
-//                     },
-//                     {
-//                         Questions: []
-//                     }
-//                    ]
-//                }
-//             ],
-//                 Questions: []
-//             },
-
-//         ]
-//     }
-// }
-
 export interface SectionPreviewDto {
     id: string;
     SectionIdentifier?: string;
     Title: string;
     Description: string;
     DisplayCode: string;
-    // Sequence: string;
     Sequence: number;
     ParentSectionId: string | null;
     CreatedAt: Date;
@@ -185,7 +150,6 @@ export interface TemplatePreviewDto {
     CurrentVersion?: number;
     TenantCode?: string;
     Type: FormType;
-    // ItemsPerPage: ItemsPerPage;
     DisplayCode: string;
     OwnerUserId?: string;
     RootSectionId: string;

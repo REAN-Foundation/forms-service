@@ -103,12 +103,12 @@ export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateA
             });
 
             if (!record) {
-                return false; // Record not found
+                return false;
             }
-            record.DeletedAt = new Date(); // Soft delete
+            record.DeletedAt = new Date();
             await this._formTemplateApprovalRepo.save(record);
 
-            return true; // Soft delete successful
+            return true;
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);

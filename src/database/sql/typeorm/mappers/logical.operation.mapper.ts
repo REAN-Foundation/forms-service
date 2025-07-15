@@ -21,21 +21,10 @@ export class LogicalOperationMapper {
         return dto;
     };
 
-    static toLogicalOperationDto = (record: any): LogicalOperationResponseDto => {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): LogicalOperationResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dto: LogicalOperationResponseDto = {
-            id: record.id,
-            Name: record.Name,
-            Description: record.Description,
-            Type: record.Type,
-            Operator: record.Operator,
-            Operands: record.Operands,
-            CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
-        };
-        return dto;
-    };
+        return records.map(record => LogicalOperationMapper.toDto(record));
+    }
 } 

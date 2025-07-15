@@ -102,7 +102,7 @@ export class InputUnitListRepo extends BaseRepo implements IInputUnitListRepo {
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => InputUnitListMapper.toDto(x)),
+                Items: InputUnitListMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

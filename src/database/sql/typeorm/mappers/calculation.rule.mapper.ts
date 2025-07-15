@@ -23,39 +23,10 @@ export class CalculationRuleMapper {
         return dto;
     };
 
-    static toCalculationRuleDto = (record: any): CalculationRuleResponseDto => {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): CalculationRuleResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dto: CalculationRuleResponseDto = {
-            id: record.id,
-            Name: record.Name,
-            Description: record.Description,
-            Priority: record.Priority,
-            IsActive: record.IsActive,
-            ConditionForOperationId: record.ConditionForOperationId,
-            OperationId: record.OperationId,
-            LogicId: record.LogicId,
-            ConditionForOperation: record.ConditionForOperation ? {
-                id: record.ConditionForOperation.id,
-                Name: record.ConditionForOperation.Name,
-                Description: record.ConditionForOperation.Description
-            } : undefined,
-            Operation: record.Operation ? {
-                id: record.Operation.id,
-                Name: record.Operation.Name,
-                Description: record.Operation.Description
-            } : undefined,
-            Logic: record.Logic ? {
-                id: record.Logic.id,
-                Type: record.Logic.Type,
-                DefaultSkip: record.Logic.DefaultSkip,
-                FallbackValue: record.Logic.FallbackValue
-            } : undefined,
-            CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
-        };
-        return dto;
-    };
+        return records.map(record => CalculationRuleMapper.toDto(record));
+    }
 } 

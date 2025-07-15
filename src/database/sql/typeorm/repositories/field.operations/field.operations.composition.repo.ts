@@ -29,7 +29,7 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
                 Operands: model.Operands
             });
             const record = await this._compositionOperationRepo.save(data);
-            return CompositionOperationMapper.toCompositionOperationDto(record);
+            return CompositionOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -66,7 +66,7 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
             updateData.UpdatedAt = new Date();
 
             const record = await this._compositionOperationRepo.save(updateData);
-            return CompositionOperationMapper.toCompositionOperationDto(record);
+            return CompositionOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -80,7 +80,7 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
                     DeletedAt: null,
                 },
             });
-            return CompositionOperationMapper.toCompositionOperationDto(record);
+            return CompositionOperationMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -122,7 +122,7 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => CompositionOperationMapper.toCompositionOperationDto(x)),
+                Items: CompositionOperationMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

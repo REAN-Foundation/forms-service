@@ -27,32 +27,10 @@ export class UserLoginSessionMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): UserLoginSessionResponseDto[] {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): UserLoginSessionResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dtos: UserLoginSessionResponseDto[] = [];
-
-        for (let i = 0; i < record.length; i++) {
-            const element = record[i];
-            dtos.push({
-                id: element.id,
-                User: {
-                    FirstName: element.User.FirstName,
-                    LastName: element.User.LastName,
-                    CountryCode: element.User.CountryCode,
-                    Phone: element.User.Phone,
-                    Email: element.User.Email,
-                    Username: element.User.Username,
-                    Password: element.User.Password,
-                    CreatedAt: element.User.CreatedAt
-                },
-                IsActiveSession: element.IsActiveSession,
-                StartedAt: element.StartedAt,
-                ValidTill: element.ValidTill
-            });
-        }
-        return dtos;
+        return records.map(record => UserLoginSessionMapper.toDto(record));
     }
 }

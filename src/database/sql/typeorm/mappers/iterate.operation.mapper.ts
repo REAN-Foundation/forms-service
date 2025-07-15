@@ -23,28 +23,10 @@ export class IterateOperationMapper {
         return dto;
     };
 
-    static toIterateOperationDto = (record: any): IterateOperationResponseDto => {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): IterateOperationResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dto: IterateOperationResponseDto = {
-            id: record.id,
-            Name: record.Name,
-            Description: record.Description,
-            Type: record.Type,
-            CollectionField: record.CollectionField,
-            ResultField: record.ResultField,
-            OperationId: record.OperationId,
-            FilterExpression: record.FilterExpression,
-            Operation: record.Operation ? {
-                id: record.Operation.id,
-                Name: record.Operation.Name,
-                Description: record.Operation.Description
-            } : undefined,
-            CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
-        };
-        return dto;
-    };
+        return records.map(record => IterateOperationMapper.toDto(record));
+    }
 }

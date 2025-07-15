@@ -11,8 +11,6 @@ import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { Logger } from "../../../../../common/logger";
 import { BaseRepo } from "../base.repo";
 import { FindManyOptions, IsNull, Repository } from "typeorm";
-// import { Question } from "../../models/question/question.model";
-// import { QuestionMapper } from "../../mappers/question.mapper";
 import { FormSection } from "../../models/form.section/form.section.model";
 import { FormFieldEntity } from "../../models/form.field/form.field.model";
 import { FormFieldMapper } from "../../mappers/form.field.mapper";
@@ -27,18 +25,13 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
 
   create = async (model: FormTemplateCreateModel): Promise<FormTemplateResponseDto> => {
 
-
     try {
 
       const data = this._formTemplateRepo.create({
         Title: model.Title,
         Description: model.Description,
-        // CurrentVersion: model.CurrentVersion,
-        // TenantCode: model.TenantCode,
         Type: model.Type as FormType,
-        // ItemsPerPage: model.ItemsPerPage,
         DisplayCode: model.DisplayCode,
-        // OwnerUserId: model.OwnerUserId,
         RootSectionId: model.RootSectionId,
         DefaultSectionNumbering: model.DefaultSectionNumbering,
       });
@@ -66,43 +59,16 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       if (!updateData) {
         ErrorHandler.throwNotFoundError("Form Section Data not found!");
       }
-      // if (model.SectionIdentifier) {
-      //     updateData.SectionIdentifier = model.SectionIdentifier;
-      // }
       if (model.Title) {
         updateData.Title = model.Title;
       }
       if (model.Description) {
         updateData.Description = model.Description;
       }
-      //    if (model.CurrentVersion) {
-      //        updateData.CurrentVersion = model.CurrentVersion;
-      //    }
-
-      //    if (model.TenantCode) {
-      //        updateData.TenantCode = model.TenantCode;
-      //    }
-
-      //    if (model.QueryParams) {
-      //        updateData.QueryParams = model.QueryParams;
-      //    }
 
       if (model.Type) {
         updateData.Type = model.Type;
       }
-
-      //    if (model.ItemsPerPage) {
-      //        updateData.ItemsPerPage = model.ItemsPerPage;
-      //    }
-
-      //    if (model.Status) {
-      //        updateData.Status = model.Status;
-      //    }
-
-      //    if (model.Category) {
-      //        updateData.Category = model.Category;
-      //    }
-
       updateData.UpdatedAt = new Date();
 
       var record = await this._formTemplateRepo.save(updateData);
@@ -210,12 +176,8 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       id: template.id,
       Title: template.Title,
       Description: template.Description,
-      // CurrentVersion: template.CurrentVersion,
-      // TenantCode: template.TenantCode,
       Type: template.Type as FormType,
-      // ItemsPerPage: template.ItemsPerPage,
       DisplayCode: template.DisplayCode,
-      // OwnerUserId: template.OwnerUserId,
       RootSectionId: template.RootSectionId,
       DefaultSectionNumbering: template.DefaultSectionNumbering,
       CreatedAt: template.CreatedAt,
@@ -224,14 +186,7 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
     };
 
     // Fetch all top-level sections related to the template
-    // const sections = await this._formTemplateRepo.find({
-    //   where: {
-    //     ParentFormTemplateId: id,
-    //     ParentSectionId: null,
-    //     DeletedAt: null,
-    //   },
-    //   include: { ParentFormTemplate: true },
-    // });
+
 
     const sections = await this._formSection.find({
       where: {
@@ -245,11 +200,9 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
     for (const section of sections) {
       const dtoSection: SectionDto = {
         id: section.id,
-        // SectionIdentifier: section.SectionIdentifier,
         Title: section.Title,
         Description: section.Description,
         DisplayCode: section.DisplayCode,
-        // Sequence: section.Sequence,
         ParentSectionId: section.ParentSectionId,
         CreatedAt: section.CreatedAt,
         UpdatedAt: section.UpdatedAt,
@@ -273,7 +226,6 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       for (const subsection of subsections) {
         const dtoSubsection: SubsectionDto = {
           id: subsection.id,
-          // SectionIdentifier: subsection.SectionIdentifier,
           Title: subsection.Title,
           Description: subsection.Description,
           DisplayCode: subsection.DisplayCode,
@@ -322,12 +274,8 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       id: template.id,
       Title: template.Title,
       Description: template.Description,
-      // CurrentVersion: template.CurrentVersion,
-      // TenantCode: template.TenantCode,
       Type: template.Type as FormType,
-      // ItemsPerPage: template.ItemsPerPage,
       DisplayCode: template.DisplayCode,
-      // OwnerUserId: template.OwnerUserId,
       RootSectionId: template.RootSectionId,
       DefaultSectionNumbering: template.DefaultSectionNumbering,
       CreatedAt: template.CreatedAt,
@@ -335,15 +283,7 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       RootSection: [],
     };
 
-    // const sections = await this.prisma.formSection.findMany({
-    //     where: { ParentFormTemplateId: id, DeletedAt: null },
-    //     include: {
-    //         ParentFormTemplate: true,
 
-    //         Questions: true
-    //     }
-    // })
-    // console.log('****', JSON.stringify(sections))
     const rootSection = await this._formSection.findOne({
       where: {
         FormTemplateId: id,
@@ -375,11 +315,7 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
         },
       },
     });
-    // return allSections;
-    return await this.mapSections1(allSections);
-
-    console.log("****", JSON.stringify(allSections));
-
+    return
     const mapSections = async (
       parentId: string | null
     ): Promise<SectionPreviewDto[]> => {

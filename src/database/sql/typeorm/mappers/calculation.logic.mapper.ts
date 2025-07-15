@@ -21,27 +21,10 @@ export class CalculationLogicMapper {
         return dto;
     };
 
-    static toCalculationLogicDto = (record: any): CalculationLogicResponseDto => {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): CalculationLogicResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dto: CalculationLogicResponseDto = {
-            id: record.id,
-            Type: LogicType.Calculation,
-            FieldId: record.FieldId,
-            Enabled: record.Enabled,
-            FallbackValue: record.FallbackValue,
-            Rules: record.Rules ? record.Rules.map((rule: any) => ({
-                id: rule.id,
-                OperationId: rule.OperationId,
-                LogicId: rule.LogicId,
-                CreatedAt: rule.CreatedAt,
-                UpdatedAt: rule.UpdatedAt
-            })) : undefined,
-            CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
-        };
-        return dto;
-    };
+        return records.map(record => CalculationLogicMapper.toDto(record));
+    }
 } 

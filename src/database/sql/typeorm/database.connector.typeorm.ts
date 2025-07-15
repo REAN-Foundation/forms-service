@@ -141,20 +141,6 @@ class DatabaseConnector implements IPrimaryDatabaseConnector {
     }
   };
 
-  // public migrate = async () => {
-  //     try {
-  //         const output = execSync('npx sequelize-cli db:migrate');
-
-  //         const str = output.toString();
-  //         Logger.instance().log('Migration completed successfully!');
-  //         Logger.instance().log(str);
-
-  //         return true;
-  //     } catch (error) {
-  //         Logger.instance().log(error.message);
-  //     }
-  //     return false;
-  // };
   public migrate = async (): Promise<boolean> => {
     try {
       if (!DatabaseConnector._source.isInitialized) {

@@ -13,10 +13,5 @@ export class DatabaseInjector {
         if (databaseType === 'SQL') {
             SQLInjector.registerInjections(container);
         }
-        // else if (databaseType === 'NoSQL') {
-        //     NoSQLInjector.registerInjections(container);
-        // }
-
     }
-
 }

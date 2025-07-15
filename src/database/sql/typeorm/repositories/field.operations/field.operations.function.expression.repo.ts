@@ -29,7 +29,7 @@ export class FunctionExpressionOperationRepo extends BaseRepo implements IFuncti
                 ResultDataType: model.ResultDataType
             });
             const record = await this._functionExpressionOperationRepo.save(data);
-            return FunctionExpressionOperationMapper.toFunctionExpressionOperationDto(record);
+            return FunctionExpressionOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -70,7 +70,7 @@ export class FunctionExpressionOperationRepo extends BaseRepo implements IFuncti
             updateData.UpdatedAt = new Date();
 
             const record = await this._functionExpressionOperationRepo.save(updateData);
-            return FunctionExpressionOperationMapper.toFunctionExpressionOperationDto(record);
+            return FunctionExpressionOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -84,7 +84,7 @@ export class FunctionExpressionOperationRepo extends BaseRepo implements IFuncti
                     DeletedAt: null,
                 },
             });
-            return FunctionExpressionOperationMapper.toFunctionExpressionOperationDto(record);
+            return FunctionExpressionOperationMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -126,7 +126,7 @@ export class FunctionExpressionOperationRepo extends BaseRepo implements IFuncti
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => FunctionExpressionOperationMapper.toFunctionExpressionOperationDto(x)),
+                Items: FunctionExpressionOperationMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

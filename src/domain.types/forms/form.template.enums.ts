@@ -1,4 +1,3 @@
-// Form Template Enums
 export enum FormType {
     Survey = 'Survey',
     Questionnaire = 'Questionnaire',

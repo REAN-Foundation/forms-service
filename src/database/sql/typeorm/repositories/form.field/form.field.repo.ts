@@ -19,11 +19,8 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
   create = async (model: FormFieldCreateModel): Promise<FormFieldResponseDto> => {
     try {
 
-      //   let jsonData: Prisma.JsonValue | undefined;
-
       let jsonData: FormFieldOption[] | undefined;
 
-      // Map model.Options to the appropriate structure for JSON storage
       if (model.Options && model.Options.length > 0) {
         jsonData = model.Options.map((option) => ({
           Text: option.Text,
@@ -40,17 +37,13 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
         DisplayCode: model.DisplayCode,
         ResponseType: model.ResponseType as QueryResponseType,
         Score: model.Score,
-        // CorrectAnswer: model.CorrectAnswer,
         IsRequired: model.IsRequired,
         Hint: model.Hint,
         Sequence: model.Sequence,
-        Options: JSON.stringify(jsonData), // Only assign if jsonData is defined
-        // QuestionImageUrl: model.QuestionImageUrl,
+        Options: JSON.stringify(jsonData),
         RangeMax: model.RangeMax,
         RangeMin: model.RangeMin,
         CreatedAt: new Date(),
-        // UpdatedAt: new Date(), // Uncomment and modify as needed
-        // DeletedAt: null, // Uncomment and modify as needed
       });
       const record = await this._formFieldRepo.save(data);
       return FormFieldMapper.toDto(record);
@@ -62,11 +55,8 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
   update = async (id: string, model: FormFieldUpdateModel): Promise<FormFieldResponseDto> => {
     try {
 
-      //   let jsonData: Prisma.JsonValue | undefined;
-
       let jsonData: FormFieldOption[] | undefined;
 
-      // Map model.Options to the appropriate structure for JSON storage
       if (model.Options && model.Options.length > 0) {
         jsonData = model.Options.map((option) => ({
           Text: option.Text,
@@ -85,9 +75,6 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
       if (!updateData) {
         ErrorHandler.throwNotFoundError("FormField Data not found!");
       }
-      // if (model.SectionIdentifier) {
-      //     updateData.SectionIdentifier = model.SectionIdentifier;
-      // }
       if (model.Title) {
         updateData.Title = model.Title;
       }
@@ -102,10 +89,6 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
         updateData.Score = model.Score;
       }
 
-      //   if (model.CorrectAnswer) {
-      //     updateData.CorrectAnswer = model.CorrectAnswer;
-      //   }
-
       if (model.IsRequired) {
         updateData.IsRequired = model.IsRequired;
       }
@@ -115,10 +98,6 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
       }
 
       updateData.Options = JSON.stringify(jsonData);
-
-      //  if (model.QuestionImageUrl) {
-      //   updateData.QuestionImageUrl = model.QuestionImageUrl;
-      // }
 
       if (model.RangeMax) {
         updateData.RangeMax = model.RangeMax;
@@ -171,7 +150,7 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
         ItemsPerPage: records.length,
         Order: 'ASC',
         OrderedBy: 'CreatedAt',
-        Items: records.map((item) => FormFieldMapper.toDto(item)),
+        Items: FormFieldMapper.toArrayDto(records),
       };
 
       return searchResults;
@@ -191,11 +170,11 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
         },
       });
       if (!record) {
-        return false; // Record not found
+        return false;
       }
-      record.DeletedAt = new Date(); // Soft delete
+      record.DeletedAt = new Date();
       await this._formFieldRepo.save(record);
-      return true; // Soft delete successful
+      return true;
     } catch (error) {
       Logger.instance().log(error.message);
       ErrorHandler.throwInternalServerError(error.message, 500);
@@ -215,7 +194,7 @@ export class FormFieldRepo extends BaseRepo implements IFormFieldRepo {
         ItemsPerPage: limit,
         Order: order,
         OrderedBy: orderByColumn,
-        Items: list.map((item) => FormFieldMapper.toDto(item)),
+        Items: FormFieldMapper.toArrayDto(list),
       };
 
       return searchResults;

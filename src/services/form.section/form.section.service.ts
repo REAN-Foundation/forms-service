@@ -1,8 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { PrismaClientInit } from "../../startup/prisma.client.init";
-import { FormSectionMapper } from "../../database/sql/typeorm/mappers/form.section.mapper";
 import { FormSectionCreateModel, FormSectionResponseDto, FormSectionSearchFilters, FormSectionUpdateModel } from "../../domain.types/forms/form.section.domain.types";
-// import { ErrorHandler } from "../../common/error.handler";
 import { inject, injectable } from "tsyringe";
 import { IFormSectionRepo } from "../../database/repository.interfaces/form.section/form.section.repo.interface";
 
@@ -10,20 +6,7 @@ import { IFormSectionRepo } from "../../database/repository.interfaces/form.sect
 export class FormSectionService {
 
     constructor(@inject('IFormSectionRepo') private _formSectionRepo: IFormSectionRepo) {
-
     }
-
-    // allFormSections = async (): Promise<any> => {
-    //     const response = await this.prisma.formSection.findMany({
-    //         include: {
-    //             ParentFormTemplate: true
-    //         },
-    //         where: {
-    //             DeletedAt: null,
-    //         }
-    //     });
-    //     return FormSectionMapper.toArrayDto(response);
-    // };
 
     create = async (model: FormSectionCreateModel): Promise<FormSectionResponseDto> => {
         var dto = await this._formSectionRepo.create(model);

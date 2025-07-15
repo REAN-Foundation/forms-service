@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-// import { ICompositionOperationRepo } from "../../database/repository.interfaces/field.operations/composition.operation/composition.operation.repo.interface";
 import {
     CompositionOperationResponseDto,
     CompositionOperationCreateModel,
@@ -12,7 +11,6 @@ import { ICompositionOperationRepo } from "../../database/repository.interfaces/
 export class CompositionOperationService {
     constructor(@inject('ICompositionOperationRepo') private _compositionOperationRepo: ICompositionOperationRepo) { }
 
-    // Composition Operation operations
     async createCompositionOperation(model: CompositionOperationCreateModel): Promise<CompositionOperationResponseDto> {
         return await this._compositionOperationRepo.createCompositionOperation(model);
     }

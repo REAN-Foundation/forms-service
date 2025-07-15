@@ -2,9 +2,7 @@ import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormSubmission } from '../form.submission/form.submission.model';
 import { QueryResponseType } from '../../../../../domain.types/forms/query.response.types';
-// import { Question } from '../question/question.model';
 import { FormFieldEntity } from '../form.field/form.field.model';
-
 
 @Entity('question_responses')
 export class QuestionResponse extends BaseEntity {
@@ -44,12 +42,8 @@ export class QuestionResponse extends BaseEntity {
     @Column({ type: 'varchar', length: 2048, nullable: true })
     Text?: string;
 
-    //Represent the response of the user
     @Column({ type: 'text', nullable: true })
     UserResponse: string;
-
-    // @Column()
-    // SubmissionTimestamp: Date;
 
     @Column({ nullable: true })
     SubmissionTimestamp: Date;
@@ -60,10 +54,6 @@ export class QuestionResponse extends BaseEntity {
     @ManyToOne(() => FormSubmission, (submission) => submission.QuestionResponses)
     @JoinColumn({ name: 'FormSubmissionId' })
     FormSubmission: FormSubmission;
-
-    // @ManyToOne(() => Question, (question) => question.Responses)
-    // @JoinColumn({ name: 'QuestionId' })
-    // Question: Question;
 
     @ManyToOne(() => FormFieldEntity, (formField) => formField.Responses)
     @JoinColumn({ name: 'FormFieldId' })

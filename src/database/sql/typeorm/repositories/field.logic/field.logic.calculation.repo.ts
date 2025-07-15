@@ -28,7 +28,7 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
                 FallbackValue: model.FallbackValue
             });
             const record = await this._calculationLogicRepo.save(data);
-            return CalculationLogicMapper.toCalculationLogicDto(record);
+            return CalculationLogicMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -62,7 +62,7 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
             updateData.UpdatedAt = new Date();
 
             const record = await this._calculationLogicRepo.save(updateData);
-            return CalculationLogicMapper.toCalculationLogicDto(record);
+            return CalculationLogicMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -76,7 +76,7 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
                     DeletedAt: null,
                 },
             });
-            return CalculationLogicMapper.toCalculationLogicDto(record);
+            return CalculationLogicMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -118,7 +118,7 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => CalculationLogicMapper.toCalculationLogicDto(x)),
+                Items: CalculationLogicMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

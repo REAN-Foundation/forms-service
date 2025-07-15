@@ -121,9 +121,6 @@ export interface ValidationRuleResponseDto extends BaseRuleResponseDto {
     };
 }
 
-
-
-// Rule Search DTOs
 export interface RuleSearchFilters extends BaseSearchFilters {
     id?: string;
     name?: string;

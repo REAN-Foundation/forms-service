@@ -1,4 +1,3 @@
-
 import { ISkipLogicRepo } from "../../../../repository.interfaces/field.logic/skip.logic/skip.logic.repo.interface";
 import {
     SkipLogicResponseDto,
@@ -18,7 +17,7 @@ import { FindManyOptions, Repository } from "typeorm";
 export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
 
     _skipLogicRepo: Repository<SkipLogicEntity> = Source.getRepository(SkipLogicEntity);
-    // Skip Logic operations
+
     createSkipLogic = async (model: SkipLogicCreateModel): Promise<SkipLogicResponseDto> => {
         try {
             const data = this._skipLogicRepo.create({
@@ -28,7 +27,7 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
                 DefaultSkip: model.DefaultSkip
             });
             const record = await this._skipLogicRepo.save(data);
-            return SkipLogicMapper.toSkipLogicDto(record);
+            return SkipLogicMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -62,7 +61,7 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
             updateData.UpdatedAt = new Date();
 
             const record = await this._skipLogicRepo.save(updateData);
-            return SkipLogicMapper.toSkipLogicDto(record);
+            return SkipLogicMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -76,7 +75,7 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
                     DeletedAt: null,
                 },
             });
-            return SkipLogicMapper.toSkipLogicDto(record);
+            return SkipLogicMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -118,7 +117,7 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => SkipLogicMapper.toSkipLogicDto(x)),
+                Items: SkipLogicMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

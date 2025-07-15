@@ -15,25 +15,8 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
     _formSectionRepo: Repository<FormSection> = Source.getRepository(FormSection);
 
     create = async (model: FormSectionCreateModel): Promise<FormSectionResponseDto> => {
-
-        // const entity={
-        //         ParentFormTemplate: {
-        //             connect: { id: model.ParentFormTemplateId }
-        //         },
-        //         SectionIdentifier: model.SectionIdentifier,
-        //         Title: model.Title,
-        //         Description: model.Description,
-        //         DisplayCode: model.DisplayCode,
-        //         Sequence: model.Sequence,
-        //         ParentSectionId: model.ParentSectionId,
-        //   }
-
         try {
             const data = await this._formSectionRepo.create({
-                //  FormTemplate: {
-                //     connect: { id: model.ParentFormTemplateId }
-                // },
-                // SectionIdentifier: model.SectionIdentifier,
                 FormTemplateId: model.ParentFormTemplateId,
                 Title: model.Title,
                 Description: model.Description,
@@ -60,9 +43,6 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
             if (!updateData) {
                 ErrorHandler.throwNotFoundError('Form Section Data not found!');
             }
-            // if (model.SectionIdentifier) {
-            //     updateData.SectionIdentifier = model.SectionIdentifier;
-            // }
             if (model.Title) {
                 updateData.Title = model.Title;
             }
@@ -111,11 +91,11 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
                 },
             });
             if (!record) {
-                return false; // Record not found
+                return false;
             }
-            record.DeletedAt = new Date(); // Soft delete
+            record.DeletedAt = new Date();
             await this._formSectionRepo.save(record);
-            return true; // Soft delete successful
+            return true;
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -149,7 +129,7 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
                 ItemsPerPage: limit,
                 Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
-                Items: list.map(x => FormSectionMapper.toDto(x)),
+                Items: FormSectionMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {
@@ -172,12 +152,6 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
         if (filters.parentFormTemplateId) {
             search.where['FormTemplateId'] = filters.parentFormTemplateId;
         }
-
-        // if (filters.sectionIdentifier) {
-        //     where.SectionIdentifier = {
-        //         equals: filters.sectionIdentifier,
-        //     };
-        // }
 
         if (filters.title) {
             search.where['Title'] = filters.title;

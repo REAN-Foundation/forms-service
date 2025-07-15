@@ -1,5 +1,3 @@
-// import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
-
 import { FormStatus } from "./form.submission.enums";
 import { QueryResponseType } from "./query.response.types";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
@@ -10,7 +8,6 @@ export interface QuestionResponseCreateModel {
     ResponseType    : QueryResponseType;
     IntegerValue    : number;
     FloatValue      : number;
-    // BooleanValue    : boolean;
     BooleanValue    : string;
     DateTimeValue   : Date;
     Url             : string;
@@ -26,7 +23,6 @@ export interface QuestionResponseUpdateModel {
     ResponseType    ?: QueryResponseType;
     IntegerValue    ?: number;
     FloatValue      ?: number;
-    // BooleanValue    ?: boolean;
     BooleanValue    ?: string;
     DateTimeValue   ?: Date;
     Url             ?: string;
@@ -68,7 +64,6 @@ export interface QuestionResponseResponseDto {
     ResponseType       : QueryResponseType;
     IntegerValue       : number;
     FloatValue         : GLfloat;
-    // BooleanValue       : boolean;
     BooleanValue       ?: string;
     DateTimeValue      : Date;
     Url                : string;
@@ -84,7 +79,6 @@ export interface QuestionResponseSearchFilters extends BaseSearchFilters {
     ResponseType    ?: QueryResponseType;
     IntegerValue    ?: number;
     FloatValue      ?: GLfloat;
-    // BooleanValue    ?: boolean;
     BooleanValue    ?: string;
     DateTimeValue   ?: Date;
     Url             ?: string;
@@ -125,7 +119,6 @@ export interface QuestionResponseSearchResponseDto extends BaseSearchResults{
     ResponseType       : QueryResponseType;
     IntegerValue       : number;
     FloatValue         : GLfloat;
-    // BooleanValue       : boolean;
     BooleanValue       ?: string;
     DateTimeValue      : Date;
     Url                : string;
@@ -134,5 +127,3 @@ export interface QuestionResponseSearchResponseDto extends BaseSearchResults{
     SubmissionTimestamp: Date;
     LastSaveTimestamp  : Date
 }
-
-// export type QueryResponseType = "Text" | "Float" | "Integer" | "Boolean" | "Object" | "TextArray" | "SingleChoiceSelection" | "MultiChoiceSelection" | "File" | "Date" | "DateTime" | "Rating" | "Location" | "Url" | "Range"; 

@@ -4,12 +4,12 @@ import { FormSubmissionDto } from "../../../../../domain.types/forms/form.submis
 import { FormSubmission } from "../../models/form.submission/form.submission.model";
 import { FormStatus } from "../../../../../domain.types/forms/form.submission.enums";
 import { Source } from "../../database.connector.typeorm";
-import { FormMapper } from "../../mappers/form.submission.mapper";
 import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { Logger } from "../../../../../common/logger";
 import { FindManyOptions, Repository } from "typeorm";
 import { uuid } from "../../../../../domain.types/miscellaneous/system.types";
 import { BaseRepo } from "../base.repo";
+import { FormSubmissionMapper } from "../../mappers/form.submission.mapper";
 
 export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo {
 
@@ -18,13 +18,6 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
   create = async (model: FormSubmissionCreateModel): Promise<FormSubmissionDto> => {
     try {
       const data = await this._formSubmissionRepo.create({
-        //  FormTemplate: {
-        //     connect: { id: model.ParentFormTemplateId }
-        // },
-        // SectionIdentifier: model.SectionIdentifier,
-        //  FormTemplate: {
-        //     connect: { id: model.FormTemplateId }
-        //    },
         FormTemplateId: model.FormTemplateId,
         Title: model.Title,
         UserId: model.UserId,
@@ -33,7 +26,7 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
 
       });
       const record = await this._formSubmissionRepo.save(data);
-      return FormMapper.toDto(record);
+      return FormSubmissionMapper.toDto(record);
     }
 
     catch (error) {
@@ -53,9 +46,6 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
       if (!updateData) {
         ErrorHandler.throwNotFoundError('Form Section Data not found!');
       }
-      // if (model.SectionIdentifier) {
-      //     updateData.SectionIdentifier = model.SectionIdentifier;
-      // }
       if (model.UserId) {
         updateData.UserId = model.UserId;
       }
@@ -70,10 +60,6 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
         updateData.Link = model.Link;
       }
 
-      //    if (model.QueryParams) {
-      //        updateData.QueryParams = model.QueryParams;
-      //    }
-
       if (model.LinkQueryParams) {
         updateData.LinkQueryParams = model.LinkQueryParams;
       }
@@ -86,16 +72,8 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
         updateData.SubmittedAt = model.SubmittedAt;
       }
 
-      //    if (model.Status) {
-      //        updateData.Status = model.Status;
-      //    }
-
-      //    if (model.Category) {
-      //        updateData.Category = model.Category;
-      //    }
-
       var record = await this._formSubmissionRepo.save(updateData);
-      return FormMapper.toDto(record);
+      return FormSubmissionMapper.toDto(record);
     }
     catch (error) {
       ErrorHandler.throwInternalServerError(error.message, 500);
@@ -110,7 +88,7 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
           DeletedAt: null,
         },
       });
-      return FormMapper.toDto(record);
+      return FormSubmissionMapper.toDto(record);
     } catch (error) {
       Logger.instance().log(error.message);
       ErrorHandler.throwInternalServerError(error.message, 500);
@@ -126,11 +104,11 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
         },
       });
       if (!record) {
-        return false; // Record not found
+        return false;
       }
-      record.DeletedAt = new Date(); // Soft delete
+      record.DeletedAt = new Date();
       await this._formSubmissionRepo.save(record);
-      return true; // Soft delete successful
+      return true;
     } catch (error) {
       Logger.instance().log(error.message);
       ErrorHandler.throwInternalServerError(error.message, 500);
@@ -154,7 +132,7 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
       record.UpdatedAt = new Date();
 
       var submittedData = await this._formSubmissionRepo.save(record);
-      return FormMapper.toDto(submittedData);
+      return FormSubmissionMapper.toDto(submittedData);
     } catch (error) {
       ErrorHandler.throwInternalServerError(error.message, 500);
     }
@@ -173,7 +151,7 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
         ItemsPerPage: limit,
         Order: order === 'DESC' ? 'descending' : 'ascending',
         OrderedBy: orderByColumn,
-        Items: list.map(x => FormMapper.toDto(x)),
+        Items: FormSubmissionMapper.toArrayDto(list),
       };
       return searchResults;
     } catch (error) {
@@ -212,8 +190,6 @@ export class FormSubmissionRepo extends BaseRepo implements IFormSubmissionRepo 
     if (filters.SubmittedAt) {
       search.where["SubmittedAt"] = filters.SubmittedAt;
     }
-
-
     return search;
   };
 

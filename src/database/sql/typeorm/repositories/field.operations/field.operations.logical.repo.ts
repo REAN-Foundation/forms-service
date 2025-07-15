@@ -29,7 +29,7 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
                 Operands: model.Operands
             });
             const record = await this._logicalOperationRepo.save(data);
-            return LogicalOperationMapper.toLogicalOperationDto(record);
+            return LogicalOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -66,7 +66,7 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
             updateData.UpdatedAt = new Date();
 
             const record = await this._logicalOperationRepo.save(updateData);
-            return LogicalOperationMapper.toLogicalOperationDto(record);
+            return LogicalOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -80,7 +80,7 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
                     DeletedAt: null,
                 },
             });
-            return LogicalOperationMapper.toLogicalOperationDto(record);
+            return LogicalOperationMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -122,7 +122,7 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => LogicalOperationMapper.toLogicalOperationDto(x)),
+                Items: LogicalOperationMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

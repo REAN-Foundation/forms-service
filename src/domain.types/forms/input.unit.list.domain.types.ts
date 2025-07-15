@@ -1,10 +1,9 @@
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { uuid } from "../miscellaneous/system.types";
 
 export interface InputUnitListCreateModel {
     Name: string;
     Description: string;
-    Units: any[]; // Array of units (JSON array)
+    Units: any[];
 }
 
 export interface InputUnitListUpdateModel {

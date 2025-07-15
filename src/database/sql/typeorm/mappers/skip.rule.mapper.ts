@@ -23,33 +23,10 @@ export class SkipRuleMapper {
         return dto;
     };
 
-    static toSkipRuleDto = (record: any): SkipRuleResponseDto => {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): SkipRuleResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dto: SkipRuleResponseDto = {
-            id: record.id,
-            Name: record.Name,
-            Description: record.Description,
-            Priority: record.Priority,
-            IsActive: record.IsActive,
-            OperationId: record.OperationId,
-            SkipWhenTrue: record.SkipWhenTrue,
-            LogicId: record.LogicId,
-            Operation: record.Operation ? {
-                id: record.Operation.id,
-                Name: record.Operation.Name,
-                Description: record.Operation.Description
-            } : undefined,
-            Logic: record.Logic ? {
-                id: record.Logic.id,
-                Type: record.Logic.Type,
-                DefaultSkip: record.Logic.DefaultSkip
-            } : undefined,
-            CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
-        };
-        return dto;
-    };
+        return records.map(record => SkipRuleMapper.toDto(record));
+    }
 } 

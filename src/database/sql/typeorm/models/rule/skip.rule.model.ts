@@ -2,8 +2,6 @@ import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseRuleEntity } from './base.rule.model';
 import { SkipLogicEntity } from '../logic/skip.logic.model';
 
-
-// Skip Rule Entity
 @Entity({ name: 'eval_skip_rules' })
 export class SkipRuleEntity extends BaseRuleEntity {
     @Column({ type: 'uuid', nullable: false })

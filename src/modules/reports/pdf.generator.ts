@@ -1,9 +1,6 @@
 
 import fs from 'fs';
 import path from 'path';
-// import { Logger } from '../../common/logger';
-// import { ApiError } from '../../common/api.error';
-// import { Helper } from '../../common/helper';
 import { TimeHelper } from '../../common/time.helper';
 import pdfkit from 'pdfkit';
 import { ConfigurationManager } from "../../config/configuration.manager";

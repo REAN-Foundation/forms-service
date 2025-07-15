@@ -20,28 +20,10 @@ export class UserMapper {
         return dto;
     };
 
-    static toArrayDto(record: any[]): UserResponseDto[] {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): UserResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dtos: UserResponseDto[] = [];
-
-        for (let i = 0; i < record.length; i++) {
-            const element = record[i];
-            dtos.push({
-                id: element.id,
-                FirstName: element.FirstName,
-                LastName: element.LastName,
-                CountryCode: element.CountryCode,
-                Phone: element.Phone,
-                Email: element.Email,
-                Username: element.Username,
-                Password: element.Password,
-                CreatedAt: element.CreatedAt
-            });
-        }
-        return dtos;
-
+        return records.map(record => UserMapper.toDto(record));
     }
 }

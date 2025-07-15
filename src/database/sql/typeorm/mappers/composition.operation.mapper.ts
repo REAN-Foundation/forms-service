@@ -21,21 +21,10 @@ export class CompositionOperationMapper {
         return dto;
     };
 
-    static toCompositionOperationDto = (record: any): CompositionOperationResponseDto => {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): CompositionOperationResponseDto[] {
+        if (records === null) {
+            return [];
         }
-
-        const dto: CompositionOperationResponseDto = {
-            id: record.id,
-            Name: record.Name,
-            Description: record.Description,
-            Type: record.Type,
-            Operator: record.Operator,
-            Operands: record.Operands,
-            CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
-        };
-        return dto;
-    };
-} 
+        return records.map(record => CompositionOperationMapper.toDto(record));
+    }
+}

@@ -6,7 +6,6 @@ export class FormFieldMapper {
             return null;
         }
 
-        // Parse the Options JSON if it's present
         let options: FormFieldOption[] = [];
         if (record.Options !== null && record.Options !== undefined) {
             try {
@@ -16,7 +15,6 @@ export class FormFieldMapper {
             }
         }
 
-        // Map the record to FormFieldResponseDto
         const dto: FormFieldResponseDto = {
             id: record.id,
             Title: record.Title,

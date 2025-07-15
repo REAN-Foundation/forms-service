@@ -21,28 +21,11 @@ export class SkipLogicMapper {
         return dto;
     };
 
-    static toSkipLogicDto = (record: any): SkipLogicResponseDto => {
-        if (record === null) {
-            return null;
+    static toArrayDto(records: any[]): SkipLogicResponseDto[] {
+        if (records === null) {
+            return [];
         }
+        return records.map(record => SkipLogicMapper.toDto(record));
+    }
 
-        const dto: SkipLogicResponseDto = {
-            id: record.id,
-            Type: LogicType.Skip,
-            FieldId: record.FieldId,
-            Enabled: record.Enabled,
-            DefaultSkip: record.DefaultSkip,
-            Rules: record.Rules ? record.Rules.map((rule: any) => ({
-                id: rule.id,
-                OperationId: rule.OperationId,
-                SkipWhenTrue: rule.SkipWhenTrue,
-                LogicId: rule.LogicId,
-                CreatedAt: rule.CreatedAt,
-                UpdatedAt: rule.UpdatedAt
-            })) : undefined,
-            CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
-        };
-        return dto;
-    };
 }

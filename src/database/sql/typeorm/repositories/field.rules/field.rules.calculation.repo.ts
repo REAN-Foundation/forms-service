@@ -24,7 +24,7 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
                 LogicId: model.LogicId
             });
             const record = await this._calculationRuleRepo.save(data);
-            return CalculationRuleMapper.toCalculationRuleDto(record);
+            return CalculationRuleMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -38,7 +38,7 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
                     DeletedAt: null
                 }
             });
-            return CalculationRuleMapper.toCalculationRuleDto(record);
+            return CalculationRuleMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -72,7 +72,7 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
                 updateData.LogicId = model.LogicId;
             }
             var record = await this._calculationRuleRepo.save(updateData);
-            return CalculationRuleMapper.toCalculationRuleDto(record);
+            return CalculationRuleMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -111,7 +111,7 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
                 ItemsPerPage: limit,
                 Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
-                Items: list.map(x => CalculationRuleMapper.toCalculationRuleDto(x)),
+                Items: CalculationRuleMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

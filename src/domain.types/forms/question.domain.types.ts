@@ -1,32 +1,5 @@
-// import { QueryResponseType } from "../miscellaneous/system.types";
-
-// import { QueryResponseType } from "@prisma/client";
 import { QueryResponseType } from "./query.response.types";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-
-// export interface QuestionOption {
-//     Sequence: string;
-//     Data: string;
-//     ImageUrl: string;
-// }
-
-// export interface QuestionCreateModel {
-//     ParentTemplateId: string;
-//     ParentSectionId: string;
-//     Title: string;
-//     Description?: string;
-//     DisplayCode: string;
-//     ResponseType: QueryResponseType;
-//     Score: number;
-//     Sequence: string;
-//     CorrectAnswer: string;
-//     Hint: string;
-//     Options: QuestionOption;
-//     // FileResourceId   : string;
-//     QuestionImageUrl: string;
-//     RangeMin: number;
-//     RangeMax: number | null;
-// }
 
 export interface QuestionOption {
     Text: string;
@@ -42,13 +15,11 @@ export interface QuestionCreateModel {
     DisplayCode: string;
     ResponseType: QueryResponseType;
     Score?: number;
-    // Sequence?: string;
     Sequence?: number;
     CorrectAnswer: string;
     IsRequired?: boolean;
     Hint: string;
-    Options?: QuestionOption[]; // Change from QuestionOption to QuestionOption[]
-    // FileResourceId: string;
+    Options?: QuestionOption[];
     QuestionImageUrl: string;
     RangeMin: number;
     RangeMax: number | null;
@@ -65,52 +36,10 @@ export interface QuestionUpdateModel {
     IsRequired?: boolean;
     Hint?: string;
     Options?: QuestionOption[];
-    // FileResourceId  ?: string;
     QuestionImageUrl?: string;
     RangeMin?: number;
     RangeMax?: number;
 }
-
-// export interface QuestionResponseDto {
-//     id: string;
-//     Title: string;
-//     Description: string;
-//     DisplayCode?: string;
-//     ResponseType: QueryResponseType;
-//     Score: number;
-//     Sequence: string;
-//     CorrectAnswer: string;
-//     Hint: string;
-//     Options?: QuestionOption;
-//     // FileResourceId  : string;
-//     QuestionImageUrl: string;
-//     RangeMin: number;
-//     RangeMax: number;
-//     ParentFormSection?: {
-//         id: string;
-//         SectionIdentifier: string;
-//         Title: string;
-//         Description: string;
-//         DisplayCode: string;
-//         Sequence: number;
-//         ParentSectionId: string;
-//         CreatedAt: Date;
-//     };
-//     ParentFormTemplate?: {
-//         id: string;
-//         Title: string;
-//         Description: string;
-//         CurrentVersion: number;
-//         Type: string;
-//         DisplayCode: string;
-//         OwnerUserId: string;
-//         RootSectionId: string;
-//         DefaultSectionNumbering: boolean;
-//         CreatedAt: Date;
-//     };
-//     CreatedAt: Date;
-//     UpdatedAt: Date;
-// }
 
 export interface QuestionResponseDto {
     id: string;
@@ -123,7 +52,7 @@ export interface QuestionResponseDto {
     CorrectAnswer: string;
     IsRequired?: boolean;
     Hint: string;
-    Options: QuestionOption[]; // Update this to an array type
+    Options: QuestionOption[];
     QuestionImageUrl: string;
     RangeMin: number;
     RangeMax: number | null;
@@ -166,7 +95,6 @@ export interface QuestionSearchFilters extends BaseSearchFilters {
     isRequired?: boolean;
     hint?: string;
     options?: QuestionOption[];
-    // FileResourceId   : string;
     questionImageUrl?: string;
     rangeMin?: number;
     rangeMax?: number | null;
@@ -188,7 +116,6 @@ export interface QuestionSearchResponseDto extends BaseSearchResults {
     IsRequired?: boolean;
     Hint: string;
     Options: QuestionOption;
-    // FileResourceId  : string;
     QuestionImageUrl: string;
     RangeMin: number;
     RangeMax: number;

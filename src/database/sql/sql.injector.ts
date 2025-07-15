@@ -5,16 +5,12 @@ import { TypeOrmInjector } from './typeorm/typeorm.injector';
 
 ////////////////////////////////////////////////////////////////////////////////
 
-export class SQLInjector
-{
-
+export class SQLInjector {
     static registerInjections(container: DependencyContainer) {
 
         const databaseORM = ConfigurationManager.DatabaseORM();
         if (databaseORM === 'TypeORM') {
             TypeOrmInjector.registerInjections(container);
         }
-
     }
-
 }

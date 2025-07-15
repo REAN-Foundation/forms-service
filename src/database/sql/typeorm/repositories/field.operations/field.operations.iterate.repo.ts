@@ -30,7 +30,7 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
                 FilterExpression: model.FilterExpression
             });
             const record = await this._iterateOperationRepo.save(data);
-            return IterateOperationMapper.toIterateOperationDto(record);
+            return IterateOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -73,7 +73,7 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
             updateData.UpdatedAt = new Date();
 
             const record = await this._iterateOperationRepo.save(updateData);
-            return IterateOperationMapper.toIterateOperationDto(record);
+            return IterateOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -87,7 +87,7 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
                     DeletedAt: null,
                 },
             });
-            return IterateOperationMapper.toIterateOperationDto(record);
+            return IterateOperationMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -129,7 +129,7 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => IterateOperationMapper.toIterateOperationDto(x)),
+                Items: IterateOperationMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

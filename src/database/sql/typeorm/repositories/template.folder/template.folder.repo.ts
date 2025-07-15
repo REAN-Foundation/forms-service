@@ -103,7 +103,7 @@ export class TemplateFolderRepo extends BaseRepo implements ITemplateFolderRepo 
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => TemplateFolderMapper.toDto(x)),
+                Items: TemplateFolderMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

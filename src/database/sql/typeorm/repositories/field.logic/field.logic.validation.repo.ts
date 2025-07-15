@@ -28,7 +28,7 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
                 // DefaultSkip: model.DefaultSkip
             });
             const record = await this._validationLogicRepo.save(data);
-            return ValidationLogicMapper.toValidationLogicDto(record);
+            return ValidationLogicMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -59,7 +59,7 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
             updateData.UpdatedAt = new Date();
 
             const record = await this._validationLogicRepo.save(updateData);
-            return ValidationLogicMapper.toValidationLogicDto(record);
+            return ValidationLogicMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -73,7 +73,7 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
                     DeletedAt: null,
                 },
             });
-            return ValidationLogicMapper.toValidationLogicDto(record);
+            return ValidationLogicMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -115,7 +115,7 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => ValidationLogicMapper.toValidationLogicDto(x)),
+                Items: ValidationLogicMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

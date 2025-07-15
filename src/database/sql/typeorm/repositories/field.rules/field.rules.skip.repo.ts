@@ -37,7 +37,6 @@ export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
                     id: id,
                     DeletedAt: null
                 },
-                // relations: ['Operation', 'Logic']
             });
             return SkipRuleMapper.toDto(record);
         } catch (error) {

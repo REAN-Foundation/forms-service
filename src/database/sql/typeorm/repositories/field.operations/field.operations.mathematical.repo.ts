@@ -30,7 +30,7 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
                 ResultDataType: model.ResultDataType
             });
             const record = await this._mathematicalOperationRepo.save(data);
-            return MathematicalOperationMapper.toMathematicalOperationDto(record);
+            return MathematicalOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -70,7 +70,7 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
             updateData.UpdatedAt = new Date();
 
             const record = await this._mathematicalOperationRepo.save(updateData);
-            return MathematicalOperationMapper.toMathematicalOperationDto(record);
+            return MathematicalOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -84,7 +84,7 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
                     DeletedAt: null,
                 },
             });
-            return MathematicalOperationMapper.toMathematicalOperationDto(record);
+            return MathematicalOperationMapper.toDto(record);
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
@@ -126,7 +126,7 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
                 ItemsPerPage: limit,
                 Order: order === "DESC" ? "descending" : "ascending",
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => MathematicalOperationMapper.toMathematicalOperationDto(x)),
+                Items: MathematicalOperationMapper.toArrayDto(list),
             };
             return searchResults;
         } catch (error) {

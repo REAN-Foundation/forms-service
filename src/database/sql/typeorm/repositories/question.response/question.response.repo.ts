@@ -11,8 +11,6 @@ import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { ResponseMapper } from "../../mappers/question.response.mapper";
 import * as fs from 'fs';
 import { FindManyOptions, Repository } from "typeorm";
-// import { QuestionMapper } from "../../mappers/question.mapper";
-// import { Question } from "../../models/question/question.model";
 import PDFDocument from 'pdfkit';
 import { BaseRepo } from "../base.repo";
 import path from "path";
@@ -85,9 +83,6 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo {
       if (!updateData) {
         ErrorHandler.throwNotFoundError('Question Response Data not found!');
       }
-      // if (model.SectionIdentifier) {
-      //     updateData.SectionIdentifier = model.SectionIdentifier;
-      // }
       if (model.ResponseType) {
         updateData.ResponseType = model.ResponseType;
       }
@@ -101,10 +96,6 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo {
       if (model.BooleanValue) {
         updateData.BooleanValue = model.BooleanValue;
       }
-
-      //    if (model.QueryParams) {
-      //        updateData.QueryParams = model.QueryParams;
-      //    }
 
       if (model.DateTimeValue) {
         updateData.DateTimeValue = model.DateTimeValue;
@@ -125,14 +116,6 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo {
       updateData.LastSaveTimestamp = new Date();
 
       updateData.UpdatedAt = new Date();
-
-      //    if (model.Status) {
-      //        updateData.Status = model.Status;
-      //    }
-
-      //    if (model.Category) {
-      //        updateData.Category = model.Category;
-      //    }
 
       var record = await this._responseRepo.save(updateData);
       return ResponseMapper.toDto(record);
@@ -185,11 +168,11 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo {
       });
 
       if (!record) {
-        return false; // Record not found
+        return false;
       }
-      record.DeletedAt = new Date(); // Soft delete
+      record.DeletedAt = new Date();
       await this._responseRepo.save(record);
-      return true; // Soft delete successful
+      return true;
     }
     catch (error) {
       Logger.instance().log(error.message);
@@ -203,7 +186,6 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo {
       var prompts = await this._responseRepo.find();
       for (var i of prompts) {
         const record = ResponseMapper.toDto(i);
-        // const record = i;
         data.push(record);
       }
       return data;
@@ -292,7 +274,7 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo {
         ItemsPerPage: limit,
         Order: order === 'DESC' ? 'descending' : 'ascending',
         OrderedBy: orderByColumn,
-        Items: list.map(x => ResponseMapper.toDto(x)),
+        Items: ResponseMapper.toArrayDto(list),
       };
 
       return searchResults;
