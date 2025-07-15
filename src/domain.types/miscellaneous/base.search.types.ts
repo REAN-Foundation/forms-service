@@ -19,5 +19,5 @@ export interface BaseSearchResults {
     ItemsPerPage  : integer;
     Order         : string;
     OrderedBy     : string;
-    // Items: string[];
+    Items: any[];
 }

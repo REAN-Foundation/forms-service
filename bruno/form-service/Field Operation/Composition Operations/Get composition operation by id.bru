@@ -1,0 +1,31 @@
+meta {
+  name: Get Composition Operation by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/field-composition-operations/{{COMPOSITION_OPERATION_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Composition Operation is retrieved with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Composition');
+    expect(jsonRes.Data).to.have.property('Operator');
+    expect(jsonRes.Data).to.have.property('Operands');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

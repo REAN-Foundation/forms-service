@@ -1,0 +1,25 @@
+meta {
+  name: Get form fields by template id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/form-fields/by-template-id/{{TEMPLATE_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form fields data is returned", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('ResponseType');
+  });
+} 

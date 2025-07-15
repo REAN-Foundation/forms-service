@@ -1,0 +1,53 @@
+meta {
+  name: Update Validation Rule
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{BASE_URL}}/field-validation-rules/{{VALIDATION_RULE_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Updated Email Validation Rule",
+    "Description": "Updated email validation with enhanced checks",
+    "Priority": 2,
+    "IsActive": false,
+    "OperationId": "14aff0d6-0d9e-4337-90a8-ed0078a91a44",
+    "ErrorWhenFalse": false,
+    "ErrorMessage": "Please enter a valid email address with proper domain",
+    "LogicId": "15f0cedf-3f46-4498-a090-5a4360e26a21"
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Validation Rule is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Updated Email Validation Rule');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Updated email validation with enhanced checks');
+    expect(jsonRes.Data).to.have.property('Priority');
+    expect(jsonRes.Data.Priority).equals(2);
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(false);
+    expect(jsonRes.Data).to.have.property('OperationId');
+    expect(jsonRes.Data).to.have.property('ErrorWhenFalse');
+    expect(jsonRes.Data.ErrorWhenFalse).equals(false);
+    expect(jsonRes.Data).to.have.property('ErrorMessage');
+    expect(jsonRes.Data.ErrorMessage).equals('Please enter a valid email address with proper domain');
+    expect(jsonRes.Data).to.have.property('LogicId');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

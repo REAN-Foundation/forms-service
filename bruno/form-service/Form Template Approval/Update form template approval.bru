@@ -1,0 +1,42 @@
+meta {
+  name: Update Form Template Approval
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{BASE_URL}}/form-template-approvals/{{FORM_TEMPLATE_APPROVAL_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "ApproverUserId": "{{USER_ID}}",
+      "TemplateId": "{{TEMPLATE_ID}}",
+    "Approved": false,
+      "ReviewComments": "Template approved after review"
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form Template Approval is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{FORM_TEMPLATE_APPROVAL_ID}}');
+    expect(jsonRes.Data).to.have.property('TemplateId');
+    expect(jsonRes.Data).to.have.property('ApproverUserId');
+    expect(jsonRes.Data).to.have.property('Approved');
+    expect(jsonRes.Data.Approved).equals(true);
+    expect(jsonRes.Data).to.have.property('ReviewComments');
+    expect(jsonRes.Data.ReviewComments).equals('Template approved after review');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Get form field by id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/form-fields/{{FORM_FIELD_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form field data is returned", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data).to.have.property('Title');
+      expect(jsonRes.Data).to.have.property('Description');
+      expect(jsonRes.Data).to.have.property('DisplayCode');
+      expect(jsonRes.Data).to.have.property('ResponseType');
+      expect(jsonRes.Data).to.have.property('Score');
+      expect(jsonRes.Data).to.have.property('CorrectAnswer');
+      expect(jsonRes.Data).to.have.property('IsRequired');
+      expect(jsonRes.Data).to.have.property('Hint');
+      expect(jsonRes.Data).to.have.property('Options');
+      expect(jsonRes.Data).to.have.property('QuestionImageUrl');
+      expect(jsonRes.Data).to.have.property('RangeMin');
+      expect(jsonRes.Data).to.have.property('RangeMax');
+  });
+} 

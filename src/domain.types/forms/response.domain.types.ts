@@ -1,6 +1,6 @@
 // import { FormStatus, QueryResponseType } from "../miscellaneous/system.types"
 
-import { FormStatus } from "../../database/sql/typeorm/models/form.submission/form.submission.model";
+import { FormStatus } from "./form.submission.enums";
 import { QueryResponseType } from "./query.response.types";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 

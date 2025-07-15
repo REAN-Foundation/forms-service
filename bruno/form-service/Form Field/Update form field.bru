@@ -1,0 +1,69 @@
+meta {
+  name: Update form field
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BASE_URL}}/form-fields/{{FORM_FIELD_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "Title": "Updated: What is your favorite color?",
+      "Description": "Updated: Please select your favorite color from the options below",
+      "ResponseType": "SingleChoiceSelection",
+      "Score": 10,
+      "CorrectAnswer": "Green",
+      "IsRequired": true,
+      "Hint": "Updated: Choose the color you like the most",
+      "QuestionImageUrl": "https://example.com/updated-color-image.jpg",
+      "RangeMin": 1,
+      "RangeMax": 15,
+      "Options": [
+          {
+              "Text": "Red",
+              "Sequence": "1",
+              "ImageUrl": "https://example.com/red.jpg"
+          },
+          {
+              "Text": "Blue",
+              "Sequence": "2",
+              "ImageUrl": "https://example.com/blue.jpg"
+          },
+          {
+              "Text": "Green",
+              "Sequence": "3",
+              "ImageUrl": "https://example.com/green.jpg"
+          },
+          {
+              "Text": "Yellow",
+              "Sequence": "4",
+              "ImageUrl": "https://example.com/yellow.jpg"
+          },
+          {
+              "Text": "Purple",
+              "Sequence": "5",
+              "ImageUrl": "https://example.com/purple.jpg"
+          }
+      ]
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form field is updated", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data.Title).to.include('Updated:');
+      expect(jsonRes.Data.Score).to.equal(10);
+      expect(jsonRes.Data.CorrectAnswer).to.equal('Green');
+  });
+} 

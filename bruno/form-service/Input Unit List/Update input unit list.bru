@@ -1,0 +1,77 @@
+meta {
+  name: Update Input Unit List
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{BASE_URL}}/input-unit-lists/{{INPUT_UNIT_LIST_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Updated Temperature Units",
+    "Description": "Updated common temperature measurement units",
+  //   "DisplayCode": "TEMP_UNITS_V2",
+  //   "IsActive": true,
+    "Units": [
+      {
+        "Name": "Celsius",
+        "Symbol": "°C",
+        "Description": "Celsius temperature scale",
+        "ConversionFactor": 1.0,
+        "IsDefault": true
+      },
+      {
+        "Name": "Fahrenheit",
+        "Symbol": "°F",
+        "Description": "Fahrenheit temperature scale",
+        "ConversionFactor": 1.8,
+        "IsDefault": false
+      },
+      {
+        "Name": "Kelvin",
+        "Symbol": "K",
+        "Description": "Kelvin temperature scale",
+        "ConversionFactor": 1.0,
+        "IsDefault": false
+      },
+      {
+        "Name": "Rankine",
+        "Symbol": "°R",
+        "Description": "Rankine temperature scale",
+        "ConversionFactor": 1.8,
+        "IsDefault": false
+      }
+    ]
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Input Unit List is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{INPUT_UNIT_LIST_ID}}');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Updated Temperature Units');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Updated common temperature measurement units');
+    expect(jsonRes.Data).to.have.property('DisplayCode');
+    expect(jsonRes.Data.DisplayCode).equals('TEMP_UNITS_V2');
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('Units');
+    expect(jsonRes.Data.Units).to.be.an('array');
+    expect(jsonRes.Data.Units.length).to.equal(4);
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

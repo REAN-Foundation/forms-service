@@ -4,110 +4,101 @@ import {
     LogicalOperatorType, 
     MathematicalOperatorType, 
     CompositionOperatorType 
-} from "../../database/sql/typeorm/models/operation/operation.types";
+} from "./operation.enums";
 
 // Base Operation DTOs
 export interface BaseOperationCreateModel {
     Name?: string;
     Description?: string;
+    Type: OperationType;
 }
 
 export interface BaseOperationUpdateModel {
     Name?: string;
     Description?: string;
+    Type?: OperationType;
 }
 
 export interface BaseOperationResponseDto {
     id: string;
     Name?: string;
     Description?: string;
+    Type: OperationType;
     CreatedAt: Date;
     UpdatedAt?: Date;
 }
 
 // Logical Operation DTOs
 export interface LogicalOperationCreateModel extends BaseOperationCreateModel {
-    OperatorType: LogicalOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator: LogicalOperatorType;
+    Operands: string; // JSON serialized Operand[]
 }
 
 export interface LogicalOperationUpdateModel extends BaseOperationUpdateModel {
-    OperatorType?: LogicalOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator?: LogicalOperatorType;
+    Operands?: string; // JSON serialized Operand[]
 }
 
 export interface LogicalOperationResponseDto extends BaseOperationResponseDto {
-    OperatorType: LogicalOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator: LogicalOperatorType;
+    Operands: string; // JSON serialized Operand[]
 }
 
 // Mathematical Operation DTOs
 export interface MathematicalOperationCreateModel extends BaseOperationCreateModel {
-    OperatorType: MathematicalOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator: MathematicalOperatorType;
+    Operands: string; // JSON serialized Operand[]
+    ResultDataType: string;
 }
 
 export interface MathematicalOperationUpdateModel extends BaseOperationUpdateModel {
-    OperatorType?: MathematicalOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator?: MathematicalOperatorType;
+    Operands?: string; // JSON serialized Operand[]
+    ResultDataType?: string;
 }
 
 export interface MathematicalOperationResponseDto extends BaseOperationResponseDto {
-    OperatorType: MathematicalOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator: MathematicalOperatorType;
+    Operands: string; // JSON serialized Operand[]
+    ResultDataType: string;
 }
 
 // Composition Operation DTOs
 export interface CompositionOperationCreateModel extends BaseOperationCreateModel {
-    OperatorType: CompositionOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator: CompositionOperatorType;
+    Operands: string; // JSON serialized Operand[]
 }
 
 export interface CompositionOperationUpdateModel extends BaseOperationUpdateModel {
-    OperatorType?: CompositionOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator?: CompositionOperatorType;
+    Operands?: string; // JSON serialized Operand[]
 }
 
 export interface CompositionOperationResponseDto extends BaseOperationResponseDto {
-    OperatorType: CompositionOperatorType;
-    LeftOperand?: string;
-    RightOperand?: string;
-    Parameters?: Record<string, any>;
+    Operator: CompositionOperatorType;
+    Operands: string; // JSON serialized Operand[]
 }
 
 // Iterate Operation DTOs
 export interface IterateOperationCreateModel extends BaseOperationCreateModel {
-    ArrayOperand: string;
-    ItemAlias: string;
+    CollectionField: string; // Field name to iterate over
+    ResultField: string; // Field name to store result
     OperationId: string;
+    FilterExpression?: string; // Optional filter expression
 }
 
 export interface IterateOperationUpdateModel extends BaseOperationUpdateModel {
-    ArrayOperand?: string;
-    ItemAlias?: string;
+    CollectionField?: string; // Field name to iterate over
+    ResultField?: string; // Field name to store result
     OperationId?: string;
+    FilterExpression?: string; // Optional filter expression
 }
 
 export interface IterateOperationResponseDto extends BaseOperationResponseDto {
-    ArrayOperand: string;
-    ItemAlias: string;
+    CollectionField: string;
+    ResultField: string;
     OperationId: string;
+    FilterExpression?: string;
     Operation?: {
         id: string;
         Name?: string;
@@ -117,21 +108,21 @@ export interface IterateOperationResponseDto extends BaseOperationResponseDto {
 
 // Function Expression Operation DTOs
 export interface FunctionExpressionOperationCreateModel extends BaseOperationCreateModel {
-    FunctionName?: string;
-    Parameters?: Record<string, any>;
-    Expression?: string;
+    Expression: string;
+    Variables: string; // JSON serialized Record<string, Operand>
+    ResultDataType: string;
 }
 
 export interface FunctionExpressionOperationUpdateModel extends BaseOperationUpdateModel {
-    FunctionName?: string;
-    Parameters?: Record<string, any>;
     Expression?: string;
+    Variables?: string; // JSON serialized Record<string, Operand>
+    ResultDataType?: string;
 }
 
 export interface FunctionExpressionOperationResponseDto extends BaseOperationResponseDto {
-    FunctionName?: string;
-    Parameters?: Record<string, any>;
-    Expression?: string;
+    Expression: string;
+    Variables: string; // JSON serialized Record<string, Operand>
+    ResultDataType: string;
 }
 
 // Operation Search DTOs
@@ -139,7 +130,7 @@ export interface OperationSearchFilters extends BaseSearchFilters {
     id?: string;
     name?: string;
     description?: string;
-    operatorType?: LogicalOperatorType | MathematicalOperatorType | CompositionOperatorType;
+    operator?: LogicalOperatorType | MathematicalOperatorType | CompositionOperatorType;
 }
 
 export interface OperationSearchResults extends BaseSearchResults {

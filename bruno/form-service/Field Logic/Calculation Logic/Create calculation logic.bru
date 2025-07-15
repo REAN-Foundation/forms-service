@@ -1,0 +1,54 @@
+meta {
+  name: Create Calculation Logic
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/field-calculation-logic
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Type": "Calculation",
+    "FieldId": "{{FORM_FIELD_ID}}",
+    "Enabled": true,
+    "DefaultSkip": false,
+    "FallbackValue": "0"
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("CALCULATION_LOGIC_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+  
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Calculation Logic is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Calculation');
+    expect(jsonRes.Data).to.have.property('FieldId');
+    expect(jsonRes.Data.FieldId).equals('5b1410d5-47dd-424b-ac85-336e8d2a4d36');
+    expect(jsonRes.Data).to.have.property('Enabled');
+    expect(jsonRes.Data.Enabled).equals(true);
+    expect(jsonRes.Data).to.have.property('DefaultSkip');
+    expect(jsonRes.Data.DefaultSkip).equals(false);
+    expect(jsonRes.Data).to.have.property('FallbackValue');
+    expect(jsonRes.Data.FallbackValue).equals('0');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

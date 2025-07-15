@@ -1,0 +1,58 @@
+meta {
+  name: Create Skip Rule
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/field-skip-rules
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Age Skip Rule",
+    "Description": "Skip form section if user is under 18",
+    "Priority": 1,
+    "IsActive": true,
+    "OperationId": "2ad466ac-7f4f-4ee1-8f54-784f2eccf1b9",
+    "SkipWhenTrue": true,
+    "LogicId": "221a286a-51cb-419d-8a31-4aa0700d43b8"
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("SKIP_RULE_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+  
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Skip Rule is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Age Skip Rule');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Skip form section if user is under 18');
+    expect(jsonRes.Data).to.have.property('Priority');
+    expect(jsonRes.Data.Priority).equals(1);
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('OperationId');
+    expect(jsonRes.Data).to.have.property('SkipWhenTrue');
+    expect(jsonRes.Data.SkipWhenTrue).equals(true);
+    expect(jsonRes.Data).to.have.property('LogicId');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

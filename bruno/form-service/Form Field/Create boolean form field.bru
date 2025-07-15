@@ -1,0 +1,43 @@
+meta {
+  name: Create boolean form field
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{BASE_URL}}/form-fields
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "ParentTemplateId": "{{TEMPLATE_ID}}",
+      "ParentSectionId": "{{SECTION_ID}}",
+      "Title": "Do you agree to the terms and conditions?",
+      "Description": "Please read the terms and conditions and indicate your agreement",
+      "ResponseType": "Boolean",
+      "Score": 1,
+      "CorrectAnswer": "true",
+      "IsRequired": true,
+      "Hint": "Select Yes to agree or No to disagree",
+      "QuestionImageUrl": "https://example.com/terms-field.jpg",
+      "RangeMin": 0,
+      "RangeMax": 1
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Boolean form field is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data.ResponseType).to.equal('Boolean');
+      expect(jsonRes.Data.CorrectAnswer).to.equal('true');
+  });
+}

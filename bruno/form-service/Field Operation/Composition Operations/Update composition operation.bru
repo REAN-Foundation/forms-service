@@ -1,0 +1,46 @@
+meta {
+  name: Update Composition Operation
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{BASE_URL}}/field-composition-operations/{{COMPOSITION_OPERATION_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Updated Multi-Condition Check",
+    "Description": "Updated description for multi-condition check using OR composition",
+    "Type": "Composition",
+    "Operator": "Or",
+    "Operands": "[{\"id\": \"updatedCondition1\", \"type\": \"boolean\"}, {\"id\": \"updatedCondition2\", \"type\": \"boolean\"}]"
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Composition Operation is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Updated Multi-Condition Check');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Updated description for multi-condition check using OR composition');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Composition');
+    expect(jsonRes.Data).to.have.property('Operator');
+    expect(jsonRes.Data.Operator).equals('Or');
+    expect(jsonRes.Data).to.have.property('Operands');
+    expect(jsonRes.Data.Operands).equals('[{"id": "updatedCondition1", "type": "boolean"}, {"id": "updatedCondition2", "type": "boolean"}]');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

@@ -9,6 +9,7 @@ import { BaseRepo } from "../base.repo";
 import { FindManyOptions, Repository } from "typeorm";
 
 export class TemplateFolderRepo extends BaseRepo implements ITemplateFolderRepo {
+    
     _templateFolderRepo: Repository<TemplateFolder> = Source.getRepository(TemplateFolder);
 
     create = async (model: TemplateFolderCreateModel): Promise<TemplateFolderResponseDto> => {

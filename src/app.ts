@@ -57,6 +57,9 @@ export default class Application {
              //Load configurations
             ConfigurationManager.loadConfigurations();
 
+            //Register dependency injections
+            Injector.registerInjections();
+
              //Load the modules
             await Loader.init();
 

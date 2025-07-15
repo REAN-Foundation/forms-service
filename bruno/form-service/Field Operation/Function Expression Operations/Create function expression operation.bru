@@ -1,0 +1,57 @@
+meta {
+  name: Create Function Expression Operation
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/field-function-expression-operations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Custom Calculation Function",
+    "Description": "Custom mathematical function for complex calculations",
+    "Type": "FunctionExpression",
+    "Expression": "amount * taxRate + (includeShipping ? shippingCost : 0)",
+    "Variables": "{\"amount\": \"number\", \"taxRate\": \"number\", \"includeShipping\": \"boolean\", \"shippingCost\": \"number\"}",
+    "ResultDataType": "number"
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("FUNCTION_EXPRESSION_OPERATION_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+  
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Function Expression Operation is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Custom Calculation Function');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Custom mathematical function for complex calculations');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('FunctionExpression');
+    expect(jsonRes.Data).to.have.property('Expression');
+    expect(jsonRes.Data.Expression).equals('amount * taxRate + (includeShipping ? shippingCost : 0)');
+    expect(jsonRes.Data).to.have.property('Variables');
+    expect(jsonRes.Data.Variables).equals('{"amount": "number", "taxRate": "number", "includeShipping": "boolean", "shippingCost": "number"}');
+    expect(jsonRes.Data).to.have.property('ResultDataType');
+    expect(jsonRes.Data.ResultDataType).equals('number');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

@@ -9,7 +9,7 @@ export class FormTemplateApproval extends BaseEntity {
 
     @Column({ type: 'uuid', nullable: false, unique: true })
     TemplateId: string
-  
+
     @Column({ type: 'boolean', nullable: false, default: false })
     Approved: boolean
 

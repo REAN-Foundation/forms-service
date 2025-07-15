@@ -2,21 +2,9 @@ import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormSubmission } from '../form.submission/form.submission.model';
 import { FormSection } from '../form.section/form.section.model';
-import { Question } from '../question/question.model';
-
-export enum FormType {
-    Survey = 'Survey',
-    Questionnaire = 'Questionnaire',
-    TestPaper = 'TestPaper',
-    DataCollection = 'DataCollection'
-}
-
-export enum NavigationStrategy {
-    OneQuestion = 'OneQuestion',
-    OneSection = 'OneSection',
-    AllAtOnce = 'AllAtOnce',
-    Paginated = 'Paginated'
-}
+// import { Question } from '../question/question.model';
+import { FormFieldEntity } from '../form.field/form.field.model';
+import { FormType, NavigationStrategy } from '../../../../../domain.types/forms/form.template.enums';
 
 @Entity({name: 'form_templates'})
 export class FormTemplate extends BaseEntity {
@@ -68,6 +56,9 @@ export class FormTemplate extends BaseEntity {
     @OneToMany(() => FormSection, (section) => section.FormTemplate)
     FormSections: FormSection[];
 
-    @OneToMany(() => Question, (question) => question.FormTemplate)
-    Questions: Question[];
+    // @OneToMany(() => Question, (question) => question.FormTemplate)
+    // Questions: Question[];
+
+    @OneToMany(() => FormFieldEntity, (formField) => formField.FormTemplate)
+    FormFields: FormFieldEntity[];
 }

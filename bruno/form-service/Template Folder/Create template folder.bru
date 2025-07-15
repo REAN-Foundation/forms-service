@@ -1,0 +1,52 @@
+meta {
+  name: Create Template Folder
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/template-folders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Survey Forms",
+    "Description": "Collection of survey form templates",
+    "ParentFolderId": "c544da4e-4fe5-4a37-aa22-d47cdb547ff7"
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("TEMPLATE_FOLDER_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+  
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Template Folder is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Survey Forms');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Collection of survey form templates');
+    expect(jsonRes.Data).to.have.property('DisplayCode');
+    expect(jsonRes.Data.DisplayCode).equals('SURVEY_FORMS');
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('ParentFolderId');
+    expect(jsonRes.Data.ParentFolderId).equals(null);
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

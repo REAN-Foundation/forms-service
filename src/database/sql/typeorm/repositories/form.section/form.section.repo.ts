@@ -10,12 +10,12 @@ import { BaseRepo } from "../base.repo";
 
 
 
-export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
+export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
 
-   _formSectionRepo : Repository<FormSection> = Source.getRepository(FormSection);
+    _formSectionRepo: Repository<FormSection> = Source.getRepository(FormSection);
 
-    create= async(model: FormSectionCreateModel): Promise<FormSectionResponseDto> =>{
-       
+    create = async (model: FormSectionCreateModel): Promise<FormSectionResponseDto> => {
+
         // const entity={
         //         ParentFormTemplate: {
         //             connect: { id: model.ParentFormTemplateId }
@@ -28,7 +28,7 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
         //         ParentSectionId: model.ParentSectionId,
         //   }
 
-         try {
+        try {
             const data = await this._formSectionRepo.create({
                 //  FormTemplate: {
                 //     connect: { id: model.ParentFormTemplateId }
@@ -46,14 +46,14 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
-         
+
     };
-    
-      update=async (id: string, model: FormSectionUpdateModel): Promise<FormSectionResponseDto> => {
-          try {
-             const updateData = await this._formSectionRepo.findOne({
-                where : {
-                    id : id,
+
+    update = async (id: string, model: FormSectionUpdateModel): Promise<FormSectionResponseDto> => {
+        try {
+            const updateData = await this._formSectionRepo.findOne({
+                where: {
+                    id: id,
                     DeletedAt: null,
                 },
             });
@@ -66,7 +66,7 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
             if (model.Title) {
                 updateData.Title = model.Title;
             }
-            if ( model.Description) {
+            if (model.Description) {
                 updateData.Description = model.Description;
             }
             if (model.DisplayCode) {
@@ -85,13 +85,13 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
-      };
-    
-      getById=async (id: string): Promise<FormSectionResponseDto> => {
+    };
+
+    getById = async (id: string): Promise<FormSectionResponseDto> => {
         try {
             var record = await this._formSectionRepo.findOne({
-                where : {
-                    id : id,
+                where: {
+                    id: id,
                     DeletedAt: null
                 },
             });
@@ -100,13 +100,13 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
-      };
-    
-      delete=async (id: string): Promise<boolean> =>{
-          try {
+    };
+
+    delete = async (id: string): Promise<boolean> => {
+        try {
             var record = await this._formSectionRepo.findOne({
-                where : {
-                    id : id,
+                where: {
+                    id: id,
                     DeletedAt: null,
                 },
             });
@@ -120,13 +120,13 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
-      };
-    
-      getByTemplateId=async (id: string): Promise<FormSectionResponseDto>=>{
+    };
+
+    getByTemplateId = async (id: string): Promise<FormSectionResponseDto> => {
         try {
             var record = await this._formSectionRepo.findOne({
-                where : {
-                    FormTemplateId : id
+                where: {
+                    FormTemplateId: id
                 },
             });
             return FormSectionMapper.toDto(record);
@@ -134,38 +134,38 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
-      };
-    
-      search=async (filters: FormSectionSearchFilters) : Promise<any> =>{
-         try {
-             var search = this.getSearchModel(filters);
+    };
+
+    search = async (filters: FormSectionSearchFilters): Promise<any> => {
+        try {
+            var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
             const [list, count] = await this._formSectionRepo.findAndCount(search);
 
             const searchResults = {
-                TotalCount     : count,
-                RetrievedCount : list.length,
-                PageIndex      : pageIndex,
-                ItemsPerPage   : limit,
-                Order          : order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy      : orderByColumn,
-                Items          : list.map(x => FormSectionMapper.toDto(x)),
+                TotalCount: count,
+                RetrievedCount: list.length,
+                PageIndex: pageIndex,
+                ItemsPerPage: limit,
+                Order: order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy: orderByColumn,
+                Items: list.map(x => FormSectionMapper.toDto(x)),
             };
             return searchResults;
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
         }
-      }; 
+    };
 
-      private getSearchModel = (filters: FormSectionSearchFilters) => {
+    private getSearchModel = (filters: FormSectionSearchFilters) => {
 
-        var search : FindManyOptions<FormSection> = {
-            relations : {},
-            where     : {},
+        var search: FindManyOptions<FormSection> = {
+            relations: {},
+            where: {},
         };
 
-         if (filters.id) {
+        if (filters.id) {
             search.where['id'] = filters.id;
         }
 
@@ -180,15 +180,15 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
         // }
 
         if (filters.title) {
-           search.where['Title'] = filters.title;
+            search.where['Title'] = filters.title;
         }
 
         if (filters.description) {
-           search.where['Description'] = filters.description;
+            search.where['Description'] = filters.description;
         }
 
         if (filters.sequence) {
-           search.where['Sequence'] = filters.sequence;
+            search.where['Sequence'] = filters.sequence;
         }
         if (filters.parentSectionId) {
             search.where['ParentSectionId'] = filters.parentSectionId;
@@ -197,5 +197,5 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo{
         return search;
     };
 
-    
+
 }

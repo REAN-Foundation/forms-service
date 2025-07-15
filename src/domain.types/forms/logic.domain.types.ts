@@ -1,20 +1,26 @@
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { LogicType } from "../../database/sql/typeorm/models/logic/logic.types";
+import { LogicType } from "./logic.enums";
 
 // Base Logic DTOs
 export interface BaseLogicCreateModel {
     Type: LogicType;
+    FieldId: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
 }
 
 export interface BaseLogicUpdateModel {
     Type?: LogicType;
+    FieldId?: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
 }
 
 export interface BaseLogicResponseDto {
     id: string;
     Type: LogicType;
+    FieldId: string; // UUID foreign key to FormFieldEntity
+    Enabled: boolean;
     DefaultSkip?: boolean;
     CreatedAt: Date;
     UpdatedAt?: Date;
@@ -23,11 +29,15 @@ export interface BaseLogicResponseDto {
 // Skip Logic DTOs
 export interface SkipLogicCreateModel extends BaseLogicCreateModel {
     Type: LogicType.Skip;
+    FieldId: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
 }
 
 export interface SkipLogicUpdateModel extends BaseLogicUpdateModel {
     Type?: LogicType.Skip;
+    FieldId?: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
 }
 
@@ -39,12 +49,16 @@ export interface SkipLogicResponseDto extends BaseLogicResponseDto {
 // Calculation Logic DTOs
 export interface CalculationLogicCreateModel extends BaseLogicCreateModel {
     Type: LogicType.Calculation;
+    FieldId: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
     FallbackValue?: string;
 }
 
 export interface CalculationLogicUpdateModel extends BaseLogicUpdateModel {
     Type?: LogicType.Calculation;
+    FieldId?: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
     FallbackValue?: string;
 }
@@ -58,39 +72,30 @@ export interface CalculationLogicResponseDto extends BaseLogicResponseDto {
 // Validation Logic DTOs
 export interface ValidationLogicCreateModel extends BaseLogicCreateModel {
     Type: LogicType.Validation;
+    FieldId: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
 }
 
 export interface ValidationLogicUpdateModel extends BaseLogicUpdateModel {
     Type?: LogicType.Validation;
+    FieldId?: string; // UUID foreign key to FormFieldEntity
+    Enabled?: boolean;
     DefaultSkip?: boolean;
 }
 
 export interface ValidationLogicResponseDto extends BaseLogicResponseDto {
     Type: LogicType.Validation;
+    
     Rules?: ValidationRuleResponseDto[];
-}
-
-// Legacy Logic DTOs
-export interface LegacyLogicCreateModel extends BaseLogicCreateModel {
-    Type: LogicType;
-    DefaultSkip?: boolean;
-}
-
-export interface LegacyLogicUpdateModel extends BaseLogicUpdateModel {
-    Type?: LogicType;
-    DefaultSkip?: boolean;
-}
-
-export interface LegacyLogicResponseDto extends BaseLogicResponseDto {
-    Type: LogicType;
-    Rules?: LegacyRuleResponseDto[];
 }
 
 // Logic Search DTOs
 export interface LogicSearchFilters extends BaseSearchFilters {
     id?: string;
     type?: LogicType;
+    fieldId?: string; // UUID foreign key to FormFieldEntity
+    enabled?: boolean;
     defaultSkip?: boolean;
 }
 
@@ -101,6 +106,8 @@ export interface LogicSearchResults extends BaseSearchResults {
 export interface LogicSearchResponseDto extends BaseSearchResults {
     id: string;
     Type: LogicType;
+    FieldId: string; // UUID foreign key to FormFieldEntity
+    Enabled: boolean;
     DefaultSkip?: boolean;
     CreatedAt: Date;
     UpdatedAt?: Date;
@@ -125,14 +132,6 @@ export interface CalculationRuleResponseDto {
 }
 
 export interface ValidationRuleResponseDto {
-    id: string;
-    OperationId: string;
-    LogicId?: string;
-    CreatedAt: Date;
-    UpdatedAt?: Date;
-}
-
-export interface LegacyRuleResponseDto {
     id: string;
     OperationId: string;
     LogicId?: string;

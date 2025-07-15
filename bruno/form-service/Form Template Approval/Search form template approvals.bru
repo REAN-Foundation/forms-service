@@ -1,0 +1,53 @@
+meta {
+  name: Search Form Template Approvals
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/form-template-approvals/search?pageIndex=0&itemsPerPage=10&orderBy=CreatedAt&order=DESC
+  body: none
+  auth: none
+}
+
+params:query {
+  pageIndex: 0
+  itemsPerPage: 10
+  orderBy: CreatedAt
+  order: DESC
+  ~status: Pending
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form Template Approvals search returns correct structure", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('TotalCount');
+    expect(jsonRes.Data).to.have.property('RetrievedCount');
+    expect(jsonRes.Data).to.have.property('PageIndex');
+    expect(jsonRes.Data).to.have.property('ItemsPerPage');
+    expect(jsonRes.Data).to.have.property('Order');
+    expect(jsonRes.Data).to.have.property('OrderedBy');
+    expect(jsonRes.Data).to.have.property('Items');
+    expect(jsonRes.Data.Items).to.be.an('array');
+  });
+  
+  test("Form Template Approvals have correct properties", function () {
+    var jsonRes = res.getBody();
+    if (jsonRes.Data.Items.length > 0) {
+      var item = jsonRes.Data.Items[0];
+      expect(item).to.have.property('id');
+      expect(item).to.have.property('TemplateId');
+      expect(item).to.have.property('ApproverUserId');
+      expect(item).to.have.property('Approved');
+      expect(item).to.have.property('ReviewComments');
+      expect(item).to.have.property('CreatedAt');
+      expect(item).to.have.property('UpdatedAt');
+    }
+  });
+}

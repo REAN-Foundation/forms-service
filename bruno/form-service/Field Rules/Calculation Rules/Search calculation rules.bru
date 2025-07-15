@@ -1,0 +1,57 @@
+meta {
+  name: Search Calculation Rules
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/field-calculation-rules/search?PageIndex=0&ItemsPerPage=10&OrderBy=CreatedAt&Order=DESC
+  body: none
+  auth: none
+}
+
+params:query {
+  pageIndex: 0
+  itemsPerPage: 10
+  orderBy: CreatedAt
+  order: DESC
+  ~name: Price
+  ~isActive: true
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Search results have correct structure", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('TotalCount');
+    expect(jsonRes.Data).to.have.property('RetrievedCount');
+    expect(jsonRes.Data).to.have.property('PageIndex');
+    expect(jsonRes.Data).to.have.property('ItemsPerPage');
+    expect(jsonRes.Data).to.have.property('Order');
+    expect(jsonRes.Data).to.have.property('OrderedBy');
+    expect(jsonRes.Data).to.have.property('Items');
+    expect(jsonRes.Data.Items).to.be.an('array');
+  });
+  
+  test("Search results contain calculation rules", function () {
+    var jsonRes = res.getBody();
+    if (jsonRes.Data.Items.length > 0) {
+      var firstItem = jsonRes.Data.Items[0];
+      expect(firstItem).to.have.property('id');
+      expect(firstItem).to.have.property('Name');
+      expect(firstItem).to.have.property('Description');
+      expect(firstItem).to.have.property('Priority');
+      expect(firstItem).to.have.property('IsActive');
+      expect(firstItem).to.have.property('ConditionForOperationId');
+      expect(firstItem).to.have.property('OperationId');
+      expect(firstItem).to.have.property('LogicId');
+      expect(firstItem).to.have.property('CreatedAt');
+      expect(firstItem).to.have.property('UpdatedAt');
+    }
+  });
+}

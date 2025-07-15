@@ -1,7 +1,7 @@
 // import { FormType } from "../miscellaneous/system.types";
 
 // import { FormType, ItemsPerPage, QueryResponseType } from "@prisma/client";
-import { FormType } from "../../database/sql/typeorm/models/form.template/form.template.model";
+import { FormType } from "./form.template.enums";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
 import { QuestionOption } from "./question.domain.types";

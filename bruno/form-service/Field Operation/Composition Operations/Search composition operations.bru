@@ -1,0 +1,56 @@
+meta {
+  name: Search Composition Operations
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/field-composition-operations/search?PageIndex=0&ItemsPerPage=10&OrderBy=CreatedAt&Order=DESC
+  body: none
+  auth: none
+}
+
+params:query {
+  pageIndex: 0
+  itemsPerPage: 10
+  orderBy: CreatedAt
+  order: DESC
+  ~name: Multi
+  ~operatorType: And
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Composition Operations search returns correct structure", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('TotalCount');
+    expect(jsonRes.Data).to.have.property('RetrievedCount');
+    expect(jsonRes.Data).to.have.property('PageIndex');
+    expect(jsonRes.Data).to.have.property('ItemsPerPage');
+    expect(jsonRes.Data).to.have.property('Order');
+    expect(jsonRes.Data).to.have.property('OrderedBy');
+    expect(jsonRes.Data).to.have.property('Items');
+    expect(jsonRes.Data.Items).to.be.an('array');
+  });
+  
+  test("Composition Operations have correct properties", function () {
+    var jsonRes = res.getBody();
+    if (jsonRes.Data.Items.length > 0) {
+      var item = jsonRes.Data.Items[0];
+      expect(item).to.have.property('id');
+      expect(item).to.have.property('Name');
+      expect(item).to.have.property('Description');
+      expect(item).to.have.property('Type');
+      expect(item.Type).equals('Composition');
+      expect(item).to.have.property('Operator');
+      expect(item).to.have.property('Operands');
+      expect(item).to.have.property('CreatedAt');
+      expect(item).to.have.property('UpdatedAt');
+    }
+  });
+}

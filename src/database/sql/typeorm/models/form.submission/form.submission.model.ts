@@ -2,15 +2,7 @@ import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormTemplate } from '../form.template/form.template.model';
 import { QuestionResponse } from '../question.response/question.response.model';
-
-
-export enum FormStatus {
-    LinkShared = 'LinkShared',
-    Saved = 'Saved',
-    InProgress='InProgress',
-    LinkExpired = 'LinkExpired',
-    Submitted = 'Submitted'
-}
+import { FormStatus } from '../../../../../domain.types/forms/form.submission.enums';
 
 @Entity('form_submissions')
 export class FormSubmission extends BaseEntity {

@@ -10,20 +10,22 @@ import { Logger } from "../../../../../common/logger";
 import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { ResponseMapper } from "../../mappers/question.response.mapper";
 import * as fs from 'fs';
-import { FindManyOptions } from "typeorm";
-import { QuestionMapper } from "../../mappers/question.mapper";
-import { Question } from "../../models/question/question.model";
+import { FindManyOptions, Repository } from "typeorm";
+// import { QuestionMapper } from "../../mappers/question.mapper";
+// import { Question } from "../../models/question/question.model";
 import PDFDocument from 'pdfkit';
 import { BaseRepo } from "../base.repo";
 import path from "path";
 import { createObjectCsvWriter } from "csv-writer";
 import { QuestionResponseDto } from "../../../../../domain.types/forms/question.domain.types";
+import { FormFieldEntity } from "../../models/form.field/form.field.model";
+import { FormFieldMapper } from "../../mappers/form.field.mapper";
 
 export class ResponseRepo extends BaseRepo implements IResponseRepo {
 
-  _responseRepo = Source.getRepository(QuestionResponse);
+  _responseRepo: Repository<QuestionResponse> = Source.getRepository(QuestionResponse);
 
-  _questionRepo = Source.getRepository(Question);
+  _formFieldRepo: Repository<FormFieldEntity> = Source.getRepository(FormFieldEntity);
 
   create = async (model: QuestionResponseCreateModel): Promise<QuestionResponseResponseDto> => {
     try {
@@ -159,13 +161,13 @@ export class ResponseRepo extends BaseRepo implements IResponseRepo {
 
   getQuestionById = async (id: string): Promise<QuestionResponseDto> => {
     try {
-      var record = await this._questionRepo.findOne({
+      var record = await this._formFieldRepo.findOne({
         where: {
           id: id,
           DeletedAt: null,
         },
       });
-      return QuestionMapper.toDto(record);
+      return FormFieldMapper.toDto(record);
     }
     catch (error) {
       Logger.instance().log(error.message);

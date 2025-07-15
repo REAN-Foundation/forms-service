@@ -10,4 +10,10 @@ export abstract class BaseRuleEntity extends BaseEntity {
 
     @Column({ type: 'text', nullable: true })
     Description?: string;
+
+    @Column({ type: 'int', nullable: false, default: 0 })
+    Priority: number;
+
+    @Column({ type: 'boolean', nullable: false, default: true })
+    IsActive: boolean;
 } 

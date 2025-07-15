@@ -1,165 +1,102 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { FieldResponseType } from "../../database/sql/typeorm/models/form.field/field.types";
 import { QueryResponseType } from "./query.response.types";
+import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
-// Form Field Option Interface
 export interface FormFieldOption {
     Text: string;
     Sequence: string;
     ImageUrl: string;
 }
 
-// Base Form Field DTOs
 export interface FormFieldCreateModel {
-    Name: string;
-    Label: string;
+    ParentTemplateId: string;
+    ParentSectionId: string;
     Title?: string;
     Description?: string;
-    DisplayCode?: string;
-    ResponseType: FieldResponseType;
-    QueryResponseType?: QueryResponseType;
-    Required: boolean;
-    Value?: string;
+    DisplayCode: string;
+    ResponseType: QueryResponseType;
     Score?: number;
     Sequence?: number;
-    ExpectedAnswer?: string;
-    Hint?: string;
-    Options?: string; // JSON serialized
-    ImageResourceId?: string;
-    RangeMin?: number;
-    RangeMax?: number;
-    DefaultExpectedUnit?: string;
-    PageBreakAfter?: boolean;
-    SkipLogicId?: string;
-    CalculateLogicId?: string;
-    ValidateLogicId?: string;
-    TemplateId?: string;
-    ParentSectionId?: string;
-    FormId?: string;
+    CorrectAnswer: string;
+    IsRequired?: boolean;
+    Hint: string;
+    Options?: FormFieldOption[];
+    QuestionImageUrl: string;
+    RangeMin: number;
+    RangeMax: number | null;
 }
 
 export interface FormFieldUpdateModel {
-    Name?: string;
-    Label?: string;
     Title?: string;
     Description?: string;
     DisplayCode?: string;
-    ResponseType?: FieldResponseType;
-    QueryResponseType?: QueryResponseType;
-    Required?: boolean;
-    Value?: string;
+    ResponseType?: QueryResponseType;
     Score?: number;
-    Sequence?: number;
-    ExpectedAnswer?: string;
+    CorrectAnswer?: string;
+    IsRequired?: boolean;
     Hint?: string;
-    Options?: string;
-    ImageResourceId?: string;
+    Options?: FormFieldOption[];
+    QuestionImageUrl?: string;
     RangeMin?: number;
     RangeMax?: number;
-    DefaultExpectedUnit?: string;
-    PageBreakAfter?: boolean;
-    SkipLogicId?: string;
-    CalculateLogicId?: string;
-    ValidateLogicId?: string;
-    TemplateId?: string;
-    ParentSectionId?: string;
-    FormId?: string;
 }
 
 export interface FormFieldResponseDto {
     id: string;
-    Name: string;
-    Label: string;
-    Title?: string;
+    Title: string;
     Description?: string;
-    DisplayCode?: string;
-    ResponseType: FieldResponseType;
-    QueryResponseType?: QueryResponseType;
-    Required: boolean;
-    Value?: string;
-    Score?: number;
-    Sequence?: number;
-    ExpectedAnswer?: string;
-    Hint?: string;
-    Options?: string;
-    ImageResourceId?: string;
-    RangeMin?: number;
-    RangeMax?: number;
-    DefaultExpectedUnit?: string;
-    PageBreakAfter: boolean;
-    SkipLogicId?: string;
-    CalculateLogicId?: string;
-    ValidateLogicId?: string;
-    TemplateId?: string;
-    ParentSectionId?: string;
-    FormId?: string;
-    SkipLogic?: {
-        id: string;
-        Type: string;
-        DefaultSkip?: boolean;
-    };
-    CalculateLogic?: {
-        id: string;
-        Type: string;
-        DefaultSkip?: boolean;
-    };
-    ValidateLogic?: {
-        id: string;
-        Type: string;
-        DefaultSkip?: boolean;
-    };
-    FormTemplate?: {
-        id: string;
-        Title: string;
-        Description?: string;
-        DisplayCode: string;
-    };
+    DisplayCode: string | null;
+    ResponseType: QueryResponseType;
+    Score: number;
+    Sequence: string;
+    CorrectAnswer: string;
+    IsRequired?: boolean;
+    Hint: string;
+    Options: FormFieldOption[];
+    QuestionImageUrl: string;
+    RangeMin: number;
+    RangeMax: number | null;
     ParentFormSection?: {
         id: string;
         SectionIdentifier: string;
         Title: string;
         Description?: string;
         DisplayCode: string;
-    };
-    ExpectedInputUnitList?: {
-        id: string;
-        Name: string;
-        Description?: string;
-    };
-    Responses?: {
-        id: string;
-        ResponseValue: string;
+        Sequence: string;
+        ParentSectionId: string;
         CreatedAt: Date;
-    }[];
+    };
+    ParentFormTemplate?: {
+        id: string;
+        Title: string;
+        Description?: string;
+        CurrentVersion: string;
+        Type: string;
+        DisplayCode: string;
+        OwnerUserId: string;
+        RootSectionId: string;
+        DefaultSectionNumbering: string;
+        CreatedAt: Date;
+    };
     CreatedAt: Date;
     UpdatedAt?: Date;
 }
 
-// Form Field Search DTOs
 export interface FormFieldSearchFilters extends BaseSearchFilters {
     id?: string;
-    name?: string;
-    label?: string;
+    parentTemplateId?: string;
+    parentSectionId?: string;
     title?: string;
     description?: string;
     displayCode?: string;
-    responseType?: FieldResponseType;
-    queryResponseType?: QueryResponseType;
-    required?: boolean;
+    responseType?: QueryResponseType;
     score?: number;
-    sequence?: number;
-    expectedAnswer?: string;
+    correctAnswer?: string;
+    isRequired?: boolean;
     hint?: string;
+    options?: FormFieldOption[];
+    questionImageUrl?: string;
     rangeMin?: number;
-    rangeMax?: number;
-    defaultExpectedUnit?: string;
-    pageBreakAfter?: boolean;
-    skipLogicId?: string;
-    calculateLogicId?: string;
-    validateLogicId?: string;
-    templateId?: string;
-    parentSectionId?: string;
-    formId?: string;
+    rangeMax?: number | null;
 }
 
 export interface FormFieldSearchResults extends BaseSearchResults {
@@ -168,31 +105,41 @@ export interface FormFieldSearchResults extends BaseSearchResults {
 
 export interface FormFieldSearchResponseDto extends BaseSearchResults {
     id: string;
-    Name: string;
-    Label: string;
-    Title?: string;
-    Description?: string;
+    Title: string;
+    Description: string;
     DisplayCode?: string;
-    ResponseType: FieldResponseType;
-    QueryResponseType?: QueryResponseType;
-    Required: boolean;
-    Value?: string;
-    Score?: number;
-    Sequence?: number;
-    ExpectedAnswer?: string;
-    Hint?: string;
-    Options?: string;
-    ImageResourceId?: string;
-    RangeMin?: number;
-    RangeMax?: number;
-    DefaultExpectedUnit?: string;
-    PageBreakAfter: boolean;
-    SkipLogicId?: string;
-    CalculateLogicId?: string;
-    ValidateLogicId?: string;
-    TemplateId?: string;
-    ParentSectionId?: string;
-    FormId?: string;
+    ResponseType: QueryResponseType;
+    Score: number;
+    Sequence: string;
+    CorrectAnswer: string;
+    IsRequired?: boolean;
+    Hint: string;
+    Options: FormFieldOption;
+    QuestionImageUrl: string;
+    RangeMin: number;
+    RangeMax: number;
+    ParentFormSection: {
+        id: string;
+        SectionIdentifier: string;
+        Title: string;
+        Description: string;
+        DisplayCode: string;
+        Sequence: number;
+        ParentSectionId: string;
+        CreatedAt: Date;
+    };
+    ParentFormTemplate: {
+        id: string;
+        Title: string;
+        Description: string;
+        CurrentVersion: number;
+        Type: string;
+        DisplayCode: string;
+        OwnerUserId: string;
+        RootSectionId: string;
+        DefaultSectionNumbering: boolean;
+        CreatedAt: Date;
+    };
     CreatedAt: Date;
-    UpdatedAt?: Date;
+    UpdatedAt: Date;
 } 

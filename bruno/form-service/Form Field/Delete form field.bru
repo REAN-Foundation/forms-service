@@ -1,0 +1,23 @@
+meta {
+  name: Delete form field
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{BASE_URL}}/form-fields/{{FORM_FIELD_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+      expect(res.getStatus()).to.equal(200);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form field is deleted", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.equal(true);
+  });
+} 

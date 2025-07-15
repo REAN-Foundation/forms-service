@@ -1,0 +1,51 @@
+meta {
+  name: Create Form Template Approval
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/form-template-approvals
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "TemplateId": "{{TEMPLATE_ID}}",
+    "ApproverUserId": "{{USER_ID}}",
+    "Approved": false,
+    "ReviewComments": "Initial approval request"
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("FORM_TEMPLATE_APPROVAL_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+  
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form Template Approval is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('TemplateId');
+    expect(jsonRes.Data.TemplateId).equals('{{TEMPLATE_ID}}');
+    expect(jsonRes.Data).to.have.property('ApproverUserId');
+    expect(jsonRes.Data.ApproverUserId).equals('{{USER_ID}}');
+    expect(jsonRes.Data).to.have.property('Approved');
+    expect(jsonRes.Data.Approved).equals(false);
+    expect(jsonRes.Data).to.have.property('ReviewComments');
+    expect(jsonRes.Data.ReviewComments).equals('Initial approval request');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

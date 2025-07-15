@@ -1,0 +1,24 @@
+meta {
+  name: Delete Validation Rule
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/field-validation-rules/{{VALIDATION_RULE_ID}}
+  body: none
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Validation Rule is deleted successfully", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.equal(true);
+  });
+}

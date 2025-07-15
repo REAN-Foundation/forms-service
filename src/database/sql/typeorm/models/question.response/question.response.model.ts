@@ -2,7 +2,8 @@ import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormSubmission } from '../form.submission/form.submission.model';
 import { QueryResponseType } from '../../../../../domain.types/forms/query.response.types';
-import { Question } from '../question/question.model';
+// import { Question } from '../question/question.model';
+import { FormFieldEntity } from '../form.field/form.field.model';
 
 
 @Entity('question_responses')
@@ -12,6 +13,9 @@ export class QuestionResponse extends BaseEntity {
 
     @Column({ type: 'uuid', nullable: false })
     QuestionId: string;
+
+    @Column({ type: 'uuid', nullable: true })
+    FormFieldId: string;
 
     @Column({ type: 'enum', enum: QueryResponseType, nullable: false, default: QueryResponseType.SingleChoiceSelection })
     ResponseType: QueryResponseType;
@@ -57,7 +61,11 @@ export class QuestionResponse extends BaseEntity {
     @JoinColumn({ name: 'FormSubmissionId' })
     FormSubmission: FormSubmission;
 
-    @ManyToOne(() => Question, (question) => question.Responses)
-    @JoinColumn({ name: 'QuestionId' })
-    Question: Question;
+    // @ManyToOne(() => Question, (question) => question.Responses)
+    // @JoinColumn({ name: 'QuestionId' })
+    // Question: Question;
+
+    @ManyToOne(() => FormFieldEntity, (formField) => formField.Responses)
+    @JoinColumn({ name: 'FormFieldId' })
+    FormField: FormFieldEntity;
 }

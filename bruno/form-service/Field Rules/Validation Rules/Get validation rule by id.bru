@@ -1,0 +1,33 @@
+meta {
+  name: Get Validation Rule by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/field-validation-rules/{{VALIDATION_RULE_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Validation Rule has correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data).to.have.property('Priority');
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data).to.have.property('OperationId');
+    expect(jsonRes.Data).to.have.property('ErrorWhenFalse');
+    expect(jsonRes.Data).to.have.property('ErrorMessage');
+    expect(jsonRes.Data).to.have.property('LogicId');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

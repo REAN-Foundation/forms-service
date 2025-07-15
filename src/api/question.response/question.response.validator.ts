@@ -10,7 +10,7 @@ import {
 } from "../../domain.types/forms/response.domain.types";
 import { ParsedQs } from 'qs';
 import { FormSubmissionDto } from "../../domain.types/forms/form.submission.domain.types";
-import { FormStatus } from "../../database/sql/typeorm/models/form.submission/form.submission.model";
+import { FormStatus } from "../../domain.types/forms/form.submission.enums";
 import { ApiError } from "../../common/api.error";
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

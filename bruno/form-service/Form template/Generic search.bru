@@ -11,6 +11,10 @@ get {
 }
 
 params:query {
+  pageIndex: 0
+  itemsPerPage: 10
+  orderBy: CreatedAt
+  order: DESC
   id: {{TEMPLATE_ID}}
   ~title: What is your full name
   ~description: about testing the assessment

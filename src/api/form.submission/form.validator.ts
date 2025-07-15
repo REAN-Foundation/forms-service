@@ -5,8 +5,8 @@ import {
 } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
 import { FormSubmissionCreateModel, FormSubmissionDto, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
-import { FormStatus } from '../../database/sql/typeorm/models/form.submission/form.submission.model';
-import { FormType } from '../../database/sql/typeorm/models/form.template/form.template.model';
+import { FormStatus } from '../../domain.types/forms/form.submission.enums';
+import { FormType } from '../../domain.types/forms/form.template.enums';
 import { ParsedQs } from 'qs';
 import { TimeHelper } from '../../common/time.helper';
 import { DurationType } from '../../miscellaneous/time.types';

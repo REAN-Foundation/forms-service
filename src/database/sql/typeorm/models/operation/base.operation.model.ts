@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from '../base.entity';
-import { OperationType } from './operation.types';
+import { OperationType } from '../../../../../domain.types/forms/operation.enums';
 
 // Base Operation Entity (Abstract - no table)
 export abstract class BaseOperationEntity extends BaseEntity {
@@ -9,4 +9,7 @@ export abstract class BaseOperationEntity extends BaseEntity {
 
     @Column({ type: 'text', nullable: true })
     Description?: string;
+
+    @Column({ type: 'varchar', length: 50, nullable: false })
+    Type: OperationType;
 } 

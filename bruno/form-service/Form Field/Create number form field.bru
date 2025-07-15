@@ -1,0 +1,44 @@
+meta {
+  name: Create number form field
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{BASE_URL}}/form-fields
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "ParentTemplateId": "{{TEMPLATE_ID}}",
+      "ParentSectionId": "{{SECTION_ID}}",
+      "Title": "What is your age?",
+      "Description": "Please enter your current age in years",
+      "ResponseType": "Integer",
+      "Score": 2,
+      "CorrectAnswer": "25",
+      "IsRequired": true,
+      "Hint": "Enter a number between 1 and 120",
+      "QuestionImageUrl": "https://example.com/age-field.jpg",
+      "RangeMin": 1,
+      "RangeMax": 120
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+      expect(res.getStatus()).to.equal(201);
+      var jsonRes = res.getBody();
+      expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Number form field is created", function () {
+      var jsonRes = res.getBody();
+      expect(jsonRes.Data).to.have.property('id');
+      expect(jsonRes.Data.ResponseType).to.equal('Integer');
+      expect(jsonRes.Data.RangeMin).to.equal(1);
+      expect(jsonRes.Data.RangeMax).to.equal(120);
+  });
+}

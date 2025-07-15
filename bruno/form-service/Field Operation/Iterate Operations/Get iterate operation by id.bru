@@ -1,0 +1,34 @@
+meta {
+  name: Get Iterate Operation by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/field-iterate-operations/{{ITERATE_OPERATION_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Iterate Operation has correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{ITERATE_OPERATION_ID}}');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Iterate');
+    expect(jsonRes.Data).to.have.property('CollectionField');
+    expect(jsonRes.Data).to.have.property('ResultField');
+    expect(jsonRes.Data).to.have.property('OperationId');
+    expect(jsonRes.Data).to.have.property('FilterExpression');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

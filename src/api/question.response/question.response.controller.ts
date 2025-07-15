@@ -13,7 +13,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { container } from 'tsyringe';
 import { FormService } from '../../services/form.submission/form.submission.service';
-import { FormStatus } from '../../database/sql/typeorm/models/form.submission/form.submission.model';
+import { FormStatus } from '../../domain.types/forms/form.submission.enums';
 import { Injector } from '../../startup/injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////

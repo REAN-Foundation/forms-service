@@ -1,0 +1,49 @@
+meta {
+  name: Update Calculation Rule
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{BASE_URL}}/field-calculation-rules/{{CALCULATION_RULE_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Updated Total Price Calculation",
+    "Description": "Updated calculation for total price",
+    "Priority": 2,
+    "IsActive": false,
+    "ConditionForOperationId": "7c1410d5-47dd-424b-ac85-336e8d2a4d37",
+    "OperationId": "7c1410d5-47dd-424b-ac85-336e8d2a4d37",
+    "LogicId": "15af8cd4-828d-48af-9d21-f4630083f487"
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Calculation Rule is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Updated Total Price Calculation');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Updated calculation for total price');
+    expect(jsonRes.Data).to.have.property('Priority');
+    expect(jsonRes.Data.Priority).equals(2);
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(false);
+    expect(jsonRes.Data).to.have.property('ConditionForOperationId');
+    expect(jsonRes.Data).to.have.property('OperationId');
+    expect(jsonRes.Data).to.have.property('LogicId');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

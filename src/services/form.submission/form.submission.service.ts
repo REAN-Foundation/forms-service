@@ -1,5 +1,5 @@
-import { FormStatus, PrismaClient } from "@prisma/client";
-import { PrismaClientInit } from "../../startup/prisma.client.init";
+// import { FormStatus, PrismaClient } from "@prisma/client";
+// import { PrismaClientInit } from "../../startup/prisma.client.init";
 import { FormMapper } from "../../database/sql/typeorm/mappers/form.submission.mapper"
 import { FormSubmissionCreateModel, FormSubmissionDto, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from "../../domain.types/forms/form.submission.domain.types";
 import { uuid } from "../../domain.types/miscellaneous/system.types";
@@ -11,55 +11,55 @@ import { IFormSubmissionRepo } from "../../database/repository.interfaces/form.s
 @injectable()
 export class FormService {
 
-    constructor(@inject('IFormSubmissionRepo') private _formSubmissionRepo : IFormSubmissionRepo) {
-       
-    }
-    //     const response = await this.prisma.formSubmission.create({
-    //         data: {
-    //             FormTemplate: {
-    //                 connect: { id: model.FormTemplateId }
-    //             },
-    //             UserId: model.UserId,
-    //             Status: model.Status,
-    //             ValidTill: model.ValidTill,
-    //         },
-    //         include: {
-    //             FormTemplate: true,
-    //         }
-    //     });
+     constructor(@inject('IFormSubmissionRepo') private _formSubmissionRepo: IFormSubmissionRepo) {
 
-    //     return FormMapper.toDto(response);
-    // };
+     }
+     //     const response = await this.prisma.formSubmission.create({
+     //         data: {
+     //             FormTemplate: {
+     //                 connect: { id: model.FormTemplateId }
+     //             },
+     //             UserId: model.UserId,
+     //             Status: model.Status,
+     //             ValidTill: model.ValidTill,
+     //         },
+     //         include: {
+     //             FormTemplate: true,
+     //         }
+     //     });
 
-    create = async (model: FormSubmissionCreateModel) : Promise<FormSubmissionDto> => {
-         const dto=await this._formSubmissionRepo.create(model);
-         return dto; 
-    };
+     //     return FormMapper.toDto(response);
+     // };
 
-     update = async (id: string, model: FormSubmissionUpdateModel) : Promise<FormSubmissionDto>=> {
-         const dto=await this._formSubmissionRepo.update(id,model);
-         return dto;
-    };
-
-    getById = async (id: string) : Promise<FormSubmissionDto> => {
-         const dto=await this._formSubmissionRepo.getById(id);
-         return dto;
-    };
-
-    delete = async (id: string) : Promise<boolean>=> {
-        const dto=await this._formSubmissionRepo.delete(id);
-         return dto;
-    };
-
-
-     submit = async (id: uuid) : Promise<FormSubmissionDto>=> {
-        const dto=await this._formSubmissionRepo.submit(id);
-         return dto;
+     create = async (model: FormSubmissionCreateModel): Promise<FormSubmissionDto> => {
+          const dto = await this._formSubmissionRepo.create(model);
+          return dto;
      };
 
-    public search = async (filters: FormSubmissionSearchFilters) : Promise<any>=> {
-         const dto=await this._formSubmissionRepo.search(filters);
-         return dto;
-    };
+     update = async (id: string, model: FormSubmissionUpdateModel): Promise<FormSubmissionDto> => {
+          const dto = await this._formSubmissionRepo.update(id, model);
+          return dto;
+     };
+
+     getById = async (id: string): Promise<FormSubmissionDto> => {
+          const dto = await this._formSubmissionRepo.getById(id);
+          return dto;
+     };
+
+     delete = async (id: string): Promise<boolean> => {
+          const dto = await this._formSubmissionRepo.delete(id);
+          return dto;
+     };
+
+
+     submit = async (id: uuid): Promise<FormSubmissionDto> => {
+          const dto = await this._formSubmissionRepo.submit(id);
+          return dto;
+     };
+
+     public search = async (filters: FormSubmissionSearchFilters): Promise<any> => {
+          const dto = await this._formSubmissionRepo.search(filters);
+          return dto;
+     };
 
 }

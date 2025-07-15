@@ -1,0 +1,39 @@
+meta {
+  name: Update Favorite Template
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{BASE_URL}}/favorite-templates/{{FAVORITE_TEMPLATE_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "IsActive": false
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Favorite Template is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{FAVORITE_TEMPLATE_ID}}');
+    expect(jsonRes.Data).to.have.property('UserId');
+    expect(jsonRes.Data.UserId).equals('{{USER_ID}}');
+    expect(jsonRes.Data).to.have.property('FormTemplateId');
+    expect(jsonRes.Data.FormTemplateId).equals('{{FORM_TEMPLATE_ID}}');
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(false);
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

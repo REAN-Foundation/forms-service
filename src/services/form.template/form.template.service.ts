@@ -15,7 +15,7 @@ import {
 import { FormTemplateMapper } from "../../database/sql/typeorm/mappers/form.template.mapper";
 import { ErrorHandler } from "../../common/handlers/error.handler";
 import { FormSectionMapper } from "../../database/sql/typeorm/mappers/form.section.mapper";
-import { QuestionMapper } from "../../database/sql/typeorm/mappers/question.mapper";
+// import { QuestionMapper } from "../../database/sql/typeorm/mappers/question.mapper";
 import { IFormTemplateRepo } from "../../database/repository.interfaces/form.template/form.template.repo.interface";
 import { inject, injectable } from "tsyringe";
 
@@ -24,7 +24,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class FormTemplateService {
     // prisma: PrismaClient = null;
-    constructor(@inject('IFormTemplateRepo') private _formTempRepo : IFormTemplateRepo) {
+    constructor(@inject('IFormTemplateRepo') private _formTempRepo: IFormTemplateRepo) {
         // this.prisma = PrismaClientInit.instance().getPrismaInstance();
     }
 
@@ -59,19 +59,19 @@ export class FormTemplateService {
     //     return FormTemplateMapper.toDto(response);
     // };
 
-    create = async (model: FormTemplateCreateModel) : Promise<FormTemplateResponseDto> => {
-        const dto=await this._formTempRepo.create(model);
-         return dto;
+    create = async (model: FormTemplateCreateModel): Promise<FormTemplateResponseDto> => {
+        const dto = await this._formTempRepo.create(model);
+        return dto;
     };
 
-    update = async (id: string, model: FormTemplateUpdateModel) : Promise<FormTemplateResponseDto> => {
-        const dto=await this._formTempRepo.update(id,model);
-         return dto;
+    update = async (id: string, model: FormTemplateUpdateModel): Promise<FormTemplateResponseDto> => {
+        const dto = await this._formTempRepo.update(id, model);
+        return dto;
     };
 
-    getById = async (id: string) : Promise<FormTemplateResponseDto> => {
-        const dto=await this._formTempRepo.getById(id);
-         return dto;
+    getById = async (id: string): Promise<FormTemplateResponseDto> => {
+        const dto = await this._formTempRepo.getById(id);
+        return dto;
     };
 
     // getDetailsById = async (id: string) => {
@@ -141,31 +141,31 @@ export class FormTemplateService {
     //     // return searchResult;
     // };
 
-     getDetailsById = async (id: string) : Promise<any> => {
-         const dto=await this._formTempRepo.getDetailsById(id);
-         return dto;
-        
+    getDetailsById = async (id: string): Promise<any> => {
+        const dto = await this._formTempRepo.getDetailsById(id);
+        return dto;
+
     };
 
     readTemplateObjToExport = async (id: string): Promise<ExportFormTemplateDto> => {
-        const dto=await this._formTempRepo.readTemplateObjToExport(id);
-         return dto;     
+        const dto = await this._formTempRepo.readTemplateObjToExport(id);
+        return dto;
     }
 
-    previewTemplate = async (id: string) : Promise<any> => {
-         const dto=await this._formTempRepo.previewTemplate(id);
-         return dto;
+    previewTemplate = async (id: string): Promise<any> => {
+        const dto = await this._formTempRepo.previewTemplate(id);
+        return dto;
     };
 
 
-    delete = async (id: string) : Promise<boolean> => {
-       const dto=await this._formTempRepo.delete(id);
-       return dto;
+    delete = async (id: string): Promise<boolean> => {
+        const dto = await this._formTempRepo.delete(id);
+        return dto;
     };
 
-    submissions = async (id: string) : Promise<FormTemplateResponseDto[]> => {
-        const dto=await this._formTempRepo.submissions(id);
-         return dto;
+    submissions = async (id: string): Promise<FormTemplateResponseDto[]> => {
+        const dto = await this._formTempRepo.submissions(id);
+        return dto;
     };
 
     // protected addSortingAndPagination = (
@@ -211,9 +211,9 @@ export class FormTemplateService {
     // };
 
 
-    public search = async (filters: FormTemplateSearchFilters) : Promise<any>=> {
-       const dto=await this._formTempRepo.search(filters);
-         return dto;
+    public search = async (filters: FormTemplateSearchFilters): Promise<any> => {
+        const dto = await this._formTempRepo.search(filters);
+        return dto;
     };
     // public search = async (filters: FormTemplateSearchFilters) => {
     //     try {

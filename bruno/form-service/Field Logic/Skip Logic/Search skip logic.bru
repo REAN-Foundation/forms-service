@@ -1,0 +1,55 @@
+meta {
+  name: Search Skip Logic
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/field-skip-logic/search?type=Skip&enabled=true&PageIndex=0&ItemsPerPage=10&OrderBy=CreatedAt&Order=DESC
+  body: none
+  auth: none
+}
+
+params:query {
+  type: Skip
+  enabled: true
+  pageIndex: 0
+  itemsPerPage: 10
+  orderBy: CreatedAt
+  order: DESC
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Search results have correct structure", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('TotalCount');
+    expect(jsonRes.Data).to.have.property('RetrievedCount');
+    expect(jsonRes.Data).to.have.property('PageIndex');
+    expect(jsonRes.Data).to.have.property('ItemsPerPage');
+    expect(jsonRes.Data).to.have.property('Order');
+    expect(jsonRes.Data).to.have.property('OrderedBy');
+    expect(jsonRes.Data).to.have.property('Items');
+    expect(jsonRes.Data.Items).to.be.an('array');
+  });
+  
+  test("Search results contain skip logic", function () {
+    var jsonRes = res.getBody();
+    if (jsonRes.Data.Items.length > 0) {
+      var firstItem = jsonRes.Data.Items[0];
+      expect(firstItem).to.have.property('id');
+      expect(firstItem).to.have.property('Type');
+      expect(firstItem.Type).equals('Skip');
+      expect(firstItem).to.have.property('FieldId');
+      expect(firstItem).to.have.property('Enabled');
+      expect(firstItem).to.have.property('DefaultSkip');
+      expect(firstItem).to.have.property('CreatedAt');
+      expect(firstItem).to.have.property('UpdatedAt');
+    }
+  });
+}

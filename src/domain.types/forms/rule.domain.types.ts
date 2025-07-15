@@ -121,31 +121,7 @@ export interface ValidationRuleResponseDto extends BaseRuleResponseDto {
     };
 }
 
-// Legacy Rule DTOs
-export interface LegacyRuleCreateModel extends BaseRuleCreateModel {
-    OperationId: string;
-    LogicId?: string;
-}
 
-export interface LegacyRuleUpdateModel extends BaseRuleUpdateModel {
-    OperationId?: string;
-    LogicId?: string;
-}
-
-export interface LegacyRuleResponseDto extends BaseRuleResponseDto {
-    OperationId: string;
-    LogicId?: string;
-    Operation?: {
-        id: string;
-        Name?: string;
-        Description?: string;
-    };
-    Logic?: {
-        id: string;
-        Type: string;
-        DefaultSkip?: boolean;
-    };
-}
 
 // Rule Search DTOs
 export interface RuleSearchFilters extends BaseSearchFilters {

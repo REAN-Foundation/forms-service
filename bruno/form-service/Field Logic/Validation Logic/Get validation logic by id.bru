@@ -1,0 +1,30 @@
+meta {
+  name: Get Validation Logic by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/field-validation-logic/{{VALIDATION_LOGIC_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Validation Logic has correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Validation');
+    expect(jsonRes.Data).to.have.property('FieldId');
+    expect(jsonRes.Data).to.have.property('Enabled');
+    expect(jsonRes.Data).to.have.property('DefaultSkip');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

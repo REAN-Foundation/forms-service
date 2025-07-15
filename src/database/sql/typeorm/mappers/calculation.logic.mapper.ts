@@ -1,0 +1,47 @@
+import {
+    CalculationLogicResponseDto,
+} from "../../../../domain.types/forms/logic.domain.types";
+import { LogicType } from "../../../../domain.types/forms/logic.enums";
+
+export class CalculationLogicMapper {
+    static toDto = (record: any): CalculationLogicResponseDto => {
+        if (record === null) {
+            return null;
+        }
+
+        const dto: CalculationLogicResponseDto = {
+            id: record.id,
+            Type: LogicType.Calculation,
+            FieldId: record.FieldId,
+            Enabled: record.Enabled,
+            FallbackValue: record.FallbackValue,
+            CreatedAt: record.CreatedAt,
+            UpdatedAt: record.UpdatedAt
+        };
+        return dto;
+    };
+
+    static toCalculationLogicDto = (record: any): CalculationLogicResponseDto => {
+        if (record === null) {
+            return null;
+        }
+
+        const dto: CalculationLogicResponseDto = {
+            id: record.id,
+            Type: LogicType.Calculation,
+            FieldId: record.FieldId,
+            Enabled: record.Enabled,
+            FallbackValue: record.FallbackValue,
+            Rules: record.Rules ? record.Rules.map((rule: any) => ({
+                id: rule.id,
+                OperationId: rule.OperationId,
+                LogicId: rule.LogicId,
+                CreatedAt: rule.CreatedAt,
+                UpdatedAt: rule.UpdatedAt
+            })) : undefined,
+            CreatedAt: record.CreatedAt,
+            UpdatedAt: record.UpdatedAt
+        };
+        return dto;
+    };
+} 

@@ -1,0 +1,56 @@
+meta {
+  name: Create Mathematical Operation
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/field-mathematical-operations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Addition Operation",
+    "Description": "Add two numbers together",
+    "Operator": "Add",
+    "Operands": "[{\"type\":\"number\",\"value\":5},{\"type\":\"number\",\"value\":3}]",
+    "ResultDataType": "Float"
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("MATHEMATICAL_OPERATION_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+  
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Mathematical Operation is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Addition Operation');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Add two numbers together');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Mathematical');
+    expect(jsonRes.Data).to.have.property('Operator');
+    expect(jsonRes.Data.Operator).equals('Add');
+    expect(jsonRes.Data).to.have.property('Operands');
+    expect(jsonRes.Data.Operands).equals('[{"type":"number","value":5},{"type":"number","value":3}]');
+    expect(jsonRes.Data).to.have.property('ResultDataType');
+    expect(jsonRes.Data.ResultDataType).equals('Float');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

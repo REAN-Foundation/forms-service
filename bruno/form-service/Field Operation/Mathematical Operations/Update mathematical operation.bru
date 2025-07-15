@@ -1,0 +1,49 @@
+meta {
+  name: Update Mathematical Operation
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{BASE_URL}}/field-mathematical-operations/{{MATHEMATICAL_OPERATION_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Updated Addition Operation",
+    "Description": "Updated description for addition operation",
+    "Operator": "Subtract",
+    "Operands": "[{\"type\":\"number\",\"value\":10},{\"type\":\"number\",\"value\":4}]",
+    "ResultDataType": "Integer"
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Mathematical Operation is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{MATHEMATICAL_OPERATION_ID}}');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Updated Addition Operation');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Updated description for addition operation');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Mathematical');
+    expect(jsonRes.Data).to.have.property('Operator');
+    expect(jsonRes.Data.Operator).equals('Subtract');
+    expect(jsonRes.Data).to.have.property('Operands');
+    expect(jsonRes.Data.Operands).equals('[{"type":"number","value":10},{"type":"number","value":4}]');
+    expect(jsonRes.Data).to.have.property('ResultDataType');
+    expect(jsonRes.Data.ResultDataType).equals('Integer');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

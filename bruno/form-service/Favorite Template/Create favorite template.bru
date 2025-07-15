@@ -1,0 +1,47 @@
+meta {
+  name: Create Favorite Template
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/favorite-templates
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "UserId": "{{USER_ID}}",
+    "TemplateId": "{{TEMPLATE_ID}}"
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("FAVORITE_TEMPLATE_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+  
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Favorite Template is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('UserId');
+    expect(jsonRes.Data.UserId).equals('{{USER_ID}}');
+    expect(jsonRes.Data).to.have.property('FormTemplateId');
+    expect(jsonRes.Data.FormTemplateId).equals('{{FORM_TEMPLATE_ID}}');
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

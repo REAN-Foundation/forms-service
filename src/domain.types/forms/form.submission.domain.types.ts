@@ -1,5 +1,6 @@
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { FormStatus } from "../../database/sql/typeorm/models/form.submission/form.submission.model";
+import { FormStatus } from "./form.submission.enums";
+import { FormType } from "./form.template.enums";
 
 export interface FormSubmissionCreateModel {
     FormTemplateId: string;
@@ -88,16 +89,4 @@ export interface FormSubmissionSearchResponseDto extends BaseSearchResults{
     UpdatedAt: Date;
 };
 
-// export enum FormStatus {
-//     LinkShared = "LinkShared",
-//     Presented = "Presented",
-//     InProgress = "InProgress",
-//     Submitted = "Submitted",
-//   }
 
-  export enum FormType {
-    Survey = "Survey",
-    Questionnaire = "Questionnaire",
-    TestPaper = "TestPaper",
-    DataCollection = "DataCollection"
-  }

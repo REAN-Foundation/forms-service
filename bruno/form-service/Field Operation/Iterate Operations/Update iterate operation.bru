@@ -1,0 +1,52 @@
+meta {
+  name: Update Iterate Operation
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{BASE_URL}}/field-iterate-operations/{{ITERATE_OPERATION_ID}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Name": "Updated Array Sum Operation",
+    "Description": "Updated description for array sum operation",
+    "CollectionField": "products",
+    "ResultField": "sum",
+    "OperationId": "5b1410d5-47dd-424b-ac85-336e8d2a4d36",
+    "FilterExpression": "product.price > 10"
+  }
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Iterate Operation is updated with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{ITERATE_OPERATION_ID}}');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Updated Array Sum Operation');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Updated description for array sum operation');
+    expect(jsonRes.Data).to.have.property('Type');
+    expect(jsonRes.Data.Type).equals('Iterate');
+    expect(jsonRes.Data).to.have.property('CollectionField');
+    expect(jsonRes.Data.CollectionField).equals('products');
+    expect(jsonRes.Data).to.have.property('ResultField');
+    expect(jsonRes.Data.ResultField).equals('sum');
+    expect(jsonRes.Data).to.have.property('OperationId');
+    expect(jsonRes.Data.OperationId).equals('5b1410d5-47dd-424b-ac85-336e8d2a4d36');
+    expect(jsonRes.Data).to.have.property('FilterExpression');
+    expect(jsonRes.Data.FilterExpression).equals('product.price > 10');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

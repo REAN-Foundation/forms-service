@@ -1,0 +1,54 @@
+meta {
+  name: Search Favorite Templates
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/favorite-templates/search?pageIndex=0&itemsPerPage=10&orderBy=CreatedAt&userId={{USER_ID}}
+  body: none
+  auth: none
+}
+
+params:query {
+  pageIndex: 0
+  itemsPerPage: 10
+  orderBy: CreatedAt
+  order: DESC
+  userId: {{USER_ID}}
+  ~Order: DESC
+  ~IsActive: true
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Favorite Templates search returns correct structure", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('TotalCount');
+    expect(jsonRes.Data).to.have.property('RetrievedCount');
+    expect(jsonRes.Data).to.have.property('PageIndex');
+    expect(jsonRes.Data).to.have.property('ItemsPerPage');
+    expect(jsonRes.Data).to.have.property('Order');
+    expect(jsonRes.Data).to.have.property('OrderedBy');
+    expect(jsonRes.Data).to.have.property('Items');
+    expect(jsonRes.Data.Items).to.be.an('array');
+  });
+  
+  test("Favorite Templates have correct properties", function () {
+    var jsonRes = res.getBody();
+    if (jsonRes.Data.Items.length > 0) {
+      var item = jsonRes.Data.Items[0];
+      expect(item).to.have.property('id');
+      expect(item).to.have.property('UserId');
+      expect(item).to.have.property('FormTemplateId');
+      expect(item).to.have.property('IsActive');
+      expect(item).to.have.property('CreatedAt');
+      expect(item).to.have.property('UpdatedAt');
+    }
+  });
+}

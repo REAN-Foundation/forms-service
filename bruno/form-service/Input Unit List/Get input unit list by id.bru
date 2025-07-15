@@ -1,0 +1,32 @@
+meta {
+  name: Get Input Unit List by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/input-unit-lists/{{INPUT_UNIT_LIST_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Input Unit List has correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{INPUT_UNIT_LIST_ID}}');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data).to.have.property('DisplayCode');
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data).to.have.property('Units');
+    expect(jsonRes.Data.Units).to.be.an('array');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 

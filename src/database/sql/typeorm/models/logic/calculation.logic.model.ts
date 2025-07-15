@@ -1,18 +1,19 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { LogicType } from './logic.types';
+import { LogicType } from '../../../../../domain.types/forms/logic.enums';
 import { CalculationRuleEntity } from '../rule/calculation.rule.model';
 import { BaseLogicEntity } from './base.logic.model';
 
 // Calculation Logic Entity
-@Entity({ name: 'calculation_logics' })
+@Entity({ name: 'eval_calculation_logics' })
 export class CalculationLogicEntity extends BaseLogicEntity {
 
     @Column({ type: 'varchar', length: 50, nullable: false, default: LogicType.Calculation })
     Type: LogicType.Calculation;
 
+    // TODO: Add proper CalculationRule relationship when CalculationRule entity is created
     @OneToMany(() => CalculationRuleEntity, rule => rule.LogicId)
-    Rules!: CalculationRuleEntity[];
+    Rules: CalculationRuleEntity[];
 
-    @Column({ type: 'text', nullable: true })
-    FallbackValue?: string; // JSON serialized value
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    FallbackValue?: string;
 } 

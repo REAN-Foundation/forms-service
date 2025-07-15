@@ -5,50 +5,51 @@ import { FormTemplateUpdateModel } from "../../../../../domain.types/forms/form.
 import { FormTemplateSearchFilters } from "../../../../../domain.types/forms/form.template.domain.types";
 import { FormTemplate } from "../../models/form.template/form.template.model";
 import { Source } from "../../database.connector.typeorm";
-import { FormType } from "../../models/form.template/form.template.model";
+import { FormType } from "../../../../../domain.types/forms/form.template.enums";
 import { FormTemplateMapper } from "../../mappers/form.template.mapper";
 import { ErrorHandler } from "../../../../../common/handlers/error.handler";
 import { Logger } from "../../../../../common/logger";
 import { BaseRepo } from "../base.repo";
 import { FindManyOptions, IsNull, Repository } from "typeorm";
-import { Question } from "../../models/question/question.model";
-import { QuestionMapper } from "../../mappers/question.mapper";
+// import { Question } from "../../models/question/question.model";
+// import { QuestionMapper } from "../../mappers/question.mapper";
 import { FormSection } from "../../models/form.section/form.section.model";
+import { FormFieldEntity } from "../../models/form.field/form.field.model";
+import { FormFieldMapper } from "../../mappers/form.field.mapper";
 
 export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
 
-  _formTemplateRepo : Repository<FormTemplate> = Source.getRepository(FormTemplate);
+  _formTemplateRepo: Repository<FormTemplate> = Source.getRepository(FormTemplate);
 
-  _question: Repository<Question> = Source.getRepository(Question);
+  _formField: Repository<FormFieldEntity> = Source.getRepository(FormFieldEntity);
 
-  _formSection : Repository<FormSection> = Source.getRepository(FormSection);
+  _formSection: Repository<FormSection> = Source.getRepository(FormSection);
 
-  create = async ( model: FormTemplateCreateModel): Promise<FormTemplateResponseDto> => {
+  create = async (model: FormTemplateCreateModel): Promise<FormTemplateResponseDto> => {
 
-              
+
     try {
-      
-      const data = this._formTemplateRepo.create({
-          Title: model.Title,
-          Description: model.Description,
-          // CurrentVersion: model.CurrentVersion,
-          // TenantCode: model.TenantCode,
-          Type: model.Type as FormType,
-          // ItemsPerPage: model.ItemsPerPage,
-          DisplayCode: model.DisplayCode,
-          // OwnerUserId: model.OwnerUserId,
-          RootSectionId: model.RootSectionId,
-          DefaultSectionNumbering: model.DefaultSectionNumbering,
-       });
 
-       const record = await this._formTemplateRepo.save(data);
-       return FormTemplateMapper.toDto(record);
-      } 
-      
-      catch (error) 
-      {
-        ErrorHandler.throwInternalServerError(error.message, 500);
-      }
+      const data = this._formTemplateRepo.create({
+        Title: model.Title,
+        Description: model.Description,
+        // CurrentVersion: model.CurrentVersion,
+        // TenantCode: model.TenantCode,
+        Type: model.Type as FormType,
+        // ItemsPerPage: model.ItemsPerPage,
+        DisplayCode: model.DisplayCode,
+        // OwnerUserId: model.OwnerUserId,
+        RootSectionId: model.RootSectionId,
+        DefaultSectionNumbering: model.DefaultSectionNumbering,
+      });
+
+      const record = await this._formTemplateRepo.save(data);
+      return FormTemplateMapper.toDto(record);
+    }
+
+    catch (error) {
+      ErrorHandler.throwInternalServerError(error.message, 500);
+    }
   };
 
   update = async (
@@ -134,14 +135,14 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       },
       relations: {
         FormSections: {
-          Questions: true,
+          FormFields: true,
           FormTemplate: true,
         },
       },
       order: {
         FormSections: {
           CreatedAt: "ASC",
-          Questions: {
+          FormFields: {
             CreatedAt: "ASC",
           },
         },
@@ -154,8 +155,8 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       );
 
       record.FormSections.forEach((section) => {
-        if (section.Questions) {
-          section.Questions = section.Questions.filter(
+        if (section.FormFields) {
+          section.FormFields = section.FormFields.filter(
             (question) => question.DeletedAt === null
           );
         }
@@ -257,15 +258,15 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       };
 
       // Fetch and map questions associated with this section
-      const sectionQuestions = await this._question.find({
+      const sectionQuestions = await this._formField.find({
         where: { ParentSectionId: section.id, DeletedAt: null },
       });
       dtoSection.Questions = sectionQuestions.map((question) =>
-        QuestionMapper.toDto(question)
+        FormFieldMapper.toDto(question)
       );
 
       // Fetch and map subsections
-      const subsections = await this._formSection.find({
+      const subsections = await this._formField.find({
         where: { ParentSectionId: section.id, DeletedAt: null },
       });
 
@@ -284,11 +285,11 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
         };
 
         // Fetch questions for this subsection
-        const subsectionQuestions = await this._question.find({
+        const subsectionQuestions = await this._formField.find({
           where: { ParentSectionId: subsection.id, DeletedAt: null },
         });
         dtoSubsection.Questions = subsectionQuestions.map((question) =>
-          QuestionMapper.toDto(question)
+          FormFieldMapper.toDto(question)
         );
 
         // Add the subsection to the parent section
@@ -365,11 +366,11 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       },
       relations: {
         FormTemplate: true,
-        Questions: true,
+        FormFields: true,
       },
       order: {
         CreatedAt: "ASC", // Sorting sections in ascending order
-        Questions: {
+        FormFields: {
           CreatedAt: "ASC", // Sorting questions within each section
         },
       },
@@ -406,10 +407,10 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
             Sections: [],
           };
 
-          const questions = await this._question.find({
+          const questions = await this._formField.find({
             where: { ParentSectionId: section.id, DeletedAt: null },
           });
-          sectionDto.Questions = questions.map((q) => QuestionMapper.toDto(q));
+          sectionDto.Questions = questions.map((q) => FormFieldMapper.toDto(q));
 
           const subSections = await mapSections(section.id);
           if (subSections.length > 0) {
@@ -465,7 +466,7 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
     return rootSections;
   };
 
-  delete = async (id: string) : Promise<boolean>=> {
+  delete = async (id: string): Promise<boolean> => {
     const record = await this._formTemplateRepo.findOne({
       where: {
         id: id,
@@ -473,16 +474,16 @@ export class FormTemplateRepo extends BaseRepo implements IFormTemplateRepo {
       },
     });
 
-     if (!record) {
-       return false; // Record not found
-     }
-     record.DeletedAt = new Date(); // Soft delete
-     await this._formTemplateRepo.save(record);
+    if (!record) {
+      return false; // Record not found
+    }
+    record.DeletedAt = new Date(); // Soft delete
+    await this._formTemplateRepo.save(record);
 
     return true; // Soft delete successful
   };
 
-  submissions = async (id: string) : Promise<FormTemplateResponseDto[]>=> {
+  submissions = async (id: string): Promise<FormTemplateResponseDto[]> => {
     const response = await this._formTemplateRepo.find({
       where: {
         id: id,

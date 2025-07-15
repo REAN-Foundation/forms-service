@@ -1,0 +1,30 @@
+meta {
+  name: Get Form Template Approval by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/form-template-approvals/{{FORM_TEMPLATE_APPROVAL_ID}}
+  auth: none
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Form Template Approval has correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data.id).equals('{{FORM_TEMPLATE_APPROVAL_ID}}');
+    expect(jsonRes.Data).to.have.property('TemplateId');
+    expect(jsonRes.Data).to.have.property('ApproverUserId');
+    expect(jsonRes.Data).to.have.property('Approved');
+    expect(jsonRes.Data).to.have.property('ReviewComments');
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+} 
