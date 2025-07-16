@@ -25,9 +25,7 @@ import { ValidationRuleRepo } from './repositories/field.rules/field.rules.valid
 ////////////////////////////////////////////////////////////////////////////////
 
 export class TypeOrmInjector {
-
     static registerInjections(container: DependencyContainer) {
-
         container.register('IFormSectionRepo', FormSectionRepo);
         container.register('IFormSubmissionRepo', FormSubmissionRepo);
         container.register('IFormTemplateRepo', FormTemplateRepo);
@@ -35,18 +33,30 @@ export class TypeOrmInjector {
         container.register('IResponseRepo', ResponseRepo);
         container.register('IUserRepo', UserRepo);
         container.register('IFavoriteTemplateRepo', FavoriteTemplateRepo);
-        container.register('IFormTemplateApprovalRepo', FormTemplateApprovalRepo);
+        container.register(
+            'IFormTemplateApprovalRepo',
+            FormTemplateApprovalRepo
+        );
         container.register('IInputUnitListRepo', InputUnitListRepo);
         container.register('ITemplateFolderRepo', TemplateFolderRepo);
 
         container.register('ISkipLogicRepo', SkipLogicRepo);
         container.register('ICalculationLogicRepo', CalculationLogicRepo);
         container.register('IValidationLogicRepo', ValidationLogicRepo);
-        container.register('IMathematicalOperationRepo', MathematicalOperationRepo);
+        container.register(
+            'IMathematicalOperationRepo',
+            MathematicalOperationRepo
+        );
         container.register('ILogicalOperationRepo', LogicalOperationRepo);
-        container.register('ICompositionOperationRepo', CompositionOperationRepo);
+        container.register(
+            'ICompositionOperationRepo',
+            CompositionOperationRepo
+        );
         container.register('IIterateOperationRepo', IterateOperationRepo);
-        container.register('IFunctionExpressionOperationRepo', FunctionExpressionOperationRepo);
+        container.register(
+            'IFunctionExpressionOperationRepo',
+            FunctionExpressionOperationRepo
+        );
         container.register('ISkipRuleRepo', SkipRuleRepo);
         container.register('ICalculationRuleRepo', CalculationRuleRepo);
         container.register('IValidationRuleRepo', ValidationRuleRepo);

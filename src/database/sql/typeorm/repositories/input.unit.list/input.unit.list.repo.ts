@@ -1,17 +1,25 @@
-import { InputUnitListCreateModel, InputUnitListResponseDto, InputUnitListSearchFilters, InputUnitListUpdateModel } from "../../../../../domain.types/forms/input.unit.list.domain.types";
-import { IInputUnitListRepo } from "../../../../repository.interfaces/input.unit.list/input.unit.list.repo.interface";
-import { InputUnitList } from "../../models/input.unit.list/input.unit.list.model";
-import { Source } from "../../database.connector.typeorm";
-import { InputUnitListMapper } from "../../mappers/input.unit.list.mapper";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+import {
+    InputUnitListCreateModel,
+    InputUnitListResponseDto,
+    InputUnitListSearchFilters,
+    InputUnitListUpdateModel,
+} from '../../../../../domain.types/forms/input.unit.list.domain.types';
+import { IInputUnitListRepo } from '../../../../repository.interfaces/input.unit.list/input.unit.list.repo.interface';
+import { InputUnitList } from '../../models/input.unit.list/input.unit.list.model';
+import { Source } from '../../database.connector.typeorm';
+import { InputUnitListMapper } from '../../mappers/input.unit.list.mapper';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
 export class InputUnitListRepo extends BaseRepo implements IInputUnitListRepo {
-    _inputUnitListRepo: Repository<InputUnitList> = Source.getRepository(InputUnitList);
+    _inputUnitListRepo: Repository<InputUnitList> =
+        Source.getRepository(InputUnitList);
 
-    create = async (model: InputUnitListCreateModel): Promise<InputUnitListResponseDto> => {
+    create = async (
+        model: InputUnitListCreateModel
+    ): Promise<InputUnitListResponseDto> => {
         try {
             const data = this._inputUnitListRepo.create({
                 Name: model.Name,
@@ -26,7 +34,10 @@ export class InputUnitListRepo extends BaseRepo implements IInputUnitListRepo {
         }
     };
 
-    update = async (id: string, model: InputUnitListUpdateModel): Promise<InputUnitListResponseDto> => {
+    update = async (
+        id: string,
+        model: InputUnitListUpdateModel
+    ): Promise<InputUnitListResponseDto> => {
         try {
             const record = await this._inputUnitListRepo.findOne({
                 where: {
@@ -92,15 +103,23 @@ export class InputUnitListRepo extends BaseRepo implements IInputUnitListRepo {
     search = async (filters: InputUnitListSearchFilters): Promise<any> => {
         try {
             const search = this.getSearchModel(filters);
-            const { search: searchWithPagination, pageIndex, limit, order, orderByColumn } =
-                this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._inputUnitListRepo.findAndCount(searchWithPagination);
+            const {
+                search: searchWithPagination,
+                pageIndex,
+                limit,
+                order,
+                orderByColumn,
+            } = this.addSortingAndPagination(search, filters);
+            const [list, count] =
+                await this._inputUnitListRepo.findAndCount(
+                    searchWithPagination
+                );
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: InputUnitListMapper.toArrayDto(list),
             };
@@ -108,7 +127,7 @@ export class InputUnitListRepo extends BaseRepo implements IInputUnitListRepo {
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -120,11 +139,11 @@ export class InputUnitListRepo extends BaseRepo implements IInputUnitListRepo {
             where: {},
         };
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
         if (filters.Name) {
-            search.where["Name"] = filters.Name;
+            search.where['Name'] = filters.Name;
         }
         return search;
     };
-} 
+}

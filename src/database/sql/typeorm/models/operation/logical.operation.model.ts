@@ -9,4 +9,4 @@ export class LogicalOperationEntity extends BaseOperationEntity {
 
     @Column({ type: 'text', nullable: false })
     Operands: string; // JSON serialized Operand[]
-} 
+}

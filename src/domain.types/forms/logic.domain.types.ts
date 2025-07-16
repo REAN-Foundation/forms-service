@@ -1,5 +1,8 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { LogicType } from "./logic.enums";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
+import { LogicType } from './logic.enums';
 
 export interface BaseLogicCreateModel {
     Type: LogicType;
@@ -82,7 +85,7 @@ export interface ValidationLogicUpdateModel extends BaseLogicUpdateModel {
 
 export interface ValidationLogicResponseDto extends BaseLogicResponseDto {
     Type: LogicType.Validation;
-    
+
     Rules?: ValidationRuleResponseDto[];
 }
 
@@ -131,4 +134,4 @@ export interface ValidationRuleResponseDto {
     LogicId?: string;
     CreatedAt: Date;
     UpdatedAt?: Date;
-} 
+}

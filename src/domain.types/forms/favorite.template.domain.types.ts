@@ -1,5 +1,8 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { uuid } from "../miscellaneous/system.types";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
+import { uuid } from '../miscellaneous/system.types';
 
 export interface FavoriteTemplateCreateModel {
     UserId: string;
@@ -27,4 +30,4 @@ export interface FavoriteTemplateSearchFilters extends BaseSearchFilters {
 
 export interface FavoriteTemplateSearchResults extends BaseSearchResults {
     Items: FavoriteTemplateResponseDto[];
-} 
+}

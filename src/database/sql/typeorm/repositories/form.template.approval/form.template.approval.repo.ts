@@ -1,18 +1,28 @@
-import { FormTemplateApprovalCreateModel, FormTemplateApprovalResponseDto, FormTemplateApprovalSearchFilters, FormTemplateApprovalUpdateModel } from "../../../../../domain.types/forms/form.template.approval.domain.types";
-import { IFormTemplateApprovalRepo } from "../../../../repository.interfaces/form.template.approval/form.template.approval.repo.interface";
-import { FormTemplateApproval } from "../../models/form.template.approval/form.template.approval.model";
-import { Source } from "../../database.connector.typeorm";
-import { FormTemplateApprovalMapper } from "../../mappers/form.template.approval.mapper";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+import {
+    FormTemplateApprovalCreateModel,
+    FormTemplateApprovalResponseDto,
+    FormTemplateApprovalSearchFilters,
+    FormTemplateApprovalUpdateModel,
+} from '../../../../../domain.types/forms/form.template.approval.domain.types';
+import { IFormTemplateApprovalRepo } from '../../../../repository.interfaces/form.template.approval/form.template.approval.repo.interface';
+import { FormTemplateApproval } from '../../models/form.template.approval/form.template.approval.model';
+import { Source } from '../../database.connector.typeorm';
+import { FormTemplateApprovalMapper } from '../../mappers/form.template.approval.mapper';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateApprovalRepo {
+export class FormTemplateApprovalRepo
+    extends BaseRepo
+    implements IFormTemplateApprovalRepo
+{
+    _formTemplateApprovalRepo: Repository<FormTemplateApproval> =
+        Source.getRepository(FormTemplateApproval);
 
-    _formTemplateApprovalRepo: Repository<FormTemplateApproval> = Source.getRepository(FormTemplateApproval);
-
-    create = async (model: FormTemplateApprovalCreateModel): Promise<FormTemplateApprovalResponseDto> => {
+    create = async (
+        model: FormTemplateApprovalCreateModel
+    ): Promise<FormTemplateApprovalResponseDto> => {
         try {
             const data = this._formTemplateApprovalRepo.create({
                 ApproverUserId: model.ApproverUserId,
@@ -29,7 +39,10 @@ export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateA
         }
     };
 
-    update = async (id: string, model: FormTemplateApprovalUpdateModel): Promise<FormTemplateApprovalResponseDto> => {
+    update = async (
+        id: string,
+        model: FormTemplateApprovalUpdateModel
+    ): Promise<FormTemplateApprovalResponseDto> => {
         try {
             const record = await this._formTemplateApprovalRepo.findOne({
                 where: {
@@ -39,7 +52,9 @@ export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateA
             });
 
             if (!record) {
-                ErrorHandler.throwNotFoundError('Form template approval not found!');
+                ErrorHandler.throwNotFoundError(
+                    'Form template approval not found!'
+                );
             }
 
             if (model.ApproverUserId !== undefined) {
@@ -55,7 +70,8 @@ export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateA
                 record.ReviewComments = model.ReviewComments;
             }
 
-            const updatedRecord = await this._formTemplateApprovalRepo.save(record);
+            const updatedRecord =
+                await this._formTemplateApprovalRepo.save(record);
             return FormTemplateApprovalMapper.toDto(updatedRecord);
         } catch (error) {
             Logger.instance().log(error.message);
@@ -78,7 +94,9 @@ export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateA
         }
     };
 
-    getByTemplateId = async (templateId: string): Promise<FormTemplateApprovalResponseDto> => {
+    getByTemplateId = async (
+        templateId: string
+    ): Promise<FormTemplateApprovalResponseDto> => {
         try {
             const record = await this._formTemplateApprovalRepo.findOne({
                 where: {
@@ -115,27 +133,37 @@ export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateA
         }
     };
 
-    search = async (filters: FormTemplateApprovalSearchFilters): Promise<any> => {
+    search = async (
+        filters: FormTemplateApprovalSearchFilters
+    ): Promise<any> => {
         try {
             const search = this.getSearchModel(filters);
-            const { search: searchWithPagination, pageIndex, limit, order, orderByColumn } =
-                this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._formTemplateApprovalRepo.findAndCount(searchWithPagination);
+            const {
+                search: searchWithPagination,
+                pageIndex,
+                limit,
+                order,
+                orderByColumn,
+            } = this.addSortingAndPagination(search, filters);
+            const [list, count] =
+                await this._formTemplateApprovalRepo.findAndCount(
+                    searchWithPagination
+                );
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => FormTemplateApprovalMapper.toDto(x)),
+                Items: list.map(x => FormTemplateApprovalMapper.toDto(x)),
             };
             return searchResults;
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -148,21 +176,21 @@ export class FormTemplateApprovalRepo extends BaseRepo implements IFormTemplateA
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.ApproverUserId) {
-            search.where["ApproverUserId"] = filters.ApproverUserId;
+            search.where['ApproverUserId'] = filters.ApproverUserId;
         }
 
         if (filters.TemplateId) {
-            search.where["TemplateId"] = filters.TemplateId;
+            search.where['TemplateId'] = filters.TemplateId;
         }
 
         if (filters.Approved !== undefined) {
-            search.where["Approved"] = filters.Approved;
+            search.where['Approved'] = filters.Approved;
         }
 
         return search;
     };
-} 
+}

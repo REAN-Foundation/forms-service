@@ -1,6 +1,4 @@
-import {
-    ValidationRuleResponseDto,
-} from "../../../../domain.types/forms/rule.domain.types";
+import { ValidationRuleResponseDto } from '../../../../domain.types/forms/rule.domain.types';
 
 export class ValidationRuleMapper {
     static toDto = (record: any): ValidationRuleResponseDto => {
@@ -19,7 +17,7 @@ export class ValidationRuleMapper {
             ErrorMessage: record.ErrorMessage,
             LogicId: record.LogicId,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -30,4 +28,4 @@ export class ValidationRuleMapper {
         }
         return records.map(record => ValidationRuleMapper.toDto(record));
     }
-} 
+}

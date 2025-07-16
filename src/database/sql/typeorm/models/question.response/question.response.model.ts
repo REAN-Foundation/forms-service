@@ -15,7 +15,12 @@ export class QuestionResponse extends BaseEntity {
     @Column({ type: 'uuid', nullable: true })
     FormFieldId: string;
 
-    @Column({ type: 'enum', enum: QueryResponseType, nullable: false, default: QueryResponseType.SingleChoiceSelection })
+    @Column({
+        type: 'enum',
+        enum: QueryResponseType,
+        nullable: false,
+        default: QueryResponseType.SingleChoiceSelection,
+    })
     ResponseType: QueryResponseType;
 
     @Column({ type: 'int', nullable: true })
@@ -51,11 +56,11 @@ export class QuestionResponse extends BaseEntity {
     @Column()
     LastSaveTimestamp: Date;
 
-    @ManyToOne(() => FormSubmission, (submission) => submission.QuestionResponses)
+    @ManyToOne(() => FormSubmission, submission => submission.QuestionResponses)
     @JoinColumn({ name: 'FormSubmissionId' })
     FormSubmission: FormSubmission;
 
-    @ManyToOne(() => FormFieldEntity, (formField) => formField.Responses)
+    @ManyToOne(() => FormFieldEntity, formField => formField.Responses)
     @JoinColumn({ name: 'FormFieldId' })
     FormField: FormFieldEntity;
 }

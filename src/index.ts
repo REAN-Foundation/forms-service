@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import Application from './app';
 
 dotenv.config();
@@ -7,7 +7,3 @@ dotenv.config();
     const app = Application.instance();
     await app.start();
 })();
-
-
-
-

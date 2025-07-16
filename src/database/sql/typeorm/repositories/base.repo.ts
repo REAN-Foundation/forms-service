@@ -1,10 +1,11 @@
-import { FindManyOptions } from "typeorm";
-import { BaseSearchFilters } from "../../../../domain.types/miscellaneous/base.search.types";
+import { FindManyOptions } from 'typeorm';
+import { BaseSearchFilters } from '../../../../domain.types/miscellaneous/base.search.types';
 
-export class BaseRepo{
+export class BaseRepo {
     protected addSortingAndPagination = <T>(
-        search: FindManyOptions<T>, filters: BaseSearchFilters) => {
-
+        search: FindManyOptions<T>,
+        filters: BaseSearchFilters
+    ) => {
         //Sorting
         let orderByColumn = 'CreatedAt';
         if (filters.OrderBy) {

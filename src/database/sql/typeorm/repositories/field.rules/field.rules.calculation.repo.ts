@@ -1,18 +1,28 @@
-import { CalculationRuleCreateModel, CalculationRuleResponseDto, CalculationRuleSearchFilters, CalculationRuleUpdateModel } from "../../../../../domain.types/forms/calculation.rule.domain.types";
-import { ICalculationRuleRepo } from "../../../../repository.interfaces/field.rules/calculation.rule/calculation.rule.repo.interface";
-import { CalculationRuleEntity } from "../../models/rule/calculation.rule.model";
-import { CalculationRuleMapper } from "../../mappers/calculation.rule.mapper";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { FindManyOptions, Repository } from "typeorm";
-import { BaseRepo } from "../base.repo";
+import {
+    CalculationRuleCreateModel,
+    CalculationRuleResponseDto,
+    CalculationRuleSearchFilters,
+    CalculationRuleUpdateModel,
+} from '../../../../../domain.types/forms/calculation.rule.domain.types';
+import { ICalculationRuleRepo } from '../../../../repository.interfaces/field.rules/calculation.rule/calculation.rule.repo.interface';
+import { CalculationRuleEntity } from '../../models/rule/calculation.rule.model';
+import { CalculationRuleMapper } from '../../mappers/calculation.rule.mapper';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { FindManyOptions, Repository } from 'typeorm';
+import { BaseRepo } from '../base.repo';
 
-export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRepo {
+export class CalculationRuleRepo
+    extends BaseRepo
+    implements ICalculationRuleRepo
+{
+    _calculationRuleRepo: Repository<CalculationRuleEntity> =
+        Source.getRepository(CalculationRuleEntity);
 
-    _calculationRuleRepo: Repository<CalculationRuleEntity> = Source.getRepository(CalculationRuleEntity);
-
-    create = async (model: CalculationRuleCreateModel): Promise<CalculationRuleResponseDto> => {
+    create = async (
+        model: CalculationRuleCreateModel
+    ): Promise<CalculationRuleResponseDto> => {
         try {
             const data = await this._calculationRuleRepo.create({
                 Name: model.Name,
@@ -21,7 +31,7 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
                 IsActive: model.IsActive,
                 ConditionForOperationId: model.ConditionForOperationId,
                 OperationId: model.OperationId,
-                LogicId: model.LogicId
+                LogicId: model.LogicId,
             });
             const record = await this._calculationRuleRepo.save(data);
             return CalculationRuleMapper.toDto(record);
@@ -35,8 +45,8 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
             var record = await this._calculationRuleRepo.findOne({
                 where: {
                     id: id,
-                    DeletedAt: null
-                }
+                    DeletedAt: null,
+                },
             });
             return CalculationRuleMapper.toDto(record);
         } catch (error) {
@@ -45,7 +55,10 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
         }
     };
 
-    update = async (id: string, model: CalculationRuleUpdateModel): Promise<CalculationRuleResponseDto> => {
+    update = async (
+        id: string,
+        model: CalculationRuleUpdateModel
+    ): Promise<CalculationRuleResponseDto> => {
         try {
             const updateData = await this._calculationRuleRepo.findOne({
                 where: {
@@ -54,7 +67,9 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError('Calculation Rule Data not found!');
+                ErrorHandler.throwNotFoundError(
+                    'Calculation Rule Data not found!'
+                );
             }
             if (model.Name) {
                 updateData.Name = model.Name;
@@ -63,7 +78,8 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
                 updateData.Description = model.Description;
             }
             if (model.ConditionForOperationId) {
-                updateData.ConditionForOperationId = model.ConditionForOperationId;
+                updateData.ConditionForOperationId =
+                    model.ConditionForOperationId;
             }
             if (model.OperationId) {
                 updateData.OperationId = model.OperationId;
@@ -101,8 +117,10 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
     search = async (filters: CalculationRuleSearchFilters): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
-            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._calculationRuleRepo.findAndCount(search);
+            var { search, pageIndex, limit, order, orderByColumn } =
+                this.addSortingAndPagination(search, filters);
+            const [list, count] =
+                await this._calculationRuleRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
@@ -116,12 +134,14 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
             return searchResults;
         } catch (error) {
             Logger.instance().log(error.message);
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+            ErrorHandler.throwDbAccessError(
+                'DB Error: Unable to search records!',
+                error
+            );
         }
     };
 
     private getSearchModel = (filters: CalculationRuleSearchFilters) => {
-
         var search: FindManyOptions<CalculationRuleEntity> = {
             relations: {},
             where: {},
@@ -157,4 +177,4 @@ export class CalculationRuleRepo extends BaseRepo implements ICalculationRuleRep
 
         return search;
     };
-} 
+}

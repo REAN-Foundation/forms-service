@@ -1,8 +1,11 @@
-
 export type DatabaseType = 'SQL' | 'NoSQL';
 export type DatabaseORM = 'Sequelize' | 'TypeORM' | 'Mongoose';
-export type EHRSpecification = 'FHIR'| 'OpenEHR' | 'Mock';
-export type FHIRProvider = 'GCP-FHIR' | 'Azure-FHIR' | 'AWS-HealthLake' | 'Hapi-FHIR';
+export type EHRSpecification = 'FHIR' | 'OpenEHR' | 'Mock';
+export type FHIRProvider =
+    | 'GCP-FHIR'
+    | 'Azure-FHIR'
+    | 'AWS-HealthLake'
+    | 'Hapi-FHIR';
 export type OpenEHRProvider = 'OpenEHRBase';
 export type FileStorageProvider = 'AWS-S3' | 'GCP-FileStore' | 'Custom';
 export type FeatureFlagsProvider = 'Firebase-Remote-Config' | 'Custom';
@@ -18,25 +21,25 @@ export type AuthenticationType = 'Custom'; //TBD: Other options need to be suppo
 
 export interface AuthConfig {
     Authentication: AuthenticationType;
-    Authorization : AuthorizationType;
+    Authorization: AuthorizationType;
     UseRefreshToken: boolean;
     AccessTokenExpiresInSeconds: number;
     RefreshTokenExpiresInSeconds: number;
 }
 
 export interface DatabaseConfig {
-    Type   : DatabaseType;
-    ORM    : DatabaseORM;
+    Type: DatabaseType;
+    ORM: DatabaseORM;
 }
 
 export interface Processor {
-    Provider   : ProcessorsProvider;
+    Provider: ProcessorsProvider;
 }
 
 export interface EHRConfig {
-    Enabled      : boolean;
+    Enabled: boolean;
     Specification: EHRSpecification;
-    Provider     : EHRProvider;
+    Provider: EHRProvider;
 }
 
 export interface FileStorageConfig {
@@ -48,57 +51,57 @@ export interface FeatureFlagsConfig {
 }
 
 export interface CommunicationConfig {
-    SMSProvider              : SMSServiceProvider,
-    EmailProvider            : EmailServiceProvider,
-    InAppNotificationProvider: InAppNotificationServiceProvider
+    SMSProvider: SMSServiceProvider;
+    EmailProvider: EmailServiceProvider;
+    InAppNotificationProvider: InAppNotificationServiceProvider;
 }
 
 export interface TemporaryFoldersConfig {
-    Upload                    : string,
-    Download                  : string,
-    CleanupFolderBeforeMinutes: number
+    Upload: string;
+    Download: string;
+    CleanupFolderBeforeMinutes: number;
 }
 
 export interface CareplanConfig {
-    Provider            : string;
-    Name                : string;
-    Code                : string;
-    DisplayName         : string;
+    Provider: string;
+    Name: string;
+    Code: string;
+    DisplayName: string;
     DefaultDurationDays?: number;
-    Description         : string;
+    Description: string;
 }
 
 export interface FormServiceProvider {
     Provider: string;
-    Code    : string;
+    Code: string;
 }
 
 export interface WebhookControllerProvider {
     Provider: string;
-    Code    : string;
+    Code: string;
 }
 
 export interface Configurations {
-    SystemIdentifier    : string;
-    BaseUrl             : string;
-    Auth                : AuthConfig;
-    Database            : DatabaseConfig;
-    Ehr                 : EHRConfig;
-    FileStorage         : FileStorageConfig;
-    Processor          : Processor;
-    Logger              : string; //'Custom' | 'Winston' | 'Pino' | 'Bunyan',
-    FeatureFlags        : FeatureFlagsConfig;
-    Communication       : CommunicationConfig;
-    TemporaryFolders    : TemporaryFoldersConfig;
-    Careplans           : {
-        Enabled : boolean;
+    SystemIdentifier: string;
+    BaseUrl: string;
+    Auth: AuthConfig;
+    Database: DatabaseConfig;
+    Ehr: EHRConfig;
+    FileStorage: FileStorageConfig;
+    Processor: Processor;
+    Logger: string; //'Custom' | 'Winston' | 'Pino' | 'Bunyan',
+    FeatureFlags: FeatureFlagsConfig;
+    Communication: CommunicationConfig;
+    TemporaryFolders: TemporaryFoldersConfig;
+    Careplans: {
+        Enabled: boolean;
         Provider: string;
-        Service : string;
-        Plans   : CareplanConfig[]
-    } [];
-    MaxUploadFileSize   : number;
+        Service: string;
+        Plans: CareplanConfig[];
+    }[];
+    MaxUploadFileSize: number;
     FormServiceProviders: FormServiceProvider[];
     WebhookControllerProviders: WebhookControllerProvider[];
-    Gamification        : boolean;
-    EHRAnalytics        : boolean;
+    Gamification: boolean;
+    EHRAnalytics: boolean;
 }

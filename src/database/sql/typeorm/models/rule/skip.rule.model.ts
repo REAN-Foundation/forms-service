@@ -16,4 +16,4 @@ export class SkipRuleEntity extends BaseRuleEntity {
     @ManyToOne(() => SkipLogicEntity, { nullable: true })
     @JoinColumn({ name: 'LogicId' })
     Logic?: SkipLogicEntity;
-} 
+}

@@ -3,5 +3,5 @@ export enum FormStatus {
     Saved = 'Saved',
     InProgress = 'InProgress',
     LinkExpired = 'LinkExpired',
-    Submitted = 'Submitted'
-} 
+    Submitted = 'Submitted',
+}

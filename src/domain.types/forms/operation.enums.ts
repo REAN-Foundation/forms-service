@@ -4,7 +4,7 @@ export enum OperationType {
     Mathematical = 'Mathematical',
     Composition = 'Composition',
     Iterate = 'Iterate',
-    FunctionExpression = 'FunctionExpression'
+    FunctionExpression = 'FunctionExpression',
 }
 
 // Logical Operator Types
@@ -25,7 +25,7 @@ export enum LogicalOperatorType {
     Exists = 'Exists',
     HasConsecutiveOccurrences = 'HasConsecutiveOccurrences',
     RangesOverlap = 'RangesOverlap',
-    None = 'None'
+    None = 'None',
 }
 
 // Mathematical Operator Types
@@ -35,7 +35,7 @@ export enum MathematicalOperatorType {
     Divide = 'Divide',
     Multiply = 'Multiply',
     Percentage = 'Percentage',
-    None = 'None'
+    None = 'None',
 }
 
 // Composition Operator Types
@@ -43,5 +43,5 @@ export enum CompositionOperatorType {
     And = 'And',
     Or = 'Or',
     Xor = 'Xor',
-    None = 'None'
-} 
+    None = 'None',
+}

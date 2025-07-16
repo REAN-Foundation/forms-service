@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+    JoinColumn,
+} from 'typeorm';
 import { FormTemplate } from '../form.template/form.template.model';
 import { FormSection } from '../form.section/form.section.model';
 import { BaseEntity } from '../base.entity';
@@ -8,7 +17,6 @@ import { QueryResponseType } from '../../../../../domain.types/forms/query.respo
 
 @Entity({ name: 'form_fields' })
 export class FormFieldEntity extends BaseEntity {
-
     @Column({ type: 'uuid', nullable: true })
     TemplateId: string;
 
@@ -60,17 +68,17 @@ export class FormFieldEntity extends BaseEntity {
     @Column({ type: 'boolean', nullable: false, default: false })
     PageBreakAfter: boolean;
 
-    @OneToMany(() => QuestionResponse, (response) => response.FormField)
+    @OneToMany(() => QuestionResponse, response => response.FormField)
     Responses: QuestionResponse[];
 
-    @ManyToOne(() => FormTemplate, (template) => template.FormFields)
+    @ManyToOne(() => FormTemplate, template => template.FormFields)
     @JoinColumn({ name: 'TemplateId' })
     FormTemplate: FormTemplate;
 
-    @ManyToOne(() => FormSection, (section) => section.FormFields)
+    @ManyToOne(() => FormSection, section => section.FormFields)
     @JoinColumn({ name: 'ParentSectionId' })
     ParentFormSection: FormSection;
 
     @ManyToOne(() => InputUnitList)
-    ExpectedInputUnitList: InputUnitList
-} 
+    ExpectedInputUnitList: InputUnitList;
+}

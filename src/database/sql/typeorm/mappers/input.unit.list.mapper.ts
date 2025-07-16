@@ -1,4 +1,4 @@
-import { InputUnitListResponseDto } from "../../../../domain.types/forms/input.unit.list.domain.types";
+import { InputUnitListResponseDto } from '../../../../domain.types/forms/input.unit.list.domain.types';
 
 export class InputUnitListMapper {
     static toDto = (record: any): InputUnitListResponseDto => {
@@ -7,7 +7,10 @@ export class InputUnitListMapper {
         }
         let units: any[] = [];
         try {
-            units = typeof record.Units === 'string' ? JSON.parse(record.Units) : record.Units;
+            units =
+                typeof record.Units === 'string'
+                    ? JSON.parse(record.Units)
+                    : record.Units;
         } catch {
             units = [];
         }
@@ -17,7 +20,7 @@ export class InputUnitListMapper {
             Description: record.Description,
             Units: units,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };

@@ -1,4 +1,7 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
 
 export interface InputUnitListCreateModel {
     Name: string;

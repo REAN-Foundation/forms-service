@@ -12,4 +12,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.delete);
 
     app.use('/api/v1/input-unit-lists', router);
-}; 
+};

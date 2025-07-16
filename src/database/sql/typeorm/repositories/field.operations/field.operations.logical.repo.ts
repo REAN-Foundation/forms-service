@@ -1,32 +1,37 @@
-import { ILogicalOperationRepo } from "../../../../repository.interfaces/field.operations/logical.operation/logical.operation.repo.interface";
+import { ILogicalOperationRepo } from '../../../../repository.interfaces/field.operations/logical.operation/logical.operation.repo.interface';
 import {
     LogicalOperationResponseDto,
     LogicalOperationCreateModel,
     LogicalOperationUpdateModel,
-    OperationSearchFilters
-} from "../../../../../domain.types/forms/operation.domain.types";
-import { LogicalOperationMapper } from "../../mappers/logical.operation.mapper";
-import { LogicalOperationEntity } from "../../models/operation/logical.operation.model";
-import { LogicalOperatorType } from "../../../../../domain.types/forms/operation.enums";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+    OperationSearchFilters,
+} from '../../../../../domain.types/forms/operation.domain.types';
+import { LogicalOperationMapper } from '../../mappers/logical.operation.mapper';
+import { LogicalOperationEntity } from '../../models/operation/logical.operation.model';
+import { LogicalOperatorType } from '../../../../../domain.types/forms/operation.enums';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationRepo {
+export class LogicalOperationRepo
+    extends BaseRepo
+    implements ILogicalOperationRepo
+{
+    _logicalOperationRepo: Repository<LogicalOperationEntity> =
+        Source.getRepository(LogicalOperationEntity);
 
-    _logicalOperationRepo: Repository<LogicalOperationEntity> = Source.getRepository(LogicalOperationEntity);
-    
     // Logical Operation operations
-    createLogicalOperation = async (model: LogicalOperationCreateModel): Promise<LogicalOperationResponseDto> => {
+    createLogicalOperation = async (
+        model: LogicalOperationCreateModel
+    ): Promise<LogicalOperationResponseDto> => {
         try {
             const data = this._logicalOperationRepo.create({
                 Name: model.Name,
                 Description: model.Description,
                 Type: model.Type,
                 Operator: model.Operator,
-                Operands: model.Operands
+                Operands: model.Operands,
             });
             const record = await this._logicalOperationRepo.save(data);
             return LogicalOperationMapper.toDto(record);
@@ -35,7 +40,10 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
         }
     };
 
-    updateLogicalOperation = async (id: string, model: LogicalOperationUpdateModel): Promise<LogicalOperationResponseDto> => {
+    updateLogicalOperation = async (
+        id: string,
+        model: LogicalOperationUpdateModel
+    ): Promise<LogicalOperationResponseDto> => {
         try {
             const updateData = await this._logicalOperationRepo.findOne({
                 where: {
@@ -44,7 +52,9 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError("Logical Operation Data not found!");
+                ErrorHandler.throwNotFoundError(
+                    'Logical Operation Data not found!'
+                );
             }
 
             if (model.Name) {
@@ -72,7 +82,9 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
         }
     };
 
-    getLogicalOperationById = async (id: string): Promise<LogicalOperationResponseDto> => {
+    getLogicalOperationById = async (
+        id: string
+    ): Promise<LogicalOperationResponseDto> => {
         try {
             const record = await this._logicalOperationRepo.findOne({
                 where: {
@@ -108,19 +120,22 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
         }
     };
 
-    searchLogicalOperation = async (filters: OperationSearchFilters): Promise<any> => {
+    searchLogicalOperation = async (
+        filters: OperationSearchFilters
+    ): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } =
                 this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._logicalOperationRepo.findAndCount(search);
+            const [list, count] =
+                await this._logicalOperationRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: LogicalOperationMapper.toArrayDto(list),
             };
@@ -128,7 +143,7 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -141,22 +156,21 @@ export class LogicalOperationRepo extends BaseRepo implements ILogicalOperationR
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.name) {
-            search.where["Name"] = filters.name;
+            search.where['Name'] = filters.name;
         }
 
         if (filters.description) {
-            search.where["Description"] = filters.description;
+            search.where['Description'] = filters.description;
         }
 
         if (filters.operator) {
-            search.where["Operator"] = filters.operator;
+            search.where['Operator'] = filters.operator;
         }
 
         return search;
     };
-
-} 
+}

@@ -1,5 +1,10 @@
-import { BaseLogicCreateModel, BaseLogicResponseDto, BaseLogicUpdateModel, ValidationRuleResponseDto } from "./logic.domain.types";
-import { LogicType } from "./logic.enums";
+import {
+    BaseLogicCreateModel,
+    BaseLogicResponseDto,
+    BaseLogicUpdateModel,
+    ValidationRuleResponseDto,
+} from './logic.domain.types';
+import { LogicType } from './logic.enums';
 
 // Validation Logic DTOs
 export interface ValidationLogicCreateModel extends BaseLogicCreateModel {
@@ -19,4 +24,4 @@ export interface ValidationLogicUpdateModel extends BaseLogicUpdateModel {
 export interface ValidationLogicResponseDto extends BaseLogicResponseDto {
     Type: LogicType.Validation;
     Rules?: ValidationRuleResponseDto[];
-} 
+}

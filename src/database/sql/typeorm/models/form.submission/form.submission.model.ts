@@ -6,55 +6,65 @@ import { FormStatus } from '../../../../../domain.types/forms/form.submission.en
 
 @Entity('form_submissions')
 export class FormSubmission extends BaseEntity {
-    @Column({type: 'uuid', nullable: false })
+    @Column({ type: 'uuid', nullable: false })
     FormTemplateId: string;
 
-    @Column({type: 'varchar', length: 128, nullable: false })
+    @Column({ type: 'varchar', length: 128, nullable: false })
     Title?: string;
 
-    @Column({ type: 'varchar', length: 128, default: 'General', nullable: false })
+    @Column({
+        type: 'varchar',
+        length: 128,
+        default: 'General',
+        nullable: false,
+    })
     Type: string;
 
-    @Column({type: 'uuid', nullable: true })
+    @Column({ type: 'uuid', nullable: true })
     TenantId?: string;
 
-    @Column({type: 'uuid', nullable: true })
+    @Column({ type: 'uuid', nullable: true })
     UserId?: string;
 
     // @Column({type: 'json', length: 2048, nullable: true })
     // UserMetaData?: string;
 
-    @Column({type: 'json', nullable: true })
+    @Column({ type: 'json', nullable: true })
     UserMetaData?: string;
 
-    @Column({type: 'varchar', length: 1024, nullable: true })
+    @Column({ type: 'varchar', length: 1024, nullable: true })
     Encrypted?: string;
 
-    @Column({type: 'varchar', length: 1024, nullable: true })
+    @Column({ type: 'varchar', length: 1024, nullable: true })
     Unencrypted?: string;
 
-    @Column({type: 'varchar', length: 1024, nullable: true })
+    @Column({ type: 'varchar', length: 1024, nullable: true })
     Link?: string;
 
     @Column({ type: 'varchar', nullable: true })
     LinkQueryParams?: string;
 
-    @Column({ type: 'enum', enum: FormStatus, default: FormStatus.LinkShared, nullable: false })
+    @Column({
+        type: 'enum',
+        enum: FormStatus,
+        default: FormStatus.LinkShared,
+        nullable: false,
+    })
     Status: FormStatus;
 
-    @Column({type: 'timestamp', nullable: false })
+    @Column({ type: 'timestamp', nullable: false })
     ValidTill: Date;
 
-    @Column({type: 'timestamp', nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
     SubmittedAt?: Date;
 
-    @Column({type: 'int', nullable: true })
+    @Column({ type: 'int', nullable: true })
     Score?: number;
 
-    @ManyToOne(() => FormTemplate, (template) => template.FormSubmissions)
+    @ManyToOne(() => FormTemplate, template => template.FormSubmissions)
     @JoinColumn({ name: 'FormTemplateId' })
     FormTemplate: FormTemplate;
 
-    @OneToMany(() => QuestionResponse, (response) => response.FormSubmission)
+    @OneToMany(() => QuestionResponse, response => response.FormSubmission)
     QuestionResponses: QuestionResponse[];
 }

@@ -1,20 +1,25 @@
-import { FormSectionCreateModel, FormSectionResponseDto, FormSectionSearchFilters, FormSectionUpdateModel } from "../../../../../domain.types/forms/form.section.domain.types";
-import { IFormSectionRepo } from "../../../../repository.interfaces/form.section/form.section.repo.interface";
-import { FormSection } from "../../models/form.section/form.section.model";
-import { FormSectionMapper } from "../../mappers/form.section.mapper";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { FindManyOptions, Repository } from "typeorm";
-import { BaseRepo } from "../base.repo";
-
-
+import {
+    FormSectionCreateModel,
+    FormSectionResponseDto,
+    FormSectionSearchFilters,
+    FormSectionUpdateModel,
+} from '../../../../../domain.types/forms/form.section.domain.types';
+import { IFormSectionRepo } from '../../../../repository.interfaces/form.section/form.section.repo.interface';
+import { FormSection } from '../../models/form.section/form.section.model';
+import { FormSectionMapper } from '../../mappers/form.section.mapper';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { FindManyOptions, Repository } from 'typeorm';
+import { BaseRepo } from '../base.repo';
 
 export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
+    _formSectionRepo: Repository<FormSection> =
+        Source.getRepository(FormSection);
 
-    _formSectionRepo: Repository<FormSection> = Source.getRepository(FormSection);
-
-    create = async (model: FormSectionCreateModel): Promise<FormSectionResponseDto> => {
+    create = async (
+        model: FormSectionCreateModel
+    ): Promise<FormSectionResponseDto> => {
         try {
             const data = await this._formSectionRepo.create({
                 FormTemplateId: model.ParentFormTemplateId,
@@ -29,10 +34,12 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
-
     };
 
-    update = async (id: string, model: FormSectionUpdateModel): Promise<FormSectionResponseDto> => {
+    update = async (
+        id: string,
+        model: FormSectionUpdateModel
+    ): Promise<FormSectionResponseDto> => {
         try {
             const updateData = await this._formSectionRepo.findOne({
                 where: {
@@ -72,7 +79,7 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
             var record = await this._formSectionRepo.findOne({
                 where: {
                     id: id,
-                    DeletedAt: null
+                    DeletedAt: null,
                 },
             });
             return FormSectionMapper.toDto(record);
@@ -106,7 +113,7 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
         try {
             var record = await this._formSectionRepo.findOne({
                 where: {
-                    FormTemplateId: id
+                    FormTemplateId: id,
                 },
             });
             return FormSectionMapper.toDto(record);
@@ -119,8 +126,10 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
     search = async (filters: FormSectionSearchFilters): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
-            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._formSectionRepo.findAndCount(search);
+            var { search, pageIndex, limit, order, orderByColumn } =
+                this.addSortingAndPagination(search, filters);
+            const [list, count] =
+                await this._formSectionRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
@@ -134,12 +143,14 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
             return searchResults;
         } catch (error) {
             Logger.instance().log(error.message);
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+            ErrorHandler.throwDbAccessError(
+                'DB Error: Unable to search records!',
+                error
+            );
         }
     };
 
     private getSearchModel = (filters: FormSectionSearchFilters) => {
-
         var search: FindManyOptions<FormSection> = {
             relations: {},
             where: {},
@@ -170,6 +181,4 @@ export class FormSectionRepo extends BaseRepo implements IFormSectionRepo {
 
         return search;
     };
-
-
 }

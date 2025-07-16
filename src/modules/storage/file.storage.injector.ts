@@ -7,16 +7,12 @@ import { CustomFileStorageService } from './providers/custom.file.storage.servic
 ////////////////////////////////////////////////////////////////////////////////
 
 export class FileStorageInjector {
-
     static registerInjections(container: DependencyContainer) {
-
         const provider = ConfigurationManager.FileStorageProvider();
         if (provider === 'AWS-S3') {
             container.register('IFileStorageService', AWSS3FileStorageService);
-        }
-        else if (provider === 'Custom') {
+        } else if (provider === 'Custom') {
             container.register('IFileStorageService', CustomFileStorageService);
         }
     }
-    
 }

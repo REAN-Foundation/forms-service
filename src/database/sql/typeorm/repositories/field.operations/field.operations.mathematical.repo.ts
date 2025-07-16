@@ -1,25 +1,30 @@
-import { IMathematicalOperationRepo } from "../../../../repository.interfaces/field.operations/mathematical.operation/mathematical.operation.repo.interface";
+import { IMathematicalOperationRepo } from '../../../../repository.interfaces/field.operations/mathematical.operation/mathematical.operation.repo.interface';
 import {
     MathematicalOperationResponseDto,
     MathematicalOperationCreateModel,
     MathematicalOperationUpdateModel,
-    OperationSearchFilters
-} from "../../../../../domain.types/forms/operation.domain.types";
-import { MathematicalOperationMapper } from "../../mappers/mathematical.operation.mapper";
-import { MathematicalOperationEntity } from "../../models/operation/mathematical.operation.model";
-import { MathematicalOperatorType } from "../../../../../domain.types/forms/operation.enums";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+    OperationSearchFilters,
+} from '../../../../../domain.types/forms/operation.domain.types';
+import { MathematicalOperationMapper } from '../../mappers/mathematical.operation.mapper';
+import { MathematicalOperationEntity } from '../../models/operation/mathematical.operation.model';
+import { MathematicalOperatorType } from '../../../../../domain.types/forms/operation.enums';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class MathematicalOperationRepo extends BaseRepo implements IMathematicalOperationRepo {
+export class MathematicalOperationRepo
+    extends BaseRepo
+    implements IMathematicalOperationRepo
+{
+    _mathematicalOperationRepo: Repository<MathematicalOperationEntity> =
+        Source.getRepository(MathematicalOperationEntity);
 
-    _mathematicalOperationRepo: Repository<MathematicalOperationEntity> = Source.getRepository(MathematicalOperationEntity);
-    
     // Mathematical Operation operations
-    createMathematicalOperation = async (model: MathematicalOperationCreateModel): Promise<MathematicalOperationResponseDto> => {
+    createMathematicalOperation = async (
+        model: MathematicalOperationCreateModel
+    ): Promise<MathematicalOperationResponseDto> => {
         try {
             const data = this._mathematicalOperationRepo.create({
                 Name: model.Name,
@@ -27,7 +32,7 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
                 Type: model.Type,
                 Operator: model.Operator,
                 Operands: model.Operands,
-                ResultDataType: model.ResultDataType
+                ResultDataType: model.ResultDataType,
             });
             const record = await this._mathematicalOperationRepo.save(data);
             return MathematicalOperationMapper.toDto(record);
@@ -36,7 +41,10 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
         }
     };
 
-    updateMathematicalOperation = async (id: string, model: MathematicalOperationUpdateModel): Promise<MathematicalOperationResponseDto> => {
+    updateMathematicalOperation = async (
+        id: string,
+        model: MathematicalOperationUpdateModel
+    ): Promise<MathematicalOperationResponseDto> => {
         try {
             const updateData = await this._mathematicalOperationRepo.findOne({
                 where: {
@@ -45,7 +53,9 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError("Mathematical Operation Data not found!");
+                ErrorHandler.throwNotFoundError(
+                    'Mathematical Operation Data not found!'
+                );
             }
 
             if (model.Name) {
@@ -58,7 +68,8 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
                 updateData.Type = model.Type as any;
             }
             if (model.Operator) {
-                updateData.Operator = model.Operator as MathematicalOperatorType;
+                updateData.Operator =
+                    model.Operator as MathematicalOperatorType;
             }
             if (model.Operands) {
                 updateData.Operands = model.Operands;
@@ -69,14 +80,17 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
 
             updateData.UpdatedAt = new Date();
 
-            const record = await this._mathematicalOperationRepo.save(updateData);
+            const record =
+                await this._mathematicalOperationRepo.save(updateData);
             return MathematicalOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
 
-    getMathematicalOperationById = async (id: string): Promise<MathematicalOperationResponseDto> => {
+    getMathematicalOperationById = async (
+        id: string
+    ): Promise<MathematicalOperationResponseDto> => {
         try {
             const record = await this._mathematicalOperationRepo.findOne({
                 where: {
@@ -112,19 +126,22 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
         }
     };
 
-    searchMathematicalOperation = async (filters: OperationSearchFilters): Promise<any> => {
+    searchMathematicalOperation = async (
+        filters: OperationSearchFilters
+    ): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } =
                 this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._mathematicalOperationRepo.findAndCount(search);
+            const [list, count] =
+                await this._mathematicalOperationRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: MathematicalOperationMapper.toArrayDto(list),
             };
@@ -132,7 +149,7 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -145,22 +162,21 @@ export class MathematicalOperationRepo extends BaseRepo implements IMathematical
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.name) {
-            search.where["Name"] = filters.name;
+            search.where['Name'] = filters.name;
         }
 
         if (filters.description) {
-            search.where["Description"] = filters.description;
+            search.where['Description'] = filters.description;
         }
 
         if (filters.operator) {
-            search.where["Operator"] = filters.operator;
+            search.where['Operator'] = filters.operator;
         }
 
         return search;
     };
-
-} 
+}

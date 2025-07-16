@@ -1,17 +1,18 @@
 import joi from 'joi';
 import express from 'express';
-import {
-    ErrorHandler
-} from '../../common/handlers/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { FormFieldCreateModel, FormFieldSearchFilters, FormFieldUpdateModel } from '../../domain.types/forms/form.field.domain.types';
+import {
+    FormFieldCreateModel,
+    FormFieldSearchFilters,
+    FormFieldUpdateModel,
+} from '../../domain.types/forms/form.field.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 import { ParsedQs } from 'qs';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormFieldValidator extends BaseValidator {
-
     // public validateCreateRequest = async (request: express.Request): Promise<FormFieldCreateModel> => {
     //     try {
     //         const schema = joi.object({
@@ -54,7 +55,9 @@ export class FormFieldValidator extends BaseValidator {
     //     }
     // };
 
-    public validateCreateRequest = async (request: express.Request): Promise<FormFieldCreateModel> => {
+    public validateCreateRequest = async (
+        request: express.Request
+    ): Promise<FormFieldCreateModel> => {
         try {
             const optionSchema = joi.object({
                 Text: joi.string().required(),
@@ -87,7 +90,9 @@ export class FormFieldValidator extends BaseValidator {
                 ParentSectionId: request.body.ParentSectionId,
                 Title: request.body.Title,
                 Description: request.body.Description,
-                DisplayCode: request.body.DisplayCode ?? generateDisplayCode(25, 'FORMFIELD_#'),
+                DisplayCode:
+                    request.body.DisplayCode ??
+                    generateDisplayCode(25, 'FORMFIELD_#'),
                 ResponseType: request.body.ResponseType,
                 Score: request.body.Score,
                 Sequence: request.body.Sequence,
@@ -105,7 +110,9 @@ export class FormFieldValidator extends BaseValidator {
         }
     };
 
-    public validateUpdateRequest = async (request: express.Request): Promise<FormFieldUpdateModel | undefined> => {
+    public validateUpdateRequest = async (
+        request: express.Request
+    ): Promise<FormFieldUpdateModel | undefined> => {
         try {
             const optionSchema = joi.object({
                 Text: joi.string().required(),
@@ -126,7 +133,7 @@ export class FormFieldValidator extends BaseValidator {
                 // FileResourceId  : joi.string().uuid().optional(),
                 QuestionImageUrl: joi.string().optional(),
                 RangeMin: joi.number().optional(),
-                RangeMax: joi.number().optional()
+                RangeMax: joi.number().optional(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -142,14 +149,16 @@ export class FormFieldValidator extends BaseValidator {
                 // FileResourceId  : request.body.FileResourceId ?? null,
                 QuestionImageUrl: request.body.QuestionImageUrl ?? null,
                 RangeMin: request.body.RangeMin ?? null,
-                RangeMax: request.body.RangeMax ?? null
+                RangeMax: request.body.RangeMax ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateSearchRequest = async (request: express.Request): Promise<FormFieldSearchFilters> => {
+    public validateSearchRequest = async (
+        request: express.Request
+    ): Promise<FormFieldSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -167,8 +176,7 @@ export class FormFieldValidator extends BaseValidator {
                 // FileResourceId  : joi.string().uuid().optional(),
                 questionImageUrl: joi.string().optional(),
                 rangeMin: joi.number().optional(),
-                rangeMax: joi.number().optional()
-
+                rangeMax: joi.number().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -186,11 +194,15 @@ export class FormFieldValidator extends BaseValidator {
         if (id != null) {
             filters['id'] = id;
         }
-        var parentTemplateId = query.parentTemplateId ? query.parentTemplateId : null;
+        var parentTemplateId = query.parentTemplateId
+            ? query.parentTemplateId
+            : null;
         if (parentTemplateId != null) {
             filters['parentTemplateId'] = parentTemplateId;
         }
-        var parentSectionId = query.parentSectionId ? query.parentSectionId : null;
+        var parentSectionId = query.parentSectionId
+            ? query.parentSectionId
+            : null;
         if (parentSectionId != null) {
             filters['parentSectionId'] = parentSectionId;
         }
@@ -234,7 +246,9 @@ export class FormFieldValidator extends BaseValidator {
         // if (FileResourceId != null) {
         //     filters['FileResourceId'] = FileResourceId;
         // }
-        var questionImageUrl = query.questionImageUrl ? query.questionImageUrl : null;
+        var questionImageUrl = query.questionImageUrl
+            ? query.questionImageUrl
+            : null;
         if (questionImageUrl != null) {
             filters['questionImageUrl'] = questionImageUrl;
         }
@@ -249,4 +263,4 @@ export class FormFieldValidator extends BaseValidator {
 
         return filters;
     };
-} 
+}

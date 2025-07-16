@@ -1,4 +1,4 @@
-import { FormTemplateApprovalResponseDto } from "../../../../domain.types/forms/form.template.approval.domain.types";
+import { FormTemplateApprovalResponseDto } from '../../../../domain.types/forms/form.template.approval.domain.types';
 
 export class FormTemplateApprovalMapper {
     static toDto = (record: any): FormTemplateApprovalResponseDto => {
@@ -13,7 +13,7 @@ export class FormTemplateApprovalMapper {
             Approved: record.Approved,
             ReviewComments: record.ReviewComments,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -24,4 +24,4 @@ export class FormTemplateApprovalMapper {
         }
         return records.map(record => FormTemplateApprovalMapper.toDto(record));
     }
-} 
+}

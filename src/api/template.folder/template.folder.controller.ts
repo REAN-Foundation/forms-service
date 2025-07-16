@@ -5,11 +5,17 @@ import { BaseController } from '../base.controller';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { TemplateFolderService } from '../../services/template.folder/template.folder.service';
-import { TemplateFolderCreateModel, TemplateFolderSearchFilters, TemplateFolderUpdateModel } from '../../domain.types/forms/template.folder.domain.types';
+import {
+    TemplateFolderCreateModel,
+    TemplateFolderSearchFilters,
+    TemplateFolderUpdateModel,
+} from '../../domain.types/forms/template.folder.domain.types';
 import { Injector } from '../../startup/injector';
 
 export class TemplateFolderController extends BaseController {
-    _service: TemplateFolderService = Injector.Container.resolve(TemplateFolderService);
+    _service: TemplateFolderService = Injector.Container.resolve(
+        TemplateFolderService
+    );
     _validator: TemplateFolderValidator = new TemplateFolderValidator();
 
     constructor() {
@@ -18,13 +24,23 @@ export class TemplateFolderController extends BaseController {
 
     create = async (request: express.Request, response: express.Response) => {
         try {
-            const model: TemplateFolderCreateModel = await this._validator.validateCreateRequest(request);
+            const model: TemplateFolderCreateModel =
+                await this._validator.validateCreateRequest(request);
             const record = await this._service.create(model);
             if (record === null) {
-                ErrorHandler.throwInternalServerError('Unable to add template folder!', new Error());
+                ErrorHandler.throwInternalServerError(
+                    'Unable to add template folder!',
+                    new Error()
+                );
             }
             const message = 'Template folder added successfully!';
-            return ResponseHandler.success(request, response, message, 201, record);
+            return ResponseHandler.success(
+                request,
+                response,
+                message,
+                201,
+                record
+            );
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
@@ -32,10 +48,19 @@ export class TemplateFolderController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            const id: uuid = await this._validator.validateParamAsUUID(
+                request,
+                'id'
+            );
             const record = await this._service.getById(id);
             const message = 'Template folder retrieved successfully!';
-            return ResponseHandler.success(request, response, message, 200, record);
+            return ResponseHandler.success(
+                request,
+                response,
+                message,
+                200,
+                record
+            );
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
@@ -44,18 +69,31 @@ export class TemplateFolderController extends BaseController {
     update = async (request: express.Request, response: express.Response) => {
         try {
             const id = await this._validator.validateParamAsUUID(request, 'id');
-            const model: TemplateFolderUpdateModel = await this._validator.validateUpdateRequest(request);
+            const model: TemplateFolderUpdateModel =
+                await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
             const message = 'Template folder updated successfully!';
-            ResponseHandler.success(request, response, message, 200, updatedRecord);
+            ResponseHandler.success(
+                request,
+                response,
+                message,
+                200,
+                updatedRecord
+            );
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
 
-    delete = async (request: express.Request, response: express.Response): Promise<void> => {
+    delete = async (
+        request: express.Request,
+        response: express.Response
+    ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(request, 'id');
+            const id: uuid = await this._validator.validateParamAsUUID(
+                request,
+                'id'
+            );
             const result = await this._service.delete(id);
             const message = 'Template folder deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
@@ -66,10 +104,17 @@ export class TemplateFolderController extends BaseController {
 
     search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: TemplateFolderSearchFilters = await this._validator.validateSearchRequest(request);
+            const filters: TemplateFolderSearchFilters =
+                await this._validator.validateSearchRequest(request);
             const searchResults = await this._service.search(filters);
             const message = 'Template folders retrieved successfully!';
-            ResponseHandler.success(request, response, message, 200, searchResults);
+            ResponseHandler.success(
+                request,
+                response,
+                message,
+                200,
+                searchResults
+            );
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

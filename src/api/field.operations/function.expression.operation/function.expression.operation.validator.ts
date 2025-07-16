@@ -5,20 +5,23 @@ import BaseValidator from '../../base.validator';
 import {
     FunctionExpressionOperationCreateModel,
     FunctionExpressionOperationUpdateModel,
-    OperationSearchFilters
+    OperationSearchFilters,
 } from '../../../domain.types/forms/operation.domain.types';
 import { OperationType } from '../../../domain.types/forms/operation.enums';
 
-
 export class FunctionExpressionOperationValidator extends BaseValidator {
-
     // Function Expression Operation validation
-    public validateFunctionExpressionOperationCreateRequest = async (request: express.Request): Promise<FunctionExpressionOperationCreateModel> => {
+    public validateFunctionExpressionOperationCreateRequest = async (
+        request: express.Request
+    ): Promise<FunctionExpressionOperationCreateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
-                Type: joi.string().valid(OperationType.FunctionExpression).optional(),
+                Type: joi
+                    .string()
+                    .valid(OperationType.FunctionExpression)
+                    .optional(),
                 Expression: joi.string().required(),
                 Variables: joi.string().required(),
                 ResultDataType: joi.string().required(),
@@ -30,19 +33,24 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
                 Type: OperationType.FunctionExpression, // Always set to FunctionExpression for this operation type
                 Expression: request.body.Expression,
                 Variables: request.body.Variables,
-                ResultDataType: request.body.ResultDataType
+                ResultDataType: request.body.ResultDataType,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateFunctionExpressionOperationUpdateRequest = async (request: express.Request): Promise<FunctionExpressionOperationUpdateModel> => {
+    public validateFunctionExpressionOperationUpdateRequest = async (
+        request: express.Request
+    ): Promise<FunctionExpressionOperationUpdateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
-                Type: joi.string().valid(OperationType.FunctionExpression).optional(),
+                Type: joi
+                    .string()
+                    .valid(OperationType.FunctionExpression)
+                    .optional(),
                 Expression: joi.string().optional(),
                 Variables: joi.string().optional(),
                 ResultDataType: joi.string().optional(),
@@ -54,14 +62,16 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
                 Type: OperationType.FunctionExpression, // Always set to FunctionExpression for this operation type
                 Expression: request.body.Expression,
                 Variables: request.body.Variables,
-                ResultDataType: request.body.ResultDataType
+                ResultDataType: request.body.ResultDataType,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateOperationSearchRequest = async (request: express.Request): Promise<OperationSearchFilters> => {
+    public validateOperationSearchRequest = async (
+        request: express.Request
+    ): Promise<OperationSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -77,8 +87,12 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
                 id: request.query.id as string,
                 name: request.query.name as string,
                 description: request.query.description as string,
-                PageIndex: request.query.PageIndex ? parseInt(request.query.PageIndex as string) : 0,
-                ItemsPerPage: request.query.ItemsPerPage ? parseInt(request.query.ItemsPerPage as string) : 10,
+                PageIndex: request.query.PageIndex
+                    ? parseInt(request.query.PageIndex as string)
+                    : 0,
+                ItemsPerPage: request.query.ItemsPerPage
+                    ? parseInt(request.query.ItemsPerPage as string)
+                    : 10,
                 OrderBy: request.query.OrderBy as string,
                 Order: request.query.Order as 'ASC' | 'DESC',
             };
@@ -86,4 +100,4 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-} 
+}

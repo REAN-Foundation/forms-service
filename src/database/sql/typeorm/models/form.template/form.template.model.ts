@@ -4,61 +4,74 @@ import { FormSubmission } from '../form.submission/form.submission.model';
 import { FormSection } from '../form.section/form.section.model';
 // import { Question } from '../question/question.model';
 import { FormFieldEntity } from '../form.field/form.field.model';
-import { FormType, NavigationStrategy } from '../../../../../domain.types/forms/form.template.enums';
+import {
+    FormType,
+    NavigationStrategy,
+} from '../../../../../domain.types/forms/form.template.enums';
 
-@Entity({name: 'form_templates'})
+@Entity({ name: 'form_templates' })
 export class FormTemplate extends BaseEntity {
-    @Column({type: 'uuid', nullable: true })
+    @Column({ type: 'uuid', nullable: true })
     TenantId?: string;
 
     @Column({ type: 'varchar', length: 128, nullable: false })
     DisplayCode?: string;
 
-    @Column({type: 'varchar', length: 128, default: '1.0', nullable: false })
+    @Column({ type: 'varchar', length: 128, default: '1.0', nullable: false })
     Version?: number;
 
-    @Column({ type: 'varchar', length: 128, default: 'Survey', nullable: false })
+    @Column({
+        type: 'varchar',
+        length: 128,
+        default: 'Survey',
+        nullable: false,
+    })
     Type: string;
 
-    @Column({type: 'uuid', nullable: true })
+    @Column({ type: 'uuid', nullable: true })
     OwnerUserId?: string;
 
-    @Column({type: 'varchar', length: 128, nullable: false })
+    @Column({ type: 'varchar', length: 128, nullable: false })
     Title: string;
 
     @Column({ type: 'varchar', length: 256, nullable: true })
     Description?: string;
 
-    @Column({ type: 'enum', enum: NavigationStrategy, nullable: false, default: NavigationStrategy.AllAtOnce })
+    @Column({
+        type: 'enum',
+        enum: NavigationStrategy,
+        nullable: false,
+        default: NavigationStrategy.AllAtOnce,
+    })
     NavigationStrategy: string;
 
-    @Column({type: 'boolean', nullable: false, default: false })
+    @Column({ type: 'boolean', nullable: false, default: false })
     ScoringApplicable: boolean;
 
-    @Column({type: 'uuid', nullable: true })
+    @Column({ type: 'uuid', nullable: true })
     RootSectionId?: string;
 
-    @Column({type: 'uuid', nullable: true })
+    @Column({ type: 'uuid', nullable: true })
     ParentFolderId?: string;
 
-    @Column({type: 'boolean', nullable: false, default: false })
+    @Column({ type: 'boolean', nullable: false, default: false })
     DefaultSectionNumbering: boolean;
 
-    @Column({type: 'boolean', nullable: false, default: false })
+    @Column({ type: 'boolean', nullable: false, default: false })
     ApprovalRequired: boolean;
 
     @Column({ type: 'varchar', length: 512, nullable: true })
     Tags?: string;
 
-    @OneToMany(() => FormSubmission, (submission) => submission.FormTemplate)
+    @OneToMany(() => FormSubmission, submission => submission.FormTemplate)
     FormSubmissions: FormSubmission[];
 
-    @OneToMany(() => FormSection, (section) => section.FormTemplate)
+    @OneToMany(() => FormSection, section => section.FormTemplate)
     FormSections: FormSection[];
 
     // @OneToMany(() => Question, (question) => question.FormTemplate)
     // Questions: Question[];
 
-    @OneToMany(() => FormFieldEntity, (formField) => formField.FormTemplate)
+    @OneToMany(() => FormFieldEntity, formField => formField.FormTemplate)
     FormFields: FormFieldEntity[];
 }

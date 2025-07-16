@@ -1,7 +1,6 @@
 // import { DatabaseSchemaType } from "../database.config";
 
 export interface IDatabaseClient {
-
     // createDb(schemaType: DatabaseSchemaType): Promise<boolean>;
 
     // dropDb(schemaType: DatabaseSchemaType): Promise<boolean>;
@@ -13,5 +12,4 @@ export interface IDatabaseClient {
     dropDb(): Promise<void>;
 
     executeQuery(query: string): Promise<unknown>;
-
 }

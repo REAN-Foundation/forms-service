@@ -1,41 +1,48 @@
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
-
+import {
+    Entity,
+    Column,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @CreateDateColumn()
-  CreatedAt: Date;
+    @CreateDateColumn()
+    CreatedAt: Date;
 
-  @UpdateDateColumn()
-  UpdatedAt?: Date;
+    @UpdateDateColumn()
+    UpdatedAt?: Date;
 
-  @DeleteDateColumn()
-  DeletedAt?: Date;
+    @DeleteDateColumn()
+    DeletedAt?: Date;
 
-  @Column()
-  FirstName: string;
+    @Column()
+    FirstName: string;
 
-  @Column()
-  LastName: string;
+    @Column()
+    LastName: string;
 
-  @Column()
-  CountryCode: number;
+    @Column()
+    CountryCode: number;
 
-  @Column()
-  Phone: string;
+    @Column()
+    Phone: string;
 
-  @Column()
-  Email: string;
+    @Column()
+    Email: string;
 
-  @Column()
-  Username: string;
+    @Column()
+    Username: string;
 
-  @Column()
-  Password: string;
+    @Column()
+    Password: string;
 
-  // @OneToMany(() => FormTemplate, (template) => template.User)
-  // Templates: FormTemplate[];
+    // @OneToMany(() => FormTemplate, (template) => template.User)
+    // Templates: FormTemplate[];
 }

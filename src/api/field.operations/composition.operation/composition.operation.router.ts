@@ -4,7 +4,6 @@ import { CompositionOperationController } from './composition.operation.controll
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new CompositionOperationController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteCompositionOperation);
 
     app.use('/api/v1/field-composition-operations', router);
-}; 
+};

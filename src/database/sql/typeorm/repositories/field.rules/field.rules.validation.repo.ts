@@ -1,18 +1,28 @@
-import { ValidationRuleCreateModel, ValidationRuleResponseDto, ValidationRuleSearchFilters, ValidationRuleUpdateModel } from "../../../../../domain.types/forms/validation.rule.domain.types";
-import { IValidationRuleRepo } from "../../../../repository.interfaces/field.rules/validation.rule/validation.rule.repo.interface";
-import { ValidationRuleEntity } from "../../models/rule/validation.rule.model";
-import { ValidationRuleMapper } from "../../mappers/validation.rule.mapper";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { FindManyOptions, Repository } from "typeorm";
-import { BaseRepo } from "../base.repo";
+import {
+    ValidationRuleCreateModel,
+    ValidationRuleResponseDto,
+    ValidationRuleSearchFilters,
+    ValidationRuleUpdateModel,
+} from '../../../../../domain.types/forms/validation.rule.domain.types';
+import { IValidationRuleRepo } from '../../../../repository.interfaces/field.rules/validation.rule/validation.rule.repo.interface';
+import { ValidationRuleEntity } from '../../models/rule/validation.rule.model';
+import { ValidationRuleMapper } from '../../mappers/validation.rule.mapper';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { FindManyOptions, Repository } from 'typeorm';
+import { BaseRepo } from '../base.repo';
 
-export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo {
+export class ValidationRuleRepo
+    extends BaseRepo
+    implements IValidationRuleRepo
+{
+    _validationRuleRepo: Repository<ValidationRuleEntity> =
+        Source.getRepository(ValidationRuleEntity);
 
-    _validationRuleRepo: Repository<ValidationRuleEntity> = Source.getRepository(ValidationRuleEntity);
-
-    create = async (model: ValidationRuleCreateModel): Promise<ValidationRuleResponseDto> => {
+    create = async (
+        model: ValidationRuleCreateModel
+    ): Promise<ValidationRuleResponseDto> => {
         try {
             const data = await this._validationRuleRepo.create({
                 Name: model.Name,
@@ -22,7 +32,7 @@ export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo 
                 OperationId: model.OperationId,
                 ErrorWhenFalse: model.ErrorWhenFalse,
                 ErrorMessage: model.ErrorMessage,
-                LogicId: model.LogicId
+                LogicId: model.LogicId,
             });
             const record = await this._validationRuleRepo.save(data);
             return ValidationRuleMapper.toDto(record);
@@ -36,7 +46,7 @@ export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo 
             var record = await this._validationRuleRepo.findOne({
                 where: {
                     id: id,
-                    DeletedAt: null
+                    DeletedAt: null,
                 },
             });
             return ValidationRuleMapper.toDto(record);
@@ -46,7 +56,10 @@ export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo 
         }
     };
 
-    update = async (id: string, model: ValidationRuleUpdateModel): Promise<ValidationRuleResponseDto> => {
+    update = async (
+        id: string,
+        model: ValidationRuleUpdateModel
+    ): Promise<ValidationRuleResponseDto> => {
         try {
             const updateData = await this._validationRuleRepo.findOne({
                 where: {
@@ -55,7 +68,9 @@ export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo 
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError('Validation Rule Data not found!');
+                ErrorHandler.throwNotFoundError(
+                    'Validation Rule Data not found!'
+                );
             }
             if (model.Name) {
                 updateData.Name = model.Name;
@@ -111,8 +126,10 @@ export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo 
     search = async (filters: ValidationRuleSearchFilters): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
-            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._validationRuleRepo.findAndCount(search);
+            var { search, pageIndex, limit, order, orderByColumn } =
+                this.addSortingAndPagination(search, filters);
+            const [list, count] =
+                await this._validationRuleRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
@@ -126,12 +143,14 @@ export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo 
             return searchResults;
         } catch (error) {
             Logger.instance().log(error.message);
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+            ErrorHandler.throwDbAccessError(
+                'DB Error: Unable to search records!',
+                error
+            );
         }
     };
 
     private getSearchModel = (filters: ValidationRuleSearchFilters) => {
-
         var search: FindManyOptions<ValidationRuleEntity> = {
             relations: {},
             where: {},
@@ -167,4 +186,4 @@ export class ValidationRuleRepo extends BaseRepo implements IValidationRuleRepo 
 
         return search;
     };
-} 
+}

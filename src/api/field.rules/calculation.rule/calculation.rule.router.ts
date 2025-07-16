@@ -4,7 +4,6 @@ import { CalculationRuleController } from './calculation.rule.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new CalculationRuleController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteCalculationRule);
 
     app.use('/api/v1/field-calculation-rules', router);
-}; 
+};

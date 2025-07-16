@@ -2,44 +2,53 @@ import joi from 'joi';
 import express from 'express';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { FavoriteTemplateCreateModel, FavoriteTemplateSearchFilters, FavoriteTemplateUpdateModel } from '../../domain.types/forms/favorite.template.domain.types';
+import {
+    FavoriteTemplateCreateModel,
+    FavoriteTemplateSearchFilters,
+    FavoriteTemplateUpdateModel,
+} from '../../domain.types/forms/favorite.template.domain.types';
 import { ParsedQs } from 'qs';
 
 export class FavoriteTemplateValidator extends BaseValidator {
-
-    public validateCreateRequest = async (request: express.Request): Promise<FavoriteTemplateCreateModel> => {
+    public validateCreateRequest = async (
+        request: express.Request
+    ): Promise<FavoriteTemplateCreateModel> => {
         try {
             const schema = joi.object({
                 UserId: joi.string().uuid().required(),
-                TemplateId: joi.string().uuid().required()
+                TemplateId: joi.string().uuid().required(),
             });
             await schema.validateAsync(request.body);
             return {
                 UserId: request.body.UserId,
-                TemplateId: request.body.TemplateId
+                TemplateId: request.body.TemplateId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateUpdateRequest = async (request: express.Request): Promise<FavoriteTemplateUpdateModel> => {
+    public validateUpdateRequest = async (
+        request: express.Request
+    ): Promise<FavoriteTemplateUpdateModel> => {
         try {
             const schema = joi.object({
                 UserId: joi.string().uuid().optional(),
-                TemplateId: joi.string().uuid().optional()
+                TemplateId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 UserId: request.body.UserId ?? null,
-                TemplateId: request.body.TemplateId ?? null
+                TemplateId: request.body.TemplateId ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateSearchRequest = async (request: express.Request): Promise<FavoriteTemplateSearchFilters> => {
+    public validateSearchRequest = async (
+        request: express.Request
+    ): Promise<FavoriteTemplateSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -48,7 +57,7 @@ export class FavoriteTemplateValidator extends BaseValidator {
                 itemsPerPage: joi.number().optional(),
                 pageIndex: joi.number().optional(),
                 orderBy: joi.string().optional(),
-                order: joi.string().optional()
+                order: joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -59,7 +68,9 @@ export class FavoriteTemplateValidator extends BaseValidator {
         }
     };
 
-    private getSearchFilters = (query: ParsedQs): FavoriteTemplateSearchFilters => {
+    private getSearchFilters = (
+        query: ParsedQs
+    ): FavoriteTemplateSearchFilters => {
         const filters: any = {};
 
         const id = query.id ? query.id : null;
@@ -99,4 +110,4 @@ export class FavoriteTemplateValidator extends BaseValidator {
 
         return filters;
     };
-} 
+}

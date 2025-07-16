@@ -1,4 +1,4 @@
-import { FormSectionResponseDto } from "../../../../domain.types/forms/form.section.domain.types";
+import { FormSectionResponseDto } from '../../../../domain.types/forms/form.section.domain.types';
 
 export class FormSectionMapper {
     static toDto = (record: any): FormSectionResponseDto => {
@@ -16,7 +16,7 @@ export class FormSectionMapper {
             Sequence: record.Sequence,
             ParentSectionId: record.ParentSectionId,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };

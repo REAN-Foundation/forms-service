@@ -1,10 +1,13 @@
 import joi from 'joi';
 import express from 'express';
-import {
-    ErrorHandler
-} from '../../common/handlers/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { FormSubmissionCreateModel, FormSubmissionDto, FormSubmissionSearchFilters, FormSubmissionUpdateModel } from '../../domain.types/forms/form.submission.domain.types';
+import {
+    FormSubmissionCreateModel,
+    FormSubmissionDto,
+    FormSubmissionSearchFilters,
+    FormSubmissionUpdateModel,
+} from '../../domain.types/forms/form.submission.domain.types';
 import { FormStatus } from '../../domain.types/forms/form.submission.enums';
 import { FormType } from '../../domain.types/forms/form.template.enums';
 import { ParsedQs } from 'qs';
@@ -15,8 +18,9 @@ import { ApiError } from '../../common/api.error';
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormValidator extends BaseValidator {
-
-    public validateCreateRequest = async (request: express.Request): Promise<FormSubmissionCreateModel> => {
+    public validateCreateRequest = async (
+        request: express.Request
+    ): Promise<FormSubmissionCreateModel> => {
         try {
             const schema = joi.object({
                 UserId: joi.string().uuid().optional(),
@@ -33,7 +37,9 @@ export class FormValidator extends BaseValidator {
         }
     };
 
-    public validateUpdateRequest = async (request: express.Request): Promise<FormSubmissionUpdateModel | undefined> => {
+    public validateUpdateRequest = async (
+        request: express.Request
+    ): Promise<FormSubmissionUpdateModel | undefined> => {
         try {
             const schema = joi.object({
                 UserId: joi.string().uuid().optional(),
@@ -44,36 +50,43 @@ export class FormValidator extends BaseValidator {
                 LinkQueryParams: joi.object().optional(),
                 Status: joi.string().optional(),
                 SubmittedAt: joi.date().optional(),
-
             });
 
             await schema.validateAsync(request.body);
-            const model: FormSubmissionUpdateModel = this.getFormSubmissionUpdateModel(request);
+            const model: FormSubmissionUpdateModel =
+                this.getFormSubmissionUpdateModel(request);
             return model;
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateSubmitRequest = async (request: express.Request): Promise<string> => {
+    public validateSubmitRequest = async (
+        request: express.Request
+    ): Promise<string> => {
         try {
             const schema = joi.object({
                 SubmissionKey: joi.string().length(64).required(),
-           });
+            });
 
             await schema.validateAsync(request.body);
-           return request.body.SubmissionKey;
+            return request.body.SubmissionKey;
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
-    public validateSearchRequest = async (request: express.Request): Promise<FormSubmissionSearchFilters> => {
+    };
+    public validateSearchRequest = async (
+        request: express.Request
+    ): Promise<FormSubmissionSearchFilters> => {
         try {
             const schema = joi.object({
                 formTemplateId: joi.string().uuid().optional(),
                 userId: joi.string().uuid().optional(),
                 encrypted: joi.string().optional(),
-                status: joi.string().valid(...Object.values(FormStatus)).optional(),
+                status: joi
+                    .string()
+                    .valid(...Object.values(FormStatus))
+                    .optional(),
                 validTill: joi.date().optional(),
                 submittedAt: joi.date().optional(),
                 link: joi.string().optional(),
@@ -91,27 +104,34 @@ export class FormValidator extends BaseValidator {
     };
 
     public _validateSubmission(submission: FormSubmissionDto) {
-        if(!submission) {
+        if (!submission) {
             throw new ApiError('Form not found!', 404);
         }
 
-        if (submission.Status === FormStatus.Submitted || submission.SubmittedAt !== null) {
+        if (
+            submission.Status === FormStatus.Submitted ||
+            submission.SubmittedAt !== null
+        ) {
             throw new ApiError('Form already submitted!', 409);
         }
-    
+
         if (submission.ValidTill < new Date()) {
             throw new ApiError('Form link is expired!', 400);
         }
-    
+
         // if (submission.Status !== FormStatus.InProgress) {
         //     throw new ApiError('Please save the form first!', 400);
         // }
     }
 
-    private getSearchFilters = (query: ParsedQs): FormSubmissionSearchFilters => {
+    private getSearchFilters = (
+        query: ParsedQs
+    ): FormSubmissionSearchFilters => {
         var filters: any = {};
 
-        const formTemplateId = query.formTemplateId ? query.formTemplateId : null;
+        const formTemplateId = query.formTemplateId
+            ? query.formTemplateId
+            : null;
         if (formTemplateId != null) {
             filters['FormTemplateId'] = formTemplateId;
         }
@@ -162,31 +182,36 @@ export class FormValidator extends BaseValidator {
         return filters;
     };
 
-    private getFormSubmissionCreateModel = (request: express.Request): FormSubmissionCreateModel => {
+    private getFormSubmissionCreateModel = (
+        request: express.Request
+    ): FormSubmissionCreateModel => {
         const model: FormSubmissionCreateModel = {
             FormTemplateId: request.body.FormTemplateId,
             Title: request.body.Title ?? null,
             UserId: request.body.UserId ?? null,
             Status: request.body.Status ?? FormStatus.LinkShared,
-            Category: request.body.FormCategory as FormType ?? FormType.Survey,
-
+            Category:
+                (request.body.FormCategory as FormType) ?? FormType.Survey,
         };
 
-        const validTill = TimeHelper.addDuration(new Date(), 1, DurationType.Day);
+        const validTill = TimeHelper.addDuration(
+            new Date(),
+            1,
+            DurationType.Day
+        );
         model.ValidTill = validTill;
         return model;
     };
 
-    getFormSubmissionUpdateModel = (request) => {
-
+    getFormSubmissionUpdateModel = request => {
         const model: FormSubmissionUpdateModel = {};
         if (request.body.UserId) {
             model.UserId = request.body.UserId;
         }
 
-         if (request.body.FormTemplateId) {
+        if (request.body.FormTemplateId) {
             model.FormTemplateId = request.body.FormTemplateId;
-         }
+        }
 
         if (request.body.Encrypted) {
             model.Encrypted = request.body.Encrypted;
@@ -209,9 +234,8 @@ export class FormValidator extends BaseValidator {
         }
 
         if (request.body.SubmittedAt) {
-            model.SubmittedAt = request.body.SubmittedAt
+            model.SubmittedAt = request.body.SubmittedAt;
         }
         return model;
-    }
-
+    };
 }

@@ -4,7 +4,6 @@ import { ValidationRuleController } from './validation.rule.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new ValidationRuleController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteValidationRule);
 
     app.use('/api/v1/field-validation-rules', router);
-}; 
+};

@@ -11,4 +11,4 @@ export abstract class BaseOperationEntity extends BaseEntity {
 
     @Column({ type: 'varchar', length: 50, nullable: false })
     Type: OperationType;
-} 
+}

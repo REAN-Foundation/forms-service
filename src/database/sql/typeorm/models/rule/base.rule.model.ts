@@ -13,4 +13,4 @@ export abstract class BaseRuleEntity extends BaseEntity {
 
     @Column({ type: 'boolean', nullable: false, default: true })
     IsActive: boolean;
-} 
+}

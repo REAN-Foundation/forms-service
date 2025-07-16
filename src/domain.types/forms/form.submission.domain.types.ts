@@ -1,17 +1,20 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { FormStatus } from "./form.submission.enums";
-import { FormType } from "./form.template.enums";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
+import { FormStatus } from './form.submission.enums';
+import { FormType } from './form.template.enums';
 
 export interface FormSubmissionCreateModel {
     FormTemplateId: string;
     UserId?: string;
     Title?: string;
-    Encrypted? : string;
-    Unencrypted? : string;
-    Link? : string;
-    LinkQueryParams? : LinkQueryParams;
-    ValidTill? : Date;
-    SubmittedAt? : Date;
+    Encrypted?: string;
+    Unencrypted?: string;
+    Link?: string;
+    LinkQueryParams?: LinkQueryParams;
+    ValidTill?: Date;
+    SubmittedAt?: Date;
     Status?: FormStatus;
     Category: FormType;
 }
@@ -26,13 +29,13 @@ export interface LinkQueryParams {
 export interface FormSubmissionUpdateModel {
     UserId?: string;
     FormTemplateId?: string;
-    Encrypted? : string;
-    Unencrypted? : string;
-    Link? : string;
-    QueryParams? : LinkQueryParams;
-    LinkQueryParams? : string;
-    ValidTill? : Date;
-    SubmittedAt? : Date;
+    Encrypted?: string;
+    Unencrypted?: string;
+    Link?: string;
+    QueryParams?: LinkQueryParams;
+    LinkQueryParams?: string;
+    ValidTill?: Date;
+    SubmittedAt?: Date;
     Status?: FormStatus;
     Category?: FormType;
 }
@@ -42,12 +45,12 @@ export interface FormSubmissionDto {
     FormTemplateId?: string;
     UserId?: string;
     Title?: string;
-    Encrypted? : string;
-    Unencrypted? : string;
-    Link? : string;
-    LinkQueryParams? : LinkQueryParams;
-    SubmittedAt? : Date;
-    ValidTill? : Date;
+    Encrypted?: string;
+    Unencrypted?: string;
+    Link?: string;
+    LinkQueryParams?: LinkQueryParams;
+    SubmittedAt?: Date;
+    ValidTill?: Date;
     Status?: FormStatus;
     Category?: FormType;
 }
@@ -58,16 +61,16 @@ export interface FormSubmissionSearchFilters extends BaseSearchFilters {
     Encrypted?: string;
     Status?: FormStatus;
     ValidTill?: Date;
-    SubmittedAt?:Date;
+    SubmittedAt?: Date;
 }
 
 export interface FormSubmissionSearchResults extends BaseSearchResults {
     Items: FormSubmissionSearchResponseDto[];
 }
 
-export interface FormSubmissionSearchResponseDto extends BaseSearchResults{
+export interface FormSubmissionSearchResponseDto extends BaseSearchResults {
     id: string;
-    ParentFormTemplateId: string,
+    ParentFormTemplateId: string;
     ParentFormTemplate: {
         id: string;
         Title: string;
@@ -77,7 +80,7 @@ export interface FormSubmissionSearchResponseDto extends BaseSearchResults{
         DisplayCode: string;
         OwnerUserId: string;
         RootSectionId: string;
-        DefaultSectionNumbering: boolean
+        DefaultSectionNumbering: boolean;
         CreatedAt: Date;
         UpdatedAt: Date;
     };
@@ -87,6 +90,4 @@ export interface FormSubmissionSearchResponseDto extends BaseSearchResults{
     SubmissionTimestamp: Date;
     CreatedAt: Date;
     UpdatedAt: Date;
-};
-
-
+}

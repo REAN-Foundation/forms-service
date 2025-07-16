@@ -1,6 +1,4 @@
-
 export class ApiError extends Error {
-
     Trace: any = null;
     Code = 500;
 
@@ -11,5 +9,4 @@ export class ApiError extends Error {
         this.Trace = error != null ? error.stack : '';
         this.Code = errorCode ?? 500;
     }
-
 }

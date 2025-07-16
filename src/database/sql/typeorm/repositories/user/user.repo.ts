@@ -1,29 +1,27 @@
-import { UserCreateModel } from "../../../../../domain.types/forms/user.domain.types";
-import { IUserRepo } from "../../../../repository.interfaces/user/user.repo.interface";
-import { UserResponseDto } from "../../../../../domain.types/forms/user.domain.types";
-import { UserUpdateModel } from "../../../../../domain.types/forms/user.domain.types";
-import { UserSearchFilters } from "../../../../../domain.types/forms/user.domain.types";
-import { Source } from "../../database.connector.typeorm";
-import { User } from "../../models/user/user.model";
-import { UserMapper } from "../../mappers/user.mapper";
-import { Logger } from "../../../../../common/logger";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { FindManyOptions, Repository } from "typeorm";
-import { BaseRepo } from "../base.repo";
+import { UserCreateModel } from '../../../../../domain.types/forms/user.domain.types';
+import { IUserRepo } from '../../../../repository.interfaces/user/user.repo.interface';
+import { UserResponseDto } from '../../../../../domain.types/forms/user.domain.types';
+import { UserUpdateModel } from '../../../../../domain.types/forms/user.domain.types';
+import { UserSearchFilters } from '../../../../../domain.types/forms/user.domain.types';
+import { Source } from '../../database.connector.typeorm';
+import { User } from '../../models/user/user.model';
+import { UserMapper } from '../../mappers/user.mapper';
+import { Logger } from '../../../../../common/logger';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { FindManyOptions, Repository } from 'typeorm';
+import { BaseRepo } from '../base.repo';
 
 export class UserRepo extends BaseRepo implements IUserRepo {
-
     _userRepo: Repository<User> = Source.getRepository(User);
 
     allUsers = async () => {
         const response = await this._userRepo.find({
             where: {
-                DeletedAt: null
-            }
+                DeletedAt: null,
+            },
         });
         return UserMapper.toArrayDto(response);
     };
-
 
     create = async (model: UserCreateModel): Promise<UserResponseDto> => {
         try {
@@ -43,9 +41,11 @@ export class UserRepo extends BaseRepo implements IUserRepo {
         }
     };
 
-    update = async (id: string, model: UserUpdateModel): Promise<UserResponseDto> => {
+    update = async (
+        id: string,
+        model: UserUpdateModel
+    ): Promise<UserResponseDto> => {
         try {
-
             const updateData = await this._userRepo.findOne({
                 where: {
                     id: id,
@@ -53,9 +53,10 @@ export class UserRepo extends BaseRepo implements IUserRepo {
                 },
             });
 
-
             if (!updateData) {
-                ErrorHandler.throwNotFoundError('Question Response Data not found!');
+                ErrorHandler.throwNotFoundError(
+                    'Question Response Data not found!'
+                );
             }
 
             if (model.FirstName) {
@@ -86,11 +87,9 @@ export class UserRepo extends BaseRepo implements IUserRepo {
 
             updateData.UpdatedAt = new Date();
 
-
             var record = await this._userRepo.save(updateData);
             return UserMapper.toDto(record);
-        }
-        catch (error) {
+        } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
@@ -104,9 +103,7 @@ export class UserRepo extends BaseRepo implements IUserRepo {
                 },
             });
             return UserMapper.toDto(record);
-        }
-
-        catch (error) {
+        } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -127,8 +124,7 @@ export class UserRepo extends BaseRepo implements IUserRepo {
             record.DeletedAt = new Date();
             await this._userRepo.save(record);
             return true;
-        }
-        catch (error) {
+        } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
@@ -137,7 +133,8 @@ export class UserRepo extends BaseRepo implements IUserRepo {
     search = async (filters: UserSearchFilters): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
-            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            var { search, pageIndex, limit, order, orderByColumn } =
+                this.addSortingAndPagination(search, filters);
             const [list, count] = await this._userRepo.findAndCount(search);
 
             const searchResults = {
@@ -151,43 +148,43 @@ export class UserRepo extends BaseRepo implements IUserRepo {
             };
 
             return searchResults;
-        }
-
-        catch (error) {
+        } catch (error) {
             Logger.instance().log(error.message);
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+            ErrorHandler.throwDbAccessError(
+                'DB Error: Unable to search records!',
+                error
+            );
         }
     };
 
     private getSearchModel = (filters: UserSearchFilters) => {
-
         var search: FindManyOptions<User> = {
             relations: {},
             where: {},
         };
 
         if (filters.firstName) {
-            search.where["FirstName"] = filters.firstName;
-        };
+            search.where['FirstName'] = filters.firstName;
+        }
 
         if (filters.lastName) {
-            search.where["LastName"] = filters.lastName;
+            search.where['LastName'] = filters.lastName;
         }
 
         if (filters.countryCode) {
-            search.where["CountryCode"] = filters.countryCode;
+            search.where['CountryCode'] = filters.countryCode;
         }
 
         if (filters.email) {
-            search.where["Email"] = filters.email;
+            search.where['Email'] = filters.email;
         }
 
         if (filters.username) {
-            search.where["Username"] = filters.username;
+            search.where['Username'] = filters.username;
         }
 
         if (filters.password) {
-            search.where["Password"] = filters.password;
+            search.where['Password'] = filters.password;
         }
 
         return search;

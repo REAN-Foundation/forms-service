@@ -1,4 +1,7 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
 
 export interface UserCreateModel {
     FirstName: string;
@@ -29,7 +32,7 @@ export interface UserResponseDto {
     Email: string;
     Username: string;
     Password: string;
-    CreatedAt: Date
+    CreatedAt: Date;
 }
 
 export interface UserSearchFilters extends BaseSearchFilters {
@@ -42,12 +45,11 @@ export interface UserSearchFilters extends BaseSearchFilters {
     password?: string;
 }
 
-
 export interface UserSearchResults extends BaseSearchResults {
     Items: UserSearchResponseDto[];
 }
 
-export interface UserSearchResponseDto extends BaseSearchResults{
+export interface UserSearchResponseDto extends BaseSearchResults {
     id: string;
     FirstName: string;
     LastName: string;
@@ -56,5 +58,5 @@ export interface UserSearchResponseDto extends BaseSearchResults{
     Email: string;
     Username: string;
     Password: string;
-    CreatedAt: Date
+    CreatedAt: Date;
 }

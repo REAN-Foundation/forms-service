@@ -1,10 +1,13 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { 
-    OperationType, 
-    LogicalOperatorType, 
-    MathematicalOperatorType, 
-    CompositionOperatorType 
-} from "./operation.enums";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
+import {
+    OperationType,
+    LogicalOperatorType,
+    MathematicalOperatorType,
+    CompositionOperatorType,
+} from './operation.enums';
 
 // Base Operation DTOs
 export interface BaseOperationCreateModel {
@@ -45,36 +48,42 @@ export interface LogicalOperationResponseDto extends BaseOperationResponseDto {
 }
 
 // Mathematical Operation DTOs
-export interface MathematicalOperationCreateModel extends BaseOperationCreateModel {
+export interface MathematicalOperationCreateModel
+    extends BaseOperationCreateModel {
     Operator: MathematicalOperatorType;
     Operands: string; // JSON serialized Operand[]
     ResultDataType: string;
 }
 
-export interface MathematicalOperationUpdateModel extends BaseOperationUpdateModel {
+export interface MathematicalOperationUpdateModel
+    extends BaseOperationUpdateModel {
     Operator?: MathematicalOperatorType;
     Operands?: string; // JSON serialized Operand[]
     ResultDataType?: string;
 }
 
-export interface MathematicalOperationResponseDto extends BaseOperationResponseDto {
+export interface MathematicalOperationResponseDto
+    extends BaseOperationResponseDto {
     Operator: MathematicalOperatorType;
     Operands: string; // JSON serialized Operand[]
     ResultDataType: string;
 }
 
 // Composition Operation DTOs
-export interface CompositionOperationCreateModel extends BaseOperationCreateModel {
+export interface CompositionOperationCreateModel
+    extends BaseOperationCreateModel {
     Operator: CompositionOperatorType;
     Operands: string; // JSON serialized Operand[]
 }
 
-export interface CompositionOperationUpdateModel extends BaseOperationUpdateModel {
+export interface CompositionOperationUpdateModel
+    extends BaseOperationUpdateModel {
     Operator?: CompositionOperatorType;
     Operands?: string; // JSON serialized Operand[]
 }
 
-export interface CompositionOperationResponseDto extends BaseOperationResponseDto {
+export interface CompositionOperationResponseDto
+    extends BaseOperationResponseDto {
     Operator: CompositionOperatorType;
     Operands: string; // JSON serialized Operand[]
 }
@@ -107,19 +116,22 @@ export interface IterateOperationResponseDto extends BaseOperationResponseDto {
 }
 
 // Function Expression Operation DTOs
-export interface FunctionExpressionOperationCreateModel extends BaseOperationCreateModel {
+export interface FunctionExpressionOperationCreateModel
+    extends BaseOperationCreateModel {
     Expression: string;
     Variables: string; // JSON serialized Record<string, Operand>
     ResultDataType: string;
 }
 
-export interface FunctionExpressionOperationUpdateModel extends BaseOperationUpdateModel {
+export interface FunctionExpressionOperationUpdateModel
+    extends BaseOperationUpdateModel {
     Expression?: string;
     Variables?: string; // JSON serialized Record<string, Operand>
     ResultDataType?: string;
 }
 
-export interface FunctionExpressionOperationResponseDto extends BaseOperationResponseDto {
+export interface FunctionExpressionOperationResponseDto
+    extends BaseOperationResponseDto {
     Expression: string;
     Variables: string; // JSON serialized Record<string, Operand>
     ResultDataType: string;
@@ -130,7 +142,10 @@ export interface OperationSearchFilters extends BaseSearchFilters {
     id?: string;
     name?: string;
     description?: string;
-    operator?: LogicalOperatorType | MathematicalOperatorType | CompositionOperatorType;
+    operator?:
+        | LogicalOperatorType
+        | MathematicalOperatorType
+        | CompositionOperatorType;
 }
 
 export interface OperationSearchResults extends BaseSearchResults {
@@ -143,4 +158,4 @@ export interface OperationSearchResponseDto extends BaseSearchResults {
     Description?: string;
     CreatedAt: Date;
     UpdatedAt?: Date;
-} 
+}

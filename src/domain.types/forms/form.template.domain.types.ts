@@ -1,7 +1,10 @@
-import { FormType } from "./form.template.enums";
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { uuid } from "../miscellaneous/system.types";
-import { QuestionOption } from "./question.domain.types";
+import { FormType } from './form.template.enums';
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
+import { uuid } from '../miscellaneous/system.types';
+import { QuestionOption } from './question.domain.types';
 
 export interface FormTemplateCreateModel {
     Title: string;
@@ -12,7 +15,7 @@ export interface FormTemplateCreateModel {
     DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
-    DefaultSectionNumbering: boolean
+    DefaultSectionNumbering: boolean;
 }
 
 export interface FormTemplateUpdateModel {
@@ -24,7 +27,7 @@ export interface FormTemplateUpdateModel {
     DisplayCode?: string;
     OwnerUserId?: string;
     RootSectionId?: string;
-    DefaultSectionNumbering?: boolean
+    DefaultSectionNumbering?: boolean;
 }
 
 export interface FormTemplateResponseDto {
@@ -37,7 +40,7 @@ export interface FormTemplateResponseDto {
     DisplayCode: string;
     OwnerUserId?: string;
     RootSectionId: string;
-    DefaultSectionNumbering: boolean
+    DefaultSectionNumbering: boolean;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
@@ -52,9 +55,8 @@ export interface FormTemplateSearchFilters extends BaseSearchFilters {
     DisplayCode?: string;
     OwnerUserId?: uuid;
     RootSectionId?: uuid;
-    DefaultSectionNumbering?: boolean
+    DefaultSectionNumbering?: boolean;
 }
-
 
 export interface FormTemplateSearchResults extends BaseSearchResults {
     Items: FormTemplateSearchResponseDto[];
@@ -70,11 +72,10 @@ export interface FormTemplateSearchResponseDto extends BaseSearchResults {
     DisplayCode: string;
     OwnerUserId: string;
     RootSectionId: string;
-    DefaultSectionNumbering: boolean
+    DefaultSectionNumbering: boolean;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
-
 
 export interface ExportFormTemplateDto {
     Sections: any;
@@ -87,7 +88,7 @@ export interface TemplateDto extends FormTemplateResponseDto {
 
 export interface SectionDto {
     id: string;
-    SectionIdentifier? : string;
+    SectionIdentifier?: string;
     Title: string;
     Description: string;
     DisplayCode: string;
@@ -153,7 +154,7 @@ export interface TemplatePreviewDto {
     DisplayCode: string;
     OwnerUserId?: string;
     RootSectionId: string;
-    DefaultSectionNumbering: boolean
+    DefaultSectionNumbering: boolean;
     CreatedAt: Date;
     UpdatedAt: Date;
     RootSection: SectionPreviewDto[];

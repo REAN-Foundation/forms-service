@@ -1,7 +1,5 @@
-import {
-    CalculationLogicResponseDto,
-} from "../../../../domain.types/forms/logic.domain.types";
-import { LogicType } from "../../../../domain.types/forms/logic.enums";
+import { CalculationLogicResponseDto } from '../../../../domain.types/forms/logic.domain.types';
+import { LogicType } from '../../../../domain.types/forms/logic.enums';
 
 export class CalculationLogicMapper {
     static toDto = (record: any): CalculationLogicResponseDto => {
@@ -16,7 +14,7 @@ export class CalculationLogicMapper {
             Enabled: record.Enabled,
             FallbackValue: record.FallbackValue,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -27,4 +25,4 @@ export class CalculationLogicMapper {
         }
         return records.map(record => CalculationLogicMapper.toDto(record));
     }
-} 
+}

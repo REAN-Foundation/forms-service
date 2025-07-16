@@ -1,24 +1,29 @@
-import { IIterateOperationRepo } from "../../../../repository.interfaces/field.operations/iterate.operation/iterate.operation.repo.interface";
+import { IIterateOperationRepo } from '../../../../repository.interfaces/field.operations/iterate.operation/iterate.operation.repo.interface';
 import {
     IterateOperationResponseDto,
     IterateOperationCreateModel,
     IterateOperationUpdateModel,
-    OperationSearchFilters
-} from "../../../../../domain.types/forms/operation.domain.types";
-import { IterateOperationMapper } from "../../mappers/iterate.operation.mapper";
-import { IterateOperationEntity } from "../../models/operation/iterate.operation.model";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+    OperationSearchFilters,
+} from '../../../../../domain.types/forms/operation.domain.types';
+import { IterateOperationMapper } from '../../mappers/iterate.operation.mapper';
+import { IterateOperationEntity } from '../../models/operation/iterate.operation.model';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class IterateOperationRepo extends BaseRepo implements IIterateOperationRepo {
+export class IterateOperationRepo
+    extends BaseRepo
+    implements IIterateOperationRepo
+{
+    _iterateOperationRepo: Repository<IterateOperationEntity> =
+        Source.getRepository(IterateOperationEntity);
 
-    _iterateOperationRepo: Repository<IterateOperationEntity> = Source.getRepository(IterateOperationEntity);
-    
     // Iterate Operation operations
-    createIterateOperation = async (model: IterateOperationCreateModel): Promise<IterateOperationResponseDto> => {
+    createIterateOperation = async (
+        model: IterateOperationCreateModel
+    ): Promise<IterateOperationResponseDto> => {
         try {
             const data = this._iterateOperationRepo.create({
                 Name: model.Name,
@@ -27,7 +32,7 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
                 CollectionField: model.CollectionField,
                 ResultField: model.ResultField,
                 OperationId: model.OperationId,
-                FilterExpression: model.FilterExpression
+                FilterExpression: model.FilterExpression,
             });
             const record = await this._iterateOperationRepo.save(data);
             return IterateOperationMapper.toDto(record);
@@ -36,7 +41,10 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
         }
     };
 
-    updateIterateOperation = async (id: string, model: IterateOperationUpdateModel): Promise<IterateOperationResponseDto> => {
+    updateIterateOperation = async (
+        id: string,
+        model: IterateOperationUpdateModel
+    ): Promise<IterateOperationResponseDto> => {
         try {
             const updateData = await this._iterateOperationRepo.findOne({
                 where: {
@@ -45,7 +53,9 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError("Iterate Operation Data not found!");
+                ErrorHandler.throwNotFoundError(
+                    'Iterate Operation Data not found!'
+                );
             }
 
             if (model.Name) {
@@ -79,7 +89,9 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
         }
     };
 
-    getIterateOperationById = async (id: string): Promise<IterateOperationResponseDto> => {
+    getIterateOperationById = async (
+        id: string
+    ): Promise<IterateOperationResponseDto> => {
         try {
             const record = await this._iterateOperationRepo.findOne({
                 where: {
@@ -115,19 +127,22 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
         }
     };
 
-    searchIterateOperation = async (filters: OperationSearchFilters): Promise<any> => {
+    searchIterateOperation = async (
+        filters: OperationSearchFilters
+    ): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } =
                 this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._iterateOperationRepo.findAndCount(search);
+            const [list, count] =
+                await this._iterateOperationRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: IterateOperationMapper.toArrayDto(list),
             };
@@ -135,7 +150,7 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -148,18 +163,17 @@ export class IterateOperationRepo extends BaseRepo implements IIterateOperationR
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.name) {
-            search.where["Name"] = filters.name;
+            search.where['Name'] = filters.name;
         }
 
         if (filters.description) {
-            search.where["Description"] = filters.description;
+            search.where['Description'] = filters.description;
         }
 
         return search;
     };
-
-} 
+}

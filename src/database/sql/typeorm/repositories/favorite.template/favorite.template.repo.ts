@@ -1,18 +1,28 @@
-import { FavoriteTemplateCreateModel, FavoriteTemplateResponseDto, FavoriteTemplateSearchFilters, FavoriteTemplateUpdateModel } from "../../../../../domain.types/forms/favorite.template.domain.types";
-import { IFavoriteTemplateRepo } from "../../../../repository.interfaces/favorite.template/favorite.template.repo.interface";
-import { FavoriteTemplate } from "../../models/favorite.template/favorite.template.model";
-import { Source } from "../../database.connector.typeorm";
-import { FavoriteTemplateMapper } from "../../mappers/favorite.template.mapper";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+import {
+    FavoriteTemplateCreateModel,
+    FavoriteTemplateResponseDto,
+    FavoriteTemplateSearchFilters,
+    FavoriteTemplateUpdateModel,
+} from '../../../../../domain.types/forms/favorite.template.domain.types';
+import { IFavoriteTemplateRepo } from '../../../../repository.interfaces/favorite.template/favorite.template.repo.interface';
+import { FavoriteTemplate } from '../../models/favorite.template/favorite.template.model';
+import { Source } from '../../database.connector.typeorm';
+import { FavoriteTemplateMapper } from '../../mappers/favorite.template.mapper';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class FavoriteTemplateRepo extends BaseRepo implements IFavoriteTemplateRepo {
+export class FavoriteTemplateRepo
+    extends BaseRepo
+    implements IFavoriteTemplateRepo
+{
+    _favoriteTemplateRepo: Repository<FavoriteTemplate> =
+        Source.getRepository(FavoriteTemplate);
 
-    _favoriteTemplateRepo: Repository<FavoriteTemplate> = Source.getRepository(FavoriteTemplate);
-
-    create = async (model: FavoriteTemplateCreateModel): Promise<FavoriteTemplateResponseDto> => {
+    create = async (
+        model: FavoriteTemplateCreateModel
+    ): Promise<FavoriteTemplateResponseDto> => {
         try {
             const data = this._favoriteTemplateRepo.create({
                 UserId: model.UserId,
@@ -27,7 +37,10 @@ export class FavoriteTemplateRepo extends BaseRepo implements IFavoriteTemplateR
         }
     };
 
-    update = async (id: string, model: FavoriteTemplateUpdateModel): Promise<FavoriteTemplateResponseDto> => {
+    update = async (
+        id: string,
+        model: FavoriteTemplateUpdateModel
+    ): Promise<FavoriteTemplateResponseDto> => {
         try {
             const record = await this._favoriteTemplateRepo.findOne({
                 where: {
@@ -95,24 +108,32 @@ export class FavoriteTemplateRepo extends BaseRepo implements IFavoriteTemplateR
     search = async (filters: FavoriteTemplateSearchFilters): Promise<any> => {
         try {
             const search = this.getSearchModel(filters);
-            const { search: searchWithPagination, pageIndex, limit, order, orderByColumn } =
-                this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._favoriteTemplateRepo.findAndCount(searchWithPagination);
+            const {
+                search: searchWithPagination,
+                pageIndex,
+                limit,
+                order,
+                orderByColumn,
+            } = this.addSortingAndPagination(search, filters);
+            const [list, count] =
+                await this._favoriteTemplateRepo.findAndCount(
+                    searchWithPagination
+                );
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
-                Items: list.map((x) => FavoriteTemplateMapper.toDto(x)),
+                Items: list.map(x => FavoriteTemplateMapper.toDto(x)),
             };
             return searchResults;
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -125,17 +146,17 @@ export class FavoriteTemplateRepo extends BaseRepo implements IFavoriteTemplateR
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.UserId) {
-            search.where["UserId"] = filters.UserId;
+            search.where['UserId'] = filters.UserId;
         }
 
         if (filters.TemplateId) {
-            search.where["TemplateId"] = filters.TemplateId;
+            search.where['TemplateId'] = filters.TemplateId;
         }
 
         return search;
     };
-} 
+}

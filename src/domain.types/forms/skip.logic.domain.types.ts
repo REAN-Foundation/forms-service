@@ -1,5 +1,10 @@
-import { BaseLogicCreateModel, BaseLogicResponseDto, BaseLogicUpdateModel, SkipRuleResponseDto } from "./logic.domain.types";
-import { LogicType } from "./logic.enums";
+import {
+    BaseLogicCreateModel,
+    BaseLogicResponseDto,
+    BaseLogicUpdateModel,
+    SkipRuleResponseDto,
+} from './logic.domain.types';
+import { LogicType } from './logic.enums';
 
 export interface SkipLogicCreateModel extends BaseLogicCreateModel {
     Type: LogicType.Skip;

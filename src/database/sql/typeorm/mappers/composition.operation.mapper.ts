@@ -1,6 +1,4 @@
-import {
-    CompositionOperationResponseDto,
-} from "../../../../domain.types/forms/operation.domain.types";
+import { CompositionOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
 
 export class CompositionOperationMapper {
     static toDto = (record: any): CompositionOperationResponseDto => {
@@ -16,7 +14,7 @@ export class CompositionOperationMapper {
             Operator: record.Operator,
             Operands: record.Operands,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };

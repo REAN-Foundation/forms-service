@@ -1,16 +1,22 @@
-import { ExportFormTemplateDto, FormTemplateCreateModel, FormTemplateResponseDto, FormTemplateSearchFilters, FormTemplateUpdateModel } from "../../../domain.types/forms/form.template.domain.types";
+import {
+    ExportFormTemplateDto,
+    FormTemplateCreateModel,
+    FormTemplateResponseDto,
+    FormTemplateSearchFilters,
+    FormTemplateUpdateModel,
+} from '../../../domain.types/forms/form.template.domain.types';
 
+export interface IFormTemplateRepo {
+    create(model: FormTemplateCreateModel): Promise<FormTemplateResponseDto>;
 
-export interface IFormTemplateRepo{
-   
-    
-    create(model: FormTemplateCreateModel) : Promise<FormTemplateResponseDto>;
+    update(
+        id: string,
+        model: FormTemplateUpdateModel
+    ): Promise<FormTemplateResponseDto>;
 
-    update(id: string, model: FormTemplateUpdateModel) : Promise<FormTemplateResponseDto>;
+    getById(id: string): Promise<FormTemplateResponseDto>;
 
-    getById(id: string) : Promise<FormTemplateResponseDto>;
-
-    getDetailsById(id: string) : Promise<any>;
+    getDetailsById(id: string): Promise<any>;
 
     readTemplateObjToExport(id: string): Promise<ExportFormTemplateDto>;
 
@@ -18,8 +24,7 @@ export interface IFormTemplateRepo{
 
     delete(id: string): Promise<boolean>;
 
-    submissions(id: string): Promise<FormTemplateResponseDto[]>; 
+    submissions(id: string): Promise<FormTemplateResponseDto[]>;
 
-    search(filters: FormTemplateSearchFilters) : Promise<any>
-
+    search(filters: FormTemplateSearchFilters): Promise<any>;
 }

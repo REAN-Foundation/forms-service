@@ -1,6 +1,6 @@
 import mime = require('mime-types');
 import fs from 'fs';
-import path from "path";
+import path from 'path';
 import { ExportFormTemplateDto } from '../forms/form.template.domain.types';
 
 ////////////////////////////////////////////////////////////////////////////
@@ -11,13 +11,23 @@ export class Helper {
         return mimeType;
     };
 
-    public static storeTemplateToFileLocally = async (templateObj: ExportFormTemplateDto): Promise<{ dateFolder: string, filename: string, sourceFileLocation: string }> => {
+    public static storeTemplateToFileLocally = async (
+        templateObj: ExportFormTemplateDto
+    ): Promise<{
+        dateFolder: string;
+        filename: string;
+        sourceFileLocation: string;
+    }> => {
         const title = templateObj.Template.Title;
         const filename = Helper.strToFilename(title, 'json', '-');
         const tempDownloadFolder = Helper.downloadTemporaryFolder();
         const timestamp = Helper.getTimestamp();
         const dateFolder = Helper.getDateFolder();
-        const sourceFolder = path.join(tempDownloadFolder, dateFolder, timestamp);
+        const sourceFolder = path.join(
+            tempDownloadFolder,
+            dateFolder,
+            timestamp
+        );
         const sourceFileLocation = path.join(sourceFolder, filename);
 
         await fs.promises.mkdir(sourceFolder, { recursive: true });
@@ -29,7 +39,12 @@ export class Helper {
         return { dateFolder, filename, sourceFileLocation };
     };
 
-    public static strToFilename = (str: string, extension: string, delimiter: string, limitTo = 32): string => {
+    public static strToFilename = (
+        str: string,
+        extension: string,
+        delimiter: string,
+        limitTo = 32
+    ): string => {
         let tmp = str.replace(/ /g, delimiter).substring(0, limitTo);
         const ext = extension.startsWith('.') ? extension : '.' + extension;
         return tmp + ext;
@@ -51,4 +66,3 @@ export class Helper {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     };
 }
-

@@ -1,5 +1,9 @@
-import { BaseRuleCreateModel, BaseRuleResponseDto, BaseRuleUpdateModel } from "./rule.domain.types";
-import { BaseSearchFilters } from "../miscellaneous/base.search.types";
+import {
+    BaseRuleCreateModel,
+    BaseRuleResponseDto,
+    BaseRuleUpdateModel,
+} from './rule.domain.types';
+import { BaseSearchFilters } from '../miscellaneous/base.search.types';
 
 // Skip Rule DTOs
 export interface SkipRuleCreateModel extends BaseRuleCreateModel {
@@ -39,4 +43,4 @@ export interface SkipRuleSearchFilters extends BaseSearchFilters {
     isActive?: boolean;
     operationId?: string;
     logicId?: string;
-} 
+}

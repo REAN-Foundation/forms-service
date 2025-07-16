@@ -1,6 +1,6 @@
 // import { UserLoginSessionResponseDto } from "../domain.types/forms/form.section.domain.types";
 
-import { UserLoginSessionResponseDto } from "../../../../domain.types/forms/user.login.session.domain.types";
+import { UserLoginSessionResponseDto } from '../../../../domain.types/forms/user.login.session.domain.types';
 
 export class UserLoginSessionMapper {
     static toDto = (record: any): UserLoginSessionResponseDto => {
@@ -18,11 +18,11 @@ export class UserLoginSessionMapper {
                 Email: record.User.Email,
                 Username: record.User.Username,
                 Password: record.User.Password,
-                CreatedAt: record.User.CreatedAt
+                CreatedAt: record.User.CreatedAt,
             },
             IsActiveSession: record.IsActiveSession,
             StartedAt: record.StartedAt,
-            ValidTill: record.ValidTill
+            ValidTill: record.ValidTill,
         };
         return dto;
     };

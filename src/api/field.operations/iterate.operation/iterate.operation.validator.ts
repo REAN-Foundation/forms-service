@@ -5,15 +5,15 @@ import BaseValidator from '../../base.validator';
 import {
     IterateOperationCreateModel,
     IterateOperationUpdateModel,
-    OperationSearchFilters
+    OperationSearchFilters,
 } from '../../../domain.types/forms/operation.domain.types';
 import { OperationType } from '../../../domain.types/forms/operation.enums';
 
-
 export class IterateOperationValidator extends BaseValidator {
-
     // Iterate Operation validation
-    public validateIterateOperationCreateRequest = async (request: express.Request): Promise<IterateOperationCreateModel> => {
+    public validateIterateOperationCreateRequest = async (
+        request: express.Request
+    ): Promise<IterateOperationCreateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
@@ -31,14 +31,16 @@ export class IterateOperationValidator extends BaseValidator {
                 CollectionField: request.body.CollectionField,
                 ResultField: request.body.ResultField,
                 OperationId: request.body.OperationId,
-                FilterExpression: request.body.FilterExpression
+                FilterExpression: request.body.FilterExpression,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateIterateOperationUpdateRequest = async (request: express.Request): Promise<IterateOperationUpdateModel> => {
+    public validateIterateOperationUpdateRequest = async (
+        request: express.Request
+    ): Promise<IterateOperationUpdateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
@@ -55,14 +57,16 @@ export class IterateOperationValidator extends BaseValidator {
                 CollectionField: request.body.CollectionField,
                 ResultField: request.body.ResultField,
                 OperationId: request.body.OperationId,
-                FilterExpression: request.body.FilterExpression
+                FilterExpression: request.body.FilterExpression,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateOperationSearchRequest = async (request: express.Request): Promise<OperationSearchFilters> => {
+    public validateOperationSearchRequest = async (
+        request: express.Request
+    ): Promise<OperationSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -78,8 +82,12 @@ export class IterateOperationValidator extends BaseValidator {
                 id: request.query.id as string,
                 name: request.query.name as string,
                 description: request.query.description as string,
-                PageIndex: request.query.PageIndex ? parseInt(request.query.PageIndex as string) : 0,
-                ItemsPerPage: request.query.ItemsPerPage ? parseInt(request.query.ItemsPerPage as string) : 10,
+                PageIndex: request.query.PageIndex
+                    ? parseInt(request.query.PageIndex as string)
+                    : 0,
+                ItemsPerPage: request.query.ItemsPerPage
+                    ? parseInt(request.query.ItemsPerPage as string)
+                    : 10,
                 OrderBy: request.query.OrderBy as string,
                 Order: request.query.Order as 'ASC' | 'DESC',
             };
@@ -87,4 +95,4 @@ export class IterateOperationValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-} 
+}

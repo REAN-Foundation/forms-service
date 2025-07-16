@@ -1,129 +1,131 @@
-import { FormStatus } from "./form.submission.enums";
-import { QueryResponseType } from "./query.response.types";
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
+import { FormStatus } from './form.submission.enums';
+import { QueryResponseType } from './query.response.types';
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
 
 export interface QuestionResponseCreateModel {
     FormSubmissionId: string;
-    QuestionId      : string;
-    ResponseType    : QueryResponseType;
-    IntegerValue    : number;
-    FloatValue      : number;
-    BooleanValue    : string;
-    DateTimeValue   : Date;
-    Url             : string;
-    FileResourceId  : string;
-    TextValue       : string;
-    UserResponse    : string;
+    QuestionId: string;
+    ResponseType: QueryResponseType;
+    IntegerValue: number;
+    FloatValue: number;
+    BooleanValue: string;
+    DateTimeValue: Date;
+    Url: string;
+    FileResourceId: string;
+    TextValue: string;
+    UserResponse: string;
 }
 
 export interface QuestionResponseUpdateModel {
-    id?             : string;
+    id?: string;
     FormSubmissionId?: string;
-    QuestionId      ?: string;
-    ResponseType    ?: QueryResponseType;
-    IntegerValue    ?: number;
-    FloatValue      ?: number;
-    BooleanValue    ?: string;
-    DateTimeValue   ?: Date;
-    Url             ?: string;
-    FileResourceId  ?: string;
-    TextValue       ?: string;
-    UserResponse    ?: string;
+    QuestionId?: string;
+    ResponseType?: QueryResponseType;
+    IntegerValue?: number;
+    FloatValue?: number;
+    BooleanValue?: string;
+    DateTimeValue?: Date;
+    Url?: string;
+    FileResourceId?: string;
+    TextValue?: string;
+    UserResponse?: string;
 }
 
 export interface QuestionResponseSaveModel {
-    QuestionResponses: QuestionResponseUpdateModel[]
-    FormSubmissionKey: string,
+    QuestionResponses: QuestionResponseUpdateModel[];
+    FormSubmissionKey: string;
 }
 
 export interface QuestionResponseResponseDto {
-    id            : string;
+    id: string;
     FormSubmission?: {
-        id                 : string;
-        TemplateId         : string;
-        FormUrl            : string;
-        UserId             : string;
-        Status             : FormStatus;
+        id: string;
+        TemplateId: string;
+        FormUrl: string;
+        UserId: string;
+        Status: FormStatus;
         SubmissionTimestamp: Date;
-        CreatedAt          : Date;
-    }
+        CreatedAt: Date;
+    };
     Question?: {
-        id           : string;
-        Title        : string;
-        Description  : string;
-        DisplayCode  : string;
-        ResponseType : QueryResponseType;
-        Score        : number;
+        id: string;
+        Title: string;
+        Description: string;
+        DisplayCode: string;
+        ResponseType: QueryResponseType;
+        Score: number;
         CorrectAnswer: string;
-        Hint         : string;
-        TemplateId   : string;
-        SectionId    : string;
-        CreatedAt    : Date;
-        UpdatedAt    : Date;
-    }
-    ResponseType       : QueryResponseType;
-    IntegerValue       : number;
-    FloatValue         : GLfloat;
-    BooleanValue       ?: string;
-    DateTimeValue      : Date;
-    Url                : string;
-    FileResourceId     : string;
-    TextValue          : string;
+        Hint: string;
+        TemplateId: string;
+        SectionId: string;
+        CreatedAt: Date;
+        UpdatedAt: Date;
+    };
+    ResponseType: QueryResponseType;
+    IntegerValue: number;
+    FloatValue: GLfloat;
+    BooleanValue?: string;
+    DateTimeValue: Date;
+    Url: string;
+    FileResourceId: string;
+    TextValue: string;
     SubmissionTimestamp: Date;
-    LastSaveTimestamp  : Date
+    LastSaveTimestamp: Date;
 }
 
 export interface QuestionResponseSearchFilters extends BaseSearchFilters {
     FormSubmissionId?: string;
-    QuestionId      ?: string;
-    ResponseType    ?: QueryResponseType;
-    IntegerValue    ?: number;
-    FloatValue      ?: GLfloat;
-    BooleanValue    ?: string;
-    DateTimeValue   ?: Date;
-    Url             ?: string;
-    FileResourceId  ?: string;
-    TextValue       ?: string;
+    QuestionId?: string;
+    ResponseType?: QueryResponseType;
+    IntegerValue?: number;
+    FloatValue?: GLfloat;
+    BooleanValue?: string;
+    DateTimeValue?: Date;
+    Url?: string;
+    FileResourceId?: string;
+    TextValue?: string;
 }
-
 
 export interface QuestionResponseSearchResults extends BaseSearchResults {
     Items: QuestionResponseSearchResponseDto[];
 }
 
-export interface QuestionResponseSearchResponseDto extends BaseSearchResults{
-    id            : string;
+export interface QuestionResponseSearchResponseDto extends BaseSearchResults {
+    id: string;
     FormSubmission: {
-        id                 : string;
-        TemplateId         : string;
-        FormUrl            : string;
-        UserId             : string;
-        Status             : FormStatus;
+        id: string;
+        TemplateId: string;
+        FormUrl: string;
+        UserId: string;
+        Status: FormStatus;
         SubmissionTimestamp: Date;
-        CreatedAt          : Date;
-    }
+        CreatedAt: Date;
+    };
     Question: {
-        id           : string;
-        Title        : string;
-        Description  : string;
-        DisplayCode  : string;
-        ResponseType : QueryResponseType;
-        Score        : number;
+        id: string;
+        Title: string;
+        Description: string;
+        DisplayCode: string;
+        ResponseType: QueryResponseType;
+        Score: number;
         CorrectAnswer: string;
-        Hint         : string;
-        TemplateId   : string;
-        SectionId    : string;
-        CreatedAt    : Date;
-        UpdatedAt    : Date;
-    }
-    ResponseType       : QueryResponseType;
-    IntegerValue       : number;
-    FloatValue         : GLfloat;
-    BooleanValue       ?: string;
-    DateTimeValue      : Date;
-    Url                : string;
-    FileResourceId     : string;
-    TextValue          : string;
+        Hint: string;
+        TemplateId: string;
+        SectionId: string;
+        CreatedAt: Date;
+        UpdatedAt: Date;
+    };
+    ResponseType: QueryResponseType;
+    IntegerValue: number;
+    FloatValue: GLfloat;
+    BooleanValue?: string;
+    DateTimeValue: Date;
+    Url: string;
+    FileResourceId: string;
+    TextValue: string;
     SubmissionTimestamp: Date;
-    LastSaveTimestamp  : Date
+    LastSaveTimestamp: Date;
 }

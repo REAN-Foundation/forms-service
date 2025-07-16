@@ -1,5 +1,5 @@
 import express from 'express';
-import "reflect-metadata";
+import 'reflect-metadata';
 import cors from 'cors';
 import { Router } from './startup/router';
 import { Logger } from './common/logger';
@@ -13,7 +13,6 @@ import { DBConnector } from './database/sql/typeorm/database.connector.typeorm';
 /////////////////////////////////////////////////////////////////////////////////////
 
 export default class Application {
-
     public _app: express.Application = null;
 
     private _router: Router = null;
@@ -26,13 +25,11 @@ export default class Application {
     }
 
     public static instance(): Application {
-        return this._instance || (this._instance = new this())
+        return this._instance || (this._instance = new this());
     }
-
 
     start = async (): Promise<void> => {
         try {
-
             ConfigurationManager.loadConfigurations();
 
             Injector.registerInjections();
@@ -46,30 +43,32 @@ export default class Application {
             await this._router.init();
 
             await this.listen();
+        } catch (error) {
+            Logger.instance().log(
+                'An error occurred while starting Forms Service.' +
+                    error.message
+            );
         }
-        catch (error) {
-            Logger.instance().log('An error occurred while starting Forms Service.' + error.message);
-        }
-    }
+    };
 
     private setupMiddlewares = async (): Promise<boolean> => {
-
         return new Promise((resolve, reject) => {
             try {
-                this._app.use(express.urlencoded({ limit: '50mb', extended: true }));
+                this._app.use(
+                    express.urlencoded({ limit: '50mb', extended: true })
+                );
                 this._app.use(express.json({ limit: '50mb' }));
                 this._app.use(helmet());
                 this._app.use(cors());
-                
+
                 // Serve documentation
                 this._app.use('/api/docs', express.static('docs'));
                 this._app.get('/api/docs', (req, res) => {
                     res.sendFile('docs/index.html', { root: process.cwd() });
                 });
-                
+
                 resolve(true);
-            }
-            catch (error) {
+            } catch (error) {
                 reject(error);
             }
         });
@@ -80,16 +79,21 @@ export default class Application {
             try {
                 const port = process.env.PORT || 3000;
                 this._app.listen(port, () => {
-                    Logger.instance().log(`Form Service is running and listening on PORT ${port}`);
+                    Logger.instance().log(
+                        `Form Service is running and listening on PORT ${port}`
+                    );
                     resolve(true);
                 });
-            }
-            catch (error) {
-                Logger.instance().error("Error in Starting the server", 500, error);
+            } catch (error) {
+                Logger.instance().error(
+                    'Error in Starting the server',
+                    500,
+                    error
+                );
                 reject(error);
             }
-        })
-    }
+        });
+    };
 }
 
 async function connectDatabase_Primary() {

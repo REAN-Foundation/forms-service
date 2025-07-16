@@ -1,9 +1,7 @@
 export class Logger {
-
     private static _instance: Logger = null;
 
-    private constructor() {
-    }
+    private constructor() {}
 
     public static instance(): Logger {
         return this._instance || (this._instance = new this());
@@ -27,7 +25,7 @@ export class Logger {
         const err = {
             message: message,
             code: code,
-            details: details
+            details: details,
         };
         const temp_str = dateTime + '> ' + JSON.stringify(err, null, '    ');
         console.log(' ');
@@ -35,23 +33,22 @@ export class Logger {
     };
 
     logQuery(query: string, parameters?: any[]) {
-    console.log(`Query: ${query}`, parameters);
-  }
-  
-  logQueryError(error: string, query: string, parameters?: any[]) {
-    console.error(`Error: ${error}`, query, parameters);
-  }
-  
-  logQuerySlow(time: number, query: string, parameters?: any[]) {
-    console.warn(`Slow query (${time}ms): ${query}`, parameters);
-  }
-  
-  logSchemaBuild(message: string) {
-    console.log(message);
-  }
-  
-  logMigration(message: string) {
-    console.log(message);
-  }
+        console.log(`Query: ${query}`, parameters);
+    }
 
+    logQueryError(error: string, query: string, parameters?: any[]) {
+        console.error(`Error: ${error}`, query, parameters);
+    }
+
+    logQuerySlow(time: number, query: string, parameters?: any[]) {
+        console.warn(`Slow query (${time}ms): ${query}`, parameters);
+    }
+
+    logSchemaBuild(message: string) {
+        console.log(message);
+    }
+
+    logMigration(message: string) {
+        console.log(message);
+    }
 }

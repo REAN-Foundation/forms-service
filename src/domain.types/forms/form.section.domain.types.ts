@@ -1,4 +1,7 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
 
 export interface FormSectionCreateModel {
     ParentFormTemplateId: string;
@@ -33,7 +36,7 @@ export interface FormSectionResponseDto {
 }
 
 export interface FormSectionSearchFilters extends BaseSearchFilters {
-    id?: string
+    id?: string;
     parentFormTemplateId?: string;
     sectionIdentifier?: string;
     title?: string;
@@ -58,8 +61,8 @@ export interface FormSectionSearchResponseDto extends BaseSearchResults {
         DisplayCode: string;
         OwnerUserId: string;
         RootSectionId: string;
-        DefaultSectionNumbering: Boolean
-    }
+        DefaultSectionNumbering: Boolean;
+    };
     SectionIdentifier: string;
     Title: string;
     Description: string;
@@ -69,4 +72,3 @@ export interface FormSectionSearchResponseDto extends BaseSearchResults {
     CreatedAt: Date;
     UpdatedAt: Date;
 }
-

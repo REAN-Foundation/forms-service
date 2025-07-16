@@ -2,47 +2,57 @@ import joi from 'joi';
 import express from 'express';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { TemplateFolderCreateModel, TemplateFolderSearchFilters, TemplateFolderUpdateModel } from '../../domain.types/forms/template.folder.domain.types';
+import {
+    TemplateFolderCreateModel,
+    TemplateFolderSearchFilters,
+    TemplateFolderUpdateModel,
+} from '../../domain.types/forms/template.folder.domain.types';
 import { ParsedQs } from 'qs';
 
 export class TemplateFolderValidator extends BaseValidator {
-    public validateCreateRequest = async (request: express.Request): Promise<TemplateFolderCreateModel> => {
+    public validateCreateRequest = async (
+        request: express.Request
+    ): Promise<TemplateFolderCreateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().max(128).required(),
                 Description: joi.string().max(512).optional(),
-                ParentFolderId: joi.string().uuid().optional()
+                ParentFolderId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                ParentFolderId: request.body.ParentFolderId
+                ParentFolderId: request.body.ParentFolderId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateUpdateRequest = async (request: express.Request): Promise<TemplateFolderUpdateModel> => {
+    public validateUpdateRequest = async (
+        request: express.Request
+    ): Promise<TemplateFolderUpdateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().max(128).optional(),
                 Description: joi.string().max(512).optional(),
-                ParentFolderId: joi.string().uuid().optional()
+                ParentFolderId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 Name: request.body.Name ?? null,
                 Description: request.body.Description ?? null,
-                ParentFolderId: request.body.ParentFolderId ?? null
+                ParentFolderId: request.body.ParentFolderId ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateSearchRequest = async (request: express.Request): Promise<TemplateFolderSearchFilters> => {
+    public validateSearchRequest = async (
+        request: express.Request
+    ): Promise<TemplateFolderSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -51,7 +61,7 @@ export class TemplateFolderValidator extends BaseValidator {
                 itemsPerPage: joi.number().optional(),
                 pageIndex: joi.number().optional(),
                 orderBy: joi.string().optional(),
-                order: joi.string().optional()
+                order: joi.string().optional(),
             });
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
@@ -61,7 +71,9 @@ export class TemplateFolderValidator extends BaseValidator {
         }
     };
 
-    private getSearchFilters = (query: ParsedQs): TemplateFolderSearchFilters => {
+    private getSearchFilters = (
+        query: ParsedQs
+    ): TemplateFolderSearchFilters => {
         const filters: any = {};
         const id = query.id ? query.id : null;
         if (id != null) {
@@ -71,7 +83,9 @@ export class TemplateFolderValidator extends BaseValidator {
         if (name != null) {
             filters['Name'] = name;
         }
-        const parentFolderId = query.parentFolderId ? query.parentFolderId : null;
+        const parentFolderId = query.parentFolderId
+            ? query.parentFolderId
+            : null;
         if (parentFolderId != null) {
             filters['ParentFolderId'] = parentFolderId;
         }
@@ -93,4 +107,4 @@ export class TemplateFolderValidator extends BaseValidator {
         }
         return filters;
     };
-} 
+}

@@ -4,7 +4,6 @@ import { SkipRuleController } from './skip.rule.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new SkipRuleController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteSkipRule);
 
     app.use('/api/v1/field-skip-rules', router);
-}; 
+};

@@ -1,22 +1,29 @@
-import { inject, injectable } from "tsyringe";
-import { ISkipLogicRepo } from "../../database/repository.interfaces/field.logic/skip.logic/skip.logic.repo.interface";
+import { inject, injectable } from 'tsyringe';
+import { ISkipLogicRepo } from '../../database/repository.interfaces/field.logic/skip.logic/skip.logic.repo.interface';
 import {
     SkipLogicResponseDto,
     SkipLogicCreateModel,
     SkipLogicUpdateModel,
-    LogicSearchFilters
-} from "../../domain.types/forms/logic.domain.types";
+    LogicSearchFilters,
+} from '../../domain.types/forms/logic.domain.types';
 
 @injectable()
 export class SkipLogicService {
-    constructor(@inject('ISkipLogicRepo') private _skipLogicRepo: ISkipLogicRepo) { }
+    constructor(
+        @inject('ISkipLogicRepo') private _skipLogicRepo: ISkipLogicRepo
+    ) {}
 
     // Skip Logic operations
-    async createSkipLogic(model: SkipLogicCreateModel): Promise<SkipLogicResponseDto> {
+    async createSkipLogic(
+        model: SkipLogicCreateModel
+    ): Promise<SkipLogicResponseDto> {
         return await this._skipLogicRepo.createSkipLogic(model);
     }
 
-    async updateSkipLogic(id: string, model: SkipLogicUpdateModel): Promise<SkipLogicResponseDto> {
+    async updateSkipLogic(
+        id: string,
+        model: SkipLogicUpdateModel
+    ): Promise<SkipLogicResponseDto> {
         return await this._skipLogicRepo.updateSkipLogic(id, model);
     }
 

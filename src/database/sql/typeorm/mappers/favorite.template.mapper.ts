@@ -1,4 +1,4 @@
-import { FavoriteTemplateResponseDto } from "../../../../domain.types/forms/favorite.template.domain.types";
+import { FavoriteTemplateResponseDto } from '../../../../domain.types/forms/favorite.template.domain.types';
 
 export class FavoriteTemplateMapper {
     static toDto = (record: any): FavoriteTemplateResponseDto => {
@@ -11,7 +11,7 @@ export class FavoriteTemplateMapper {
             UserId: record.UserId,
             TemplateId: record.TemplateId,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -22,4 +22,4 @@ export class FavoriteTemplateMapper {
         }
         return records.map(record => FavoriteTemplateMapper.toDto(record));
     }
-} 
+}

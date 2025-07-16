@@ -5,14 +5,14 @@ import BaseValidator from '../../base.validator';
 import {
     ValidationRuleCreateModel,
     ValidationRuleUpdateModel,
-    RuleSearchFilters
+    RuleSearchFilters,
 } from '../../../domain.types/forms/rule.domain.types';
 
-
 export class ValidationRuleValidator extends BaseValidator {
-
     // Validation Rule validation
-    public validateValidationRuleCreateRequest = async (request: express.Request): Promise<ValidationRuleCreateModel> => {
+    public validateValidationRuleCreateRequest = async (
+        request: express.Request
+    ): Promise<ValidationRuleCreateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
@@ -33,14 +33,16 @@ export class ValidationRuleValidator extends BaseValidator {
                 OperationId: request.body.OperationId,
                 ErrorWhenFalse: request.body.ErrorWhenFalse,
                 ErrorMessage: request.body.ErrorMessage,
-                LogicId: request.body.LogicId
+                LogicId: request.body.LogicId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateValidationRuleUpdateRequest = async (request: express.Request): Promise<ValidationRuleUpdateModel> => {
+    public validateValidationRuleUpdateRequest = async (
+        request: express.Request
+    ): Promise<ValidationRuleUpdateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
@@ -61,14 +63,16 @@ export class ValidationRuleValidator extends BaseValidator {
                 OperationId: request.body.OperationId,
                 ErrorWhenFalse: request.body.ErrorWhenFalse,
                 ErrorMessage: request.body.ErrorMessage,
-                LogicId: request.body.LogicId
+                LogicId: request.body.LogicId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateRuleSearchRequest = async (request: express.Request): Promise<RuleSearchFilters> => {
+    public validateRuleSearchRequest = async (
+        request: express.Request
+    ): Promise<RuleSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -88,12 +92,23 @@ export class ValidationRuleValidator extends BaseValidator {
                 id: request.query.id as string,
                 name: request.query.name as string,
                 description: request.query.description as string,
-                priority: request.query.priority ? parseInt(request.query.priority as string) : undefined,
-                isActive: request.query.isActive === 'true' ? true : request.query.isActive === 'false' ? false : undefined,
+                priority: request.query.priority
+                    ? parseInt(request.query.priority as string)
+                    : undefined,
+                isActive:
+                    request.query.isActive === 'true'
+                        ? true
+                        : request.query.isActive === 'false'
+                          ? false
+                          : undefined,
                 operationId: request.query.operationId as string,
                 logicId: request.query.logicId as string,
-                PageIndex: request.query.PageIndex ? parseInt(request.query.PageIndex as string) : 0,
-                ItemsPerPage: request.query.ItemsPerPage ? parseInt(request.query.ItemsPerPage as string) : 10,
+                PageIndex: request.query.PageIndex
+                    ? parseInt(request.query.PageIndex as string)
+                    : 0,
+                ItemsPerPage: request.query.ItemsPerPage
+                    ? parseInt(request.query.ItemsPerPage as string)
+                    : 10,
                 OrderBy: request.query.OrderBy as string,
                 Order: request.query.Order as 'ASC' | 'DESC',
             };
@@ -101,4 +116,4 @@ export class ValidationRuleValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-} 
+}

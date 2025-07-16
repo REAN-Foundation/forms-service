@@ -5,7 +5,6 @@ import { DatabaseInjector } from '../database/database.injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 export class Injector {
-
     private static _container: DependencyContainer = container;
 
     public static get Container() {
@@ -16,5 +15,4 @@ export class Injector {
         DatabaseInjector.registerInjections(Injector.Container);
         ModuleInjector.registerInjections(Injector.Container);
     }
-
 }

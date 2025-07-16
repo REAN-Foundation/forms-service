@@ -1,5 +1,8 @@
-import { QueryResponseType } from "./query.response.types";
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
+import { QueryResponseType } from './query.response.types';
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
 
 export interface QuestionOption {
     Text: string;
@@ -24,7 +27,6 @@ export interface QuestionCreateModel {
     RangeMin: number;
     RangeMax: number | null;
 }
-
 
 export interface QuestionUpdateModel {
     Title?: string;

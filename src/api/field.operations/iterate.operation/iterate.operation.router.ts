@@ -4,7 +4,6 @@ import { IterateOperationController } from './iterate.operation.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new IterateOperationController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteIterateOperation);
 
     app.use('/api/v1/field-iterate-operations', router);
-}; 
+};

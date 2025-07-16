@@ -1,14 +1,13 @@
 export interface UserLoginSessionCreateModel {
     IsActiveSession: boolean;
     UserId: string;
-    ValidTill:Date;
+    ValidTill: Date;
 }
 
 export interface UserLoginSessionUpdateModel {
     UserId: string;
-    ValidTill:Date;
+    ValidTill: Date;
     IsActiveSession: boolean;
-
 }
 
 export interface UserLoginSessionResponseDto {
@@ -21,8 +20,8 @@ export interface UserLoginSessionResponseDto {
         Email: string;
         Username: string;
         Password: string;
-        CreatedAt: Date
-    }
+        CreatedAt: Date;
+    };
     IsActiveSession: boolean;
     StartedAt: Date;
     ValidTill: Date;

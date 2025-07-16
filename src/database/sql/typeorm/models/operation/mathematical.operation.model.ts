@@ -12,4 +12,4 @@ export class MathematicalOperationEntity extends BaseOperationEntity {
 
     @Column({ type: 'text', nullable: false })
     ResultDataType: string;
-} 
+}

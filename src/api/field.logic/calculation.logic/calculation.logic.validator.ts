@@ -9,11 +9,11 @@ import {
 import { LogicType } from '../../../domain.types/forms/logic.enums';
 import { LogicSearchFilters } from '../../../domain.types/forms/logic.domain.types';
 
-
 export class CalculationLogicValidator extends BaseValidator {
-
     // Calculation Logic validation
-    public validateCalculationLogicCreateRequest = async (request: express.Request): Promise<CalculationLogicCreateModel> => {
+    public validateCalculationLogicCreateRequest = async (
+        request: express.Request
+    ): Promise<CalculationLogicCreateModel> => {
         try {
             const schema = joi.object({
                 Type: joi.string().valid(LogicType.Calculation).required(),
@@ -28,21 +28,23 @@ export class CalculationLogicValidator extends BaseValidator {
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled ?? true,
                 DefaultSkip: request.body.DefaultSkip ?? false,
-                FallbackValue: request.body.FallbackValue
+                FallbackValue: request.body.FallbackValue,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateCalculationLogicUpdateRequest = async (request: express.Request): Promise<CalculationLogicUpdateModel> => {
+    public validateCalculationLogicUpdateRequest = async (
+        request: express.Request
+    ): Promise<CalculationLogicUpdateModel> => {
         try {
             const schema = joi.object({
                 Type: joi.string().valid(LogicType.Calculation).optional(),
                 FieldId: joi.string().uuid().optional(),
                 Enabled: joi.boolean().optional(),
                 DefaultSkip: joi.boolean().optional(),
-                FallbackValue: joi.string().optional()
+                FallbackValue: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -50,14 +52,16 @@ export class CalculationLogicValidator extends BaseValidator {
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled,
                 DefaultSkip: request.body.DefaultSkip,
-                FallbackValue: request.body.FallbackValue
+                FallbackValue: request.body.FallbackValue,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateLogicSearchRequest = async (request: express.Request): Promise<LogicSearchFilters> => {
+    public validateLogicSearchRequest = async (
+        request: express.Request
+    ): Promise<LogicSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -75,10 +79,24 @@ export class CalculationLogicValidator extends BaseValidator {
                 id: request.query.id as string,
                 type: request.query.type as LogicType,
                 fieldId: request.query.fieldId as string,
-                enabled: request.query.enabled === 'true' ? true : request.query.enabled === 'false' ? false : undefined,
-                defaultSkip: request.query.defaultSkip === 'true' ? true : request.query.defaultSkip === 'false' ? false : undefined,
-                PageIndex: request.query.PageIndex ? parseInt(request.query.PageIndex as string) : 0,
-                ItemsPerPage: request.query.ItemsPerPage ? parseInt(request.query.ItemsPerPage as string) : 10,
+                enabled:
+                    request.query.enabled === 'true'
+                        ? true
+                        : request.query.enabled === 'false'
+                          ? false
+                          : undefined,
+                defaultSkip:
+                    request.query.defaultSkip === 'true'
+                        ? true
+                        : request.query.defaultSkip === 'false'
+                          ? false
+                          : undefined,
+                PageIndex: request.query.PageIndex
+                    ? parseInt(request.query.PageIndex as string)
+                    : 0,
+                ItemsPerPage: request.query.ItemsPerPage
+                    ? parseInt(request.query.ItemsPerPage as string)
+                    : 10,
                 OrderBy: request.query.OrderBy as string,
                 Order: request.query.Order as 'ASC' | 'DESC',
             };
@@ -86,4 +104,4 @@ export class CalculationLogicValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-} 
+}

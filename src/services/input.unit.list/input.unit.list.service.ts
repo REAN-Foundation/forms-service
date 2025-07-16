@@ -2,20 +2,28 @@ import {
     InputUnitListCreateModel,
     InputUnitListResponseDto,
     InputUnitListSearchFilters,
-    InputUnitListUpdateModel
-} from "../../domain.types/forms/input.unit.list.domain.types";
-import { IInputUnitListRepo } from "../../database/repository.interfaces/input.unit.list/input.unit.list.repo.interface";
-import { inject, injectable } from "tsyringe";
+    InputUnitListUpdateModel,
+} from '../../domain.types/forms/input.unit.list.domain.types';
+import { IInputUnitListRepo } from '../../database/repository.interfaces/input.unit.list/input.unit.list.repo.interface';
+import { inject, injectable } from 'tsyringe';
 
 @injectable()
 export class InputUnitListService {
-    constructor(@inject('IInputUnitListRepo') private _inputUnitListRepo: IInputUnitListRepo) { }
+    constructor(
+        @inject('IInputUnitListRepo')
+        private _inputUnitListRepo: IInputUnitListRepo
+    ) {}
 
-    create = async (model: InputUnitListCreateModel): Promise<InputUnitListResponseDto> => {
+    create = async (
+        model: InputUnitListCreateModel
+    ): Promise<InputUnitListResponseDto> => {
         return await this._inputUnitListRepo.create(model);
     };
 
-    update = async (id: string, model: InputUnitListUpdateModel): Promise<InputUnitListResponseDto> => {
+    update = async (
+        id: string,
+        model: InputUnitListUpdateModel
+    ): Promise<InputUnitListResponseDto> => {
         return await this._inputUnitListRepo.update(id, model);
     };
 

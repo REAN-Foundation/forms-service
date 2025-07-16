@@ -1,5 +1,8 @@
-import { QueryResponseType } from "./query.response.types";
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
+import { QueryResponseType } from './query.response.types';
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
 
 export interface FormFieldOption {
     Text: string;
@@ -142,4 +145,4 @@ export interface FormFieldSearchResponseDto extends BaseSearchResults {
     };
     CreatedAt: Date;
     UpdatedAt: Date;
-} 
+}

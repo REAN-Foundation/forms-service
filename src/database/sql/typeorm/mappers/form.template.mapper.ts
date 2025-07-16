@@ -1,4 +1,4 @@
-import { FormTemplateResponseDto } from "../../../../domain.types/forms/form.template.domain.types";
+import { FormTemplateResponseDto } from '../../../../domain.types/forms/form.template.domain.types';
 
 export class FormTemplateMapper {
     static toDto = (record: any): FormTemplateResponseDto => {
@@ -18,7 +18,7 @@ export class FormTemplateMapper {
             RootSectionId: record.RootSectionId,
             DefaultSectionNumbering: record.DefaultSectionNumbering,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };

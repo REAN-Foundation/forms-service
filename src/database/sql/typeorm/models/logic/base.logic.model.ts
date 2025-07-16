@@ -7,4 +7,4 @@ export abstract class BaseLogicEntity extends BaseEntity {
 
     @Column({ type: 'boolean', nullable: false, default: true })
     Enabled: boolean;
-} 
+}

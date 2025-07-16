@@ -39,20 +39,22 @@ export class FormSection extends BaseEntity {
     // @Column({type: 'boolean', default: true, nullable: false })
     // DefaultSectionNumbering?: boolean;
 
-    @ManyToOne(() => FormTemplate, (template) => template.FormSections)
+    @ManyToOne(() => FormTemplate, template => template.FormSections)
     @JoinColumn({ name: 'FormTemplateId' })
     FormTemplate: FormTemplate;
 
-    @ManyToOne(() => FormSection, (section) => section.ChildSections, { nullable: true })
+    @ManyToOne(() => FormSection, section => section.ChildSections, {
+        nullable: true,
+    })
     @JoinColumn({ name: 'ParentSectionId' })
     ParentSection?: FormSection;
 
-    @OneToMany(() => FormSection, (section) => section.ParentSection)
+    @OneToMany(() => FormSection, section => section.ParentSection)
     ChildSections: FormSection[];
 
     // @OneToMany(() => Question, (question) => question.ParentFormSection)
     // Questions: Question[];
 
-    @OneToMany(() => FormFieldEntity, (formField) => formField.ParentFormSection)
+    @OneToMany(() => FormFieldEntity, formField => formField.ParentFormSection)
     FormFields: FormFieldEntity[];
 }

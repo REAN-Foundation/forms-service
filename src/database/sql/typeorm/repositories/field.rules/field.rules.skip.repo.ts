@@ -1,18 +1,25 @@
-import { SkipRuleCreateModel, SkipRuleResponseDto, SkipRuleSearchFilters, SkipRuleUpdateModel } from "../../../../../domain.types/forms/skip.rule.domain.types";
-import { ISkipRuleRepo } from "../../../../repository.interfaces/field.rules/skip.rule/skip.rule.repo.interface";
-import { SkipRuleEntity } from "../../models/rule/skip.rule.model";
-import { SkipRuleMapper } from "../../mappers/skip.rule.mapper";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { FindManyOptions, Repository } from "typeorm";
-import { BaseRepo } from "../base.repo";
+import {
+    SkipRuleCreateModel,
+    SkipRuleResponseDto,
+    SkipRuleSearchFilters,
+    SkipRuleUpdateModel,
+} from '../../../../../domain.types/forms/skip.rule.domain.types';
+import { ISkipRuleRepo } from '../../../../repository.interfaces/field.rules/skip.rule/skip.rule.repo.interface';
+import { SkipRuleEntity } from '../../models/rule/skip.rule.model';
+import { SkipRuleMapper } from '../../mappers/skip.rule.mapper';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { FindManyOptions, Repository } from 'typeorm';
+import { BaseRepo } from '../base.repo';
 
 export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
+    _skipRuleRepo: Repository<SkipRuleEntity> =
+        Source.getRepository(SkipRuleEntity);
 
-    _skipRuleRepo: Repository<SkipRuleEntity> = Source.getRepository(SkipRuleEntity);
-
-    create = async (model: SkipRuleCreateModel): Promise<SkipRuleResponseDto> => {
+    create = async (
+        model: SkipRuleCreateModel
+    ): Promise<SkipRuleResponseDto> => {
         try {
             const data = await this._skipRuleRepo.create({
                 Name: model.Name,
@@ -21,7 +28,7 @@ export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
                 IsActive: model.IsActive,
                 OperationId: model.OperationId,
                 SkipWhenTrue: model.SkipWhenTrue,
-                LogicId: model.LogicId
+                LogicId: model.LogicId,
             });
             const record = await this._skipRuleRepo.save(data);
             return SkipRuleMapper.toDto(record);
@@ -35,7 +42,7 @@ export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
             var record = await this._skipRuleRepo.findOne({
                 where: {
                     id: id,
-                    DeletedAt: null
+                    DeletedAt: null,
                 },
             });
             return SkipRuleMapper.toDto(record);
@@ -45,7 +52,10 @@ export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
         }
     };
 
-    update = async (id: string, model: SkipRuleUpdateModel): Promise<SkipRuleResponseDto> => {
+    update = async (
+        id: string,
+        model: SkipRuleUpdateModel
+    ): Promise<SkipRuleResponseDto> => {
         try {
             const updateData = await this._skipRuleRepo.findOne({
                 where: {
@@ -101,7 +111,8 @@ export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
     search = async (filters: SkipRuleSearchFilters): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
-            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            var { search, pageIndex, limit, order, orderByColumn } =
+                this.addSortingAndPagination(search, filters);
             const [list, count] = await this._skipRuleRepo.findAndCount(search);
 
             const searchResults = {
@@ -116,12 +127,14 @@ export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
             return searchResults;
         } catch (error) {
             Logger.instance().log(error.message);
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+            ErrorHandler.throwDbAccessError(
+                'DB Error: Unable to search records!',
+                error
+            );
         }
     };
 
     private getSearchModel = (filters: SkipRuleSearchFilters) => {
-
         var search: FindManyOptions<SkipRuleEntity> = {
             relations: {},
             where: {},
@@ -157,4 +170,4 @@ export class SkipRuleRepo extends BaseRepo implements ISkipRuleRepo {
 
         return search;
     };
-} 
+}

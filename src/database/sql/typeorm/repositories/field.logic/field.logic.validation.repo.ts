@@ -1,25 +1,30 @@
-import { IValidationLogicRepo } from "../../../../repository.interfaces/field.logic/validation.logic/validation.logic.repo.interface";
+import { IValidationLogicRepo } from '../../../../repository.interfaces/field.logic/validation.logic/validation.logic.repo.interface';
 import {
     ValidationLogicResponseDto,
     ValidationLogicCreateModel,
     ValidationLogicUpdateModel,
-    LogicSearchFilters
-} from "../../../../../domain.types/forms/logic.domain.types";
-import { ValidationLogicMapper } from "../../mappers/validation.logic.mapper";
-import { ValidationLogicEntity } from "../../models/logic/validation.logic.model";
-import { LogicType } from "../../../../../domain.types/forms/logic.enums";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+    LogicSearchFilters,
+} from '../../../../../domain.types/forms/logic.domain.types';
+import { ValidationLogicMapper } from '../../mappers/validation.logic.mapper';
+import { ValidationLogicEntity } from '../../models/logic/validation.logic.model';
+import { LogicType } from '../../../../../domain.types/forms/logic.enums';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRepo {
+export class ValidationLogicRepo
+    extends BaseRepo
+    implements IValidationLogicRepo
+{
+    _validationLogicRepo: Repository<ValidationLogicEntity> =
+        Source.getRepository(ValidationLogicEntity);
 
-    _validationLogicRepo: Repository<ValidationLogicEntity> = Source.getRepository(ValidationLogicEntity);
-    
     // Validation Logic operations
-    createValidationLogic = async (model: ValidationLogicCreateModel): Promise<ValidationLogicResponseDto> => {
+    createValidationLogic = async (
+        model: ValidationLogicCreateModel
+    ): Promise<ValidationLogicResponseDto> => {
         try {
             const data = this._validationLogicRepo.create({
                 FieldId: model.FieldId,
@@ -34,7 +39,10 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
         }
     };
 
-    updateValidationLogic = async (id: string, model: ValidationLogicUpdateModel): Promise<ValidationLogicResponseDto> => {
+    updateValidationLogic = async (
+        id: string,
+        model: ValidationLogicUpdateModel
+    ): Promise<ValidationLogicResponseDto> => {
         try {
             const updateData = await this._validationLogicRepo.findOne({
                 where: {
@@ -43,7 +51,9 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError("Validation Logic Data not found!");
+                ErrorHandler.throwNotFoundError(
+                    'Validation Logic Data not found!'
+                );
             }
 
             if (model.Type) {
@@ -65,7 +75,9 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
         }
     };
 
-    getValidationLogicById = async (id: string): Promise<ValidationLogicResponseDto> => {
+    getValidationLogicById = async (
+        id: string
+    ): Promise<ValidationLogicResponseDto> => {
         try {
             const record = await this._validationLogicRepo.findOne({
                 where: {
@@ -101,19 +113,22 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
         }
     };
 
-    searchValidationLogic = async (filters: LogicSearchFilters): Promise<any> => {
+    searchValidationLogic = async (
+        filters: LogicSearchFilters
+    ): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } =
                 this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._validationLogicRepo.findAndCount(search);
+            const [list, count] =
+                await this._validationLogicRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: ValidationLogicMapper.toArrayDto(list),
             };
@@ -121,7 +136,7 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -134,22 +149,21 @@ export class ValidationLogicRepo extends BaseRepo implements IValidationLogicRep
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.type) {
-            search.where["Type"] = filters.type;
+            search.where['Type'] = filters.type;
         }
 
         if (filters.fieldId) {
-            search.where["FieldId"] = filters.fieldId;
+            search.where['FieldId'] = filters.fieldId;
         }
 
         if (filters.enabled !== undefined) {
-            search.where["Enabled"] = filters.enabled;
+            search.where['Enabled'] = filters.enabled;
         }
 
         return search;
     };
-
-} 
+}

@@ -4,7 +4,6 @@ import { UserController } from './user.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new UserController();
 

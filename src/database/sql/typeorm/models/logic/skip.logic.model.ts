@@ -6,8 +6,12 @@ import { BaseLogicEntity } from './base.logic.model';
 // Skip Logic Entity
 @Entity({ name: 'eval_skip_logics' })
 export class SkipLogicEntity extends BaseLogicEntity {
-
-    @Column({ type: 'varchar', length: 50, nullable: false, default: LogicType.Skip })
+    @Column({
+        type: 'varchar',
+        length: 50,
+        nullable: false,
+        default: LogicType.Skip,
+    })
     Type: LogicType.Skip;
 
     // TODO: Add proper SkipRule relationship when SkipRule entity is created
@@ -16,4 +20,4 @@ export class SkipLogicEntity extends BaseLogicEntity {
 
     @Column({ type: 'boolean', nullable: true })
     DefaultSkip?: boolean;
-} 
+}

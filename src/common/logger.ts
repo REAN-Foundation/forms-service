@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
 
 export class Logger {
-
     private static _instance: Logger = null;
 
-    private constructor() {
-    }
+    private constructor() {}
 
     public static instance(): Logger {
         return this._instance || (this._instance = new this());
@@ -29,11 +27,10 @@ export class Logger {
         const err = {
             message: message,
             code: code,
-            details: details
+            details: details,
         };
         const temp_str = dateTime + '> ' + JSON.stringify(err, null, '    ');
         console.log(' ');
         console.log(temp_str);
     };
-
 }

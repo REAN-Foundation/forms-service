@@ -1,6 +1,4 @@
-import {
-    SkipRuleResponseDto,
-} from "../../../../domain.types/forms/rule.domain.types";
+import { SkipRuleResponseDto } from '../../../../domain.types/forms/rule.domain.types';
 
 export class SkipRuleMapper {
     static toDto = (record: any): SkipRuleResponseDto => {
@@ -18,7 +16,7 @@ export class SkipRuleMapper {
             SkipWhenTrue: record.SkipWhenTrue,
             LogicId: record.LogicId,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -29,4 +27,4 @@ export class SkipRuleMapper {
         }
         return records.map(record => SkipRuleMapper.toDto(record));
     }
-} 
+}

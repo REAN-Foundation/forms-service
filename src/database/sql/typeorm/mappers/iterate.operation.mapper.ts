@@ -1,6 +1,4 @@
-import {
-    IterateOperationResponseDto,
-} from "../../../../domain.types/forms/operation.domain.types";
+import { IterateOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
 
 export class IterateOperationMapper {
     static toDto = (record: any): IterateOperationResponseDto => {
@@ -18,7 +16,7 @@ export class IterateOperationMapper {
             OperationId: record.OperationId,
             FilterExpression: record.FilterExpression,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };

@@ -1,4 +1,4 @@
-import { QuestionResponseResponseDto } from "../../../../domain.types/forms/response.domain.types";
+import { QuestionResponseResponseDto } from '../../../../domain.types/forms/response.domain.types';
 
 export class ResponseMapper {
     static toDto = (record: any): QuestionResponseResponseDto => {
@@ -7,7 +7,7 @@ export class ResponseMapper {
         }
 
         const dto: QuestionResponseResponseDto = {
-            id            : record.id,
+            id: record.id,
             FormSubmission: {
                 id: record.FormSubmission.id,
                 TemplateId: record.FormSubmission.TemplateId,
@@ -31,16 +31,16 @@ export class ResponseMapper {
                 CreatedAt: record.Question.CreatedAt,
                 UpdatedAt: record.Question.UpdatedAt,
             },
-            ResponseType       : record.ResponseType,
-            IntegerValue       : record.IntegerValue,
-            FloatValue         : record.FloatValue,
-            BooleanValue       : record.BooleanValue,
-            DateTimeValue      : record.DateTimeValue,
-            Url                : record.Url,
-            FileResourceId     : record.FileResourceId,
-            TextValue          : record.TextValue,
+            ResponseType: record.ResponseType,
+            IntegerValue: record.IntegerValue,
+            FloatValue: record.FloatValue,
+            BooleanValue: record.BooleanValue,
+            DateTimeValue: record.DateTimeValue,
+            Url: record.Url,
+            FileResourceId: record.FileResourceId,
+            TextValue: record.TextValue,
             SubmissionTimestamp: record.SubmissionTimestamp,
-            LastSaveTimestamp  : record.LastSaveTimestamp
+            LastSaveTimestamp: record.LastSaveTimestamp,
         };
         return dto;
     };
@@ -51,5 +51,4 @@ export class ResponseMapper {
         }
         return records.map(record => ResponseMapper.toDto(record));
     }
-
 }

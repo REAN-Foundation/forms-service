@@ -19,4 +19,4 @@ export class ValidationRuleEntity extends BaseRuleEntity {
     @ManyToOne(() => ValidationLogicEntity, { nullable: true })
     @JoinColumn({ name: 'LogicId' })
     Logic?: ValidationLogicEntity;
-} 
+}

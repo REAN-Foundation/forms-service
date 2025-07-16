@@ -1,4 +1,3 @@
-
 // // eslint-disable-next-line @typescript-eslint/no-var-requires
 // import mysql, { Connection } from 'mysql2/promise';
 // import { Logger } from '../../logger';
@@ -12,7 +11,7 @@
 //     private connection: Connection = null;
 
 //     private static instance: MysqlClient = null;
-   
+
 //     private constructor() {}
 
 //     public static getInstance() {
@@ -105,12 +104,13 @@ import { Config } from '../database.config';
 ////////////////////////////////////////////////////////////////
 
 export class MysqlClient {
-
     public createDb = async () => {
         try {
             const query = `CREATE DATABASE ${Config.database}`;
             await this.executeQuery(query);
-            Logger.instance().log(`Database ${Config.database} created successfully!`);
+            Logger.instance().log(
+                `Database ${Config.database} created successfully!`
+            );
         } catch (error) {
             Logger.instance().log(error.message);
         }
@@ -126,14 +126,13 @@ export class MysqlClient {
     };
 
     public executeQuery = (query): Promise<unknown> => {
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return new Promise((resolve, reject) => {
             try {
                 const connection = mysql.createConnection({
-                    host     : Config.host,
-                    user     : Config.username,
-                    password : Config.password,
+                    host: Config.host,
+                    user: Config.username,
+                    password: Config.password,
                 });
 
                 connection.connect(function (err) {
@@ -146,11 +145,13 @@ export class MysqlClient {
                         if (err) {
                             Logger.instance().log(err.message);
 
-                            var str = (result !== undefined && result !== null) ? result.toString() : null;
+                            var str =
+                                result !== undefined && result !== null
+                                    ? result.toString()
+                                    : null;
                             if (str != null) {
                                 Logger.instance().log(str);
-                            }
-                            else {
+                            } else {
                                 Logger.instance().log(`Query: ${query}`);
                             }
                             reject(err);
@@ -158,14 +159,9 @@ export class MysqlClient {
                         resolve(true);
                     });
                 });
-
-            }
-            catch (error) {
+            } catch (error) {
                 Logger.instance().log(error.message);
             }
         });
-
     };
-
 }
-

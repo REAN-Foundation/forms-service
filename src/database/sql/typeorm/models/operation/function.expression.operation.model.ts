@@ -11,5 +11,4 @@ export class FunctionExpressionOperationEntity extends BaseOperationEntity {
 
     @Column({ type: 'text', nullable: false })
     ResultDataType: string;
-
-} 
+}

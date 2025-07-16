@@ -1,12 +1,9 @@
 import express from 'express';
-import {
-    FormSectionController
-} from './form.section.controller';
+import { FormSectionController } from './form.section.controller';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new FormSectionController();
 

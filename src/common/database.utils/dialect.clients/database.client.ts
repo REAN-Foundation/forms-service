@@ -2,13 +2,12 @@
 import { Logger } from '../../../common/logger';
 import { DatabaseDialect } from '../../../domain.types/miscellaneous/system.types';
 import { IDatabaseClient } from './database.client.interface';
-import { MysqlClient } from "./mysql.client";
+import { MysqlClient } from './mysql.client';
 // import { PostgresqlClient } from "./postgresql.client";
 
 //////////////////////////////////////////////////////////////////////////////
 
 export class DatabaseClient {
-
     // _client = null;
 
     // constructor() {
@@ -35,7 +34,7 @@ export class DatabaseClient {
     //     return await this._client.executeQuery(schemaType, query);
     // };
 
-     static _client: IDatabaseClient =  new MysqlClient();
+    static _client: IDatabaseClient = new MysqlClient();
 
     //Creates DB if does not exist
     public static createDatabase = async () => {
@@ -43,7 +42,7 @@ export class DatabaseClient {
             await this._client.createDb();
             return true;
         } catch (error) {
-             Logger.instance().log(error.message);
+            Logger.instance().log(error.message);
         }
         return false;
     };
@@ -82,5 +81,4 @@ export class DatabaseClient {
     //     }
     //     return false;
     // };
-
 }

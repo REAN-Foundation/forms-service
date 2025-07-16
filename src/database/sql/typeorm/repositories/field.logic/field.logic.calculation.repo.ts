@@ -1,31 +1,36 @@
-import { ICalculationLogicRepo } from "../../../../repository.interfaces/field.logic/calculation.logic/calculation.logic.repo.interface";
+import { ICalculationLogicRepo } from '../../../../repository.interfaces/field.logic/calculation.logic/calculation.logic.repo.interface';
 import {
     CalculationLogicResponseDto,
     CalculationLogicCreateModel,
     CalculationLogicUpdateModel,
-    LogicSearchFilters
-} from "../../../../../domain.types/forms/logic.domain.types";
-import { CalculationLogicMapper } from "../../mappers/calculation.logic.mapper";
-import { CalculationLogicEntity } from "../../models/logic/calculation.logic.model";
-import { LogicType } from "../../../../../domain.types/forms/logic.enums";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+    LogicSearchFilters,
+} from '../../../../../domain.types/forms/logic.domain.types';
+import { CalculationLogicMapper } from '../../mappers/calculation.logic.mapper';
+import { CalculationLogicEntity } from '../../models/logic/calculation.logic.model';
+import { LogicType } from '../../../../../domain.types/forms/logic.enums';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicRepo {
+export class CalculationLogicRepo
+    extends BaseRepo
+    implements ICalculationLogicRepo
+{
+    _calculationLogicRepo: Repository<CalculationLogicEntity> =
+        Source.getRepository(CalculationLogicEntity);
 
-    _calculationLogicRepo: Repository<CalculationLogicEntity> = Source.getRepository(CalculationLogicEntity);
-    
     // Calculation Logic operations
-    createCalculationLogic = async (model: CalculationLogicCreateModel): Promise<CalculationLogicResponseDto> => {
+    createCalculationLogic = async (
+        model: CalculationLogicCreateModel
+    ): Promise<CalculationLogicResponseDto> => {
         try {
             const data = this._calculationLogicRepo.create({
                 FieldId: model.FieldId,
                 Type: model.Type,
                 Enabled: model.Enabled,
-                FallbackValue: model.FallbackValue
+                FallbackValue: model.FallbackValue,
             });
             const record = await this._calculationLogicRepo.save(data);
             return CalculationLogicMapper.toDto(record);
@@ -34,7 +39,10 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
         }
     };
 
-    updateCalculationLogic = async (id: string, model: CalculationLogicUpdateModel): Promise<CalculationLogicResponseDto> => {
+    updateCalculationLogic = async (
+        id: string,
+        model: CalculationLogicUpdateModel
+    ): Promise<CalculationLogicResponseDto> => {
         try {
             const updateData = await this._calculationLogicRepo.findOne({
                 where: {
@@ -43,7 +51,9 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError("Calculation Logic Data not found!");
+                ErrorHandler.throwNotFoundError(
+                    'Calculation Logic Data not found!'
+                );
             }
 
             if (model.Type) {
@@ -68,7 +78,9 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
         }
     };
 
-    getCalculationLogicById = async (id: string): Promise<CalculationLogicResponseDto> => {
+    getCalculationLogicById = async (
+        id: string
+    ): Promise<CalculationLogicResponseDto> => {
         try {
             const record = await this._calculationLogicRepo.findOne({
                 where: {
@@ -104,19 +116,22 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
         }
     };
 
-    searchCalculationLogic = async (filters: LogicSearchFilters): Promise<any> => {
+    searchCalculationLogic = async (
+        filters: LogicSearchFilters
+    ): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } =
                 this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._calculationLogicRepo.findAndCount(search);
+            const [list, count] =
+                await this._calculationLogicRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: CalculationLogicMapper.toArrayDto(list),
             };
@@ -124,7 +139,7 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -137,22 +152,21 @@ export class CalculationLogicRepo extends BaseRepo implements ICalculationLogicR
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.type) {
-            search.where["Type"] = filters.type;
+            search.where['Type'] = filters.type;
         }
 
         if (filters.fieldId) {
-            search.where["FieldId"] = filters.fieldId;
+            search.where['FieldId'] = filters.fieldId;
         }
 
         if (filters.enabled !== undefined) {
-            search.where["Enabled"] = filters.enabled;
+            search.where['Enabled'] = filters.enabled;
         }
 
         return search;
     };
-
-} 
+}

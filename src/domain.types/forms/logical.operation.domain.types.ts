@@ -1,5 +1,9 @@
-import { BaseOperationCreateModel, BaseOperationResponseDto, BaseOperationUpdateModel } from "./operation.domain.types";
-import { LogicalOperatorType } from "./operation.enums";
+import {
+    BaseOperationCreateModel,
+    BaseOperationResponseDto,
+    BaseOperationUpdateModel,
+} from './operation.domain.types';
+import { LogicalOperatorType } from './operation.enums';
 
 // Logical Operation DTOs
 export interface LogicalOperationCreateModel extends BaseOperationCreateModel {
@@ -21,4 +25,4 @@ export interface LogicalOperationResponseDto extends BaseOperationResponseDto {
     LeftOperand?: string;
     RightOperand?: string;
     Parameters?: Record<string, any>;
-} 
+}

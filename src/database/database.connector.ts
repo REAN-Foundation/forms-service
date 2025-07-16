@@ -7,8 +7,10 @@ import { Logger } from '../common/logger';
 
 @injectable()
 export class PrimaryDatabaseConnector {
-
-    constructor(@inject('IPrimaryDatabaseConnector') private _db: IPrimaryDatabaseConnector) {}
+    constructor(
+        @inject('IPrimaryDatabaseConnector')
+        private _db: IPrimaryDatabaseConnector
+    ) {}
 
     public init = async (): Promise<boolean> => {
         try {
@@ -38,5 +40,4 @@ export class PrimaryDatabaseConnector {
             return false;
         }
     };
-
 }

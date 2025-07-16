@@ -1,32 +1,37 @@
-import { ICompositionOperationRepo } from "../../../../repository.interfaces/field.operations/composition.operation/composition.operation.repo.interface";
+import { ICompositionOperationRepo } from '../../../../repository.interfaces/field.operations/composition.operation/composition.operation.repo.interface';
 import {
     CompositionOperationResponseDto,
     CompositionOperationCreateModel,
     CompositionOperationUpdateModel,
-    OperationSearchFilters
-} from "../../../../../domain.types/forms/operation.domain.types";
-import { CompositionOperationMapper } from "../../mappers/composition.operation.mapper";
-import { CompositionOperationEntity } from "../../models/operation/composition.operation.model";
-import { CompositionOperatorType } from "../../../../../domain.types/forms/operation.enums";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+    OperationSearchFilters,
+} from '../../../../../domain.types/forms/operation.domain.types';
+import { CompositionOperationMapper } from '../../mappers/composition.operation.mapper';
+import { CompositionOperationEntity } from '../../models/operation/composition.operation.model';
+import { CompositionOperatorType } from '../../../../../domain.types/forms/operation.enums';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
-export class CompositionOperationRepo extends BaseRepo implements ICompositionOperationRepo {
+export class CompositionOperationRepo
+    extends BaseRepo
+    implements ICompositionOperationRepo
+{
+    _compositionOperationRepo: Repository<CompositionOperationEntity> =
+        Source.getRepository(CompositionOperationEntity);
 
-    _compositionOperationRepo: Repository<CompositionOperationEntity> = Source.getRepository(CompositionOperationEntity);
-    
     // Composition Operation operations
-    createCompositionOperation = async (model: CompositionOperationCreateModel): Promise<CompositionOperationResponseDto> => {
+    createCompositionOperation = async (
+        model: CompositionOperationCreateModel
+    ): Promise<CompositionOperationResponseDto> => {
         try {
             const data = this._compositionOperationRepo.create({
                 Name: model.Name,
                 Description: model.Description,
                 Type: model.Type,
                 Operator: model.Operator,
-                Operands: model.Operands
+                Operands: model.Operands,
             });
             const record = await this._compositionOperationRepo.save(data);
             return CompositionOperationMapper.toDto(record);
@@ -35,7 +40,10 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
         }
     };
 
-    updateCompositionOperation = async (id: string, model: CompositionOperationUpdateModel): Promise<CompositionOperationResponseDto> => {
+    updateCompositionOperation = async (
+        id: string,
+        model: CompositionOperationUpdateModel
+    ): Promise<CompositionOperationResponseDto> => {
         try {
             const updateData = await this._compositionOperationRepo.findOne({
                 where: {
@@ -44,7 +52,9 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError("Composition Operation Data not found!");
+                ErrorHandler.throwNotFoundError(
+                    'Composition Operation Data not found!'
+                );
             }
 
             if (model.Name) {
@@ -65,14 +75,17 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
 
             updateData.UpdatedAt = new Date();
 
-            const record = await this._compositionOperationRepo.save(updateData);
+            const record =
+                await this._compositionOperationRepo.save(updateData);
             return CompositionOperationMapper.toDto(record);
         } catch (error) {
             ErrorHandler.throwInternalServerError(error.message, 500);
         }
     };
 
-    getCompositionOperationById = async (id: string): Promise<CompositionOperationResponseDto> => {
+    getCompositionOperationById = async (
+        id: string
+    ): Promise<CompositionOperationResponseDto> => {
         try {
             const record = await this._compositionOperationRepo.findOne({
                 where: {
@@ -108,19 +121,22 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
         }
     };
 
-    searchCompositionOperation = async (filters: OperationSearchFilters): Promise<any> => {
+    searchCompositionOperation = async (
+        filters: OperationSearchFilters
+    ): Promise<any> => {
         try {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } =
                 this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._compositionOperationRepo.findAndCount(search);
+            const [list, count] =
+                await this._compositionOperationRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: CompositionOperationMapper.toArrayDto(list),
             };
@@ -128,7 +144,7 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -141,22 +157,21 @@ export class CompositionOperationRepo extends BaseRepo implements ICompositionOp
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.name) {
-            search.where["Name"] = filters.name;
+            search.where['Name'] = filters.name;
         }
 
         if (filters.description) {
-            search.where["Description"] = filters.description;
+            search.where['Description'] = filters.description;
         }
 
         if (filters.operator) {
-            search.where["Operator"] = filters.operator;
+            search.where['Operator'] = filters.operator;
         }
 
         return search;
     };
-
-} 
+}

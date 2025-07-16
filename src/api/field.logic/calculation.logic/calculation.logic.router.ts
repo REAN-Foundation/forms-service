@@ -4,7 +4,6 @@ import { CalculationLogicController } from './calculation.logic.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new CalculationLogicController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteCalculationLogic);
 
     app.use('/api/v1/field-calculation-logic', router);
-}; 
+};

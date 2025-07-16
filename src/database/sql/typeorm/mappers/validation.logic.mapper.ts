@@ -1,7 +1,5 @@
-import {
-    ValidationLogicResponseDto,
-} from "../../../../domain.types/forms/logic.domain.types";
-import { LogicType } from "../../../../domain.types/forms/logic.enums";
+import { ValidationLogicResponseDto } from '../../../../domain.types/forms/logic.domain.types';
+import { LogicType } from '../../../../domain.types/forms/logic.enums';
 
 export class ValidationLogicMapper {
     static toDto = (record: any): ValidationLogicResponseDto => {
@@ -15,7 +13,7 @@ export class ValidationLogicMapper {
             FieldId: record.FieldId,
             Enabled: record.Enabled,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -26,4 +24,4 @@ export class ValidationLogicMapper {
         }
         return records.map(record => ValidationLogicMapper.toDto(record));
     }
-} 
+}

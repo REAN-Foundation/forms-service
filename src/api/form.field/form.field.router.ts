@@ -1,11 +1,9 @@
 import express from 'express';
 import { FormFieldController } from './form.field.controller';
 
-
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new FormFieldController();
 
@@ -18,4 +16,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.delete);
 
     app.use('/api/v1/form-fields', router);
-}; 
+};

@@ -4,7 +4,6 @@ import { LogicalOperationController } from './logical.operation.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new LogicalOperationController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteLogicalOperation);
 
     app.use('/api/v1/field-logical-operations', router);
-}; 
+};

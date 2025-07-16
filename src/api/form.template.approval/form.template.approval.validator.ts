@@ -2,52 +2,61 @@ import joi from 'joi';
 import express from 'express';
 import { ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { FormTemplateApprovalCreateModel, FormTemplateApprovalSearchFilters, FormTemplateApprovalUpdateModel } from '../../domain.types/forms/form.template.approval.domain.types';
+import {
+    FormTemplateApprovalCreateModel,
+    FormTemplateApprovalSearchFilters,
+    FormTemplateApprovalUpdateModel,
+} from '../../domain.types/forms/form.template.approval.domain.types';
 import { ParsedQs } from 'qs';
 
 export class FormTemplateApprovalValidator extends BaseValidator {
-
-    public validateCreateRequest = async (request: express.Request): Promise<FormTemplateApprovalCreateModel> => {
+    public validateCreateRequest = async (
+        request: express.Request
+    ): Promise<FormTemplateApprovalCreateModel> => {
         try {
             const schema = joi.object({
                 ApproverUserId: joi.string().uuid().required(),
                 TemplateId: joi.string().uuid().required(),
                 Approved: joi.boolean().required(),
-                ReviewComments: joi.string().max(512).optional()
+                ReviewComments: joi.string().max(512).optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 ApproverUserId: request.body.ApproverUserId,
                 TemplateId: request.body.TemplateId,
                 Approved: request.body.Approved,
-                ReviewComments: request.body.ReviewComments
+                ReviewComments: request.body.ReviewComments,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateUpdateRequest = async (request: express.Request): Promise<FormTemplateApprovalUpdateModel> => {
+    public validateUpdateRequest = async (
+        request: express.Request
+    ): Promise<FormTemplateApprovalUpdateModel> => {
         try {
             const schema = joi.object({
                 ApproverUserId: joi.string().uuid().optional(),
                 TemplateId: joi.string().uuid().optional(),
                 Approved: joi.boolean().optional(),
-                ReviewComments: joi.string().max(512).optional()
+                ReviewComments: joi.string().max(512).optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 ApproverUserId: request.body.ApproverUserId ?? null,
                 TemplateId: request.body.TemplateId ?? null,
                 Approved: request.body.Approved ?? null,
-                ReviewComments: request.body.ReviewComments ?? null
+                ReviewComments: request.body.ReviewComments ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateSearchRequest = async (request: express.Request): Promise<FormTemplateApprovalSearchFilters> => {
+    public validateSearchRequest = async (
+        request: express.Request
+    ): Promise<FormTemplateApprovalSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -57,7 +66,7 @@ export class FormTemplateApprovalValidator extends BaseValidator {
                 itemsPerPage: joi.number().optional(),
                 pageIndex: joi.number().optional(),
                 orderBy: joi.string().optional(),
-                order: joi.string().optional()
+                order: joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -68,7 +77,9 @@ export class FormTemplateApprovalValidator extends BaseValidator {
         }
     };
 
-    private getSearchFilters = (query: ParsedQs): FormTemplateApprovalSearchFilters => {
+    private getSearchFilters = (
+        query: ParsedQs
+    ): FormTemplateApprovalSearchFilters => {
         const filters: any = {};
 
         const id = query.id ? query.id : null;
@@ -76,7 +87,9 @@ export class FormTemplateApprovalValidator extends BaseValidator {
             filters['id'] = id;
         }
 
-        const approverUserId = query.approverUserId ? query.approverUserId : null;
+        const approverUserId = query.approverUserId
+            ? query.approverUserId
+            : null;
         if (approverUserId != null) {
             filters['ApproverUserId'] = approverUserId;
         }
@@ -113,4 +126,4 @@ export class FormTemplateApprovalValidator extends BaseValidator {
 
         return filters;
     };
-} 
+}

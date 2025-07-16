@@ -1,5 +1,9 @@
-import { BaseRuleCreateModel, BaseRuleResponseDto, BaseRuleUpdateModel } from "./rule.domain.types";
-import { BaseSearchFilters } from "../miscellaneous/base.search.types";
+import {
+    BaseRuleCreateModel,
+    BaseRuleResponseDto,
+    BaseRuleUpdateModel,
+} from './rule.domain.types';
+import { BaseSearchFilters } from '../miscellaneous/base.search.types';
 
 // Validation Rule DTOs
 export interface ValidationRuleCreateModel extends BaseRuleCreateModel {
@@ -42,4 +46,4 @@ export interface ValidationRuleSearchFilters extends BaseSearchFilters {
     isActive?: boolean;
     operationId?: string;
     logicId?: string;
-} 
+}

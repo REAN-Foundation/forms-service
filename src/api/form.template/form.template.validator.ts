@@ -1,17 +1,20 @@
 import joi from 'joi';
 import express from 'express';
-import {
-    ErrorHandler
-} from '../../common/handlers/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { FormTemplateCreateModel, FormTemplateSearchFilters, FormTemplateUpdateModel } from '../../domain.types/forms/form.template.domain.types';
+import {
+    FormTemplateCreateModel,
+    FormTemplateSearchFilters,
+    FormTemplateUpdateModel,
+} from '../../domain.types/forms/form.template.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
 import { ParsedQs } from 'qs';
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormTemplateValidator extends BaseValidator {
-
-    public validateCreateRequest = async (request: express.Request): Promise<FormTemplateCreateModel> => {
+    public validateCreateRequest = async (
+        request: express.Request
+    ): Promise<FormTemplateCreateModel> => {
         try {
             const schema = joi.object({
                 Title: joi.string().required(),
@@ -23,7 +26,7 @@ export class FormTemplateValidator extends BaseValidator {
                 DisplayCode: joi.string().optional(),
                 OwnerUserId: joi.string().uuid(),
                 RootSectionId: joi.string().uuid(),
-                DefaultSectionNumbering: joi.boolean().optional()
+                DefaultSectionNumbering: joi.boolean().optional(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -33,17 +36,22 @@ export class FormTemplateValidator extends BaseValidator {
                 TenantCode: request.body.TenantCode,
                 Type: request.body.Type,
                 // ItemsPerPage: request.body.ItemsPerPage,
-                DisplayCode: request.body.DisplayCode ?? generateDisplayCode(30, 'ASSESS_TEMP_#'),
+                DisplayCode:
+                    request.body.DisplayCode ??
+                    generateDisplayCode(30, 'ASSESS_TEMP_#'),
                 OwnerUserId: request.body.OwnerUserId,
                 RootSectionId: request.body.RootSectionId,
-                DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? false,
+                DefaultSectionNumbering:
+                    request.body.DefaultSectionNumbering ?? false,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateUpdateRequest = async (request: express.Request): Promise<FormTemplateUpdateModel | undefined> => {
+    public validateUpdateRequest = async (
+        request: express.Request
+    ): Promise<FormTemplateUpdateModel | undefined> => {
         try {
             const schema = joi.object({
                 Title: joi.string().optional(),
@@ -55,7 +63,7 @@ export class FormTemplateValidator extends BaseValidator {
                 DisplayCode: joi.string().max(64).optional(),
                 OwnerUserId: joi.string().uuid().optional(),
                 RootSectionId: joi.string().uuid().optional(),
-                DefaultSectionNumbering: joi.boolean().optional()
+                DefaultSectionNumbering: joi.boolean().optional(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -68,14 +76,17 @@ export class FormTemplateValidator extends BaseValidator {
                 DisplayCode: request.body.DisplayCode ?? null,
                 OwnerUserId: request.body.OwnerUserId ?? null,
                 RootSectionId: request.body.RootSectionId ?? null,
-                DefaultSectionNumbering: request.body.DefaultSectionNumbering ?? null
+                DefaultSectionNumbering:
+                    request.body.DefaultSectionNumbering ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateSearchRequest = async (request: express.Request): Promise<FormTemplateSearchFilters> => {
+    public validateSearchRequest = async (
+        request: express.Request
+    ): Promise<FormTemplateSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -90,7 +101,7 @@ export class FormTemplateValidator extends BaseValidator {
                 itemsPerPage: joi.number().optional(),
                 pageIndex: joi.number().optional(),
                 orderBy: joi.string().optional(),
-                order:joi.string().optional()
+                order: joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -144,11 +155,12 @@ export class FormTemplateValidator extends BaseValidator {
         if (rootSectionId != null) {
             filters['RootSectionId'] = rootSectionId;
         }
-        var defaultSectionNumbering = query.defaultSectionNumbering ? query.defaultSectionNumbering : null;
+        var defaultSectionNumbering = query.defaultSectionNumbering
+            ? query.defaultSectionNumbering
+            : null;
         if (defaultSectionNumbering != null) {
             filters['DefaultSectionNumbering'] = defaultSectionNumbering;
         }
-
 
         var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
         if (itemsPerPage != null) {
@@ -169,7 +181,4 @@ export class FormTemplateValidator extends BaseValidator {
         }
         return filters;
     };
-
 }
-
-

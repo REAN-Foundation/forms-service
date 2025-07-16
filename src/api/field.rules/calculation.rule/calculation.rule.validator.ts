@@ -5,14 +5,14 @@ import BaseValidator from '../../base.validator';
 import {
     CalculationRuleCreateModel,
     CalculationRuleUpdateModel,
-    RuleSearchFilters
+    RuleSearchFilters,
 } from '../../../domain.types/forms/rule.domain.types';
 
-
 export class CalculationRuleValidator extends BaseValidator {
-
     // Calculation Rule validation
-    public validateCalculationRuleCreateRequest = async (request: express.Request): Promise<CalculationRuleCreateModel> => {
+    public validateCalculationRuleCreateRequest = async (
+        request: express.Request
+    ): Promise<CalculationRuleCreateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
@@ -31,14 +31,16 @@ export class CalculationRuleValidator extends BaseValidator {
                 IsActive: request.body.IsActive ?? true,
                 ConditionForOperationId: request.body.ConditionForOperationId,
                 OperationId: request.body.OperationId,
-                LogicId: request.body.LogicId
+                LogicId: request.body.LogicId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateCalculationRuleUpdateRequest = async (request: express.Request): Promise<CalculationRuleUpdateModel> => {
+    public validateCalculationRuleUpdateRequest = async (
+        request: express.Request
+    ): Promise<CalculationRuleUpdateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
@@ -57,14 +59,16 @@ export class CalculationRuleValidator extends BaseValidator {
                 IsActive: request.body.IsActive,
                 ConditionForOperationId: request.body.ConditionForOperationId,
                 OperationId: request.body.OperationId,
-                LogicId: request.body.LogicId
+                LogicId: request.body.LogicId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateRuleSearchRequest = async (request: express.Request): Promise<RuleSearchFilters> => {
+    public validateRuleSearchRequest = async (
+        request: express.Request
+    ): Promise<RuleSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -84,12 +88,23 @@ export class CalculationRuleValidator extends BaseValidator {
                 id: request.query.id as string,
                 name: request.query.name as string,
                 description: request.query.description as string,
-                priority: request.query.priority ? parseInt(request.query.priority as string) : undefined,
-                isActive: request.query.isActive === 'true' ? true : request.query.isActive === 'false' ? false : undefined,
+                priority: request.query.priority
+                    ? parseInt(request.query.priority as string)
+                    : undefined,
+                isActive:
+                    request.query.isActive === 'true'
+                        ? true
+                        : request.query.isActive === 'false'
+                          ? false
+                          : undefined,
                 operationId: request.query.operationId as string,
                 logicId: request.query.logicId as string,
-                PageIndex: request.query.PageIndex ? parseInt(request.query.PageIndex as string) : 0,
-                ItemsPerPage: request.query.ItemsPerPage ? parseInt(request.query.ItemsPerPage as string) : 10,
+                PageIndex: request.query.PageIndex
+                    ? parseInt(request.query.PageIndex as string)
+                    : 0,
+                ItemsPerPage: request.query.ItemsPerPage
+                    ? parseInt(request.query.ItemsPerPage as string)
+                    : 10,
                 OrderBy: request.query.OrderBy as string,
                 Order: request.query.Order as 'ASC' | 'DESC',
             };
@@ -97,4 +112,4 @@ export class CalculationRuleValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
-} 
+}

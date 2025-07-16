@@ -1,6 +1,4 @@
-import {
-    LogicalOperationResponseDto,
-} from "../../../../domain.types/forms/operation.domain.types";
+import { LogicalOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
 
 export class LogicalOperationMapper {
     static toDto = (record: any): LogicalOperationResponseDto => {
@@ -16,7 +14,7 @@ export class LogicalOperationMapper {
             Operator: record.Operator,
             Operands: record.Operands,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -27,4 +25,4 @@ export class LogicalOperationMapper {
         }
         return records.map(record => LogicalOperationMapper.toDto(record));
     }
-} 
+}

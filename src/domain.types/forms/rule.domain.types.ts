@@ -1,4 +1,7 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
 
 // Base Rule DTOs
 export interface BaseRuleCreateModel {
@@ -145,4 +148,4 @@ export interface RuleSearchResponseDto extends BaseSearchResults {
     LogicId?: string;
     CreatedAt: Date;
     UpdatedAt?: Date;
-} 
+}

@@ -1,4 +1,4 @@
-import { TemplateFolderResponseDto } from "../../../../domain.types/forms/template.folder.domain.types";
+import { TemplateFolderResponseDto } from '../../../../domain.types/forms/template.folder.domain.types';
 
 export class TemplateFolderMapper {
     static toDto = (record: any): TemplateFolderResponseDto => {
@@ -11,7 +11,7 @@ export class TemplateFolderMapper {
             Description: record.Description,
             ParentFolderId: record.ParentFolderId,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -22,4 +22,4 @@ export class TemplateFolderMapper {
         }
         return records.map(record => TemplateFolderMapper.toDto(record));
     }
-} 
+}

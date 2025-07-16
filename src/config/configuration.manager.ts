@@ -16,67 +16,82 @@ import {
     FileStorageProvider,
     InAppNotificationServiceProvider,
     SMSServiceProvider,
-    ProcessorsProvider
+    ProcessorsProvider,
 } from './configuration.types';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class ConfigurationManager {
-
     static _config: Configurations = null;
 
     public static loadConfigurations = (): void => {
-
-        const configuration = process.env.NODE_ENV === 'local'
-            || process.env.NODE_ENV === 'test'
-            ? localConfiguration : defaultConfiguration;
+        const configuration =
+            process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'test'
+                ? localConfiguration
+                : defaultConfiguration;
 
         ConfigurationManager._config = {
-            SystemIdentifier : configuration.SystemIdentifier,
-            BaseUrl          : process.env.BASE_URL,
-            Auth             : {
-                Authentication               : configuration.Auth.Authentication as AuthenticationType,
-                Authorization                : configuration.Auth.Authorization as AuthorizationType,
-                UseRefreshToken              : configuration.Auth.UseRefreshToken,
-                AccessTokenExpiresInSeconds  : configuration.Auth.AccessTokenExpiresInSeconds,
-                RefreshTokenExpiresInSeconds : configuration.Auth.RefreshTokenExpiresInSeconds
+            SystemIdentifier: configuration.SystemIdentifier,
+            BaseUrl: process.env.BASE_URL,
+            Auth: {
+                Authentication: configuration.Auth
+                    .Authentication as AuthenticationType,
+                Authorization: configuration.Auth
+                    .Authorization as AuthorizationType,
+                UseRefreshToken: configuration.Auth.UseRefreshToken,
+                AccessTokenExpiresInSeconds:
+                    configuration.Auth.AccessTokenExpiresInSeconds,
+                RefreshTokenExpiresInSeconds:
+                    configuration.Auth.RefreshTokenExpiresInSeconds,
             },
-            Database : {
-                Type : configuration.Database.Type as DatabaseType,
-                ORM  : configuration.Database.ORM as DatabaseORM,
+            Database: {
+                Type: configuration.Database.Type as DatabaseType,
+                ORM: configuration.Database.ORM as DatabaseORM,
             },
-            Ehr : {
-                Enabled       : configuration.Ehr.Enabled,
-                Specification : configuration.Ehr.Specification as EHRSpecification,
-                Provider      : configuration.Ehr.Provider as EHRProvider,
+            Ehr: {
+                Enabled: configuration.Ehr.Enabled,
+                Specification: configuration.Ehr
+                    .Specification as EHRSpecification,
+                Provider: configuration.Ehr.Provider as EHRProvider,
             },
-            FileStorage : {
-                Provider : configuration?.FileStorage?.Provider as FileStorageProvider ?? 'Custom',
+            FileStorage: {
+                Provider:
+                    (configuration?.FileStorage
+                        ?.Provider as FileStorageProvider) ?? 'Custom',
             },
-            FeatureFlags : {
-                Provider : configuration?.FeatureFlags?.Provider as FeatureFlagsProvider ?? 'Custom',
+            FeatureFlags: {
+                Provider:
+                    (configuration?.FeatureFlags
+                        ?.Provider as FeatureFlagsProvider) ?? 'Custom',
             },
-            Communication : {
-                SMSProvider               : configuration.Communication.SMS.Provider as SMSServiceProvider,
-                EmailProvider             : configuration.Communication.Email.Provider as EmailServiceProvider,
+            Communication: {
+                SMSProvider: configuration.Communication.SMS
+                    .Provider as SMSServiceProvider,
+                EmailProvider: configuration.Communication.Email
+                    .Provider as EmailServiceProvider,
                 // eslint-disable-next-line max-len
-                InAppNotificationProvider : configuration.Communication.InAppNotifications.Provider as InAppNotificationServiceProvider,
+                InAppNotificationProvider: configuration.Communication
+                    .InAppNotifications
+                    .Provider as InAppNotificationServiceProvider,
             },
-            Careplans        : configuration.Careplans,
-            TemporaryFolders : {
-                Upload                     : configuration.TemporaryFolders.Upload as string,
-                Download                   : configuration.TemporaryFolders.Download as string,
-                CleanupFolderBeforeMinutes : configuration.TemporaryFolders.CleanupFolderBeforeMinutes as number,
+            Careplans: configuration.Careplans,
+            TemporaryFolders: {
+                Upload: configuration.TemporaryFolders.Upload as string,
+                Download: configuration.TemporaryFolders.Download as string,
+                CleanupFolderBeforeMinutes: configuration.TemporaryFolders
+                    .CleanupFolderBeforeMinutes as number,
             },
-            FormServiceProviders       : configuration.FormServiceProviders,
-            WebhookControllerProviders : configuration.WebhookControllerProviders,
-            Processor : {
-                Provider : configuration.Processor?.Provider as ProcessorsProvider,
+            FormServiceProviders: configuration.FormServiceProviders,
+            WebhookControllerProviders:
+                configuration.WebhookControllerProviders,
+            Processor: {
+                Provider: configuration.Processor
+                    ?.Provider as ProcessorsProvider,
             },
-            Logger                     : configuration.Logger,
-            MaxUploadFileSize          : configuration.MaxUploadFileSize,
-            EHRAnalytics               : configuration.EHRAnalytics,
-            Gamification               : configuration.Gamification,
+            Logger: configuration.Logger,
+            MaxUploadFileSize: configuration.MaxUploadFileSize,
+            EHRAnalytics: configuration.EHRAnalytics,
+            Gamification: configuration.Gamification,
         };
 
         ConfigurationManager.checkConfigSanity();
@@ -169,23 +184,36 @@ export class ConfigurationManager {
     };
 
     public static TemporaryFolderCleanupBefore = (): number => {
-        return ConfigurationManager._config.TemporaryFolders.CleanupFolderBeforeMinutes;
+        return ConfigurationManager._config.TemporaryFolders
+            .CleanupFolderBeforeMinutes;
     };
 
-    public static InAppNotificationServiceProvider = (): InAppNotificationServiceProvider => {
-        return ConfigurationManager._config.Communication.InAppNotificationProvider;
-    };
+    public static InAppNotificationServiceProvider =
+        (): InAppNotificationServiceProvider => {
+            return ConfigurationManager._config.Communication
+                .InAppNotificationProvider;
+        };
 
-    public static careplans = ()
-        : { Enabled: boolean, Provider: string; Service: string; Plans: CareplanConfig[] } [] => {
+    public static careplans = (): {
+        Enabled: boolean;
+        Provider: string;
+        Service: string;
+        Plans: CareplanConfig[];
+    }[] => {
         return ConfigurationManager._config.Careplans;
     };
 
-    public static formServiceProviders = (): { Provider: string; Code: string; } [] => {
+    public static formServiceProviders = (): {
+        Provider: string;
+        Code: string;
+    }[] => {
         return ConfigurationManager._config.FormServiceProviders;
     };
 
-    public static webhookControllerProviders = (): { Provider: string; Code: string; } [] => {
+    public static webhookControllerProviders = (): {
+        Provider: string;
+        Code: string;
+    }[] => {
         return ConfigurationManager._config.WebhookControllerProviders;
     };
 
@@ -198,13 +226,14 @@ export class ConfigurationManager {
     };
 
     private static checkConfigSanity() {
-
         //Check database configurations
 
         if (ConfigurationManager._config.Database.Type === 'SQL') {
             var orm = ConfigurationManager._config.Database.ORM;
             if (orm !== 'Sequelize' && orm !== 'TypeORM') {
-                throw new Error('Database configuration error! - Unspported/non-matching ORM');
+                throw new Error(
+                    'Database configuration error! - Unspported/non-matching ORM'
+                );
             }
         }
         if (ConfigurationManager._config.Database.Type === 'NoSQL') {
@@ -212,10 +241,11 @@ export class ConfigurationManager {
             const dialect = process.env.DB_DIALECT;
             if (dialect === 'MongoDB') {
                 if (orm !== 'Mongoose') {
-                    throw new Error('Database configuration error! - Unspported/non-matching ORM');
+                    throw new Error(
+                        'Database configuration error! - Unspported/non-matching ORM'
+                    );
                 }
             }
         }
     }
-
 }

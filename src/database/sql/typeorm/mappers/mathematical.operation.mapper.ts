@@ -1,6 +1,4 @@
-import {
-    MathematicalOperationResponseDto,
-} from "../../../../domain.types/forms/operation.domain.types";
+import { MathematicalOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
 
 export class MathematicalOperationMapper {
     static toDto = (record: any): MathematicalOperationResponseDto => {
@@ -17,7 +15,7 @@ export class MathematicalOperationMapper {
             Operands: record.Operands,
             ResultDataType: record.ResultDataType,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -28,4 +26,4 @@ export class MathematicalOperationMapper {
         }
         return records.map(record => MathematicalOperationMapper.toDto(record));
     }
-} 
+}

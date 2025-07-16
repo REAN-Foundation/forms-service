@@ -16,4 +16,4 @@ export class CalculationRuleEntity extends BaseRuleEntity {
     @ManyToOne(() => CalculationLogicEntity, { nullable: true })
     @JoinColumn({ name: 'LogicId' })
     Logic?: CalculationLogicEntity;
-} 
+}

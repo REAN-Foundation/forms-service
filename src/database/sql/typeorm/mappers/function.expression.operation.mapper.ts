@@ -1,6 +1,4 @@
-import {
-    FunctionExpressionOperationResponseDto,
-} from "../../../../domain.types/forms/operation.domain.types";
+import { FunctionExpressionOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
 
 export class FunctionExpressionOperationMapper {
     static toDto = (record: any): FunctionExpressionOperationResponseDto => {
@@ -17,15 +15,19 @@ export class FunctionExpressionOperationMapper {
             Variables: record.Variables,
             ResultDataType: record.ResultDataType,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
 
-    static toArrayDto(records: any[]): FunctionExpressionOperationResponseDto[] {
+    static toArrayDto(
+        records: any[]
+    ): FunctionExpressionOperationResponseDto[] {
         if (records === null) {
             return [];
         }
-        return records.map(record => FunctionExpressionOperationMapper.toDto(record));
+        return records.map(record =>
+            FunctionExpressionOperationMapper.toDto(record)
+        );
     }
-} 
+}

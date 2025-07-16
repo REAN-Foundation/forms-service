@@ -1,4 +1,3 @@
-
 export interface CurrentUser {
     UserId: string;
     FirstName: string;

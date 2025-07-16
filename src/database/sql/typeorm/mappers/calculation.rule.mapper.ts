@@ -1,6 +1,4 @@
-import {
-    CalculationRuleResponseDto,
-} from "../../../../domain.types/forms/rule.domain.types";
+import { CalculationRuleResponseDto } from '../../../../domain.types/forms/rule.domain.types';
 
 export class CalculationRuleMapper {
     static toDto = (record: any): CalculationRuleResponseDto => {
@@ -18,7 +16,7 @@ export class CalculationRuleMapper {
             OperationId: record.OperationId,
             LogicId: record.LogicId,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -29,4 +27,4 @@ export class CalculationRuleMapper {
         }
         return records.map(record => CalculationRuleMapper.toDto(record));
     }
-} 
+}

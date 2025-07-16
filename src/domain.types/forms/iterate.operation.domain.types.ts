@@ -1,4 +1,8 @@
-import { BaseOperationCreateModel, BaseOperationResponseDto, BaseOperationUpdateModel } from "./operation.domain.types";
+import {
+    BaseOperationCreateModel,
+    BaseOperationResponseDto,
+    BaseOperationUpdateModel,
+} from './operation.domain.types';
 
 // Iterate Operation DTOs
 export interface IterateOperationCreateModel extends BaseOperationCreateModel {
@@ -22,4 +26,4 @@ export interface IterateOperationResponseDto extends BaseOperationResponseDto {
         Name?: string;
         Description?: string;
     };
-} 
+}

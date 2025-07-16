@@ -1,5 +1,8 @@
-import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
-import { uuid } from "../miscellaneous/system.types";
+import {
+    BaseSearchFilters,
+    BaseSearchResults,
+} from '../miscellaneous/base.search.types';
+import { uuid } from '../miscellaneous/system.types';
 
 export interface FormTemplateApprovalCreateModel {
     ApproverUserId: string;
@@ -34,4 +37,4 @@ export interface FormTemplateApprovalSearchFilters extends BaseSearchFilters {
 
 export interface FormTemplateApprovalSearchResults extends BaseSearchResults {
     Items: FormTemplateApprovalResponseDto[];
-} 
+}

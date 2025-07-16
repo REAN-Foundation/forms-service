@@ -1,17 +1,20 @@
 import joi from 'joi';
 import express from 'express';
-import {
-    ErrorHandler
-} from '../../common/handlers/error.handler';
+import { ErrorHandler } from '../../common/handlers/error.handler';
 import BaseValidator from '../base.validator';
-import { UserCreateModel, UserSearchFilters, UserUpdateModel } from '../../domain.types/forms/user.domain.types';
+import {
+    UserCreateModel,
+    UserSearchFilters,
+    UserUpdateModel,
+} from '../../domain.types/forms/user.domain.types';
 import { ParsedQs } from 'qs';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class UserValidator extends BaseValidator {
-
-    public validateCreateRequest = async (request: express.Request): Promise<UserCreateModel> => {
+    public validateCreateRequest = async (
+        request: express.Request
+    ): Promise<UserCreateModel> => {
         try {
             const schema = joi.object({
                 FirstName: joi.string(),
@@ -20,7 +23,7 @@ export class UserValidator extends BaseValidator {
                 Phone: joi.string(),
                 Email: joi.string().email(),
                 Username: joi.string().required(),
-                Password: joi.string().required()
+                Password: joi.string().required(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -37,7 +40,9 @@ export class UserValidator extends BaseValidator {
         }
     };
 
-    public validateUpdateRequest = async (request: express.Request): Promise<UserUpdateModel | undefined> => {
+    public validateUpdateRequest = async (
+        request: express.Request
+    ): Promise<UserUpdateModel | undefined> => {
         try {
             const schema = joi.object({
                 FirstName: joi.string().optional(),
@@ -46,7 +51,7 @@ export class UserValidator extends BaseValidator {
                 Phone: joi.string().optional(),
                 Email: joi.string().email().optional(),
                 Username: joi.string().optional(),
-                Password: joi.string().optional()
+                Password: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -63,7 +68,9 @@ export class UserValidator extends BaseValidator {
         }
     };
 
-    public validateSearchRequest = async (request: express.Request): Promise<UserSearchFilters> => {
+    public validateSearchRequest = async (
+        request: express.Request
+    ): Promise<UserSearchFilters> => {
         try {
             const schema = joi.object({
                 firstName: joi.string().optional(),
@@ -84,7 +91,7 @@ export class UserValidator extends BaseValidator {
     };
 
     private getSearchFilters = (query: ParsedQs): UserSearchFilters => {
-        var filters:any = {};
+        var filters: any = {};
 
         var firstName = query.firstName ? query.firstName : null;
         if (firstName != null) {

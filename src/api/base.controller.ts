@@ -7,24 +7,26 @@ import { error } from 'console';
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class BaseController {
-
-    constructor() {
-    }
+    constructor() {}
 
     authorize = async (
         context: string,
         request: express.Request,
         response: express.Response,
-        authorize = true) => {
-
+        authorize = true
+    ) => {
         if (context === undefined || context === null) {
-            ErrorHandler.throwInternalServerError('Invalid request context', error);
+            ErrorHandler.throwInternalServerError(
+                'Invalid request context',
+                error
+            );
         }
         const tokens = context.split('.');
         if (tokens.length < 2) {
-            ErrorHandler.throwInternalServerError('Invalid request context', error);
+            ErrorHandler.throwInternalServerError(
+                'Invalid request context',
+                error
+            );
         }
-
     };
-
 }

@@ -1,17 +1,20 @@
-import { UserCreateModel, UserResponseDto, UserSearchFilters, UserUpdateModel } from "../../../domain.types/forms/user.domain.types";
+import {
+    UserCreateModel,
+    UserResponseDto,
+    UserSearchFilters,
+    UserUpdateModel,
+} from '../../../domain.types/forms/user.domain.types';
 
-export interface IUserRepo{
+export interface IUserRepo {
+    allUsers(): Promise<any>;
 
-    allUsers(): Promise<any> ;
-    
-    create(model: UserCreateModel) : Promise<UserResponseDto>;
+    create(model: UserCreateModel): Promise<UserResponseDto>;
 
-    update(id: string, model: UserUpdateModel) : Promise<UserResponseDto>;
-    
-    getById(id: string) : Promise<UserResponseDto>;
+    update(id: string, model: UserUpdateModel): Promise<UserResponseDto>;
 
-    delete(id: string) : Promise<boolean>;
+    getById(id: string): Promise<UserResponseDto>;
+
+    delete(id: string): Promise<boolean>;
 
     search(filters: UserSearchFilters): Promise<any>;
-
 }

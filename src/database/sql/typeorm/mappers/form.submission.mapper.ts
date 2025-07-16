@@ -1,4 +1,4 @@
-import { FormSubmissionDto } from "../../../../domain.types/forms/form.submission.domain.types";
+import { FormSubmissionDto } from '../../../../domain.types/forms/form.submission.domain.types';
 
 export class FormSubmissionMapper {
     static toDto = (record: any): FormSubmissionDto => {
@@ -18,7 +18,7 @@ export class FormSubmissionMapper {
             SubmittedAt: record.SubmittedAt,
             ValidTill: record.ValidTill,
             Category: record.Category,
-            Status: record.Status
+            Status: record.Status,
         };
         return dto;
     };

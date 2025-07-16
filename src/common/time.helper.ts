@@ -1,4 +1,3 @@
-
 import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
@@ -9,7 +8,10 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import weekday from 'dayjs/plugin/weekday';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
-import { DateStringFormat, DurationType } from "../domain.types/miscellaneous/time.types";
+import {
+    DateStringFormat,
+    DurationType,
+} from '../domain.types/miscellaneous/time.types';
 import { Logger } from './logger';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +38,6 @@ export const MINUTES_IN_QUARTER = 3 * MINUTES_IN_MONTH;
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class TimeHelper {
-
     static timestamp = (date: Date): string => {
         return date.getTime().toString();
     };
@@ -44,11 +45,18 @@ export class TimeHelper {
     static getWeekday = (date: Date, short: boolean): string => {
         const idx = date.getDay();
         if (short) {
-            var days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+            var days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
             return days[idx];
-        }
-        else {
-            var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        } else {
+            var days = [
+                'Sunday',
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+            ];
             return days[idx];
         }
     };
@@ -58,29 +66,28 @@ export class TimeHelper {
     }
 
     static startOfTodayUtc(): Date {
-        return dayjs
-            .utc()
-            .startOf('day')
-            .toDate();
+        return dayjs.utc().startOf('day').toDate();
     }
 
     static endOfTodayUtc(): Date {
-        return dayjs
-            .utc()
-            .endOf('day')
-            .toDate();
+        return dayjs.utc().endOf('day').toDate();
     }
 
     static startOfThisWeekUtc(): Date {
-        return dayjs
-            .utc()
-            .startOf('week')
-            .toDate();
+        return dayjs.utc().startOf('week').toDate();
     }
 
     static getWeekdayIndex(day: string): number {
-        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-        const daysShort = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        const days = [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+        ];
+        const daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         let idx = days.indexOf(day);
         if (idx === -1) {
             idx = daysShort.indexOf(day);
@@ -93,11 +100,7 @@ export class TimeHelper {
         if (idx === -1) {
             throw new Error(`Invalid day: ${day}`);
         }
-        return dayjs
-            .utc()
-            .weekday(idx)
-            .utc()
-            .toDate();
+        return dayjs.utc().weekday(idx).utc().toDate();
     }
 
     static startOfDayThisWeekUtc(day: string): Date {
@@ -105,13 +108,9 @@ export class TimeHelper {
         if (idx === -1) {
             throw new Error(`Invalid day: ${day}`);
         }
-        const weekday = dayjs
-            .utc()
-            .weekday(idx)
-            .startOf('day');
+        const weekday = dayjs.utc().weekday(idx).startOf('day');
 
-        const weekdayStr = weekday.format()
-            .split('T')[0];
+        const weekdayStr = weekday.format().split('T')[0];
 
         const year = parseInt(weekdayStr.split('-')[0]);
         const month = parseInt(weekdayStr.split('-')[1]);
@@ -122,23 +121,15 @@ export class TimeHelper {
     }
 
     static startOfThisMonthUtc(): Date {
-        return dayjs
-            .utc()
-            .startOf('month')
-            .toDate();
+        return dayjs.utc().startOf('month').toDate();
     }
 
     static startOfThisYearUtc(): Date {
-        return dayjs
-            .utc()
-            .startOf('year')
-            .toDate();
+        return dayjs.utc().startOf('year').toDate();
     }
 
     static getStartOfDay = (date: Date, timezoneOffsetMinutes: number) => {
-        const startOfDayUtc = dayjs(date)
-            .utc()
-            .startOf('day');
+        const startOfDayUtc = dayjs(date).utc().startOf('day');
         const startOfDay = startOfDayUtc
             .add(timezoneOffsetMinutes, 'minutes')
             .toDate();
@@ -157,21 +148,37 @@ export class TimeHelper {
     };
 
     static getMonth = (date: Date): string => {
-        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        var month = months[ date.getMonth() ];
+        var months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ];
+        var month = months[date.getMonth()];
         return month;
     };
 
     static getDateString = (date: Date, format: DateStringFormat): string => {
-
         if (format === DateStringFormat.YYYY_MM_DD) {
             return date.toISOString().split('T')[0];
         }
         return date.toISOString().split('T')[0];
     };
 
-    static addDuration = (date: Date, durationValue: number, durationType: DurationType, utc = false): Date => {
-
+    static addDuration = (
+        date: Date,
+        durationValue: number,
+        durationType: DurationType,
+        utc = false
+    ): Date => {
         var date_ = utc === true ? dayjs(date).utc() : dayjs(date);
         var newDate_ = date_;
 
@@ -204,8 +211,12 @@ export class TimeHelper {
         return new Date(str);
     };
 
-    static subtractDuration = (date: Date, durationValue: number, durationType: DurationType, utc = false): Date => {
-
+    static subtractDuration = (
+        date: Date,
+        durationValue: number,
+        durationType: DurationType,
+        utc = false
+    ): Date => {
         var date_ = utc === true ? dayjs(date).utc() : dayjs(date);
         var newDate_ = dayjs().utc();
 
@@ -246,34 +257,35 @@ export class TimeHelper {
         return dayjs(first).isAfter(dayjs(second));
     };
 
-    static durationFromString = (str: string, durationType: DurationType): number => {
-
+    static durationFromString = (
+        str: string,
+        durationType: DurationType
+    ): number => {
         var durationInHours = 0;
-        var tokens = str.toLowerCase().split(":");
+        var tokens = str.toLowerCase().split(':');
 
         for (var i = 0; i < tokens.length; i++) {
-
             var x = tokens[i];
 
-            if (x.includes("h")) {
-                x = x.replace("h", "");
+            if (x.includes('h')) {
+                x = x.replace('h', '');
                 var hours = parseInt(x);
                 durationInHours += hours;
             }
-            if (x.includes("d")) {
-                x = x.replace("d", "");
+            if (x.includes('d')) {
+                x = x.replace('d', '');
                 var days = parseInt(x);
-                durationInHours += (days * 24);
+                durationInHours += days * 24;
             }
-            if (x.includes("w")) {
-                x = x.replace("w", "");
+            if (x.includes('w')) {
+                x = x.replace('w', '');
                 var weeks = parseInt(x);
-                durationInHours += (weeks * 24 * 7);
+                durationInHours += weeks * 24 * 7;
             }
-            if (x.includes("m")) {
-                x = x.replace("m", "");
+            if (x.includes('m')) {
+                x = x.replace('m', '');
                 var months = parseInt(x);
-                durationInHours += (months * 24 * 30);
+                durationInHours += months * 24 * 30;
             }
         }
 
@@ -304,32 +316,31 @@ export class TimeHelper {
         return durationInHours;
     };
 
-    static getTimezoneOffsets = (timezoneOffsetStr: string, durationType: DurationType): number => {
-
+    static getTimezoneOffsets = (
+        timezoneOffsetStr: string,
+        durationType: DurationType
+    ): number => {
         var offsetTmp = timezoneOffsetStr;
         var offsetMinutes = 0;
 
         if (timezoneOffsetStr.includes('+')) {
             offsetTmp = offsetTmp.replace('+', '-');
-        }
-        else if (!timezoneOffsetStr.includes('-')) {
+        } else if (!timezoneOffsetStr.includes('-')) {
             offsetTmp = offsetTmp.replace(' ', '');
             offsetTmp = '-' + offsetTmp;
-        }
-        else if (timezoneOffsetStr.includes('-')) {
+        } else if (timezoneOffsetStr.includes('-')) {
             offsetTmp = offsetTmp.replace('-', '+');
         }
 
         if (timezoneOffsetStr.includes(':')) {
-            var tokens = offsetTmp.split(":");
+            var tokens = offsetTmp.split(':');
             var offset_hours = parseInt(tokens[0]);
             var offset_minutes = parseInt(tokens[1]);
             if (offset_hours < 0) {
                 offset_minutes = -1 * offset_minutes;
             }
-            offsetMinutes = (offset_hours * 60) + offset_minutes;
-        }
-        else {
+            offsetMinutes = offset_hours * 60 + offset_minutes;
+        } else {
             var len = offsetTmp.length;
             var min = offsetTmp.substring(len - 2, len);
             var hr = offsetTmp.substring(0, len - 2);
@@ -338,14 +349,14 @@ export class TimeHelper {
             if (offset_hours < 0) {
                 offset_minutes = -1 * offset_minutes;
             }
-            offsetMinutes = (offset_hours * 60) + offset_minutes;
+            offsetMinutes = offset_hours * 60 + offset_minutes;
         }
 
         if (durationType === DurationType.Milisecond) {
             return offsetMinutes * 60 * 1000;
         }
         if (durationType === DurationType.Second) {
-            return offsetMinutes * 60 ;
+            return offsetMinutes * 60;
         }
         if (durationType === DurationType.Minute) {
             return offsetMinutes;
@@ -368,35 +379,37 @@ export class TimeHelper {
         return offsetMinutes;
     };
 
-    static getTimezoneOffset = (timezoneOffsetStr: string, durationType: DurationType): number => {
+    static getTimezoneOffset = (
+        timezoneOffsetStr: string,
+        durationType: DurationType
+    ): number => {
         let offsetMinutes = 0;
-    
+
         const offsetTmp = timezoneOffsetStr.trim();
 
         if (offsetTmp.includes(':')) {
-            const tokens = offsetTmp.split(":");
+            const tokens = offsetTmp.split(':');
             const offsetHours = parseInt(tokens[0]);
             let offsetMins = parseInt(tokens[1]);
 
             if (offsetHours < 0) {
                 offsetMins = -Math.abs(offsetMins);
             }
-    
+
             offsetMinutes = offsetHours * 60 + offsetMins;
-        }
-        else {
+        } else {
             const len = offsetTmp.length;
-   
+
             const offsetHours = parseInt(offsetTmp.slice(0, len - 2));
             let offsetMins = parseInt(offsetTmp.slice(len - 2));
-    
+
             if (offsetHours < 0) {
                 offsetMins = -Math.abs(offsetMins);
             }
-    
+
             offsetMinutes = offsetHours * 60 + offsetMins;
         }
-    
+
         switch (durationType) {
             case DurationType.Milisecond:
                 return offsetMinutes * 60 * 1000;
@@ -419,17 +432,18 @@ export class TimeHelper {
         }
     };
 
-    static strToUtc = (dateStr: string, timeZoneOffsetMinutes?: number): Date => {
-
+    static strToUtc = (
+        dateStr: string,
+        timeZoneOffsetMinutes?: number
+    ): Date => {
         if (timeZoneOffsetMinutes !== undefined) {
             var d = new Date(dateStr + 'T00:00:00.000Z').getTime();
-            var correction = d + (timeZoneOffsetMinutes * 60000);
-            var corrected = (new Date()).setTime(correction);
+            var correction = d + timeZoneOffsetMinutes * 60000;
+            var corrected = new Date().setTime(correction);
             return new Date(corrected);
-        }
-        else {
+        } else {
             var d = new Date(dateStr + 'T00:00:00.000Z').getTime();
-            var corrected = (new Date()).setTime(d);
+            var corrected = new Date().setTime(d);
             return new Date(corrected);
         }
     };
@@ -439,81 +453,51 @@ export class TimeHelper {
     };
 
     static startOf = (date: Date, durationType: DurationType): Date => {
-
         if (durationType === DurationType.Second) {
-            return dayjs(date)
-                .startOf('second')
-                .toDate();
+            return dayjs(date).startOf('second').toDate();
         }
         if (durationType === DurationType.Minute) {
-            return dayjs(date)
-                .startOf('minute')
-                .toDate();
+            return dayjs(date).startOf('minute').toDate();
         }
         if (durationType === DurationType.Hour) {
-            return dayjs(date)
-                .startOf('hour')
-                .toDate();
+            return dayjs(date).startOf('hour').toDate();
         }
         if (durationType === DurationType.Day) {
-            return dayjs(date)
-                .startOf('day')
-                .toDate();
+            return dayjs(date).startOf('day').toDate();
         }
         if (durationType === DurationType.Week) {
-            return dayjs(date)
-                .startOf('week')
-                .toDate();
+            return dayjs(date).startOf('week').toDate();
         }
         if (durationType === DurationType.Month) {
-            return dayjs(date)
-                .startOf('month')
-                .toDate();
+            return dayjs(date).startOf('month').toDate();
         }
         if (durationType === DurationType.Year) {
-            return dayjs(date)
-                .startOf('year')
-                .toDate();
+            return dayjs(date).startOf('year').toDate();
         }
         return date;
     };
 
     static endOf = (date: Date, durationType: DurationType): Date => {
-
         if (durationType === DurationType.Second) {
-            return dayjs(date)
-                .endOf('second')
-                .toDate();
+            return dayjs(date).endOf('second').toDate();
         }
         if (durationType === DurationType.Minute) {
-            return dayjs(date)
-                .endOf('minute')
-                .toDate();
+            return dayjs(date).endOf('minute').toDate();
         }
         if (durationType === DurationType.Hour) {
-            return dayjs(date)
-                .endOf('hour')
-                .toDate();
+            return dayjs(date).endOf('hour').toDate();
         }
         if (durationType === DurationType.Day) {
-            return dayjs(date)
-                .endOf('day')
-                .toDate();
+            return dayjs(date).endOf('day').toDate();
         }
         if (durationType === DurationType.Week) {
-            return dayjs(date)
-                .endOf('week')
-                .toDate();
+            return dayjs(date).endOf('week').toDate();
         }
         if (durationType === DurationType.Month) {
-            return dayjs(date)
-                .endOf('month')
-                .toDate();
+            return dayjs(date).endOf('month').toDate();
         }
         if (durationType === DurationType.Year) {
-            return dayjs(date)
-                .endOf('year')
-                .toDate();
+            return dayjs(date).endOf('year').toDate();
         }
         return date;
     };
@@ -525,55 +509,58 @@ export class TimeHelper {
     static getDateWithTimezone = (dateStr: string, timezoneOffset: string) => {
         var todayStr = dayjs.utc().format();
         var str = dateStr ? dateStr.split('T')[0] : todayStr.split('T')[0];
-        var offsetMinutes = TimeHelper.getTimezoneOffsets(timezoneOffset, DurationType.Minute);
+        var offsetMinutes = TimeHelper.getTimezoneOffsets(
+            timezoneOffset,
+            DurationType.Minute
+        );
         return TimeHelper.strToUtc(str, offsetMinutes);
     };
 
-    static dayDiff = (first: Date, second: Date|undefined) => {
+    static dayDiff = (first: Date, second: Date | undefined) => {
         const diff = first.getTime() - second.getTime();
         var dayDiff = diff / (1000 * 60 * 60 * 24);
         return dayDiff;
     };
 
-    static hourDiff = (first: Date, second: Date|undefined) => {
+    static hourDiff = (first: Date, second: Date | undefined) => {
         const diff = first.getTime() - second.getTime();
         var hourDiff = diff / (1000 * 60 * 60);
         return hourDiff;
     };
 
-    static minuteDiff = (first: Date, second: Date|undefined) => {
+    static minuteDiff = (first: Date, second: Date | undefined) => {
         const date1 = dayjs(first);
         const date2 = dayjs(second);
-        const diffMillisec =  date1.diff(date2);
+        const diffMillisec = date1.diff(date2);
         const diff = diffMillisec / (1000 * 60);
         return diff;
     };
 
-    static secDiff = (first: Date, second: Date|undefined) => {
+    static secDiff = (first: Date, second: Date | undefined) => {
         const date1 = dayjs(first);
         const date2 = dayjs(second);
-        const diffMillisec =  date1.diff(date2);
-        const diff = diffMillisec / (1000);
+        const diffMillisec = date1.diff(date2);
+        const diff = diffMillisec / 1000;
         return diff;
     };
 
-    static formatDateToLocal_YYYY_MM_DD = (date : Date) => {
+    static formatDateToLocal_YYYY_MM_DD = (date: Date) => {
         Logger.instance().log(`Date :: ${date}`);
-        const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
-        const day = ("0" + date.getDate()).slice(-2);
-        return [date.getFullYear(), mnth, day].join("-");
+        const mnth = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join('-');
     };
 
     static formatTimeTo_AM_PM(timeString) {
-        const [hourString, minute] = timeString.split(":");
+        const [hourString, minute] = timeString.split(':');
         const hour = +hourString % 24;
-        return (hour % 12 || 12) + ":" + minute + (hour < 12 ? " AM" : " PM");
+        return (hour % 12 || 12) + ':' + minute + (hour < 12 ? ' AM' : ' PM');
     }
 
     static timeDelay = ms => new Promise(res => setTimeout(res, ms));
 
     static getDateTimeStamp = (date: Date): string => {
-        date = new Date(date.toISOString().split("T")[0]);
+        date = new Date(date.toISOString().split('T')[0]);
         return date.getTime().toString();
     };
 
@@ -585,9 +572,10 @@ export class TimeHelper {
             const month = parseInt(match[2]);
             const day = parseInt(match[3]);
             // Check if it's midnight
-            return year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= 31;
+            return (
+                year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= 31
+            );
         }
         return false; // Invalid timestamp format
     }
-
 }

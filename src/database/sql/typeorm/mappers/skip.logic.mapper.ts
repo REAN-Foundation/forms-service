@@ -1,7 +1,5 @@
-import {
-    SkipLogicResponseDto,
-} from "../../../../domain.types/forms/logic.domain.types";
-import { LogicType } from "../../../../domain.types/forms/logic.enums";
+import { SkipLogicResponseDto } from '../../../../domain.types/forms/logic.domain.types';
+import { LogicType } from '../../../../domain.types/forms/logic.enums';
 
 export class SkipLogicMapper {
     static toDto = (record: any): SkipLogicResponseDto => {
@@ -16,7 +14,7 @@ export class SkipLogicMapper {
             Enabled: record.Enabled,
             DefaultSkip: record.DefaultSkip,
             CreatedAt: record.CreatedAt,
-            UpdatedAt: record.UpdatedAt
+            UpdatedAt: record.UpdatedAt,
         };
         return dto;
     };
@@ -27,5 +25,4 @@ export class SkipLogicMapper {
         }
         return records.map(record => SkipLogicMapper.toDto(record));
     }
-
 }

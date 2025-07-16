@@ -4,7 +4,6 @@ import { ValidationLogicController } from './validation.logic.controller';
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
-
     const router = express.Router();
     const controller = new ValidationLogicController();
 
@@ -16,4 +15,4 @@ export const register = (app: express.Application): void => {
     router.delete('/:id', controller.deleteValidationLogic);
 
     app.use('/api/v1/field-validation-logic', router);
-}; 
+};

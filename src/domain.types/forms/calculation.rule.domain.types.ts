@@ -1,5 +1,9 @@
-import { BaseRuleCreateModel, BaseRuleResponseDto, BaseRuleUpdateModel } from "./rule.domain.types";
-import { BaseSearchFilters } from "../miscellaneous/base.search.types";
+import {
+    BaseRuleCreateModel,
+    BaseRuleResponseDto,
+    BaseRuleUpdateModel,
+} from './rule.domain.types';
+import { BaseSearchFilters } from '../miscellaneous/base.search.types';
 
 // Calculation Rule DTOs
 export interface CalculationRuleCreateModel extends BaseRuleCreateModel {
@@ -45,4 +49,4 @@ export interface CalculationRuleSearchFilters extends BaseSearchFilters {
     isActive?: boolean;
     operationId?: string;
     logicId?: string;
-} 
+}

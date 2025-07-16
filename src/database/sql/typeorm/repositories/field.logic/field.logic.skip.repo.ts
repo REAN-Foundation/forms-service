@@ -1,30 +1,32 @@
-import { ISkipLogicRepo } from "../../../../repository.interfaces/field.logic/skip.logic/skip.logic.repo.interface";
+import { ISkipLogicRepo } from '../../../../repository.interfaces/field.logic/skip.logic/skip.logic.repo.interface';
 import {
     SkipLogicResponseDto,
     SkipLogicCreateModel,
     SkipLogicUpdateModel,
-    LogicSearchFilters
-} from "../../../../../domain.types/forms/logic.domain.types";
-import { SkipLogicMapper } from "../../mappers/skip.logic.mapper";
-import { SkipLogicEntity } from "../../models/logic/skip.logic.model";
-import { LogicType } from "../../../../../domain.types/forms/logic.enums";
-import { Source } from "../../database.connector.typeorm";
-import { ErrorHandler } from "../../../../../common/handlers/error.handler";
-import { Logger } from "../../../../../common/logger";
-import { BaseRepo } from "../base.repo";
-import { FindManyOptions, Repository } from "typeorm";
+    LogicSearchFilters,
+} from '../../../../../domain.types/forms/logic.domain.types';
+import { SkipLogicMapper } from '../../mappers/skip.logic.mapper';
+import { SkipLogicEntity } from '../../models/logic/skip.logic.model';
+import { LogicType } from '../../../../../domain.types/forms/logic.enums';
+import { Source } from '../../database.connector.typeorm';
+import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { Logger } from '../../../../../common/logger';
+import { BaseRepo } from '../base.repo';
+import { FindManyOptions, Repository } from 'typeorm';
 
 export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
+    _skipLogicRepo: Repository<SkipLogicEntity> =
+        Source.getRepository(SkipLogicEntity);
 
-    _skipLogicRepo: Repository<SkipLogicEntity> = Source.getRepository(SkipLogicEntity);
-
-    createSkipLogic = async (model: SkipLogicCreateModel): Promise<SkipLogicResponseDto> => {
+    createSkipLogic = async (
+        model: SkipLogicCreateModel
+    ): Promise<SkipLogicResponseDto> => {
         try {
             const data = this._skipLogicRepo.create({
                 FieldId: model.FieldId,
                 Type: model.Type,
                 Enabled: model.Enabled,
-                DefaultSkip: model.DefaultSkip
+                DefaultSkip: model.DefaultSkip,
             });
             const record = await this._skipLogicRepo.save(data);
             return SkipLogicMapper.toDto(record);
@@ -33,7 +35,10 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
         }
     };
 
-    updateSkipLogic = async (id: string, model: SkipLogicUpdateModel): Promise<SkipLogicResponseDto> => {
+    updateSkipLogic = async (
+        id: string,
+        model: SkipLogicUpdateModel
+    ): Promise<SkipLogicResponseDto> => {
         try {
             const updateData = await this._skipLogicRepo.findOne({
                 where: {
@@ -42,7 +47,7 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
                 },
             });
             if (!updateData) {
-                ErrorHandler.throwNotFoundError("Skip Logic Data not found!");
+                ErrorHandler.throwNotFoundError('Skip Logic Data not found!');
             }
 
             if (model.Type) {
@@ -108,14 +113,15 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
             var search = this.getSearchModel(filters);
             var { search, pageIndex, limit, order, orderByColumn } =
                 this.addSortingAndPagination(search, filters);
-            const [list, count] = await this._skipLogicRepo.findAndCount(search);
+            const [list, count] =
+                await this._skipLogicRepo.findAndCount(search);
 
             const searchResults = {
                 TotalCount: count,
                 RetrievedCount: list.length,
                 PageIndex: pageIndex,
                 ItemsPerPage: limit,
-                Order: order === "DESC" ? "descending" : "ascending",
+                Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
                 Items: SkipLogicMapper.toArrayDto(list),
             };
@@ -123,7 +129,7 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
         } catch (error) {
             Logger.instance().log(error.message);
             ErrorHandler.throwDbAccessError(
-                "DB Error: Unable to search records!",
+                'DB Error: Unable to search records!',
                 error
             );
         }
@@ -136,26 +142,25 @@ export class SkipLogicRepo extends BaseRepo implements ISkipLogicRepo {
         };
 
         if (filters.id) {
-            search.where["id"] = filters.id;
+            search.where['id'] = filters.id;
         }
 
         if (filters.type) {
-            search.where["Type"] = filters.type;
+            search.where['Type'] = filters.type;
         }
 
         if (filters.fieldId) {
-            search.where["FieldId"] = filters.fieldId;
+            search.where['FieldId'] = filters.fieldId;
         }
 
         if (filters.enabled !== undefined) {
-            search.where["Enabled"] = filters.enabled;
+            search.where['Enabled'] = filters.enabled;
         }
 
         if (filters.defaultSkip !== undefined) {
-            search.where["DefaultSkip"] = filters.defaultSkip;
+            search.where['DefaultSkip'] = filters.defaultSkip;
         }
 
         return search;
     };
-
 }

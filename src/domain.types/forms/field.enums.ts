@@ -23,5 +23,5 @@ export enum FieldResponseType {
     Slider = 'Slider',
     Color = 'Color',
     RichText = 'RichText',
-    JSON = 'JSON'
-} 
+    JSON = 'JSON',
+}
