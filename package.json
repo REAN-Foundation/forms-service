@@ -4,7 +4,9 @@
   "description": "form-service",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+  "test": "tsc && mocha -u tdd --timeout 999999 --colors ./dist/tests/api-tests/**/*.js",
+    "test:watch": "mocha --require ts-node/register --timeout 30000 --watch tests/api-tests/tests/**/*.test.ts",
+    "test:coverage": "nyc npm test",
     "build": "tsc",
     "start": "ts-node src/index.ts",
     "dev": "ts-node src/index.ts",
@@ -42,13 +44,21 @@
     "typeorm": "^0.3.24"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/chai": "^4.3.11",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.17",
     "@types/mime-types": "^2.1.4",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.3.1",
     "@types/pdfkit": "^0.13.4",
     "@types/pg": "^8.15.4",
+    "@types/supertest": "^6.0.2",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
     "prisma": "^5.19.1",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.3"
   },

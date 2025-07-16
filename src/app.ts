@@ -78,12 +78,15 @@ export default class Application {
     private listen = async () => {
         return new Promise((resolve, reject) => {
             try {
-                this._app.listen(process.env.PORT, () => {
-                    Logger.instance().log(`Form Service is running and listening on PORT ${process.env.PORT}`);
+                const port = process.env.PORT || 3000;
+                this._app.listen(port, () => {
+                    Logger.instance().log(`Form Service is running and listening on PORT ${port}`);
+                    resolve(true);
                 });
             }
             catch (error) {
                 Logger.instance().error("Error in Starting the server", 500, error);
+                reject(error);
             }
         })
     }

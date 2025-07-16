@@ -1,0 +1,16 @@
+{
+  "require": [
+    "ts-node/register",
+    "./mocha.setup.ts"
+  ],
+  "timeout": 10000,
+  "exit": true,
+  "recursive": true,
+  "reporter": "spec",
+  "colors": true,
+  "slow": 2000,
+  "bail": false,
+  "extension": ["ts"],
+  "spec": "tests/**/*.test.ts",
+  "ignore": ["node_modules/**/*"]
+} 

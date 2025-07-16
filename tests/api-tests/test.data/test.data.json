@@ -1,0 +1,161 @@
+{
+  "testUser": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "username": "testuser",
+    "email": "test@example.com",
+    "firstName": "Test",
+    "lastName": "User",
+    "phone": "1234567890",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testFormTemplate": {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Test Form Template",
+    "description": "A test form template for testing purposes",
+    "version": "1.0.0",
+    "status": "draft",
+    "isPublic": false,
+    "metadata": {
+      "category": "Test",
+      "tags": ["test", "sample"]
+    },
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testFormField": {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "formTemplateId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "test_field",
+    "label": "Test Field",
+    "type": "text",
+    "required": true,
+    "placeholder": "Enter test value",
+    "defaultValue": "",
+    "validationRules": {
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "order": 1,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testFormSection": {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "formTemplateId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Test Section",
+    "description": "A test section for form organization",
+    "order": 1,
+    "isCollapsible": false,
+    "isCollapsed": false,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testFormSubmission": {
+    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "formTemplateId": "550e8400-e29b-41d4-a716-446655440001",
+    "submissionKey": "test-submission-key-123",
+    "status": "Saved",
+    "submittedBy": "550e8400-e29b-41d4-a716-446655440000",
+    "submittedAt": "2024-01-01T00:00:00.000Z",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testQuestionResponse": {
+    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "formSubmissionId": "550e8400-e29b-41d4-a716-446655440004",
+    "questionId": "550e8400-e29b-41d4-a716-446655440002",
+    "formFieldId": "550e8400-e29b-41d4-a716-446655440002",
+    "responseType": "text",
+    "sequence": 1,
+    "text": "Test response",
+    "userResponse": "Test user response",
+    "submissionTimestamp": "2024-01-01T00:00:00.000Z",
+    "lastSaveTimestamp": "2024-01-01T00:00:00.000Z",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testSkipLogic": {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "formFieldId": "550e8400-e29b-41d4-a716-446655440002",
+    "name": "Test Skip Logic",
+    "description": "Test skip logic for conditional field visibility",
+    "condition": {
+      "field": "show_field",
+      "operator": "equals",
+      "value": "yes"
+    },
+    "action": {
+      "type": "hide",
+      "targetField": "hidden_field"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testValidationLogic": {
+    "id": "550e8400-e29b-41d4-a716-446655440007",
+    "formFieldId": "550e8400-e29b-41d4-a716-446655440002",
+    "name": "Test Validation Logic",
+    "description": "Test validation logic for field validation",
+    "rule": {
+      "type": "email",
+      "message": "Please enter a valid email address"
+    },
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testCalculationLogic": {
+    "id": "550e8400-e29b-41d4-a716-446655440008",
+    "formFieldId": "550e8400-e29b-41d4-a716-446655440002",
+    "name": "Test Calculation Logic",
+    "description": "Test calculation logic for mathematical operations",
+    "formula": "field1 + field2",
+    "targetField": "total_field",
+    "dependencies": ["field1", "field2"],
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testInputUnitList": {
+    "id": "550e8400-e29b-41d4-a716-446655440009",
+    "name": "Test Input Unit List",
+    "description": "Test input unit list for form fields",
+    "units": ["kg", "lbs", "g"],
+    "defaultUnit": "kg",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testFavoriteTemplate": {
+    "id": "550e8400-e29b-41d4-a716-446655440010",
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "formTemplateId": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "My Favorite Template",
+    "description": "A favorite template for testing",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testFormTemplateApproval": {
+    "id": "550e8400-e29b-41d4-a716-446655440011",
+    "formTemplateId": "550e8400-e29b-41d4-a716-446655440001",
+    "approverId": "550e8400-e29b-41d4-a716-446655440000",
+    "status": "pending",
+    "comments": "Test approval comments",
+    "approvedAt": null,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  "testTemplateFolder": {
+    "id": "550e8400-e29b-41d4-a716-446655440012",
+    "name": "Test Folder",
+    "description": "A test folder for organizing templates",
+    "parentFolderId": null,
+    "createdBy": "550e8400-e29b-41d4-a716-446655440000",
+    "isActive": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+} 
