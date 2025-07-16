@@ -60,6 +60,13 @@ export default class Application {
                 this._app.use(express.json({ limit: '50mb' }));
                 this._app.use(helmet());
                 this._app.use(cors());
+                
+                // Serve documentation
+                this._app.use('/api/docs', express.static('docs'));
+                this._app.get('/api/docs', (req, res) => {
+                    res.sendFile('docs/index.html', { root: process.cwd() });
+                });
+                
                 resolve(true);
             }
             catch (error) {
