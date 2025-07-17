@@ -9,7 +9,7 @@ import { LogicalOperationMapper } from '../../mappers/logical.operation.mapper';
 import { LogicalOperationEntity } from '../../models/operation/logical.operation.model';
 import { LogicalOperatorType } from '../../../../../domain.types/forms/operation.enums';
 import { Source } from '../../database.connector.typeorm';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { BaseRepo } from '../base.repo';
 import { FindManyOptions, Repository } from 'typeorm';

@@ -1,17 +1,17 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/handlers/error.handler';
-import BaseValidator from '../base.validator';
 import {
     UserCreateModel,
     UserSearchFilters,
     UserUpdateModel,
-} from '../../domain.types/forms/user.domain.types';
-import { ParsedQs } from 'qs';
+} from '../../domain.types/user.domain.types';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
+import BaseValidator from '../base.validator';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class UserValidator extends BaseValidator {
+
     public validateCreateRequest = async (
         request: express.Request
     ): Promise<UserCreateModel> => {
@@ -42,7 +42,7 @@ export class UserValidator extends BaseValidator {
 
     public validateUpdateRequest = async (
         request: express.Request
-    ): Promise<UserUpdateModel | undefined> => {
+    ): Promise<UserUpdateModel> => {
         try {
             const schema = joi.object({
                 FirstName: joi.string().optional(),
@@ -84,13 +84,17 @@ export class UserValidator extends BaseValidator {
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    private getSearchFilters = (query: ParsedQs): UserSearchFilters => {
+    private getSearchFilters = (query): UserSearchFilters => {
         var filters: any = {};
 
         var firstName = query.firstName ? query.firstName : null;

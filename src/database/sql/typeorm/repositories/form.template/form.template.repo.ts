@@ -15,7 +15,7 @@ import { FormTemplate } from '../../models/form.template/form.template.model';
 import { Source } from '../../database.connector.typeorm';
 import { FormType } from '../../../../../domain.types/forms/form.template.enums';
 import { FormTemplateMapper } from '../../mappers/form.template.mapper';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { BaseRepo } from '../base.repo';
 import { FindManyOptions, IsNull, Repository } from 'typeorm';

@@ -1,6 +1,6 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../common/res.handlers/error.handler';
 import BaseValidator from '../../base.validator';
 import {
     FunctionExpressionOperationCreateModel,

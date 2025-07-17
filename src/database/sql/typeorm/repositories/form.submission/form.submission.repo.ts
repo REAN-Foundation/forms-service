@@ -8,7 +8,7 @@ import { FormSubmissionDto } from '../../../../../domain.types/forms/form.submis
 import { FormSubmission } from '../../models/form.submission/form.submission.model';
 import { FormStatus } from '../../../../../domain.types/forms/form.submission.enums';
 import { Source } from '../../database.connector.typeorm';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { FindManyOptions, Repository } from 'typeorm';
 import { uuid } from '../../../../../domain.types/miscellaneous/system.types';

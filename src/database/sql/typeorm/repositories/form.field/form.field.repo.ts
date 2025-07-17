@@ -10,7 +10,7 @@ import { Source } from '../../database.connector.typeorm';
 import { FormFieldEntity } from '../../models/form.field/form.field.model';
 import { FormFieldMapper } from '../../mappers/form.field.mapper';
 import { Logger } from '../../../../../common/logger';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { FindManyOptions, Repository } from 'typeorm';
 import { BaseRepo } from '../base.repo';
 import { QueryResponseType } from '../../../../../domain.types/forms/query.response.types';

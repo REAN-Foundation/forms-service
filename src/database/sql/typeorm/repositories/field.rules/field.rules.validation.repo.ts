@@ -8,7 +8,7 @@ import { IValidationRuleRepo } from '../../../../repository.interfaces/field.rul
 import { ValidationRuleEntity } from '../../models/rule/validation.rule.model';
 import { ValidationRuleMapper } from '../../mappers/validation.rule.mapper';
 import { Source } from '../../database.connector.typeorm';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { FindManyOptions, Repository } from 'typeorm';
 import { BaseRepo } from '../base.repo';

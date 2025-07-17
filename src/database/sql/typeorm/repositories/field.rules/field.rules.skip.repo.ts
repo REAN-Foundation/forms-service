@@ -8,7 +8,7 @@ import { ISkipRuleRepo } from '../../../../repository.interfaces/field.rules/ski
 import { SkipRuleEntity } from '../../models/rule/skip.rule.model';
 import { SkipRuleMapper } from '../../mappers/skip.rule.mapper';
 import { Source } from '../../database.connector.typeorm';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { FindManyOptions, Repository } from 'typeorm';
 import { BaseRepo } from '../base.repo';

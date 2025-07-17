@@ -7,7 +7,7 @@ import { Source } from '../../database.connector.typeorm';
 import { User } from '../../models/user/user.model';
 import { UserMapper } from '../../mappers/user.mapper';
 import { Logger } from '../../../../../common/logger';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { FindManyOptions, Repository } from 'typeorm';
 import { BaseRepo } from '../base.repo';
 

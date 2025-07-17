@@ -7,7 +7,7 @@ import { QuestionResponseSearchFilters } from '../../../../../domain.types/forms
 import { QuestionResponse } from '../../models/question.response/question.response.model';
 import { Source } from '../../database.connector.typeorm';
 import { Logger } from '../../../../../common/logger';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { ResponseMapper } from '../../mappers/question.response.mapper';
 import * as fs from 'fs';
 import { FindManyOptions, Repository } from 'typeorm';

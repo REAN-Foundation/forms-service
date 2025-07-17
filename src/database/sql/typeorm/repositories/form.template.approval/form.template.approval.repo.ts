@@ -8,7 +8,7 @@ import { IFormTemplateApprovalRepo } from '../../../../repository.interfaces/for
 import { FormTemplateApproval } from '../../models/form.template.approval/form.template.approval.model';
 import { Source } from '../../database.connector.typeorm';
 import { FormTemplateApprovalMapper } from '../../mappers/form.template.approval.mapper';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { BaseRepo } from '../base.repo';
 import { FindManyOptions, Repository } from 'typeorm';

@@ -16,6 +16,9 @@ export type InAppNotificationServiceProvider = 'Firebase' | 'Mock';
 export type EHRProvider = FHIRProvider | OpenEHRProvider;
 export type AuthorizationType = 'Custom'; //TBD: Other options need to be supported
 export type AuthenticationType = 'Custom'; //TBD: Other options need to be supported
+export type SmsProvider = 'Twilio' | 'Mock';
+export type EmailProvider = 'SendGrid' | 'SMTP' | 'Mock' | 'AWS-SES';
+export type MobileNotificationProvider = 'Firebase' | 'Mock';
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -81,27 +84,52 @@ export interface WebhookControllerProvider {
     Code: string;
 }
 
+// export interface Configurations {
+//     SystemIdentifier: string;
+//     BaseUrl: string;
+//     Auth: AuthConfig;
+//     Database: DatabaseConfig;
+//     Ehr: EHRConfig;
+//     FileStorage: FileStorageConfig;
+//     Processor: Processor;
+//     Logger: string; //'Custom' | 'Winston' | 'Pino' | 'Bunyan',
+//     FeatureFlags: FeatureFlagsConfig;
+//     Communication: CommunicationConfig;
+//     TemporaryFolders: TemporaryFoldersConfig;
+//     Careplans: {
+//         Enabled: boolean;
+//         Provider: string;
+//         Service: string;
+//         Plans: CareplanConfig[];
+//     }[];
+//     MaxUploadFileSize: number;
+//     FormServiceProviders: FormServiceProvider[];
+//     WebhookControllerProviders: WebhookControllerProvider[];
+//     Gamification: boolean;
+//     EHRAnalytics: boolean;
+// }
+
 export interface Configurations {
     SystemIdentifier: string;
     BaseUrl: string;
-    Auth: AuthConfig;
-    Database: DatabaseConfig;
-    Ehr: EHRConfig;
-    FileStorage: FileStorageConfig;
-    Processor: Processor;
-    Logger: string; //'Custom' | 'Winston' | 'Pino' | 'Bunyan',
-    FeatureFlags: FeatureFlagsConfig;
-    Communication: CommunicationConfig;
-    TemporaryFolders: TemporaryFoldersConfig;
-    Careplans: {
-        Enabled: boolean;
-        Provider: string;
-        Service: string;
-        Plans: CareplanConfig[];
-    }[];
+    FileStorage: {
+        Provider: FileStorageProvider;
+    };
+    Email: {
+        Provider: EmailProvider;
+    };
+    Sms: {
+        Provider: SmsProvider;
+    };
+    MobileNotification: {
+        Provider: MobileNotificationProvider;
+    };
+    TemporaryFolders: {
+        UploadFolder: string;
+        DownloadFolder: string;
+        LogFolder: string;
+        CleanupEveryMinutes: number;
+    };
     MaxUploadFileSize: number;
-    FormServiceProviders: FormServiceProvider[];
-    WebhookControllerProviders: WebhookControllerProvider[];
-    Gamification: boolean;
-    EHRAnalytics: boolean;
+    Telemetry: boolean;
 }

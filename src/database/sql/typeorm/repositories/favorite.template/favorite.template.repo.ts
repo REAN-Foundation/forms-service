@@ -8,7 +8,7 @@ import { IFavoriteTemplateRepo } from '../../../../repository.interfaces/favorit
 import { FavoriteTemplate } from '../../models/favorite.template/favorite.template.model';
 import { Source } from '../../database.connector.typeorm';
 import { FavoriteTemplateMapper } from '../../mappers/favorite.template.mapper';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { BaseRepo } from '../base.repo';
 import { FindManyOptions, Repository } from 'typeorm';

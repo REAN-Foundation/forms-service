@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import 'reflect-metadata';
-import { Config } from '../../../common/database.utils/database.config';
-import { Logger } from '../../../startup/logger';
+import { Config } from '../../../database/database.config';
+import { logger } from '../../../logger/logger';
 import { DataSource } from 'typeorm';
 import path from 'path';
 import fs from 'fs';

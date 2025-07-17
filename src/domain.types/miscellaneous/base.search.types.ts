@@ -1,22 +1,22 @@
-import { integer } from './system.types';
+
+import { integer } from "./system.types";
 
 //////////////////////////////////////////////////////////////////////
 
 export interface BaseSearchFilters {
-    CreatedDateFrom?: Date;
-    CreatedDateTo?: Date;
-    OrderBy?: string;
-    Order?: string;
-    PageIndex?: integer;
-    ItemsPerPage?: integer;
+    CreatedDateFrom? : Date;
+    CreatedDateTo?   : Date;
+    OrderBy?         : string;
+    Order?           : string;
+    PageIndex?       : integer;
+    ItemsPerPage?    : integer;
 }
 
 export interface BaseSearchResults {
-    TotalCount: integer;
+    TotalCount    : integer;
     RetrievedCount: integer;
-    PageIndex: integer;
-    ItemsPerPage: integer;
-    Order: string;
-    OrderedBy: string;
-    Items: any[];
+    PageIndex     : integer;
+    ItemsPerPage  : integer;
+    Order         : string;
+    OrderedBy     : string;
 }

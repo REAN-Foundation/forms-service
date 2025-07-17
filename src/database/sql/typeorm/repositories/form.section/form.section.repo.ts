@@ -8,7 +8,7 @@ import { IFormSectionRepo } from '../../../../repository.interfaces/form.section
 import { FormSection } from '../../models/form.section/form.section.model';
 import { FormSectionMapper } from '../../mappers/form.section.mapper';
 import { Source } from '../../database.connector.typeorm';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { FindManyOptions, Repository } from 'typeorm';
 import { BaseRepo } from '../base.repo';

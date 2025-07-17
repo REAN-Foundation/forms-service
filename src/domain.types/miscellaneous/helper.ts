@@ -1,7 +1,7 @@
 import mime = require('mime-types');
 import fs from 'fs';
 import path from 'path';
-import { ExportFormTemplateDto } from '../forms/form.template.domain.types';
+import { ExportFormTemplateDto } from '../form.template.domain.types';
 
 ////////////////////////////////////////////////////////////////////////////
 

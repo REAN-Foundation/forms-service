@@ -9,7 +9,7 @@ import { ValidationLogicMapper } from '../../mappers/validation.logic.mapper';
 import { ValidationLogicEntity } from '../../models/logic/validation.logic.model';
 import { LogicType } from '../../../../../domain.types/forms/logic.enums';
 import { Source } from '../../database.connector.typeorm';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { BaseRepo } from '../base.repo';
 import { FindManyOptions, Repository } from 'typeorm';

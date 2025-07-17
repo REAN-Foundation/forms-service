@@ -1,26 +1,27 @@
 import express from 'express';
 import { ResponseHandler } from '../../common/handlers/response.handler';
 import { TemplateFolderValidator } from './template.folder.validator';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { TemplateFolderService } from '../../services/template.folder/template.folder.service';
+import { TemplateFolderService } from '../../database/services/template.folder.service';
 import {
     TemplateFolderCreateModel,
     TemplateFolderSearchFilters,
     TemplateFolderUpdateModel,
-} from '../../domain.types/forms/template.folder.domain.types';
+} from '../../domain.types/template.folder.domain.types';
 import { Injector } from '../../startup/injector';
 
-export class TemplateFolderController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class TemplateFolderController {
+    //#region member variables and constructors
+
     _service: TemplateFolderService = Injector.Container.resolve(
         TemplateFolderService
     );
     _validator: TemplateFolderValidator = new TemplateFolderValidator();
 
-    constructor() {
-        super();
-    }
+    //#endregion
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -30,7 +31,6 @@ export class TemplateFolderController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to add template folder!',
-                    new Error()
                 );
             }
             const message = 'Template folder added successfully!';
@@ -48,7 +48,7 @@ export class TemplateFolderController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -68,7 +68,7 @@ export class TemplateFolderController extends BaseController {
 
     update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: TemplateFolderUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -90,7 +90,7 @@ export class TemplateFolderController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );

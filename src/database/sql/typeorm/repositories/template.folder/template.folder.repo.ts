@@ -8,7 +8,7 @@ import { ITemplateFolderRepo } from '../../../../repository.interfaces/template.
 import { TemplateFolder } from '../../models/template.folder/template.folder.model';
 import { Source } from '../../database.connector.typeorm';
 import { TemplateFolderMapper } from '../../mappers/template.folder.mapper';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { BaseRepo } from '../base.repo';
 import { FindManyOptions, Repository } from 'typeorm';

@@ -1,7 +1,7 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/handlers/response.handler';
+import { ResponseHandler } from '../../common/res.handlers/response.handler';
 import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/handlers/error.handler';
+import { ErrorHandler } from '../../common/res.handlers/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { error } from 'console';
 import { FormFieldService } from '../../services/form.field/form.field.service';

@@ -9,7 +9,7 @@ import { SkipLogicMapper } from '../../mappers/skip.logic.mapper';
 import { SkipLogicEntity } from '../../models/logic/skip.logic.model';
 import { LogicType } from '../../../../../domain.types/forms/logic.enums';
 import { Source } from '../../database.connector.typeorm';
-import { ErrorHandler } from '../../../../../common/handlers/error.handler';
+import { ErrorHandler } from '../../../../../common/res.handlers/error.handler';
 import { Logger } from '../../../../../common/logger';
 import { BaseRepo } from '../base.repo';
 import { FindManyOptions, Repository } from 'typeorm';

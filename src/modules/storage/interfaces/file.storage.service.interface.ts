@@ -1,6 +1,7 @@
-import { Stream } from 'stream';
+import { Stream } from "stream";
 
 export interface IFileStorageService {
+
     exists(storageKey: string): Promise<string>;
 
     upload(storageKey: string, sourceFilePath: string): Promise<string>;
@@ -11,10 +12,7 @@ export interface IFileStorageService {
 
     rename(existingStorageKey: string, newFileName: string): Promise<boolean>;
 
-    getShareableLink(
-        storageKey: string,
-        durationInMinutes: number
-    ): Promise<string>;
+    getShareableLink(storageKey: string, durationInMinutes: number): Promise<string>;
 
     delete(storageKey: string): Promise<boolean>;
 }
