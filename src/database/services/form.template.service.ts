@@ -8,7 +8,7 @@ import {
 } from '../../domain.types/form.template.domain.types';
 import { BaseService } from './base.service';
 import { Source } from '../database.connector';
-import { FindManyOptions, Repository } from 'typeorm';
+import { FindManyOptions, IsNull, Repository } from 'typeorm';
 import { FormTemplate } from '../models/form.template/form.template.model';
 import { FormTemplateMapper } from '../mappers/form.template.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
@@ -61,72 +61,76 @@ export class FormTemplateService extends BaseService {
         }
     };
 
-    public getDetailsById = async (id: string): Promise<FormTemplateResponseDto> => {
+    public getDetailsById = async (id: string): Promise<any> => {
         try {
             const template = await this._formTemplateRepository.findOne({
                 where: {
-                    id: id
+                    id: id,
+                    DeletedAt: IsNull(),
                 },
                 relations: {
                     FormSections: {
                         FormFields: true,
-                        ChildSections: true,
+                        FormTemplate: true,
                     },
-                    FormFields: true,
-                }
+                },
+                order: {
+                    FormSections: {
+                        CreatedAt: "ASC",
+                        FormFields: {
+                            CreatedAt: "ASC",
+                        },
+                    },
+                },
             });
 
-            return FormTemplateMapper.toDto(template);
+            if (template && template.FormSections) {
+                template.FormSections = template.FormSections.filter(
+                    (section) => section.DeletedAt === null
+                );
+
+                template.FormSections.forEach((section) => {
+                    if (section.FormFields) {
+                        section.FormFields = section.FormFields.filter(
+                            (question) => question.DeletedAt === null
+                        );
+                    }
+                });
+            }
+
+            const subsections = await this.mapSections(template.FormSections);
+            template.FormSections = subsections;
+
+            return template;
         } catch (error) {
             logger.error(`❌ Error getting form template details by id: ${error.message}`);
             ErrorHandler.throwInternalServerError(error.message, error);
         }
     };
 
-    public readTemplateObjToExport = async (id: string): Promise<ExportFormTemplateDto> => {
-        try {
-            const template = await this._formTemplateRepository.findOne({
-                where: {
-                    id: id
-                },
-                relations: {
-                    FormSections: {
-                        FormFields: true,
-                        ChildSections: true,
-                    },
-                    FormFields: true,
+    private mapSections = async (sections: any[]) => {
+        const sectionMap = new Map();
+
+        // Initialize sections and assign an empty array for Subsections
+        sections.forEach((section) => {
+            sectionMap.set(section.id, { ...section, Subsections: [] });
+        });
+
+        const rootSections: any[] = [];
+
+        // Assign subsections to their respective parents
+        sections.forEach((section) => {
+            if (section.ParentSectionId !== null) {
+                const parent = sectionMap.get(section.ParentSectionId);
+                if (parent) {
+                    parent.Subsections.push(sectionMap.get(section.id));
                 }
-            });
+            } else {
+                rootSections.push(sectionMap.get(section.id));
+            }
+        });
 
-            // Transform to export format - implement specific export logic here
-            return template as any; // Placeholder for export transformation
-        } catch (error) {
-            logger.error(`❌ Error reading template for export: ${error.message}`);
-            ErrorHandler.throwInternalServerError(error.message, error);
-        }
-    };
-
-    public previewTemplate = async (id: string): Promise<any> => {
-        try {
-            const template = await this._formTemplateRepository.findOne({
-                where: {
-                    id: id
-                },
-                relations: {
-                    FormSections: {
-                        FormFields: true,
-                        ChildSections: true,
-                    },
-                    FormFields: true,
-                }
-            });
-
-            // Transform to preview format - implement specific preview logic here
-            return template; // Placeholder for preview transformation
-        } catch (error) {
-            logger.error(`❌ Error getting template preview: ${error.message}`);
-            ErrorHandler.throwInternalServerError(error.message, error);
-        }
+        return rootSections;
     };
 
     public submissions = async (id: string): Promise<FormTemplateResponseDto[]> => {
