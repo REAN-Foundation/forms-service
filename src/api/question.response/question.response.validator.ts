@@ -1,20 +1,23 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
-import BaseValidator from '../base.validator';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import {
     QuestionResponseCreateModel,
     QuestionResponseSaveModel,
     QuestionResponseSearchFilters,
     QuestionResponseUpdateModel,
-} from '../../domain.types/forms/response.domain.types';
-import { ParsedQs } from 'qs';
-import { FormSubmissionDto } from '../../domain.types/forms/form.submission.domain.types';
-import { FormStatus } from '../../domain.types/forms/form.submission.enums';
-import { ApiError } from '../../common/api.error';
+} from '../../domain.types/response.domain.types';
+import { FormSubmissionDto } from '../../domain.types/form.submission.domain.types';
+import { FormStatus } from '../../domain.types/form.submission.enums';
+import BaseValidator from '../base.validator';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class QuestionResponseValidator extends BaseValidator {
+    //#region member variables and constructors
+
+    //#endregion
+
     public validateCreateRequest = async (
         request: express.Request
     ): Promise<QuestionResponseCreateModel> => {
@@ -115,26 +118,26 @@ export class QuestionResponseValidator extends BaseValidator {
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public _validateSubmission(submission: FormSubmissionDto) {
-        if (!submission) {
-            throw new ApiError('Form not found!', 404);
-        }
-
+    public validateSubmission(submission: FormSubmissionDto) {
         if (
             submission.Status === FormStatus.Submitted ||
             submission.SubmittedAt !== null
         ) {
-            throw new ApiError('Form already submitted!', 409);
+            throw new Error('Form already submitted!');
         }
 
         if (submission.ValidTill < new Date()) {
-            throw new ApiError('Form link is expired!', 400);
+            throw new Error('Form link is expired!');
         }
     }
 
@@ -189,7 +192,7 @@ export class QuestionResponseValidator extends BaseValidator {
     };
 
     private getSearchFilters = (
-        query: ParsedQs
+        query: any
     ): QuestionResponseSearchFilters => {
         var filters: any = {};
 

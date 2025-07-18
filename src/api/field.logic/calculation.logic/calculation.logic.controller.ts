@@ -1,43 +1,34 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import { CalculationLogicService } from '../../../services/field.logic/calculation.logic.service';
+import { CalculationLogicService } from '../../../database/services/calculation.logic.service';
 import { CalculationLogicValidator } from './calculation.logic.validator';
 import {
     CalculationLogicCreateModel,
+    CalculationLogicSearchFilters,
     CalculationLogicUpdateModel,
-} from '../../../domain.types/forms/calculation.logic.domain.types';
-import { ApiError } from '../../../common/api.error';
+} from '../../../domain.types/logic/calculation.logic.domain.types';
 import { Injector } from '../../../startup/injector';
-import { LogicSearchFilters } from '../../../domain.types/forms/logic.domain.types';
 
-export class CalculationLogicController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class CalculationLogicController {
     _service: CalculationLogicService = Injector.Container.resolve(
         CalculationLogicService
     );
     _validator: CalculationLogicValidator = new CalculationLogicValidator();
 
-    constructor() {
-        super();
-    }
-
-    // Calculation Logic operations
-    createCalculationLogic = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: CalculationLogicCreateModel =
                 await this._validator.validateCalculationLogicCreateRequest(
                     request
                 );
-            const record = await this._service.createCalculationLogic(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Calculation Logic!',
-                    new Error()
                 );
             }
             const message = 'Calculation Logic created successfully!';
@@ -53,18 +44,15 @@ export class CalculationLogicController extends BaseController {
         }
     };
 
-    getCalculationLogicById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record = await this._service.getCalculationLogicById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError('Calculation Logic not found!', 404);
+                ErrorHandler.throwNotFoundError('Calculation Logic not found!');
             }
             const message = 'Calculation Logic retrieved successfully!';
             return ResponseHandler.success(
@@ -79,17 +67,14 @@ export class CalculationLogicController extends BaseController {
         }
     };
 
-    updateCalculationLogic = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: CalculationLogicUpdateModel =
                 await this._validator.validateCalculationLogicUpdateRequest(
                     request
                 );
-            const updatedRecord = await this._service.updateCalculationLogic(
+            const updatedRecord = await this._service.update(
                 id,
                 model
             );
@@ -106,16 +91,16 @@ export class CalculationLogicController extends BaseController {
         }
     };
 
-    deleteCalculationLogic = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result = await this._service.deleteCalculationLogic(id);
+            const result = await this._service.delete(id);
             const message = 'Calculation Logic deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
@@ -123,15 +108,12 @@ export class CalculationLogicController extends BaseController {
         }
     };
 
-    searchCalculationLogic = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: LogicSearchFilters =
-                await this._validator.validateLogicSearchRequest(request);
+            const filters: CalculationLogicSearchFilters =
+                await this._validator.validateCalculationLogicSearchRequest(request);
             const searchResults =
-                await this._service.searchCalculationLogic(filters);
+                await this._service.search(filters);
             const message = 'Calculation Logic search completed successfully!';
             ResponseHandler.success(
                 request,

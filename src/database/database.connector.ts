@@ -12,20 +12,20 @@ import { FormSubmission } from './models/form.submission/form.submission.model';
 import { FormTemplateApproval } from './models/form.template.approval/form.template.approval.model';
 import { InputUnitList } from './models/input.unit.list/input.unit.list.model';
 import { QuestionResponse } from './models/question.response/question.response.model';
-import { FormFieldEntity } from './models/form.field/form.field.model';
+import { FormField } from './models/form.field/form.field.model';
 import { TemplateFolder } from './models/template.folder/template.folder.model';
-import { ValidationLogicEntity } from './models/logic/validation.logic.model';
-import { CalculationLogicEntity } from './models/logic/calculation.logic.model';
-import { SkipLogicEntity } from './models/logic/skip.logic.model';
-import { CalculationRuleEntity } from './models/rule/calculation.rule.model';
-import { SkipRuleEntity } from './models/rule/skip.rule.model';
-import { ValidationRuleEntity } from './models/rule/validation.rule.model';
+import { ValidationLogic } from './models/logic/validation.logic.model';
+import { CalculationLogic } from './models/logic/calculation.logic.model';
+import { SkipLogic } from './models/logic/skip.logic.model';
+import { CalculationRule } from './models/rule/calculation.rule.model';
+import { SkipRule } from './models/rule/skip.rule.model';
+import { ValidationRule } from './models/rule/validation.rule.model';
 
-import { CompositionOperationEntity } from './models/operation/composition.operation.model';
-import { FunctionExpressionOperationEntity } from './models/operation/function.expression.operation.model';
-import { IterateOperationEntity } from './models/operation/iterate.operation.model';
-import { LogicalOperationEntity } from './models/operation/logical.operation.model';
-import { MathematicalOperationEntity } from './models/operation/mathematical.operation.model';
+import { CompositionOperation } from './models/operation/composition.operation.model';
+import { FunctionExpressionOperation } from './models/operation/function.expression.operation.model';
+import { IterateOperation } from './models/operation/iterate.operation.model';
+import { LogicalOperation } from './models/operation/logical.operation.model';
+import { MathematicalOperation } from './models/operation/mathematical.operation.model';
 import { DBLogger } from "./database.logger";
 import { DbClient } from "./db.clients/db.client";
 
@@ -60,22 +60,21 @@ class DatabaseConnector {
             FormTemplateApproval,
             InputUnitList,
             QuestionResponse,
-            FormFieldEntity,
+            FormField,
             TemplateFolder,
             User,
 
-            SkipLogicEntity,
-            CalculationLogicEntity,
-            ValidationLogicEntity,
-            ValidationRuleEntity,
-            CalculationRuleEntity,
-            SkipRuleEntity,
-
-            CompositionOperationEntity,
-            FunctionExpressionOperationEntity,
-            IterateOperationEntity,
-            LogicalOperationEntity,
-            MathematicalOperationEntity,
+            SkipLogic,
+            CalculationLogic,
+            ValidationLogic,
+            ValidationRule,
+            CalculationRule,
+            SkipRule,
+            CompositionOperation,
+            FunctionExpressionOperation,
+            IterateOperation,
+            LogicalOperation,
+            MathematicalOperation,
         ],
         migrations  : [],
         subscribers : [],

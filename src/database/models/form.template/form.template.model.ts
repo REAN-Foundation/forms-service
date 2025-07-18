@@ -3,11 +3,11 @@ import { BaseEntity } from '../base.entity';
 import { FormSubmission } from '../form.submission/form.submission.model';
 import { FormSection } from '../form.section/form.section.model';
 // import { Question } from '../question/question.model';
-import { FormFieldEntity } from '../form.field/form.field.model';
+import { FormField } from '../form.field/form.field.model';
 import {
     FormType,
     NavigationStrategy,
-} from '../../../../../domain.types/forms/form.template.enums';
+} from '../../../domain.types/form.template.enums';
 
 @Entity({ name: 'form_templates' })
 export class FormTemplate extends BaseEntity {
@@ -72,6 +72,6 @@ export class FormTemplate extends BaseEntity {
     // @OneToMany(() => Question, (question) => question.FormTemplate)
     // Questions: Question[];
 
-    @OneToMany(() => FormFieldEntity, formField => formField.FormTemplate)
-    FormFields: FormFieldEntity[];
+    @OneToMany(() => FormField, formField => formField.FormTemplate)
+    FormFields: FormField[];
 }

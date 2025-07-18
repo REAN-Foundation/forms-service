@@ -1,29 +1,24 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
-import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { error } from 'console';
+import { ResponseHandler } from '../../common/handlers/response.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
+
 import { QuestionResponseValidator } from './question.response.validator';
-import { ResponseService } from '../../services/question.response/question.response.service';
+import { ResponseService } from '../../database/services/question.response.service';
 import {
     QuestionResponseCreateModel,
     QuestionResponseSaveModel,
     QuestionResponseSearchFilters,
     QuestionResponseUpdateModel,
-} from '../../domain.types/forms/response.domain.types';
-// import { QueryResponseType } from '@prisma/client';
-import { QueryResponseType } from '../../domain.types/forms/query.response.types';
-import * as path from 'path';
-import * as fs from 'fs';
-import { container } from 'tsyringe';
-import { FormService } from '../../services/form.submission/form.submission.service';
-import { FormStatus } from '../../domain.types/forms/form.submission.enums';
+} from '../../domain.types/response.domain.types';
+import { QueryResponseType } from '../../domain.types/query.response.types';
+import { FormService } from '../../database/services/form.submission.service';
+import { FormStatus } from '../../domain.types/form.submission.enums';
 import { Injector } from '../../startup/injector';
+import { uuid } from '../../domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class QuestionResponseController extends BaseController {
+export class QuestionResponseController {
     //#region member variables and constructors
 
     _service: ResponseService = Injector.Container.resolve(ResponseService);
@@ -32,24 +27,7 @@ export class QuestionResponseController extends BaseController {
 
     _validator: QuestionResponseValidator = new QuestionResponseValidator();
 
-    constructor() {
-        super();
-    }
-
     //#endregion
-
-    // getAll = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         const record = await this._service.allResponses();
-    //         if (record === null) {
-    //             ErrorHandler.throwInternalServerError('Unable to add Form!', error);
-    //         }
-    //         const message = 'All Responses fetched successfully!';
-    //         return ResponseHandler.success(request, response, message, 201, record);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // }
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -61,7 +39,7 @@ export class QuestionResponseController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to add Form!',
-                    error
+
                 );
             }
             const message = 'Response added successfully!';
@@ -92,7 +70,7 @@ export class QuestionResponseController extends BaseController {
 
             const formSubmissionId = searchResult?.Items[0]?.id;
 
-            this._validator._validateSubmission(searchResult?.Items[0]);
+            this._validator.validateSubmission(searchResult?.Items[0]);
 
             for (let questionResponse in model.QuestionResponses) {
                 await this.recordResponses(
@@ -107,7 +85,7 @@ export class QuestionResponseController extends BaseController {
             if (!update) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to update form submission!',
-                    {}
+
                 );
             }
 
@@ -148,6 +126,7 @@ export class QuestionResponseController extends BaseController {
             console.log(`Errror in save Response ${model}:`, error);
         }
     };
+    
     getQuestionById = async (id: uuid) => {
         // try {
         const question = await this._service.getQuestionById(id);
@@ -164,7 +143,7 @@ export class QuestionResponseController extends BaseController {
     getById = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -185,7 +164,7 @@ export class QuestionResponseController extends BaseController {
     update = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.Update', request, response);
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             var model: QuestionResponseUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -208,43 +187,13 @@ export class QuestionResponseController extends BaseController {
     ): Promise<void> => {
         try {
             // await this.authorize('Form.Delete', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
             const result = await this._service.delete(id);
             const message = 'Response deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
-    exportCSV = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
-        try {
-            const record = await this._service.exportCsv();
-            const file = path.resolve(record);
-            response.download(file, 'data.csv');
-            const message = 'Response fetch successfully!';
-            return response.status(200).json({ message, record });
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
-    exportPDF = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
-        try {
-            const record = await this._service.exportPdf();
-            const file = path.resolve(record);
-            response.download(file, 'data.pdf');
-            const message = 'Response fetch successfully!';
-            return response.status(200).json({ message, record });
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

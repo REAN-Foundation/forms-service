@@ -1,27 +1,26 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { FormTemplateApprovalValidator } from './form.template.approval.validator';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { FormTemplateApprovalService } from '../../services/form.template.approval/form.template.approval.service';
+import { FormTemplateApprovalService } from '../../database/services/form.template.approval.service';
 import {
     FormTemplateApprovalCreateModel,
     FormTemplateApprovalSearchFilters,
     FormTemplateApprovalUpdateModel,
-} from '../../domain.types/forms/form.template.approval.domain.types';
+} from '../../domain.types/form.template.approval.domain.types';
 import { Injector } from '../../startup/injector';
 
-export class FormTemplateApprovalController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class FormTemplateApprovalController {
+    //#region member variables and constructors
+
     _service: FormTemplateApprovalService = Injector.Container.resolve(
         FormTemplateApprovalService
     );
     _validator: FormTemplateApprovalValidator =
         new FormTemplateApprovalValidator();
-
-    constructor() {
-        super();
-    }
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -49,7 +48,7 @@ export class FormTemplateApprovalController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -72,7 +71,7 @@ export class FormTemplateApprovalController extends BaseController {
         response: express.Response
     ) => {
         try {
-            const templateId: uuid = await this._validator.validateParamAsUUID(
+            const templateId: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'templateId'
             );
@@ -92,7 +91,7 @@ export class FormTemplateApprovalController extends BaseController {
 
     update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: FormTemplateApprovalUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -114,7 +113,7 @@ export class FormTemplateApprovalController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );

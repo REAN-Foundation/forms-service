@@ -1,14 +1,13 @@
-import joi, { optional } from 'joi';
+import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import BaseValidator from '../base.validator';
 import {
     FormSectionCreateModel,
     FormSectionSearchFilters,
     FormSectionUpdateModel,
-} from '../../domain.types/forms/form.section.domain.types';
+} from '../../domain.types/form.section.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
-import { ParsedQs } from 'qs';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,8 +20,6 @@ export class FormSectionValidator extends BaseValidator {
                 ParentFormTemplateId: joi.string().uuid().optional(),
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
-                // SectionIdentifier: joi.string().optional(),
-                // DisplayCode: joi.string().optional(),
                 Sequence: joi.number().optional(),
                 ParentSectionId: joi.string().uuid().optional(),
             });
@@ -48,12 +45,9 @@ export class FormSectionValidator extends BaseValidator {
     ): Promise<FormSectionUpdateModel | undefined> => {
         try {
             const schema = joi.object({
-                // TemplateId: joi.string().uuid().optional(),
                 SectionIdentifier: joi.string().optional(),
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
-                // DisplayCode: joi.string().optional(),
-                // Sequence: joi.string().optional(),
                 ParentSectionId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
@@ -61,8 +55,6 @@ export class FormSectionValidator extends BaseValidator {
                 SectionIdentifier: request.body.SectionIdentifier ?? null,
                 Title: request.body.Title ?? null,
                 Description: request.body.Description ?? null,
-                // DisplayCode: request.body.DisplayCode ?? null,
-                // Sequence: request.body.Sequence ?? null,
                 ParentSectionId: request.body.ParentSectionId ?? null,
             };
         } catch (error) {
@@ -86,24 +78,18 @@ export class FormSectionValidator extends BaseValidator {
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    private getSearchFilters = (query: ParsedQs): FormSectionSearchFilters => {
-        // var filters:FormSectionSearchFilters = {};
-        var filters: any = {
-            // id,
-            // parentFormTemplateId,
-            // sectionIdentifier,
-            // title,
-            // description,
-            // displayCode,
-            // sequence,
-            // parentSectionId,
-        };
+    private getSearchFilters = (query: any): FormSectionSearchFilters => {
+        var filters: any = {};
 
         var id = query.id ? query.id : null;
         if (id != null) {

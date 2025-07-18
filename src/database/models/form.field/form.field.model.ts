@@ -1,11 +1,8 @@
 import {
     Entity,
-    PrimaryGeneratedColumn,
     Column,
     ManyToOne,
     OneToMany,
-    CreateDateColumn,
-    UpdateDateColumn,
     JoinColumn,
 } from 'typeorm';
 import { FormTemplate } from '../form.template/form.template.model';
@@ -13,10 +10,10 @@ import { FormSection } from '../form.section/form.section.model';
 import { BaseEntity } from '../base.entity';
 import { QuestionResponse } from '../question.response/question.response.model';
 import { InputUnitList } from '../input.unit.list/input.unit.list.model';
-import { QueryResponseType } from '../../../../../domain.types/forms/query.response.types';
+import { QueryResponseType } from '../../../domain.types/query.response.types';
 
 @Entity({ name: 'form_fields' })
-export class FormFieldEntity extends BaseEntity {
+export class FormField extends BaseEntity {
     @Column({ type: 'uuid', nullable: true })
     TemplateId: string;
 
@@ -79,6 +76,9 @@ export class FormFieldEntity extends BaseEntity {
     @JoinColumn({ name: 'ParentSectionId' })
     ParentFormSection: FormSection;
 
-    @ManyToOne(() => InputUnitList)
+    @ManyToOne(() => InputUnitList, { nullable: true })
+    @JoinColumn({ name: 'DefaultExpectedUnit' })
     ExpectedInputUnitList: InputUnitList;
+
+    
 }

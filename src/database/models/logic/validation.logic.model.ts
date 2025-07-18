@@ -1,11 +1,11 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { LogicType } from '../../../../../domain.types/forms/logic.enums';
-import { ValidationRuleEntity } from '../rule/validation.rule.model';
+import { LogicType } from '../../../domain.types/logic.enums';
+import { ValidationRule } from '../rule/validation.rule.model';
 import { BaseLogicEntity } from './base.logic.model';
 
 // Validation Logic Entity
 @Entity({ name: 'eval_validation_logics' })
-export class ValidationLogicEntity extends BaseLogicEntity {
+export class ValidationLogic extends BaseLogicEntity {
     @Column({
         type: 'varchar',
         length: 50,
@@ -15,6 +15,6 @@ export class ValidationLogicEntity extends BaseLogicEntity {
     Type: LogicType.Validation;
 
     // TODO: Add proper ValidationRule relationship when ValidationRule entity is created
-    @OneToMany(() => ValidationRuleEntity, rule => rule.LogicId)
-    Rules: ValidationRuleEntity[];
+    @OneToMany(() => ValidationRule, rule => rule.LogicId)
+    Rules: ValidationRule[];
 }

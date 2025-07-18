@@ -1,9 +1,12 @@
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
-import { uuid } from '../miscellaneous/system.types';
+} from './miscellaneous/base.search.types';
+import { uuid } from './miscellaneous/system.types';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Template Folder DTOs
 export interface TemplateFolderCreateModel {
     Name: string;
     Description?: string;
@@ -26,7 +29,6 @@ export interface TemplateFolderResponseDto {
 }
 
 export interface TemplateFolderSearchFilters extends BaseSearchFilters {
-    id?: string;
     Name?: string;
     ParentFolderId?: uuid;
 }

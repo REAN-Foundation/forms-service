@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import { getTestData, setTestData } from '../init';
@@ -8,7 +8,7 @@ import { generateCalculationLogic, expectSuccessResponse, expectValidId, expectV
 const infra = Application.instance();
 
 describe('10 - Calculation Logic Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('10:01 -> Create new calculation logic', function (done) {
         const calculationLogicData = generateCalculationLogic();

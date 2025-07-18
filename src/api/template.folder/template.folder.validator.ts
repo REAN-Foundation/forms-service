@@ -1,15 +1,20 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import BaseValidator from '../base.validator';
 import {
     TemplateFolderCreateModel,
     TemplateFolderSearchFilters,
     TemplateFolderUpdateModel,
-} from '../../domain.types/forms/template.folder.domain.types';
-import { ParsedQs } from 'qs';
+} from '../../domain.types/template.folder.domain.types';
+
+///////////////////////////////////////////////////////////////////////////////////////
 
 export class TemplateFolderValidator extends BaseValidator {
+    //#region member variables and constructors
+
+    //#endregion
+
     public validateCreateRequest = async (
         request: express.Request
     ): Promise<TemplateFolderCreateModel> => {
@@ -65,14 +70,18 @@ export class TemplateFolderValidator extends BaseValidator {
             });
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
     private getSearchFilters = (
-        query: ParsedQs
+        query: any
     ): TemplateFolderSearchFilters => {
         const filters: any = {};
         const id = query.id ? query.id : null;

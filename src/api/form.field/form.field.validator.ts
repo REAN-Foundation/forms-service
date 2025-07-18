@@ -1,59 +1,17 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import BaseValidator from '../base.validator';
 import {
     FormFieldCreateModel,
     FormFieldSearchFilters,
     FormFieldUpdateModel,
-} from '../../domain.types/forms/form.field.domain.types';
+} from '../../domain.types/form.field.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
-import { ParsedQs } from 'qs';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormFieldValidator extends BaseValidator {
-    // public validateCreateRequest = async (request: express.Request): Promise<FormFieldCreateModel> => {
-    //     try {
-    //         const schema = joi.object({
-    //             ParentTemplateId: joi.string().uuid().required(),
-    //             ParentSectionId: joi.string().uuid().required(),
-    //             Title: joi.string(),
-    //             Description: joi.string().optional(),
-    //             DisplayCode: joi.string().optional(),
-    //             ResponseType: joi.string().required(),
-    //             Score: joi.number().optional(),
-    //             CorrectAnswer: joi.string().optional(),
-    //             Hint: joi.string().optional(),
-    //             Sequence: joi.string().optional(),
-    //             Options: joi.array().optional(),
-    //             // FileResourceId  : joi.string().uuid(),
-    //             QuestionImageUrl: joi.string().optional(),
-    //             RangeMin: joi.string().optional(),
-    //             RangeMax: joi.number().optional()
-    //         });
-    //         await schema.validateAsync(request.body);
-    //         return {
-    //             ParentTemplateId: request.body.ParentTemplateId,
-    //             ParentSectionId: request.body.ParentSectionId,
-    //             Title: request.body.Title,
-    //             Description: request.body.Description,
-    //             DisplayCode: request.body.DisplayCode ?? generateDisplayCode(25, 'FORMFIELD_#'),
-    //             ResponseType: request.body.ResponseType,
-    //             Score: request.body.Score,
-    //             Sequence: request.body.Sequence,
-    //             CorrectAnswer: request.body.CorrectAnswer,
-    //             Hint: request.body.Hint,
-    //             Options: request.body.Options,
-    //             // FileResourceId  : request.body.FileResourceId,
-    //             QuestionImageUrl: request.body.QuestionImageUrl,
-    //             RangeMin: request.body.RangeMin ?? null,
-    //             RangeMax: request.body.RangeMax ?? null
-    //         };
-    //     } catch (error) {
-    //         ErrorHandler.handleValidationError(error);
-    //     }
-    // };
 
     public validateCreateRequest = async (
         request: express.Request
@@ -181,13 +139,17 @@ export class FormFieldValidator extends BaseValidator {
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    private getSearchFilters = (query: ParsedQs): FormFieldSearchFilters => {
+    private getSearchFilters = (query: any): FormFieldSearchFilters => {
         var filters: any = {};
 
         var id = query.id ? query.id : null;

@@ -1,15 +1,17 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
-import BaseValidator from '../base.validator';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import {
     FormTemplateApprovalCreateModel,
     FormTemplateApprovalSearchFilters,
     FormTemplateApprovalUpdateModel,
-} from '../../domain.types/forms/form.template.approval.domain.types';
-import { ParsedQs } from 'qs';
+} from '../../domain.types/form.template.approval.domain.types';
+import BaseValidator from '../base.validator';
+
+///////////////////////////////////////////////////////////////////////////////////////
 
 export class FormTemplateApprovalValidator extends BaseValidator {
+
     public validateCreateRequest = async (
         request: express.Request
     ): Promise<FormTemplateApprovalCreateModel> => {
@@ -71,14 +73,18 @@ export class FormTemplateApprovalValidator extends BaseValidator {
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
     private getSearchFilters = (
-        query: ParsedQs
+        query: any
     ): FormTemplateApprovalSearchFilters => {
         const filters: any = {};
 

@@ -1,22 +1,27 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import BaseValidator from '../../base.validator';
 import {
     IterateOperationCreateModel,
+    IterateOperationResponseDto,
     IterateOperationUpdateModel,
-    OperationSearchFilters,
-} from '../../../domain.types/forms/operation.domain.types';
-import { OperationType } from '../../../domain.types/forms/operation.enums';
+    IterateOperationSearchFilters,
+} from '../../../domain.types/operations/iterate.operation.domain.types';
+import { OperationType } from '../../../domain.types/operation.enums';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class IterateOperationValidator extends BaseValidator {
-    // Iterate Operation validation
+    //#region member variables and constructors
+
     public validateIterateOperationCreateRequest = async (
         request: express.Request
     ): Promise<IterateOperationCreateModel> => {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
+                Type: joi.string().valid(OperationType.Iterate).optional(),
                 Description: joi.string().optional(),
                 CollectionField: joi.string().required(),
                 ResultField: joi.string().required(),
@@ -44,6 +49,7 @@ export class IterateOperationValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 Name: joi.string().optional(),
+                Type: joi.string().valid(OperationType.Iterate).optional(),
                 Description: joi.string().optional(),
                 CollectionField: joi.string().optional(),
                 ResultField: joi.string().optional(),
@@ -66,33 +72,68 @@ export class IterateOperationValidator extends BaseValidator {
 
     public validateOperationSearchRequest = async (
         request: express.Request
-    ): Promise<OperationSearchFilters> => {
+    ): Promise<IterateOperationResponseDto> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
                 description: joi.string().optional(),
-                PageIndex: joi.number().integer().min(0).optional(),
-                ItemsPerPage: joi.number().integer().min(1).max(100).optional(),
-                OrderBy: joi.string().optional(),
-                Order: joi.string().valid('ASC', 'DESC').optional(),
+                collectionField: joi.string().optional(),
+                resultField: joi.string().optional(),
+                operationId: joi.string().uuid().optional(),
+                filterExpression: joi.string().optional(),
             });
             await schema.validateAsync(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            const filters = this.getSearchFilters(request.query);
             return {
-                id: request.query.id as string,
-                name: request.query.name as string,
-                description: request.query.description as string,
-                PageIndex: request.query.PageIndex
-                    ? parseInt(request.query.PageIndex as string)
-                    : 0,
-                ItemsPerPage: request.query.ItemsPerPage
-                    ? parseInt(request.query.ItemsPerPage as string)
-                    : 10,
-                OrderBy: request.query.OrderBy as string,
-                Order: request.query.Order as 'ASC' | 'DESC',
+                ...baseFilters,
+                ...filters,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    private getSearchFilters = (query: any): IterateOperationSearchFilters => {
+        var filters: any = {};
+
+        const id = query.id ? query.id : null;
+        if (id != null) {
+            filters['id'] = id;
+        }
+
+        const name = query.name ? query.name : null;
+        if (name != null) {
+            filters['name'] = name;
+        }
+
+        const description = query.description ? query.description : null;
+        if (description != null) {
+            filters['description'] = description;
+        }
+
+        const collectionField = query.collectionField ? query.collectionField : null;
+        if (collectionField != null) {
+            filters['collectionField'] = collectionField;
+        }
+
+        const resultField = query.resultField ? query.resultField : null;
+        if (resultField != null) {
+            filters['resultField'] = resultField;
+        }
+
+        const operationId = query.operationId ? query.operationId : null;
+        if (operationId != null) {
+            filters['operationId'] = operationId;
+        }
+
+        const filterExpression = query.filterExpression ? query.filterExpression : null;
+        if (filterExpression != null) {
+            filters['filterExpression'] = filterExpression;
+        }
+
+        return filters;
+    };
+    //#endregion
 }

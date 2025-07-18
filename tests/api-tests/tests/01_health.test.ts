@@ -1,13 +1,13 @@
 import '../init';
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 
 const infra = Application.instance();
 
 describe('01 - Health Check Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('01:01 -> Health check endpoint', function (done) {
         agent

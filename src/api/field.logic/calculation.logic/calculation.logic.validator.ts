@@ -1,16 +1,19 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import BaseValidator from '../../base.validator';
 import {
     CalculationLogicCreateModel,
     CalculationLogicUpdateModel,
-} from '../../../domain.types/forms/calculation.logic.domain.types';
-import { LogicType } from '../../../domain.types/forms/logic.enums';
-import { LogicSearchFilters } from '../../../domain.types/forms/logic.domain.types';
+} from '../../../domain.types/logic/calculation.logic.domain.types';
+import { LogicType } from '../../../domain.types/logic.enums';
+import { CalculationLogicSearchFilters } from '../../../domain.types/logic/calculation.logic.domain.types';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class CalculationLogicValidator extends BaseValidator {
-    // Calculation Logic validation
+    //#region member variables and constructors
+
     public validateCalculationLogicCreateRequest = async (
         request: express.Request
     ): Promise<CalculationLogicCreateModel> => {
@@ -19,7 +22,6 @@ export class CalculationLogicValidator extends BaseValidator {
                 Type: joi.string().valid(LogicType.Calculation).required(),
                 FieldId: joi.string().uuid().required(),
                 Enabled: joi.boolean().optional(),
-                DefaultSkip: joi.boolean().optional(),
                 FallbackValue: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
@@ -27,7 +29,6 @@ export class CalculationLogicValidator extends BaseValidator {
                 Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled ?? true,
-                DefaultSkip: request.body.DefaultSkip ?? false,
                 FallbackValue: request.body.FallbackValue,
             };
         } catch (error) {
@@ -43,7 +44,6 @@ export class CalculationLogicValidator extends BaseValidator {
                 Type: joi.string().valid(LogicType.Calculation).optional(),
                 FieldId: joi.string().uuid().optional(),
                 Enabled: joi.boolean().optional(),
-                DefaultSkip: joi.boolean().optional(),
                 FallbackValue: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
@@ -51,7 +51,6 @@ export class CalculationLogicValidator extends BaseValidator {
                 Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled,
-                DefaultSkip: request.body.DefaultSkip,
                 FallbackValue: request.body.FallbackValue,
             };
         } catch (error) {
@@ -59,49 +58,48 @@ export class CalculationLogicValidator extends BaseValidator {
         }
     };
 
-    public validateLogicSearchRequest = async (
+    public validateCalculationLogicSearchRequest = async (
         request: express.Request
-    ): Promise<LogicSearchFilters> => {
+    ): Promise<CalculationLogicSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
                 type: joi.string().valid(LogicType.Calculation).optional(),
                 fieldId: joi.string().uuid().optional(),
                 enabled: joi.boolean().optional(),
-                defaultSkip: joi.boolean().optional(),
-                PageIndex: joi.number().integer().min(0).optional(),
-                ItemsPerPage: joi.number().integer().min(1).max(100).optional(),
-                OrderBy: joi.string().optional(),
-                Order: joi.string().valid('ASC', 'DESC').optional(),
             });
             await schema.validateAsync(request.query);
+            const filters = this.getSearchFilters(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
             return {
-                id: request.query.id as string,
-                type: request.query.type as LogicType,
-                fieldId: request.query.fieldId as string,
-                enabled:
-                    request.query.enabled === 'true'
-                        ? true
-                        : request.query.enabled === 'false'
-                          ? false
-                          : undefined,
-                defaultSkip:
-                    request.query.defaultSkip === 'true'
-                        ? true
-                        : request.query.defaultSkip === 'false'
-                          ? false
-                          : undefined,
-                PageIndex: request.query.PageIndex
-                    ? parseInt(request.query.PageIndex as string)
-                    : 0,
-                ItemsPerPage: request.query.ItemsPerPage
-                    ? parseInt(request.query.ItemsPerPage as string)
-                    : 10,
-                OrderBy: request.query.OrderBy as string,
-                Order: request.query.Order as 'ASC' | 'DESC',
+                ...baseFilters,
+                ...filters,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    private getSearchFilters = (query: any): CalculationLogicSearchFilters => {
+        var filters: any = {};
+
+        const type = query.type ? query.type : null;
+        if (type != null) {
+            filters['Type'] = type;
+        }
+
+        const fieldId = query.fieldId ? query.fieldId : null;
+        if (fieldId != null) {
+            filters['FieldId'] = fieldId;
+        }
+
+        const enabled = query.enabled ? query.enabled : null;
+        if (enabled != null) {
+            filters['Enabled'] = enabled;
+        }
+
+        return filters;
+    };
+
+    //#endregion
 }

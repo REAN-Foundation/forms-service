@@ -1,18 +1,19 @@
 import express from 'express';
 import { ValidationRuleController } from './validation.rule.controller';
+import { context } from '../../../auth/context.handler';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
     const router = express.Router();
     const controller = new ValidationRuleController();
+    const contextBase = 'ValidationRule';
 
-    // Validation Rule routes
-    router.get('/search', controller.searchValidationRule);
-    router.post('/', controller.createValidationRule);
-    router.put('/:id', controller.updateValidationRule);
-    router.get('/:id', controller.getValidationRuleById);
-    router.delete('/:id', controller.deleteValidationRule);
+    router.get('/search', context(`${contextBase}.Search`), controller.search);
+    router.post('/', context(`${contextBase}.Create`), controller.create);
+    router.put('/:id', context(`${contextBase}.Update`), controller.update);
+    router.get('/:id', context(`${contextBase}.GetById`), controller.getById);
+    router.delete('/:id', context(`${contextBase}.Delete`), controller.delete);
 
     app.use('/api/v1/field-validation-rules', router);
 };

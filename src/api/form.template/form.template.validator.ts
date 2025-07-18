@@ -1,14 +1,14 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import BaseValidator from '../base.validator';
 import {
     FormTemplateCreateModel,
     FormTemplateSearchFilters,
     FormTemplateUpdateModel,
-} from '../../domain.types/forms/form.template.domain.types';
+} from '../../domain.types/form.template.domain.types';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
-import { ParsedQs } from 'qs';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormTemplateValidator extends BaseValidator {
@@ -106,13 +106,17 @@ export class FormTemplateValidator extends BaseValidator {
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    private getSearchFilters = (query: ParsedQs): FormTemplateSearchFilters => {
+    private getSearchFilters = (query: any): FormTemplateSearchFilters => {
         var filters: any = {};
 
         var id = query.id ? query.id : null;

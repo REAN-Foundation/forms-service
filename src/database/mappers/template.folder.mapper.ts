@@ -1,4 +1,4 @@
-import { TemplateFolderResponseDto } from '../../../../domain.types/forms/template.folder.domain.types';
+import { TemplateFolderResponseDto } from '../../domain.types/template.folder.domain.types';
 
 export class TemplateFolderMapper {
     static toDto = (record: any): TemplateFolderResponseDto => {

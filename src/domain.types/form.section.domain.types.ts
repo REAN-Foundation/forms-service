@@ -1,8 +1,11 @@
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
+} from './miscellaneous/base.search.types';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Form Section DTOs
 export interface FormSectionCreateModel {
     ParentFormTemplateId: string;
     SectionIdentifier?: string;
@@ -12,6 +15,8 @@ export interface FormSectionCreateModel {
     Sequence?: number;
     ParentSectionId?: string;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface FormSectionUpdateModel {
     SectionIdentifier?: string;
@@ -36,14 +41,13 @@ export interface FormSectionResponseDto {
 }
 
 export interface FormSectionSearchFilters extends BaseSearchFilters {
-    id?: string;
-    parentFormTemplateId?: string;
-    sectionIdentifier?: string;
-    title?: string;
-    description?: string;
-    displayCode?: string;
-    sequence?: string;
-    parentSectionId?: string;
+    ParentFormTemplateId?: string;
+    SectionIdentifier?: string;
+    Title?: string;
+    Description?: string;
+    DisplayCode?: string;
+    Sequence?: string;
+    ParentSectionId?: string;
 }
 
 export interface FormSectionSearchResults extends BaseSearchResults {

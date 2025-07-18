@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import '../init';
@@ -9,7 +9,7 @@ import { generateFormField, expectSuccessResponse, expectValidId, expectValidArr
 const infra = Application.instance();
 
 describe('04 - Form Field Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('04:01 -> Create new form field', function (done) {
         const fieldData = generateFormField();

@@ -1,50 +1,42 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-// import { FunctionExpressionOperationService } from '../../../services/field.operations/function.expression.operation.service';
+import { FunctionExpressionOperationService } from '../../../database/services/function.expression.operation.service';
 import {
     FunctionExpressionOperationCreateModel,
     FunctionExpressionOperationUpdateModel,
-    OperationSearchFilters,
-} from '../../../domain.types/forms/operation.domain.types';
-import { ApiError } from '../../../common/api.error';
+    FunctionExpressionOperationSearchFilters,
+} from '../../../domain.types/operations/function.expression.operation.domain.types';
 import { Injector } from '../../../startup/injector';
 import { FunctionExpressionOperationValidator } from './function.expression.operation.validator';
-import { FunctionExpressionOperationService } from '../../../services/field.operations/function.expression.operation.service';
 
-export class FunctionExpressionOperationController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class FunctionExpressionOperationController {
+//#region member variables and constructors
+
     _service: FunctionExpressionOperationService = Injector.Container.resolve(
         FunctionExpressionOperationService
     );
     _validator: FunctionExpressionOperationValidator =
         new FunctionExpressionOperationValidator();
 
-    constructor() {
-        super();
-    }
+    //#endregion
 
-    // Function Expression Operation operations
-    createFunctionExpressionOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: FunctionExpressionOperationCreateModel =
                 await this._validator.validateFunctionExpressionOperationCreateRequest(
                     request
                 );
-            const record =
-                await this._service.createFunctionExpressionOperation(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Function Expression Operation!',
-                    new Error()
                 );
             }
-            const message =
-                'Function Expression Operation created successfully!';
+            const message = 'Function Expression Operation created successfully!';
             return ResponseHandler.success(
                 request,
                 response,
@@ -57,25 +49,17 @@ export class FunctionExpressionOperationController extends BaseController {
         }
     };
 
-    getFunctionExpressionOperationById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record =
-                await this._service.getFunctionExpressionOperationById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError(
-                    'Function Expression Operation not found!',
-                    404
-                );
+                ErrorHandler.throwNotFoundError('Function Expression Operation not found!');
             }
-            const message =
-                'Function Expression Operation retrieved successfully!';
+            const message = 'Function Expression Operation retrieved successfully!';
             return ResponseHandler.success(
                 request,
                 response,
@@ -88,23 +72,18 @@ export class FunctionExpressionOperationController extends BaseController {
         }
     };
 
-    updateFunctionExpressionOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: FunctionExpressionOperationUpdateModel =
                 await this._validator.validateFunctionExpressionOperationUpdateRequest(
                     request
                 );
-            const updatedRecord =
-                await this._service.updateFunctionExpressionOperation(
-                    id,
-                    model
-                );
-            const message =
-                'Function Expression Operation updated successfully!';
+            const updatedRecord = await this._service.update(
+                id,
+                model
+            );
+            const message = 'Function Expression Operation updated successfully!';
             ResponseHandler.success(
                 request,
                 response,
@@ -117,36 +96,29 @@ export class FunctionExpressionOperationController extends BaseController {
         }
     };
 
-    deleteFunctionExpressionOperation = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result =
-                await this._service.deleteFunctionExpressionOperation(id);
-            const message =
-                'Function Expression Operation deleted successfully!';
+            const result = await this._service.delete(id);
+            const message = 'Function Expression Operation deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
     };
 
-    searchFunctionExpressionOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: OperationSearchFilters =
+            const filters: FunctionExpressionOperationSearchFilters =
                 await this._validator.validateOperationSearchRequest(request);
-            const searchResults =
-                await this._service.searchFunctionExpressionOperation(filters);
-            const message =
-                'Function Expression Operation search completed successfully!';
+            const searchResults = await this._service.search(filters);
+            const message = 'Function Expression Operation search completed successfully!';
             ResponseHandler.success(
                 request,
                 response,

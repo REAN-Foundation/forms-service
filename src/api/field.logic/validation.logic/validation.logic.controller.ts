@@ -1,43 +1,38 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import { ValidationLogicService } from '../../../services/field.logic/validation.logic.service';
+import { ValidationLogicService } from '../../../database/services/validation.logic.service';
 import {
     ValidationLogicCreateModel,
     ValidationLogicUpdateModel,
-    LogicSearchFilters,
-} from '../../../domain.types/forms/logic.domain.types';
-import { ApiError } from '../../../common/api.error';
+} from '../../../domain.types/logic/validation.logic.domain.types';
+import { ValidationLogicSearchFilters } from '../../../domain.types/logic/validation.logic.domain.types';
 import { Injector } from '../../../startup/injector';
 import { ValidationLogicValidator } from './validation.logic.validator';
 
-export class ValidationLogicController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class ValidationLogicController {
+//#region member variables and constructors
+
     _service: ValidationLogicService = Injector.Container.resolve(
         ValidationLogicService
     );
     _validator: ValidationLogicValidator = new ValidationLogicValidator();
 
-    constructor() {
-        super();
-    }
+    //#endregion
 
-    // Validation Logic operations
-    createValidationLogic = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: ValidationLogicCreateModel =
                 await this._validator.validateValidationLogicCreateRequest(
                     request
                 );
-            const record = await this._service.createValidationLogic(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Validation Logic!',
-                    new Error()
                 );
             }
             const message = 'Validation Logic created successfully!';
@@ -53,18 +48,15 @@ export class ValidationLogicController extends BaseController {
         }
     };
 
-    getValidationLogicById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record = await this._service.getValidationLogicById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError('Validation Logic not found!', 404);
+                ErrorHandler.throwNotFoundError('Validation Logic not found!');
             }
             const message = 'Validation Logic retrieved successfully!';
             return ResponseHandler.success(
@@ -79,17 +71,14 @@ export class ValidationLogicController extends BaseController {
         }
     };
 
-    updateValidationLogic = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: ValidationLogicUpdateModel =
                 await this._validator.validateValidationLogicUpdateRequest(
                     request
                 );
-            const updatedRecord = await this._service.updateValidationLogic(
+            const updatedRecord = await this._service.update(
                 id,
                 model
             );
@@ -106,16 +95,16 @@ export class ValidationLogicController extends BaseController {
         }
     };
 
-    deleteValidationLogic = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result = await this._service.deleteValidationLogic(id);
+            const result = await this._service.delete(id);
             const message = 'Validation Logic deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
@@ -123,15 +112,12 @@ export class ValidationLogicController extends BaseController {
         }
     };
 
-    searchValidationLogic = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: LogicSearchFilters =
-                await this._validator.validateLogicSearchRequest(request);
+            const filters: ValidationLogicSearchFilters =
+                await this._validator.validateValidationLogicSearchRequest(request);
             const searchResults =
-                await this._service.searchValidationLogic(filters);
+                await this._service.search(filters);
             const message = 'Validation Logic search completed successfully!';
             ResponseHandler.success(
                 request,

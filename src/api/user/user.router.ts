@@ -7,7 +7,7 @@ import { context } from '../../auth/context.handler';
 export const register = (app: express.Application): void => {
     const router = express.Router();
     const controller = new UserController();
-    const contextBase = 'Rule';
+    const contextBase = 'User';
 
     router.get('/search', context(`${contextBase}.Search`), controller.search);
     router.post('/', context(`${contextBase}.Create`), controller.create);

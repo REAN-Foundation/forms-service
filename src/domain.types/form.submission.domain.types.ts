@@ -1,10 +1,13 @@
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
+} from './miscellaneous/base.search.types';
 import { FormStatus } from './form.submission.enums';
 import { FormType } from './form.template.enums';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Form Submission DTOs
 export interface FormSubmissionCreateModel {
     FormTemplateId: string;
     UserId?: string;
@@ -51,7 +54,7 @@ export interface FormSubmissionDto {
     LinkQueryParams?: LinkQueryParams;
     SubmittedAt?: Date;
     ValidTill?: Date;
-    Status?: FormStatus;
+    Status?: string;
     Category?: FormType;
 }
 

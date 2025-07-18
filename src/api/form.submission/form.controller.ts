@@ -1,23 +1,21 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { FormValidator } from './form.validator';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { FormService } from '../../services/form.submission/form.submission.service';
+import { FormService } from '../../database/services/form.submission.service';
 import {
     FormSubmissionCreateModel,
     FormSubmissionSearchFilters,
     FormSubmissionUpdateModel,
-} from '../../domain.types/forms/form.submission.domain.types';
-import { error } from 'console';
-import { FormTemplateService } from '../../services/form.template/form.template.service';
+} from '../../domain.types/form.submission.domain.types';
+import { FormTemplateService } from '../../database/services/form.template.service';
 import * as crypto from 'crypto';
 import { Injector } from '../../startup/injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class FormController extends BaseController {
+export class FormController {
     //#region member variables and constructors
 
     _service: FormService = Injector.Container.resolve(FormService);
@@ -25,10 +23,6 @@ export class FormController extends BaseController {
     _formTemplateService = Injector.Container.resolve(FormTemplateService);
 
     _validator: FormValidator = new FormValidator();
-
-    constructor() {
-        super();
-    }
 
     //#endregion
 
@@ -54,7 +48,7 @@ export class FormController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to generate form link!',
-                    error
+                    new Error('Unable to generate form link!')
                 );
             }
 
@@ -67,7 +61,7 @@ export class FormController extends BaseController {
             if (!formSubmissionUpdateModel.Encrypted) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to generate form link!',
-                    {}
+                    new Error('Unable to generate form link!')
                 );
             }
 
@@ -87,7 +81,7 @@ export class FormController extends BaseController {
             if (!updatedRecord) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to generate form link!',
-                    {}
+                    new Error('Unable to generate form link!')
                 );
             }
 
@@ -107,7 +101,7 @@ export class FormController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -130,7 +124,7 @@ export class FormController extends BaseController {
 
     update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
 
             const formSubmission = await this._service.getById(id);
 
@@ -167,7 +161,7 @@ export class FormController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -208,7 +202,7 @@ export class FormController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to add Form!',
-                    {}
+                    new Error('Unable to add Form!')
                 );
             }
             const message = 'Form submission done successfully!';

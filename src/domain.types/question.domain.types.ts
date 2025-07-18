@@ -2,7 +2,7 @@ import { QueryResponseType } from './query.response.types';
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
+} from './miscellaneous/base.search.types';
 
 export interface QuestionOption {
     Text: string;
@@ -85,21 +85,20 @@ export interface QuestionResponseDto {
 }
 
 export interface QuestionSearchFilters extends BaseSearchFilters {
-    id?: string;
-    parentTemplateId?: string;
-    parentSectionId?: string;
-    title?: string;
-    description?: string;
-    displayCode?: string;
-    responseType?: QueryResponseType;
-    score?: number;
-    correctAnswer?: string;
-    isRequired?: boolean;
-    hint?: string;
-    options?: QuestionOption[];
-    questionImageUrl?: string;
-    rangeMin?: number;
-    rangeMax?: number | null;
+    ParentTemplateId?: string;
+    ParentSectionId?: string;
+    Title?: string;
+    Description?: string;
+    DisplayCode?: string;
+    ResponseType?: QueryResponseType;
+    Score?: number;
+    CorrectAnswer?: string;
+    IsRequired?: boolean;
+    Hint?: string;
+    Options?: QuestionOption[];
+    QuestionImageUrl?: string;
+    RangeMin?: number;
+    RangeMax?: number | null;
 }
 
 export interface QuestionSearchResults extends BaseSearchResults {

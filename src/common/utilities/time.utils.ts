@@ -76,7 +76,6 @@ export class TimeUtils {
     };
 
     static getDateString = (date: Date, format: DateStringFormat): string => {
-
         if (format === DateStringFormat.YYYY_MM_DD) {
             return date.toISOString().split('T')[0];
         }
@@ -84,7 +83,6 @@ export class TimeUtils {
     };
 
     static addDuration = (date: Date, durationValue: number, durationType: DurationType, utc = false): Date => {
-
         var date_ = utc === true ? dayjs(date).utc() : dayjs(date);
         var newDate_ = date_;
 
@@ -118,7 +116,6 @@ export class TimeUtils {
     };
 
     static subtractDuration = (date: Date, durationValue: number, durationType: DurationType, utc = false): Date => {
-
         var date_ = utc === true ? dayjs(date).utc() : dayjs(date);
         var newDate_ = dayjs().utc();
 
@@ -160,12 +157,10 @@ export class TimeUtils {
     };
 
     static durationFromString = (str: string, durationType: DurationType): number => {
-
         var durationInHours = 0;
         var tokens = str.toLowerCase().split(":");
 
         for (var i = 0; i < tokens.length; i++) {
-
             var x = tokens[i];
 
             if (x.includes("h")) {
@@ -218,7 +213,6 @@ export class TimeUtils {
     };
 
     static getTimezoneOffsets = (timezoneOffsetStr: string, durationType: DurationType): number => {
-
         var offsetTmp = timezoneOffsetStr;
         var offsetMinutes = 0;
 
@@ -258,7 +252,7 @@ export class TimeUtils {
             return offsetMinutes * 60 * 1000;
         }
         if (durationType === DurationType.Second) {
-            return offsetMinutes * 60 ;
+            return offsetMinutes * 60;
         }
         if (durationType === DurationType.Minute) {
             return offsetMinutes;
@@ -281,8 +275,58 @@ export class TimeUtils {
         return offsetMinutes;
     };
 
-    static strToUtc = (dateStr: string, timeZoneOffsetMinutes?: number): Date => {
+    static getTimezoneOffset = (timezoneOffsetStr: string, durationType: DurationType): number => {
+        let offsetMinutes = 0;
 
+        const offsetTmp = timezoneOffsetStr.trim();
+
+        if (offsetTmp.includes(':')) {
+            const tokens = offsetTmp.split(":");
+            const offsetHours = parseInt(tokens[0]);
+            let offsetMins = parseInt(tokens[1]);
+
+            if (offsetHours < 0) {
+                offsetMins = -Math.abs(offsetMins);
+            }
+
+            offsetMinutes = offsetHours * 60 + offsetMins;
+        }
+        else {
+            const len = offsetTmp.length;
+
+            const offsetHours = parseInt(offsetTmp.slice(0, len - 2));
+            let offsetMins = parseInt(offsetTmp.slice(len - 2));
+
+            if (offsetHours < 0) {
+                offsetMins = -Math.abs(offsetMins);
+            }
+
+            offsetMinutes = offsetHours * 60 + offsetMins;
+        }
+
+        switch (durationType) {
+            case DurationType.Milisecond:
+                return offsetMinutes * 60 * 1000;
+            case DurationType.Second:
+                return offsetMinutes * 60;
+            case DurationType.Minute:
+                return offsetMinutes;
+            case DurationType.Hour:
+                return offsetMinutes / 60.0;
+            case DurationType.Day:
+                return offsetMinutes / (24.0 * 60);
+            case DurationType.Week:
+                return offsetMinutes / (24.0 * 60 * 7);
+            case DurationType.Month:
+                return offsetMinutes / (24.0 * 60 * 30);
+            case DurationType.Year:
+                return offsetMinutes / (24.0 * 60 * 365);
+            default:
+                return offsetMinutes;
+        }
+    };
+
+    static strToUtc = (dateStr: string, timeZoneOffsetMinutes?: number): Date => {
         if (timeZoneOffsetMinutes !== undefined) {
             var d = new Date(dateStr + 'T00:00:00.000Z').getTime();
             var correction = d + (timeZoneOffsetMinutes * 60000);
@@ -301,7 +345,6 @@ export class TimeUtils {
     };
 
     static startOf = (date: Date, durationType: DurationType): Date => {
-
         if (durationType === DurationType.Second) {
             return dayjs(date)
                 .startOf('second')
@@ -341,7 +384,6 @@ export class TimeUtils {
     };
 
     static endOf = (date: Date, durationType: DurationType): Date => {
-
         if (durationType === DurationType.Second) {
             return dayjs(date)
                 .endOf('second')
@@ -384,7 +426,7 @@ export class TimeUtils {
         return dayjs(date).daysInMonth();
     };
 
-    static getDateWithTimezone = (dateStr: string, timezoneOffset: string) => {
+    static getDateWithTimezone = (dateStr: string, timezoneOffset: string): Date => {
         var todayStr = new Date().toISOString();
         var str = dateStr ? dateStr.split('T')[0] : todayStr.split('T')[0];
         var offsetMinutes = TimeUtils.getTimezoneOffsets(timezoneOffset, DurationType.Minute);
@@ -421,37 +463,190 @@ export class TimeUtils {
         // Convert threshold into milliseconds based on the unit
         const threshold: number = 1000 * 60 * thresholdInMin; // Default to minutes
 
-        // switch (unit) {
-        //     case 'ms': // Milliseconds
-        //         thresholdInMs = threshold;
-        //         break;
-        //     case 's': // Seconds
-        //         thresholdInMs = threshold * 1000;
-        //         break;
-        //     case 'm': // Minutes
-        //         thresholdInMs = threshold * 1000 * 60;
-        //         break;
-        //     case 'h': // Hours
-        //         thresholdInMs = threshold * 1000 * 60 * 60;
-        //         break;
-        //     case 'd': // Days
-        //         thresholdInMs = threshold * 1000 * 60 * 60 * 24;
-        //         break;
-        //     case 'w': // Weeks
-        //         thresholdInMs = threshold * 1000 * 60 * 60 * 24 * 7;
-        //         break;
-        //     case 'mo': // Months
-        //         thresholdInMs = threshold * 1000 * 60 * 60 * 24 * 30;
-        //         break;
-        //     case 'y': // Years
-        //         thresholdInMs = threshold * 1000 * 60 * 60 * 24 * 365;
-        //         break;
-        //     default:
-        //         logger.error("Unsupported unit. Use 'ms', 's', 'min', 'h', or 'd'.");
-        // }
-
         // Check if the difference is within the threshold
         return diffInMs <= threshold;
     };
+
+    static getWeekday = (date: Date, short: boolean): string => {
+        const idx = date.getDay();
+        if (short) {
+            var days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            return days[idx];
+        }
+        else {
+            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return days[idx];
+        }
+    };
+
+    static nowUtc(): Date {
+        return dayjs.utc().toDate();
+    }
+
+    static startOfTodayUtc(): Date {
+        return dayjs
+            .utc()
+            .startOf('day')
+            .toDate();
+    }
+
+    static endOfTodayUtc(): Date {
+        return dayjs
+            .utc()
+            .endOf('day')
+            .toDate();
+    }
+
+    static startOfThisWeekUtc(): Date {
+        return dayjs
+            .utc()
+            .startOf('week')
+            .toDate();
+    }
+
+    static getWeekdayIndex(day: string): number {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        let idx = days.indexOf(day);
+        if (idx === -1) {
+            idx = daysShort.indexOf(day);
+        }
+        return idx;
+    }
+
+    static sameTimeOfDayThisWeekUtc(day: string): Date {
+        const idx = TimeUtils.getWeekdayIndex(day);
+        if (idx === -1) {
+            throw new Error(`Invalid day: ${day}`);
+        }
+        return dayjs
+            .utc()
+            .weekday(idx)
+            .utc()
+            .toDate();
+    }
+
+    static startOfDayThisWeekUtc(day: string): Date {
+        const idx = TimeUtils.getWeekdayIndex(day);
+        if (idx === -1) {
+            throw new Error(`Invalid day: ${day}`);
+        }
+        const weekday = dayjs
+            .utc()
+            .weekday(idx)
+            .startOf('day');
+
+        const weekdayStr = weekday.format()
+            .split('T')[0];
+
+        const year = parseInt(weekdayStr.split('-')[0]);
+        const month = parseInt(weekdayStr.split('-')[1]);
+        const dt = parseInt(weekdayStr.split('-')[2]);
+
+        const date = Date.UTC(year, month - 1, dt);
+        return new Date(date);
+    }
+
+    static startOfThisMonthUtc(): Date {
+        return dayjs
+            .utc()
+            .startOf('month')
+            .toDate();
+    }
+
+    static startOfThisYearUtc(): Date {
+        return dayjs
+            .utc()
+            .startOf('year')
+            .toDate();
+    }
+
+    static getStartOfDay = (date: Date, timezoneOffsetMinutes: number) => {
+        const startOfDayUtc = dayjs(date)
+            .utc()
+            .startOf('day');
+        const startOfDay = startOfDayUtc
+            .add(timezoneOffsetMinutes, 'minutes')
+            .toDate();
+        return startOfDay;
+    };
+
+    static getDayOfMonth = (date: Date): string => {
+        var tokens = date.toISOString().split('T')[0];
+        const day = tokens[0].split('-')[1];
+        return day;
+    };
+
+    static getDayOfMonthFromISODateStr = (dateStr: string): string => {
+        const day = dateStr.split('-')[2];
+        return day;
+    };
+
+    static getMonth = (date: Date): string => {
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var month = months[date.getMonth()];
+        return month;
+    };
+
+    static dayDiff = (first: Date, second: Date | undefined) => {
+        const diff = first.getTime() - second.getTime();
+        var dayDiff = diff / (1000 * 60 * 60 * 24);
+        return dayDiff;
+    };
+
+    static hourDiff = (first: Date, second: Date | undefined) => {
+        const diff = first.getTime() - second.getTime();
+        var hourDiff = diff / (1000 * 60 * 60);
+        return hourDiff;
+    };
+
+    static minuteDiff = (first: Date, second: Date | undefined) => {
+        const date1 = dayjs(first);
+        const date2 = dayjs(second);
+        const diffMillisec = date1.diff(date2);
+        const diff = diffMillisec / (1000 * 60);
+        return diff;
+    };
+
+    static secDiff = (first: Date, second: Date | undefined) => {
+        const date1 = dayjs(first);
+        const date2 = dayjs(second);
+        const diffMillisec = date1.diff(date2);
+        const diff = diffMillisec / (1000);
+        return diff;
+    };
+
+    static formatDateToLocal_YYYY_MM_DD = (date: Date) => {
+        logger.info(`Date :: ${date}`);
+        const mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    };
+
+    static formatTimeTo_AM_PM(timeString) {
+        const [hourString, minute] = timeString.split(":");
+        const hour = +hourString % 24;
+        return (hour % 12 || 12) + ":" + minute + (hour < 12 ? " AM" : " PM");
+    }
+
+    static timeDelay = ms => new Promise(res => setTimeout(res, ms));
+
+    static getDateTimeStamp = (date: Date): string => {
+        date = new Date(date.toISOString().split("T")[0]);
+        return date.getTime().toString();
+    };
+
+    static isTimeZero(timestamp: string): boolean {
+        const regex = /^(\d{4})-(\d{2})-(\d{2})T00:00:00/;
+        const match = timestamp.match(regex);
+        if (match) {
+            const year = parseInt(match[1]);
+            const month = parseInt(match[2]);
+            const day = parseInt(match[3]);
+            // Check if it's midnight
+            return year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= 31;
+        }
+        return false; // Invalid timestamp format
+    }
 
 }

@@ -2,13 +2,17 @@ import { QueryResponseType } from './query.response.types';
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
+} from './miscellaneous/base.search.types';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface FormFieldOption {
     Text: string;
     Sequence: string;
     ImageUrl: string;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface FormFieldCreateModel {
     ParentTemplateId: string;
@@ -85,28 +89,27 @@ export interface FormFieldResponseDto {
 }
 
 export interface FormFieldSearchFilters extends BaseSearchFilters {
-    id?: string;
-    parentTemplateId?: string;
-    parentSectionId?: string;
-    title?: string;
-    description?: string;
-    displayCode?: string;
-    responseType?: QueryResponseType;
-    score?: number;
-    correctAnswer?: string;
-    isRequired?: boolean;
-    hint?: string;
-    options?: FormFieldOption[];
-    questionImageUrl?: string;
-    rangeMin?: number;
-    rangeMax?: number | null;
+    ParentTemplateId?: string;
+    ParentSectionId?: string;
+    Title?: string;
+    Description?: string;
+    DisplayCode?: string;
+    ResponseType?: QueryResponseType;
+    Score?: number;
+    CorrectAnswer?: string;
+    IsRequired?: boolean;
+    Hint?: string;
+    Options?: FormFieldOption[];
+    QuestionImageUrl?: string;
+    RangeMin?: number;
+    RangeMax?: number | null;
 }
 
 export interface FormFieldSearchResults extends BaseSearchResults {
     Items: FormFieldSearchResponseDto[];
 }
 
-export interface FormFieldSearchResponseDto extends BaseSearchResults {
+export interface FormFieldSearchResponseDto {
     id: string;
     Title: string;
     Description: string;

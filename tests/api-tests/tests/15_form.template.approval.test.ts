@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import { getTestData, setTestData } from '../init';
@@ -10,7 +10,7 @@ import '../init';
 const infra = Application.instance();
 
 describe('15 - Form Template Approval Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('15:01 -> Create new form template approval', function (done) {
         const approvalData = {

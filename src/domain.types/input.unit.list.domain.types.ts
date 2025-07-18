@@ -1,8 +1,11 @@
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
+} from './miscellaneous/base.search.types';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Input Unit List DTOs
 export interface InputUnitListCreateModel {
     Name: string;
     Description: string;
@@ -25,8 +28,9 @@ export interface InputUnitListResponseDto {
 }
 
 export interface InputUnitListSearchFilters extends BaseSearchFilters {
-    id?: string;
     Name?: string;
+    Description?: string;
+    Units?: any[];
 }
 
 export interface InputUnitListSearchResults extends BaseSearchResults {

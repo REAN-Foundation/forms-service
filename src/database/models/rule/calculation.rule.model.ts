@@ -1,9 +1,9 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseRuleEntity } from './base.rule.model';
-import { CalculationLogicEntity } from '../logic/calculation.logic.model';
+import { CalculationLogic } from '../logic/calculation.logic.model';
 
 @Entity({ name: 'eval_calculation_rules' })
-export class CalculationRuleEntity extends BaseRuleEntity {
+export class CalculationRule extends BaseRuleEntity {
     @Column({ type: 'uuid', nullable: true })
     ConditionForOperationId?: string;
 
@@ -13,7 +13,7 @@ export class CalculationRuleEntity extends BaseRuleEntity {
     @Column({ type: 'uuid', nullable: true })
     LogicId?: string;
 
-    @ManyToOne(() => CalculationLogicEntity, { nullable: true })
+    @ManyToOne(() => CalculationLogic, { nullable: true })
     @JoinColumn({ name: 'LogicId' })
-    Logic?: CalculationLogicEntity;
+    Logic?: CalculationLogic;
 }

@@ -1,10 +1,9 @@
 import express from "express";
 import { AuthResult } from "./auth.types";
-import { ResponseHandler } from "../common/res.handlers/response.handler";
+import { ResponseHandler } from "../common/handlers/response.handler";
 import { logger } from "../logger/logger";
 import { CurrentUser } from "../domain.types/miscellaneous/current.user";
-import { JwtPayload } from "jsonwebtoken";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 /////////////////////////////////////////////////////////////////////////////
 

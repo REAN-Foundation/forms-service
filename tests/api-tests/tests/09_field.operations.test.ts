@@ -1,14 +1,11 @@
 import '../init';
-import { getTestData, setTestData } from '../init';
+import { setTestData } from '../init';
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import { 
     expectSuccessResponse, 
-    expectValidId, 
-    expectValidObject, 
-    expectValidArray,
     generateMathematicalOperation,
     generateLogicalOperation,
     generateCompositionOperation,
@@ -19,7 +16,7 @@ import {
 const infra = Application.instance();
 
 describe('09 - Field Operations Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     // Mathematical Operations
     describe('Mathematical Operations', function () {

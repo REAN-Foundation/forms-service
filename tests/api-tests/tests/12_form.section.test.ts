@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import '../init';
@@ -9,7 +9,7 @@ import { generateFormSection, expectSuccessResponse, expectValidId, expectValidA
 const infra = Application.instance();
 
 describe('12 - Form Section Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('12:01 -> Create new form section', function (done) {
         const sectionData = generateFormSection();

@@ -1,45 +1,39 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import { MathematicalOperationService } from '../../../services/field.operations/mathematical.operation.service';
+import { MathematicalOperationService } from '../../../database/services/mathematical.operation.service';
 import {
     MathematicalOperationCreateModel,
     MathematicalOperationUpdateModel,
-    OperationSearchFilters,
-} from '../../../domain.types/forms/operation.domain.types';
-import { ApiError } from '../../../common/api.error';
+    MathematicalOperationSearchFilters,
+} from '../../../domain.types/operations/mathematical.operation.domain.types';
 import { Injector } from '../../../startup/injector';
 import { MathematicalOperationValidator } from './mathematical.operation.validator';
 
-export class MathematicalOperationController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class MathematicalOperationController {
+//#region member variables and constructors
+
     _service: MathematicalOperationService = Injector.Container.resolve(
         MathematicalOperationService
     );
     _validator: MathematicalOperationValidator =
         new MathematicalOperationValidator();
 
-    constructor() {
-        super();
-    }
+    //#endregion
 
-    // Mathematical Operation operations
-    createMathematicalOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: MathematicalOperationCreateModel =
                 await this._validator.validateMathematicalOperationCreateRequest(
                     request
                 );
-            const record =
-                await this._service.createMathematicalOperation(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Mathematical Operation!',
-                    new Error()
                 );
             }
             const message = 'Mathematical Operation created successfully!';
@@ -55,18 +49,15 @@ export class MathematicalOperationController extends BaseController {
         }
     };
 
-    getMathematicalOperationById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record = await this._service.getMathematicalOperationById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError('Mathematical Operation not found!', 404);
+                ErrorHandler.throwNotFoundError('Mathematical Operation not found!');
             }
             const message = 'Mathematical Operation retrieved successfully!';
             return ResponseHandler.success(
@@ -81,18 +72,17 @@ export class MathematicalOperationController extends BaseController {
         }
     };
 
-    updateMathematicalOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: MathematicalOperationUpdateModel =
                 await this._validator.validateMathematicalOperationUpdateRequest(
                     request
                 );
-            const updatedRecord =
-                await this._service.updateMathematicalOperation(id, model);
+            const updatedRecord = await this._service.update(
+                id,
+                model
+            );
             const message = 'Mathematical Operation updated successfully!';
             ResponseHandler.success(
                 request,
@@ -106,16 +96,16 @@ export class MathematicalOperationController extends BaseController {
         }
     };
 
-    deleteMathematicalOperation = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result = await this._service.deleteMathematicalOperation(id);
+            const result = await this._service.delete(id);
             const message = 'Mathematical Operation deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
@@ -123,17 +113,13 @@ export class MathematicalOperationController extends BaseController {
         }
     };
 
-    searchMathematicalOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: OperationSearchFilters =
+            const filters: MathematicalOperationSearchFilters =
                 await this._validator.validateOperationSearchRequest(request);
             const searchResults =
-                await this._service.searchMathematicalOperation(filters);
-            const message =
-                'Mathematical Operation search completed successfully!';
+                await this._service.search(filters);
+            const message = 'Mathematical Operation search completed successfully!';
             ResponseHandler.success(
                 request,
                 response,

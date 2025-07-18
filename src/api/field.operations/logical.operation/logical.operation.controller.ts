@@ -1,44 +1,38 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-// import { LogicalOperationService } from '../../../services/field.operations/logical.operation.service';
-import { LogicalOperationValidator } from './logical.operation.validator';
+import { LogicalOperationService } from '../../../database/services/logical.operation.service';
 import {
     LogicalOperationCreateModel,
     LogicalOperationUpdateModel,
-    OperationSearchFilters,
-} from '../../../domain.types/forms/operation.domain.types';
-import { ApiError } from '../../../common/api.error';
+    LogicalOperationSearchFilters,
+} from '../../../domain.types/operations/logical.operation.domain.types';
 import { Injector } from '../../../startup/injector';
-import { LogicalOperationService } from '../../../services/field.operations/logical.operation.service';
+import { LogicalOperationValidator } from './logical.operation.validator';
 
-export class LogicalOperationController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class LogicalOperationController {
+//#region member variables and constructors
+
     _service: LogicalOperationService = Injector.Container.resolve(
         LogicalOperationService
     );
     _validator: LogicalOperationValidator = new LogicalOperationValidator();
 
-    constructor() {
-        super();
-    }
+    //#endregion
 
-    // Logical Operation operations
-    createLogicalOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: LogicalOperationCreateModel =
                 await this._validator.validateLogicalOperationCreateRequest(
                     request
                 );
-            const record = await this._service.createLogicalOperation(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Logical Operation!',
-                    new Error()
                 );
             }
             const message = 'Logical Operation created successfully!';
@@ -54,18 +48,15 @@ export class LogicalOperationController extends BaseController {
         }
     };
 
-    getLogicalOperationById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record = await this._service.getLogicalOperationById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError('Logical Operation not found!', 404);
+                ErrorHandler.throwNotFoundError('Logical Operation not found!');
             }
             const message = 'Logical Operation retrieved successfully!';
             return ResponseHandler.success(
@@ -80,17 +71,14 @@ export class LogicalOperationController extends BaseController {
         }
     };
 
-    updateLogicalOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: LogicalOperationUpdateModel =
                 await this._validator.validateLogicalOperationUpdateRequest(
                     request
                 );
-            const updatedRecord = await this._service.updateLogicalOperation(
+            const updatedRecord = await this._service.update(
                 id,
                 model
             );
@@ -107,16 +95,16 @@ export class LogicalOperationController extends BaseController {
         }
     };
 
-    deleteLogicalOperation = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result = await this._service.deleteLogicalOperation(id);
+            const result = await this._service.delete(id);
             const message = 'Logical Operation deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
@@ -124,15 +112,11 @@ export class LogicalOperationController extends BaseController {
         }
     };
 
-    searchLogicalOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: OperationSearchFilters =
+            const filters: LogicalOperationSearchFilters =
                 await this._validator.validateOperationSearchRequest(request);
-            const searchResults =
-                await this._service.searchLogicalOperation(filters);
+            const searchResults = await this._service.search(filters);
             const message = 'Logical Operation search completed successfully!';
             ResponseHandler.success(
                 request,

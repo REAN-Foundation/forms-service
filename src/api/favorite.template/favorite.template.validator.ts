@@ -1,13 +1,14 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import BaseValidator from '../base.validator';
 import {
     FavoriteTemplateCreateModel,
     FavoriteTemplateSearchFilters,
     FavoriteTemplateUpdateModel,
-} from '../../domain.types/forms/favorite.template.domain.types';
-import { ParsedQs } from 'qs';
+} from '../../domain.types/favorite.template.domain.types';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FavoriteTemplateValidator extends BaseValidator {
     public validateCreateRequest = async (
@@ -54,22 +55,22 @@ export class FavoriteTemplateValidator extends BaseValidator {
                 id: joi.string().uuid().optional(),
                 userId: joi.string().uuid().optional(),
                 templateId: joi.string().uuid().optional(),
-                itemsPerPage: joi.number().optional(),
-                pageIndex: joi.number().optional(),
-                orderBy: joi.string().optional(),
-                order: joi.string().optional(),
             });
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters,
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
     private getSearchFilters = (
-        query: ParsedQs
+        query: any
     ): FavoriteTemplateSearchFilters => {
         const filters: any = {};
 

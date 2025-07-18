@@ -1,9 +1,12 @@
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
-import { uuid } from '../miscellaneous/system.types';
+} from './miscellaneous/base.search.types';
+import { uuid } from './miscellaneous/system.types';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Form Template Approval DTOs
 export interface FormTemplateApprovalCreateModel {
     ApproverUserId: string;
     TemplateId: string;
@@ -29,10 +32,10 @@ export interface FormTemplateApprovalResponseDto {
 }
 
 export interface FormTemplateApprovalSearchFilters extends BaseSearchFilters {
-    id?: string;
     ApproverUserId?: uuid;
     TemplateId?: uuid;
     Approved?: boolean;
+    ReviewComments?: string;
 }
 
 export interface FormTemplateApprovalSearchResults extends BaseSearchResults {

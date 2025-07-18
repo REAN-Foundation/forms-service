@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import '../init';
@@ -9,7 +9,7 @@ import { generateUser, expectSuccessResponse, expectValidId, expectValidArray, e
 const infra = Application.instance();
 
 describe('02 - User Management Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('02:01 -> Create new user', function (done) {
         const userData = generateUser();

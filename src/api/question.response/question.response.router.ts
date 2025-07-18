@@ -1,21 +1,19 @@
 import express from 'express';
 import { QuestionResponseController } from './question.response.controller';
+import { context } from '../../auth/context.handler';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
     const router = express.Router();
     const controller = new QuestionResponseController();
+    const contextBase = 'QuestionResponse';
 
-    router.get('/search', controller.search);
-    // router.get('/all', controller.getAll);
-    router.post('/', controller.create);
-    router.post('/save', controller.save);
-    router.put('/:id', controller.update);
-    router.get('/:id', controller.getById);
-    router.get('/exportcsv/export', controller.exportCSV);
-    router.get('/exportpdf/export', controller.exportPDF);
-    router.delete('/:id', controller.delete);
+    router.get('/search', context(`${contextBase}.Search`), controller.search);
+    router.post('/', context(`${contextBase}.Create`), controller.create);
+    router.put('/:id', context(`${contextBase}.Update`), controller.update);
+    router.get('/:id', context(`${contextBase}.GetById`), controller.getById);
+    router.delete('/:id', context(`${contextBase}.Delete`), controller.delete);
 
     app.use('/api/v1/question-responses', router);
 };

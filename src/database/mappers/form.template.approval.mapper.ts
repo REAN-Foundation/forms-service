@@ -1,4 +1,4 @@
-import { FormTemplateApprovalResponseDto } from '../../../../domain.types/forms/form.template.approval.domain.types';
+import { FormTemplateApprovalResponseDto } from '../../domain.types/form.template.approval.domain.types';
 
 export class FormTemplateApprovalMapper {
     static toDto = (record: any): FormTemplateApprovalResponseDto => {

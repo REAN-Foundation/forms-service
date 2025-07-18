@@ -1,4 +1,4 @@
-import { FunctionExpressionOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
+import { FunctionExpressionOperationResponseDto } from '../../domain.types/operations/function.expression.operation.domain.types';
 
 export class FunctionExpressionOperationMapper {
     static toDto = (record: any): FunctionExpressionOperationResponseDto => {

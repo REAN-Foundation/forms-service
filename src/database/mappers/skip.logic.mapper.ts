@@ -1,5 +1,5 @@
-import { SkipLogicResponseDto } from '../../../../domain.types/forms/logic.domain.types';
-import { LogicType } from '../../../../domain.types/forms/logic.enums';
+import { SkipLogicResponseDto } from '../../domain.types/logic/skip.logic.domain.types';
+import { LogicType } from '../../domain.types/logic.enums';
 
 export class SkipLogicMapper {
     static toDto = (record: any): SkipLogicResponseDto => {

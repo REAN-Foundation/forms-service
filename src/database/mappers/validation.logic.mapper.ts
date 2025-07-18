@@ -1,5 +1,5 @@
-import { ValidationLogicResponseDto } from '../../../../domain.types/forms/logic.domain.types';
-import { LogicType } from '../../../../domain.types/forms/logic.enums';
+import { ValidationLogicResponseDto } from '../../domain.types/logic/validation.logic.domain.types';
+import { LogicType } from '../../domain.types/logic.enums';
 
 export class ValidationLogicMapper {
     static toDto = (record: any): ValidationLogicResponseDto => {

@@ -1,16 +1,19 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import BaseValidator from '../../base.validator';
 import {
     SkipLogicCreateModel,
     SkipLogicUpdateModel,
-    LogicSearchFilters,
-} from '../../../domain.types/forms/logic.domain.types';
-import { LogicType } from '../../../domain.types/forms/logic.enums';
+} from '../../../domain.types/logic/skip.logic.domain.types';
+import { LogicType } from '../../../domain.types/logic.enums';
+import { SkipLogicSearchFilters } from '../../../domain.types/logic/skip.logic.domain.types';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class SkipLogicValidator extends BaseValidator {
-    // Skip Logic validation
+    //#region member variables and constructors
+
     public validateSkipLogicCreateRequest = async (
         request: express.Request
     ): Promise<SkipLogicCreateModel> => {
@@ -55,9 +58,9 @@ export class SkipLogicValidator extends BaseValidator {
         }
     };
 
-    public validateLogicSearchRequest = async (
+    public validateSkipLogicSearchRequest = async (
         request: express.Request
-    ): Promise<LogicSearchFilters> => {
+    ): Promise<SkipLogicSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -65,39 +68,49 @@ export class SkipLogicValidator extends BaseValidator {
                 fieldId: joi.string().uuid().optional(),
                 enabled: joi.boolean().optional(),
                 defaultSkip: joi.boolean().optional(),
-                PageIndex: joi.number().integer().min(0).optional(),
-                ItemsPerPage: joi.number().integer().min(1).max(100).optional(),
-                OrderBy: joi.string().optional(),
-                Order: joi.string().valid('ASC', 'DESC').optional(),
             });
             await schema.validateAsync(request.query);
+            const filters = this.getSearchFilters(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
             return {
-                id: request.query.id as string,
-                type: request.query.type as LogicType,
-                fieldId: request.query.fieldId as string,
-                enabled:
-                    request.query.enabled === 'true'
-                        ? true
-                        : request.query.enabled === 'false'
-                          ? false
-                          : undefined,
-                defaultSkip:
-                    request.query.defaultSkip === 'true'
-                        ? true
-                        : request.query.defaultSkip === 'false'
-                          ? false
-                          : undefined,
-                PageIndex: request.query.PageIndex
-                    ? parseInt(request.query.PageIndex as string)
-                    : 0,
-                ItemsPerPage: request.query.ItemsPerPage
-                    ? parseInt(request.query.ItemsPerPage as string)
-                    : 10,
-                OrderBy: request.query.OrderBy as string,
-                Order: request.query.Order as 'ASC' | 'DESC',
+                ...baseFilters,
+                ...filters,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    private getSearchFilters = (query: any): SkipLogicSearchFilters => {
+        var filters: any = {};
+
+        const id = query.id ? query.id : null;
+        if (id != null) {
+            filters['id'] = id;
+        }
+
+        const type = query.type ? query.type : null;
+        if (type != null) {
+            filters['type'] = type;
+        }
+
+        const fieldId = query.fieldId ? query.fieldId : null;
+        if (fieldId != null) {
+            filters['fieldId'] = fieldId;
+        }
+
+        const enabled = query.enabled ? query.enabled : null;
+        if (enabled != null) {
+            filters['enabled'] = enabled;
+        }
+
+        const defaultSkip = query.defaultSkip ? query.defaultSkip : null;
+        if (defaultSkip != null) {
+            filters['defaultSkip'] = defaultSkip;
+        }
+
+        return filters;
+    };
+
+    //#endregion
 }

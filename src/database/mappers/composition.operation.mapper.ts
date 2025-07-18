@@ -1,4 +1,5 @@
-import { CompositionOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
+import { OperationType } from '../../domain.types/operation.enums';
+import { CompositionOperationResponseDto } from '../../domain.types/operations/composition.operation.domain.types';
 
 export class CompositionOperationMapper {
     static toDto = (record: any): CompositionOperationResponseDto => {
@@ -10,7 +11,7 @@ export class CompositionOperationMapper {
             id: record.id,
             Name: record.Name,
             Description: record.Description,
-            Type: record.Type,
+            Type: OperationType.Composition,
             Operator: record.Operator,
             Operands: record.Operands,
             CreatedAt: record.CreatedAt,

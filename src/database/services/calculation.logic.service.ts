@@ -1,47 +1,148 @@
-import { inject, injectable } from 'tsyringe';
-import { ICalculationLogicRepo } from '../../database/repository.interfaces/field.logic/calculation.logic/calculation.logic.repo.interface';
 import {
     CalculationLogicResponseDto,
     CalculationLogicCreateModel,
     CalculationLogicUpdateModel,
-    LogicSearchFilters,
-} from '../../domain.types/forms/logic.domain.types';
+    CalculationLogicSearchFilters,
+    CalculationLogicSearchResults,
+} from '../../domain.types/logic/calculation.logic.domain.types';
+import { BaseService } from './base.service';
+import { Source } from '../database.connector';
+import { FindManyOptions, Repository } from 'typeorm';
+import { CalculationLogic } from '../models/logic/calculation.logic.model';
+import { CalculationLogicMapper } from '../mappers/calculation.logic.mapper';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
+import { logger } from '../../logger/logger';
+import { uuid } from '../../domain.types/miscellaneous/system.types';
+import { LogicType } from '../../domain.types/logic.enums';
 
-@injectable()
-export class CalculationLogicService {
-    constructor(
-        @inject('ICalculationLogicRepo')
-        private _calculationLogicRepo: ICalculationLogicRepo
-    ) {}
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+export class CalculationLogicService extends BaseService {
+
+    _calculationLogicRepository: Repository<CalculationLogic> = Source.getRepository(CalculationLogic);
 
     // Calculation Logic operations
-    async createCalculationLogic(
-        model: CalculationLogicCreateModel
-    ): Promise<CalculationLogicResponseDto> {
-        return await this._calculationLogicRepo.createCalculationLogic(model);
-    }
+    public create = async (createModel: CalculationLogicCreateModel)
+        : Promise<CalculationLogicResponseDto> => {
 
-    async updateCalculationLogic(
-        id: string,
-        model: CalculationLogicUpdateModel
-    ): Promise<CalculationLogicResponseDto> {
-        return await this._calculationLogicRepo.updateCalculationLogic(
-            id,
-            model
-        );
-    }
+        const logic = this._calculationLogicRepository.create({
+            Type: LogicType.Calculation,
+            FieldId: createModel.FieldId,
+            Enabled: createModel.Enabled,
+            FallbackValue: createModel.FallbackValue,
+        });
+        const record = await this._calculationLogicRepository.save(logic);
 
-    async getCalculationLogicById(
-        id: string
-    ): Promise<CalculationLogicResponseDto> {
-        return await this._calculationLogicRepo.getCalculationLogicById(id);
-    }
+        return CalculationLogicMapper.toDto(record);
+    };
 
-    async deleteCalculationLogic(id: string): Promise<boolean> {
-        return await this._calculationLogicRepo.deleteCalculationLogic(id);
-    }
 
-    async searchCalculationLogic(filters: LogicSearchFilters): Promise<any> {
-        return await this._calculationLogicRepo.searchCalculationLogic(filters);
-    }
+    public getById = async (id: uuid): Promise<CalculationLogicResponseDto> => {
+        try {
+            const logic = await this._calculationLogicRepository.findOne({
+                where: {
+                    id: id
+                }
+            });
+
+            return CalculationLogicMapper.toDto(logic);
+        } catch (error) {
+            logger.error(`❌ Error getting calculation logic by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public search = async (filters: CalculationLogicSearchFilters)
+        : Promise<CalculationLogicSearchResults> => {
+        try {
+            var search = this.getSearchModel(filters);
+            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            const [list, count] = await this._calculationLogicRepository.findAndCount(search);
+            const searchResults = {
+                TotalCount: count,
+                RetrievedCount: list.length,
+                PageIndex: pageIndex,
+                ItemsPerPage: limit,
+                Order: order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy: orderByColumn,
+                Items: list.map(x => CalculationLogicMapper.toDto(x)),
+            };
+            return searchResults;
+        } catch (error) {
+            logger.error(`❌ Error searching calculation logics: ${error.message}`);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+        }
+    };
+
+
+
+    public update = async (id: uuid, model: CalculationLogicUpdateModel)
+        : Promise<CalculationLogicResponseDto> => {
+        try {
+            const logic = await this._calculationLogicRepository.findOne({
+                where: {
+                    id: id
+                }
+            });
+            if (!logic) {
+                ErrorHandler.throwNotFoundError('Calculation logic not found!');
+            }
+            if (model.FallbackValue != null) {
+                logic.FallbackValue = model.FallbackValue;
+            }
+            if (model.Enabled != null) {
+                logic.Enabled = model.Enabled;
+            }
+            if (model.FieldId != null) {
+                logic.FieldId = model.FieldId;
+            }
+            var record = await this._calculationLogicRepository.save(logic);
+            return CalculationLogicMapper.toDto(record);
+        } catch (error) {
+            logger.error(`❌ Error updating calculation logic: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+
+    public delete = async (id: string): Promise<boolean> => {
+        try {
+            var record = await this._calculationLogicRepository.findOne({
+                where: {
+                    id: id
+                }
+            });
+            var result = await this._calculationLogicRepository.remove(record);
+            return result != null;
+        } catch (error) {
+            logger.error(`❌ Error deleting calculation logic: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    //#region Privates
+
+    private getSearchModel = (filters: CalculationLogicSearchFilters) => {
+
+        var search: FindManyOptions<CalculationLogic> = {
+            relations: {
+                Rules: true,
+            },
+            where: {
+            }
+        };
+
+        if (filters.FallbackValue) {
+            search.where['FallbackValue'] = filters.FallbackValue;
+        }
+        if (filters.Enabled) {
+            search.where['Enabled'] = filters.Enabled;
+        }
+        if (filters.FieldId) {
+            search.where['FieldId'] = filters.FieldId;
+        }
+
+        return search;
+    };
 }

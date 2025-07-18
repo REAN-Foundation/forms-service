@@ -1,43 +1,34 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import { ValidationRuleService } from '../../../services/field.rules/validation.rule.service';
+import { ValidationRuleService } from '../../../database/services/validation.rule.service';
 import { ValidationRuleValidator } from './validation.rule.validator';
 import {
     ValidationRuleCreateModel,
     ValidationRuleUpdateModel,
-    RuleSearchFilters,
-} from '../../../domain.types/forms/rule.domain.types';
-import { ApiError } from '../../../common/api.error';
+    ValidationRuleSearchFilters,
+} from '../../../domain.types/rules/validation.rule.domain.types';
 import { Injector } from '../../../startup/injector';
 
-export class ValidationRuleController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class ValidationRuleController {
     _service: ValidationRuleService = Injector.Container.resolve(
         ValidationRuleService
     );
     _validator: ValidationRuleValidator = new ValidationRuleValidator();
 
-    constructor() {
-        super();
-    }
-
-    // Validation Rule operations
-    createValidationRule = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: ValidationRuleCreateModel =
                 await this._validator.validateValidationRuleCreateRequest(
                     request
                 );
-            const record = await this._service.createValidationRule(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Validation Rule!',
-                    new Error()
                 );
             }
             const message = 'Validation Rule created successfully!';
@@ -53,18 +44,15 @@ export class ValidationRuleController extends BaseController {
         }
     };
 
-    getValidationRuleById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record = await this._service.getValidationRuleById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError('Validation Rule not found!', 404);
+                ErrorHandler.throwNotFoundError('Validation Rule not found!');
             }
             const message = 'Validation Rule retrieved successfully!';
             return ResponseHandler.success(
@@ -79,17 +67,14 @@ export class ValidationRuleController extends BaseController {
         }
     };
 
-    updateValidationRule = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: ValidationRuleUpdateModel =
                 await this._validator.validateValidationRuleUpdateRequest(
                     request
                 );
-            const updatedRecord = await this._service.updateValidationRule(
+            const updatedRecord = await this._service.update(
                 id,
                 model
             );
@@ -106,16 +91,16 @@ export class ValidationRuleController extends BaseController {
         }
     };
 
-    deleteValidationRule = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result = await this._service.deleteValidationRule(id);
+            const result = await this._service.delete(id);
             const message = 'Validation Rule deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
@@ -123,15 +108,11 @@ export class ValidationRuleController extends BaseController {
         }
     };
 
-    searchValidationRule = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: RuleSearchFilters =
+            const filters: ValidationRuleSearchFilters =
                 await this._validator.validateRuleSearchRequest(request);
-            const searchResults =
-                await this._service.searchValidationRule(filters);
+            const searchResults = await this._service.search(filters);
             const message = 'Validation Rule search completed successfully!';
             ResponseHandler.success(
                 request,

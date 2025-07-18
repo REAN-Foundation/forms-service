@@ -1,14 +1,20 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import BaseValidator from '../../base.validator';
 import {
     SkipRuleCreateModel,
     SkipRuleUpdateModel,
-    RuleSearchFilters,
-} from '../../../domain.types/forms/rule.domain.types';
+    SkipRuleSearchFilters,
+} from '../../../domain.types/rules/skip.rule.domain.types';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class SkipRuleValidator extends BaseValidator {
+    //#region member variables and constructors
+
+    //#endregion
+
     // Skip Rule validation
     public validateSkipRuleCreateRequest = async (
         request: express.Request
@@ -68,7 +74,7 @@ export class SkipRuleValidator extends BaseValidator {
 
     public validateRuleSearchRequest = async (
         request: express.Request
-    ): Promise<RuleSearchFilters> => {
+    ): Promise<SkipRuleSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -78,38 +84,51 @@ export class SkipRuleValidator extends BaseValidator {
                 isActive: joi.boolean().optional(),
                 operationId: joi.string().uuid().optional(),
                 logicId: joi.string().uuid().optional(),
-                PageIndex: joi.number().integer().min(0).optional(),
-                ItemsPerPage: joi.number().integer().min(1).max(100).optional(),
-                OrderBy: joi.string().optional(),
-                Order: joi.string().valid('ASC', 'DESC').optional(),
             });
             await schema.validateAsync(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            const filters = this.getSearchFilters(request.query);
             return {
-                id: request.query.id as string,
-                name: request.query.name as string,
-                description: request.query.description as string,
-                priority: request.query.priority
-                    ? parseInt(request.query.priority as string)
-                    : undefined,
-                isActive:
-                    request.query.isActive === 'true'
-                        ? true
-                        : request.query.isActive === 'false'
-                          ? false
-                          : undefined,
-                operationId: request.query.operationId as string,
-                logicId: request.query.logicId as string,
-                PageIndex: request.query.PageIndex
-                    ? parseInt(request.query.PageIndex as string)
-                    : 0,
-                ItemsPerPage: request.query.ItemsPerPage
-                    ? parseInt(request.query.ItemsPerPage as string)
-                    : 10,
-                OrderBy: request.query.OrderBy as string,
-                Order: request.query.Order as 'ASC' | 'DESC',
+                ...baseFilters,
+                ...filters,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    private getSearchFilters = (query: any): SkipRuleSearchFilters => {
+        var filters: any = {};
+
+        var id = query.id ? query.id : null;
+        if (id != null) {
+            filters['id'] = id;
+        }
+        var name = query.name ? query.name : null;
+        if (name != null) {
+            filters['name'] = name;
+        }
+        var description = query.description ? query.description : null;
+        if (description != null) {
+            filters['description'] = description;
+        }
+        var priority = query.priority ? query.priority : null;
+        if (priority != null) {
+            filters['priority'] = priority;
+        }
+        var isActive = query.isActive ? query.isActive : null;
+        if (isActive != null) {
+            filters['isActive'] = isActive;
+        }
+        var operationId = query.operationId ? query.operationId : null;
+        if (operationId != null) {
+            filters['operationId'] = operationId;
+        }
+        var logicId = query.logicId ? query.logicId : null;
+        if (logicId != null) {
+            filters['logicId'] = logicId;
+        }
+        return filters;
+    };
+    //#endregion
 }

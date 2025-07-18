@@ -1,4 +1,4 @@
-import { CalculationRuleResponseDto } from '../../../../domain.types/forms/rule.domain.types';
+import { CalculationRuleResponseDto } from '../../domain.types/rules/calculation.rule.domain.types';
 
 export class CalculationRuleMapper {
     static toDto = (record: any): CalculationRuleResponseDto => {

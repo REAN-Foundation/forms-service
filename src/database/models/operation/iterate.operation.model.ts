@@ -2,7 +2,7 @@ import { Entity, Column } from 'typeorm';
 import { BaseOperationEntity } from './base.operation.model';
 
 @Entity({ name: 'eval_iterate_operations' })
-export class IterateOperationEntity extends BaseOperationEntity {
+export class IterateOperation extends BaseOperationEntity {
     @Column({ type: 'varchar', length: 255, nullable: false })
     CollectionField: string; // Field name to iterate over
 

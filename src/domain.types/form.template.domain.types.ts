@@ -2,10 +2,13 @@ import { FormType } from './form.template.enums';
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
-import { uuid } from '../miscellaneous/system.types';
+} from './miscellaneous/base.search.types';
+import { uuid } from './miscellaneous/system.types';
 import { QuestionOption } from './question.domain.types';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Form Template DTOs
 export interface FormTemplateCreateModel {
     Title: string;
     Description?: string;
@@ -46,7 +49,6 @@ export interface FormTemplateResponseDto {
 }
 
 export interface FormTemplateSearchFilters extends BaseSearchFilters {
-    id?: string;
     Title?: string;
     Description?: string;
     CurrentVersion?: number;

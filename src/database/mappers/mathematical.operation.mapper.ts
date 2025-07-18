@@ -1,4 +1,4 @@
-import { MathematicalOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
+import { MathematicalOperationResponseDto } from '../../domain.types/operations/mathematical.operation.domain.types';
 
 export class MathematicalOperationMapper {
     static toDto = (record: any): MathematicalOperationResponseDto => {

@@ -1,4 +1,4 @@
-import { InputUnitListResponseDto } from '../../../../domain.types/forms/input.unit.list.domain.types';
+import { InputUnitListResponseDto } from '../../domain.types/input.unit.list.domain.types';
 
 export class InputUnitListMapper {
     static toDto = (record: any): InputUnitListResponseDto => {

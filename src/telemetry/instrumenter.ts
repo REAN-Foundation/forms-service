@@ -8,7 +8,7 @@ import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { Context, Span, context, trace } from '@opentelemetry/api';
-import { propagation  } from '@opentelemetry/api';
+import { propagation } from '@opentelemetry/api';
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -84,7 +84,7 @@ export class Telemetry {
         const traceExporter = new ConsoleSpanExporter();
 
         const resource = new Resource({
-            [SemanticResourceAttributes.SERVICE_NAME] : serviceName,
+            [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
         });
 
         //Metrics reader
@@ -124,7 +124,7 @@ export class Telemetry {
         const instrumentations = [
             new HttpInstrumentation({
                 //Ignore health-check, docs, swagger, openapi.json requests
-                ignoreIncomingRequestHook : (req) => {
+                ignoreIncomingRequestHook: (req) => {
                     return req.url.includes('/health-check') ||
                         req.url.includes('/docs') ||
                         req.url.includes('/swagger') ||
@@ -132,7 +132,7 @@ export class Telemetry {
                 },
             }),
             new ExpressInstrumentation({
-                ignoreLayersType : [
+                ignoreLayersType: [
                     ExpressLayerType.MIDDLEWARE,
                     ExpressLayerType.ROUTER,
                 ],
@@ -141,10 +141,10 @@ export class Telemetry {
 
         const options: Partial<NodeSDKConfiguration> = {
             //serviceName: serviceName,
-            resource         : resource,
-            traceExporter    : traceExporter,
+            resource: resource,
+            traceExporter: traceExporter,
             //metricReader: metricReader,
-            instrumentations : instrumentations,
+            instrumentations: instrumentations,
         };
         return options;
     };
@@ -169,10 +169,10 @@ export function getServiceName() {
 export const getZipkinExporter = (): ZipkinExporter => {
     const exporterUrl = process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT ?? 'http://localhost:9411/api/v2/spans';
     const options = {
-        headers : {
+        headers: {
             //'custom-header': 'header-value',
         },
-        url : exporterUrl,
+        url: exporterUrl,
     };
     return new ZipkinExporter(options);
 };
@@ -180,10 +180,10 @@ export const getZipkinExporter = (): ZipkinExporter => {
 export const getOTLPExporter = (): OTLPTraceExporter => {
     const exporterUrl = process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT ?? 'http://localhost:4317'; // or http://localhost:4318/v1/traces
     const options = {
-        headers : {
+        headers: {
             //'custom-header': 'header-value',
         },
-        url : exporterUrl,
+        url: exporterUrl,
     };
     return new OTLPTraceExporter(options);
 };

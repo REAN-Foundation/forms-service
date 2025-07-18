@@ -1,4 +1,4 @@
-import { ValidationRuleResponseDto } from '../../../../domain.types/forms/rule.domain.types';
+import { ValidationRuleResponseDto } from '../../domain.types/rules/validation.rule.domain.types';
 
 export class ValidationRuleMapper {
     static toDto = (record: any): ValidationRuleResponseDto => {

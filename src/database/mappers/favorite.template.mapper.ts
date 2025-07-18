@@ -1,4 +1,4 @@
-import { FavoriteTemplateResponseDto } from '../../../../domain.types/forms/favorite.template.domain.types';
+import { FavoriteTemplateResponseDto } from '../../domain.types/favorite.template.domain.types';
 
 export class FavoriteTemplateMapper {
     static toDto = (record: any): FavoriteTemplateResponseDto => {

@@ -1,14 +1,11 @@
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import '../init';
-import { getTestData, setTestData } from '../init';
+import { setTestData } from '../init';
 import { 
     expectSuccessResponse, 
-    expectValidId, 
-    expectValidObject, 
-    expectValidArray,
     generateSkipRule,
     generateValidationRule,
     generateCalculationRule
@@ -17,7 +14,7 @@ import {
 const infra = Application.instance();
 
 describe('11 - Field Rules Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     // Skip Rules
     describe('Skip Rules', function () {

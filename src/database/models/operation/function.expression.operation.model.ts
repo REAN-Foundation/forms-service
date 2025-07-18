@@ -1,8 +1,11 @@
 import { Entity, Column } from 'typeorm';
 import { BaseOperationEntity } from './base.operation.model';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Function Expression Operation Entity
 @Entity({ name: 'eval_function_expression_operations' })
-export class FunctionExpressionOperationEntity extends BaseOperationEntity {
+export class FunctionExpressionOperation extends BaseOperationEntity {
     @Column({ type: 'text', nullable: false })
     Expression: string;
 

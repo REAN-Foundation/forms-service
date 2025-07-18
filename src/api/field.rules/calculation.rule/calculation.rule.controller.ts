@@ -1,43 +1,38 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import { CalculationRuleService } from '../../../services/field.rules/calculation.rule.service';
+import { CalculationRuleService } from '../../../database/services/calculation.rule.service';
 import { CalculationRuleValidator } from './calculation.rule.validator';
 import {
     CalculationRuleCreateModel,
     CalculationRuleUpdateModel,
-    RuleSearchFilters,
-} from '../../../domain.types/forms/rule.domain.types';
-import { ApiError } from '../../../common/api.error';
+    CalculationRuleSearchFilters,
+} from '../../../domain.types/rules/calculation.rule.domain.types';
 import { Injector } from '../../../startup/injector';
 
-export class CalculationRuleController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class CalculationRuleController {
+    //#region member variables and constructors
+
     _service: CalculationRuleService = Injector.Container.resolve(
         CalculationRuleService
     );
     _validator: CalculationRuleValidator = new CalculationRuleValidator();
 
-    constructor() {
-        super();
-    }
+    //#endregion
 
-    // Calculation Rule operations
-    createCalculationRule = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: CalculationRuleCreateModel =
                 await this._validator.validateCalculationRuleCreateRequest(
                     request
                 );
-            const record = await this._service.createCalculationRule(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Calculation Rule!',
-                    new Error()
                 );
             }
             const message = 'Calculation Rule created successfully!';
@@ -53,18 +48,15 @@ export class CalculationRuleController extends BaseController {
         }
     };
 
-    getCalculationRuleById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record = await this._service.getCalculationRuleById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError('Calculation Rule not found!', 404);
+                ErrorHandler.throwNotFoundError('Calculation Rule not found!');
             }
             const message = 'Calculation Rule retrieved successfully!';
             return ResponseHandler.success(
@@ -79,17 +71,14 @@ export class CalculationRuleController extends BaseController {
         }
     };
 
-    updateCalculationRule = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: CalculationRuleUpdateModel =
                 await this._validator.validateCalculationRuleUpdateRequest(
                     request
                 );
-            const updatedRecord = await this._service.updateCalculationRule(
+            const updatedRecord = await this._service.update(
                 id,
                 model
             );
@@ -106,16 +95,16 @@ export class CalculationRuleController extends BaseController {
         }
     };
 
-    deleteCalculationRule = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result = await this._service.deleteCalculationRule(id);
+            const result = await this._service.delete(id);
             const message = 'Calculation Rule deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
@@ -123,15 +112,11 @@ export class CalculationRuleController extends BaseController {
         }
     };
 
-    searchCalculationRule = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: RuleSearchFilters =
+            const filters: CalculationRuleSearchFilters =
                 await this._validator.validateRuleSearchRequest(request);
-            const searchResults =
-                await this._service.searchCalculationRule(filters);
+            const searchResults = await this._service.search(filters);
             const message = 'Calculation Rule search completed successfully!';
             ResponseHandler.success(
                 request,

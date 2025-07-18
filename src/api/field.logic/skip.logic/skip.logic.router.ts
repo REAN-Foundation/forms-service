@@ -1,18 +1,20 @@
 import express from 'express';
 import { SkipLogicController } from './skip.logic.controller';
+import { context } from '../../../auth/context.handler';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
+    
     const router = express.Router();
     const controller = new SkipLogicController();
+    const contextBase = 'SkipLogic';
 
-    // Skip Logic routes
-    router.get('/search', controller.searchSkipLogic);
-    router.post('/', controller.createSkipLogic);
-    router.put('/:id', controller.updateSkipLogic);
-    router.get('/:id', controller.getSkipLogicById);
-    router.delete('/:id', controller.deleteSkipLogic);
+    router.get('/search', context(`${contextBase}.Search`), controller.search);
+    router.post('/', context(`${contextBase}.Create`), controller.create);
+    router.put('/:id', context(`${contextBase}.Update`), controller.update);
+    router.get('/:id', context(`${contextBase}.GetById`), controller.getById);
+    router.delete('/:id', context(`${contextBase}.Delete`), controller.delete);
 
     app.use('/api/v1/field-skip-logic', router);
 };

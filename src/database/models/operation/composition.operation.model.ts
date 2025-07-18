@@ -1,9 +1,9 @@
 import { Entity, Column } from 'typeorm';
 import { BaseOperationEntity } from './base.operation.model';
-import { CompositionOperatorType } from '../../../../../domain.types/forms/operation.enums';
+import { CompositionOperatorType } from '../../../domain.types/operation.enums';
 
 @Entity({ name: 'eval_composition_operations' })
-export class CompositionOperationEntity extends BaseOperationEntity {
+export class CompositionOperation extends BaseOperationEntity {
     @Column({ type: 'varchar', length: 50, nullable: false })
     Operator: CompositionOperatorType;
 

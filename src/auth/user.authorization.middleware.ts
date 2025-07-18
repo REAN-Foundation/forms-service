@@ -1,5 +1,5 @@
 import express from "express";
-import { ResponseHandler } from "../common/res.handlers/response.handler";
+import { ResponseHandler } from "../common/handlers/response.handler";
 import { logger } from "../logger/logger";
 
 /////////////////////////////////////////////////////////////////////////////

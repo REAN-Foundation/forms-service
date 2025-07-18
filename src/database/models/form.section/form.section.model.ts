@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormTemplate } from '../form.template/form.template.model';
 
-import { FormFieldEntity } from '../form.field/form.field.model';
+import { FormField } from '../form.field/form.field.model';
 
 // enum SectionNodeType {
 //     RootSection = 'RootSection',
@@ -55,6 +55,6 @@ export class FormSection extends BaseEntity {
     // @OneToMany(() => Question, (question) => question.ParentFormSection)
     // Questions: Question[];
 
-    @OneToMany(() => FormFieldEntity, formField => formField.ParentFormSection)
-    FormFields: FormFieldEntity[];
+    @OneToMany(() => FormField, formField => formField.ParentFormSection)
+    FormFields: FormField[];
 }

@@ -1,4 +1,4 @@
-import { SkipRuleResponseDto } from '../../../../domain.types/forms/rule.domain.types';
+import { SkipRuleResponseDto } from '../../domain.types/rules/skip.rule.domain.types';
 
 export class SkipRuleMapper {
     static toDto = (record: any): SkipRuleResponseDto => {

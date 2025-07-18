@@ -1,22 +1,20 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { error } from 'console';
 import { FormSectionValidator } from './form.section.validator';
-import { FormSectionService } from '../../services/form.section/form.section.service';
+import { FormSectionService } from '../../database/services/form.section.service';
 import {
     FormSectionCreateModel,
     FormSectionSearchFilters,
     FormSectionUpdateModel,
-} from '../../domain.types/forms/form.section.domain.types';
+} from '../../domain.types/form.section.domain.types';
 import { Injector } from '../../startup/injector';
-import { FormTemplateService } from '../../services/form.template/form.template.service';
+import { FormTemplateService } from '../../database/services/form.template.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class FormSectionController extends BaseController {
+export class FormSectionController {
     //#region member variables and constructors
 
     // _service: FormSectionService = new FormSectionService();
@@ -28,10 +26,6 @@ export class FormSectionController extends BaseController {
         Injector.Container.resolve(FormTemplateService);
 
     _validator: FormSectionValidator = new FormSectionValidator();
-
-    constructor() {
-        super();
-    }
 
     //#endregion
 
@@ -158,7 +152,7 @@ export class FormSectionController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to add Form section!',
-                    error
+                    new Error('Unable to add Form section!')
                 );
             }
             const message = 'Form section added successfully!';
@@ -177,7 +171,7 @@ export class FormSectionController extends BaseController {
     getById = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -198,7 +192,7 @@ export class FormSectionController extends BaseController {
     update = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.Update', request, response);
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             var model: FormSectionUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -221,7 +215,7 @@ export class FormSectionController extends BaseController {
     ): Promise<void> => {
         try {
             // await this.authorize('Form.Delete', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -238,7 +232,7 @@ export class FormSectionController extends BaseController {
         response: express.Response
     ) => {
         try {
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'templateId'
             );

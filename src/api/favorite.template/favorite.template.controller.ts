@@ -1,27 +1,23 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { FavoriteTemplateValidator } from './favorite.template.validator';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { FavoriteTemplateService } from '../../services/favorite.template/favorite.template.service';
+import { FavoriteTemplateService } from '../../database/services/favorite.template.service';
 import {
     FavoriteTemplateCreateModel,
     FavoriteTemplateSearchFilters,
     FavoriteTemplateUpdateModel,
-} from '../../domain.types/forms/favorite.template.domain.types';
-import { container } from 'tsyringe';
+} from '../../domain.types/favorite.template.domain.types';
 import { Injector } from '../../startup/injector';
 
-export class FavoriteTemplateController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class FavoriteTemplateController {
     _service: FavoriteTemplateService = Injector.Container.resolve(
         FavoriteTemplateService
     );
     _validator: FavoriteTemplateValidator = new FavoriteTemplateValidator();
-
-    constructor() {
-        super();
-    }
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -31,7 +27,6 @@ export class FavoriteTemplateController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to add favorite template!',
-                    new Error()
                 );
             }
             const message = 'Favorite template added successfully!';
@@ -49,7 +44,7 @@ export class FavoriteTemplateController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -69,7 +64,7 @@ export class FavoriteTemplateController extends BaseController {
 
     update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: FavoriteTemplateUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -91,7 +86,7 @@ export class FavoriteTemplateController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );

@@ -1,15 +1,20 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
-import BaseValidator from '../base.validator';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import {
     InputUnitListCreateModel,
     InputUnitListSearchFilters,
     InputUnitListUpdateModel,
-} from '../../domain.types/forms/input.unit.list.domain.types';
-import { ParsedQs } from 'qs';
+} from '../../domain.types/input.unit.list.domain.types';
+import BaseValidator from '../base.validator';
+
+///////////////////////////////////////////////////////////////////////////////////////
 
 export class InputUnitListValidator extends BaseValidator {
+    //#region member variables and constructors
+
+    //#endregion
+
     public validateCreateRequest = async (
         request: express.Request
     ): Promise<InputUnitListCreateModel> => {
@@ -64,14 +69,18 @@ export class InputUnitListValidator extends BaseValidator {
             });
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
     private getSearchFilters = (
-        query: ParsedQs
+        query: any
     ): InputUnitListSearchFilters => {
         const filters: any = {};
         const id = query.id ? query.id : null;

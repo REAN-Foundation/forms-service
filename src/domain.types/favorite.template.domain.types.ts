@@ -1,8 +1,10 @@
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
-import { uuid } from '../miscellaneous/system.types';
+} from './miscellaneous/base.search.types';
+import { uuid } from './miscellaneous/system.types';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface FavoriteTemplateCreateModel {
     UserId: string;
@@ -15,7 +17,7 @@ export interface FavoriteTemplateUpdateModel {
 }
 
 export interface FavoriteTemplateResponseDto {
-    id: string;
+    id: uuid;
     UserId: string;
     TemplateId: string;
     CreatedAt: Date;
@@ -23,7 +25,6 @@ export interface FavoriteTemplateResponseDto {
 }
 
 export interface FavoriteTemplateSearchFilters extends BaseSearchFilters {
-    id?: string;
     UserId?: uuid;
     TemplateId?: uuid;
 }

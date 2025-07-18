@@ -1,45 +1,26 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { error } from 'console';
-import { FormFieldService } from '../../services/form.field/form.field.service';
+import { FormFieldService } from '../../database/services/form.field.service';
 import {
     FormFieldCreateModel,
     FormFieldSearchFilters,
     FormFieldUpdateModel,
-} from '../../domain.types/forms/form.field.domain.types';
+} from '../../domain.types/form.field.domain.types';
 import { Injector } from '../../startup/injector';
 import { FormFieldValidator } from './form.field.validator';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class FormFieldController extends BaseController {
+export class FormFieldController {
     //#region member variables and constructors
 
     _service: FormFieldService = Injector.Container.resolve(FormFieldService);
 
     _validator: FormFieldValidator = new FormFieldValidator();
 
-    constructor() {
-        super();
-    }
-
     //#endregion
-
-    // getAll = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         const record = await this._service.allFormFields();
-    //         if (record === null) {
-    //             ErrorHandler.throwInternalServerError('Unable to add FormField!', error);
-    //         }
-    //         const message = 'All FormFields retrived successfully!';
-    //         return ResponseHandler.success(request, response, message, 201, record);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // }
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -47,7 +28,7 @@ export class FormFieldController extends BaseController {
                 await this._validator.validateCreateRequest(request);
             const parentSectionId = request.body.ParentSectionId;
             const allFormFields = await this._service.search({
-                parentSectionId,
+                ParentSectionId: parentSectionId,
             });
 
             if (allFormFields.Items.length === 0) {
@@ -60,7 +41,7 @@ export class FormFieldController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to add FormField!',
-                    error
+                    new Error('Unable to add FormField!')
                 );
             }
 
@@ -80,7 +61,7 @@ export class FormFieldController extends BaseController {
     getById = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.GetById', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -104,7 +85,7 @@ export class FormFieldController extends BaseController {
     ) => {
         try {
             // await this.authorize('Form.GetById', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'templateId'
             );
@@ -125,7 +106,7 @@ export class FormFieldController extends BaseController {
     update = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.Update', request, response);
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             var model: FormFieldUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -148,7 +129,7 @@ export class FormFieldController extends BaseController {
     ): Promise<void> => {
         try {
             // await this.authorize('Form.Delete', request, response);
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import Application from '../../../src/app';
 import { describe, it } from 'mocha';
 import '../init';
@@ -9,7 +9,7 @@ import { generateFormSubmission, expectSuccessResponse, expectValidId, expectVal
 const infra = Application.instance();
 
 describe('05 - Form Submission Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('05:01 -> Create new form submission', function (done) {
         const templateId = getTestData('templateId') || '550e8400-e29b-41d4-a716-446655440001';

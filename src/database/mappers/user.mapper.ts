@@ -1,4 +1,4 @@
-import { UserResponseDto } from '../../../../domain.types/forms/user.domain.types';
+import { UserResponseDto } from '../../domain.types/user.domain.types';
 
 export class UserMapper {
     static toDto = (record: any): UserResponseDto => {
@@ -14,7 +14,7 @@ export class UserMapper {
             Phone: record.Phone,
             Email: record.Email,
             Username: record.Username,
-            Password: record.Password,
+            // Password: record.Password,
             CreatedAt: record.CreatedAt,
         };
         return dto;

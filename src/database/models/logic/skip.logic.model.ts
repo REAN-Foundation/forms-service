@@ -1,11 +1,11 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { LogicType } from '../../../../../domain.types/forms/logic.enums';
-import { SkipRuleEntity } from '../rule/skip.rule.model';
+import { LogicType } from '../../../domain.types/logic.enums';
+import { SkipRule } from '../rule/skip.rule.model';
 import { BaseLogicEntity } from './base.logic.model';
 
 // Skip Logic Entity
 @Entity({ name: 'eval_skip_logics' })
-export class SkipLogicEntity extends BaseLogicEntity {
+export class SkipLogic extends BaseLogicEntity {
     @Column({
         type: 'varchar',
         length: 50,
@@ -15,8 +15,8 @@ export class SkipLogicEntity extends BaseLogicEntity {
     Type: LogicType.Skip;
 
     // TODO: Add proper SkipRule relationship when SkipRule entity is created
-    @OneToMany(() => SkipRuleEntity, rule => rule.LogicId)
-    Rules: SkipRuleEntity[];
+    @OneToMany(() => SkipRule, rule => rule.LogicId)
+    Rules: SkipRule[];
 
     @Column({ type: 'boolean', nullable: true })
     DefaultSkip?: boolean;

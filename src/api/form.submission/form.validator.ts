@@ -1,23 +1,22 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import BaseValidator from '../base.validator';
 import {
     FormSubmissionCreateModel,
     FormSubmissionDto,
     FormSubmissionSearchFilters,
     FormSubmissionUpdateModel,
-} from '../../domain.types/forms/form.submission.domain.types';
-import { FormStatus } from '../../domain.types/forms/form.submission.enums';
-import { FormType } from '../../domain.types/forms/form.template.enums';
-import { ParsedQs } from 'qs';
-import { TimeHelper } from '../../common/time.helper';
-import { DurationType } from '../../miscellaneous/time.types';
-import { ApiError } from '../../common/api.error';
+} from '../../domain.types/form.submission.domain.types';
+import { FormStatus } from '../../domain.types/form.submission.enums';
+import { FormType } from '../../domain.types/form.template.enums';
+import { TimeUtils } from '../../common/utilities/time.utils';
+import { DurationType } from '../../domain.types/miscellaneous/time.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormValidator extends BaseValidator {
+
     public validateCreateRequest = async (
         request: express.Request
     ): Promise<FormSubmissionCreateModel> => {
@@ -75,6 +74,7 @@ export class FormValidator extends BaseValidator {
             ErrorHandler.handleValidationError(error);
         }
     };
+
     public validateSearchRequest = async (
         request: express.Request
     ): Promise<FormSubmissionSearchFilters> => {
@@ -97,7 +97,11 @@ export class FormValidator extends BaseValidator {
 
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
-            return filters;
+            const baseFilters = await this.validateBaseSearchFilters(request);
+            return {
+                ...baseFilters,
+                ...filters
+            };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
@@ -105,18 +109,18 @@ export class FormValidator extends BaseValidator {
 
     public _validateSubmission(submission: FormSubmissionDto) {
         if (!submission) {
-            throw new ApiError('Form not found!', 404);
+            throw new Error('Form not found!');
         }
 
         if (
             submission.Status === FormStatus.Submitted ||
             submission.SubmittedAt !== null
         ) {
-            throw new ApiError('Form already submitted!', 409);
+            throw new Error('Form already submitted!');
         }
 
         if (submission.ValidTill < new Date()) {
-            throw new ApiError('Form link is expired!', 400);
+            throw new Error('Form link is expired!');
         }
 
         // if (submission.Status !== FormStatus.InProgress) {
@@ -125,7 +129,7 @@ export class FormValidator extends BaseValidator {
     }
 
     private getSearchFilters = (
-        query: ParsedQs
+        query: any
     ): FormSubmissionSearchFilters => {
         var filters: any = {};
 
@@ -194,7 +198,7 @@ export class FormValidator extends BaseValidator {
                 (request.body.FormCategory as FormType) ?? FormType.Survey,
         };
 
-        const validTill = TimeHelper.addDuration(
+        const validTill = TimeUtils.addDuration(
             new Date(),
             1,
             DurationType.Day

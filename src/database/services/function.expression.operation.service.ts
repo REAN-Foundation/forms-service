@@ -1,57 +1,149 @@
-import { inject, injectable } from 'tsyringe';
-import { IFunctionExpressionOperationRepo } from '../../database/repository.interfaces/field.operations/function.expression.operation/function.expression.operation.repo.interface';
 import {
     FunctionExpressionOperationResponseDto,
     FunctionExpressionOperationCreateModel,
     FunctionExpressionOperationUpdateModel,
-    OperationSearchFilters,
-} from '../../domain.types/forms/operation.domain.types';
+    FunctionExpressionOperationSearchFilters,
+    FunctionExpressionOperationSearchResults,
+} from '../../domain.types/operations/function.expression.operation.domain.types';
+import { BaseService } from './base.service';
+import { Source } from '../database.connector';
+import { FindManyOptions, Repository } from 'typeorm';
+import { FunctionExpressionOperation } from '../models/operation/function.expression.operation.model';
+import { FunctionExpressionOperationMapper } from '../mappers/function.expression.operation.mapper';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
+import { logger } from '../../logger/logger';
+import { uuid } from '../../domain.types/miscellaneous/system.types';
+import { OperationType } from '../../domain.types/operation.enums';
 
-@injectable()
-export class FunctionExpressionOperationService {
-    constructor(
-        @inject('IFunctionExpressionOperationRepo')
-        private _functionExpressionOperationRepo: IFunctionExpressionOperationRepo
-    ) {}
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+export class FunctionExpressionOperationService extends BaseService {
+
+    _functionExpressionOperationRepository: Repository<FunctionExpressionOperation> = Source.getRepository(FunctionExpressionOperation);
 
     // Function Expression Operation operations
-    async createFunctionExpressionOperation(
-        model: FunctionExpressionOperationCreateModel
-    ): Promise<FunctionExpressionOperationResponseDto> {
-        return await this._functionExpressionOperationRepo.createFunctionExpressionOperation(
-            model
-        );
-    }
+    public create = async (createModel: FunctionExpressionOperationCreateModel)
+        : Promise<FunctionExpressionOperationResponseDto> => {
 
-    async updateFunctionExpressionOperation(
-        id: string,
-        model: FunctionExpressionOperationUpdateModel
-    ): Promise<FunctionExpressionOperationResponseDto> {
-        return await this._functionExpressionOperationRepo.updateFunctionExpressionOperation(
-            id,
-            model
-        );
-    }
+        const operation = this._functionExpressionOperationRepository.create({
+            Type: OperationType.FunctionExpression,
+            Name: createModel.Name,
+            Description: createModel.Description,
+            Expression: createModel.Expression,
+            Variables: createModel.Variables,
+            ResultDataType: createModel.ResultDataType,
+        });
+        const record = await this._functionExpressionOperationRepository.save(operation);
 
-    async getFunctionExpressionOperationById(
-        id: string
-    ): Promise<FunctionExpressionOperationResponseDto> {
-        return await this._functionExpressionOperationRepo.getFunctionExpressionOperationById(
-            id
-        );
-    }
+        return FunctionExpressionOperationMapper.toDto(record);
+    };
 
-    async deleteFunctionExpressionOperation(id: string): Promise<boolean> {
-        return await this._functionExpressionOperationRepo.deleteFunctionExpressionOperation(
-            id
-        );
-    }
+    public getById = async (id: uuid): Promise<FunctionExpressionOperationResponseDto> => {
+        try {
+            const operation = await this._functionExpressionOperationRepository.findOne({
+                where: {
+                    id: id
+                }
+            });
 
-    async searchFunctionExpressionOperation(
-        filters: OperationSearchFilters
-    ): Promise<any> {
-        return await this._functionExpressionOperationRepo.searchFunctionExpressionOperation(
-            filters
-        );
-    }
+            return FunctionExpressionOperationMapper.toDto(operation);
+        } catch (error) {
+            logger.error(`❌ Error getting function expression operation by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public search = async (filters: FunctionExpressionOperationSearchFilters)
+        : Promise<FunctionExpressionOperationSearchResults> => {
+        try {
+            var search = this.getSearchModel(filters);
+            var { search, pageIndex, limit, order, orderByColumn } = this.addSortingAndPagination(search, filters);
+            const [list, count] = await this._functionExpressionOperationRepository.findAndCount(search);
+            const searchResults = {
+                TotalCount: count,
+                RetrievedCount: list.length,
+                PageIndex: pageIndex,
+                ItemsPerPage: limit,
+                Order: order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy: orderByColumn,
+                Items: list.map(x => FunctionExpressionOperationMapper.toDto(x)),
+            };
+            return searchResults;
+        } catch (error) {
+            logger.error(`❌ Error searching function expression operations: ${error.message}`);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', error);
+        }
+    };
+
+    public update = async (id: uuid, model: FunctionExpressionOperationUpdateModel)
+        : Promise<FunctionExpressionOperationResponseDto> => {
+        try {
+            const operation = await this._functionExpressionOperationRepository.findOne({
+                where: {
+                    id: id
+                }
+            });
+            if (!operation) {
+                ErrorHandler.throwNotFoundError('Function expression operation not found!');
+            }
+            if (model.Name != null) {
+                operation.Name = model.Name;
+            }
+            if (model.Description != null) {
+                operation.Description = model.Description;
+            }
+            if (model.Expression != null) {
+                operation.Expression = model.Expression;
+            }
+            if (model.Variables != null) {
+                operation.Variables = model.Variables;
+            }
+            if (model.ResultDataType != null) {
+                operation.ResultDataType = model.ResultDataType;
+            }
+            var record = await this._functionExpressionOperationRepository.save(operation);
+            return FunctionExpressionOperationMapper.toDto(record);
+        } catch (error) {
+            logger.error(`❌ Error updating function expression operation: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public delete = async (id: string): Promise<boolean> => {
+        try {
+            var record = await this._functionExpressionOperationRepository.findOne({
+                where: {
+                    id: id
+                }
+            });
+            var result = await this._functionExpressionOperationRepository.remove(record);
+            return result != null;
+        } catch (error) {
+            logger.error(`❌ Error deleting function expression operation: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    //#region Privates
+
+    private getSearchModel = (filters: FunctionExpressionOperationSearchFilters) => {
+
+        var search: FindManyOptions<FunctionExpressionOperation> = {
+            where: {
+                Type: OperationType.FunctionExpression
+            }
+        };
+
+        if (filters.Expression) {
+            search.where['Expression'] = filters.Expression;
+        }
+        if (filters.Variables) {
+            search.where['Variables'] = filters.Variables;
+        }
+        if (filters.ResultDataType) {
+            search.where['ResultDataType'] = filters.ResultDataType;
+        }
+
+        return search;
+    };
 }

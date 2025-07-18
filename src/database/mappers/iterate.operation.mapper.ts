@@ -1,4 +1,4 @@
-import { IterateOperationResponseDto } from '../../../../domain.types/forms/operation.domain.types';
+import { IterateOperationResponseDto } from '../../domain.types/operations/iterate.operation.domain.types';
 
 export class IterateOperationMapper {
     static toDto = (record: any): IterateOperationResponseDto => {

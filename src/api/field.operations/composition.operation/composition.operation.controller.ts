@@ -1,46 +1,38 @@
 import express from 'express';
-import { ResponseHandler } from '../../../common/res.handlers/response.handler';
-import { BaseController } from '../../base.controller';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ResponseHandler } from '../../../common/handlers/response.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
-// import { CompositionOperationService } from '../../../services/field.operations/composition.operation.service';
+import { CompositionOperationService } from '../../../database/services/composition.operation.service';
 import {
     CompositionOperationCreateModel,
     CompositionOperationUpdateModel,
-    OperationSearchFilters,
-} from '../../../domain.types/forms/operation.domain.types';
-import { ApiError } from '../../../common/api.error';
+    CompositionOperationSearchFilters,
+} from '../../../domain.types/operations/composition.operation.domain.types';
 import { Injector } from '../../../startup/injector';
 import { CompositionOperationValidator } from './composition.operation.validator';
-import { CompositionOperationService } from '../../../services/field.operations/composition.operation.service';
 
-export class CompositionOperationController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class CompositionOperationController {
+//#region member variables and constructors
+
     _service: CompositionOperationService = Injector.Container.resolve(
         CompositionOperationService
     );
-    _validator: CompositionOperationValidator =
-        new CompositionOperationValidator();
+    _validator: CompositionOperationValidator = new CompositionOperationValidator();
 
-    constructor() {
-        super();
-    }
+    //#endregion
 
-    // Composition Operation operations
-    createCompositionOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    create = async (request: express.Request, response: express.Response) => {
         try {
             const model: CompositionOperationCreateModel =
                 await this._validator.validateCompositionOperationCreateRequest(
                     request
                 );
-            const record =
-                await this._service.createCompositionOperation(model);
+            const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to create Composition Operation!',
-                    new Error()
                 );
             }
             const message = 'Composition Operation created successfully!';
@@ -56,18 +48,15 @@ export class CompositionOperationController extends BaseController {
         }
     };
 
-    getCompositionOperationById = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const record = await this._service.getCompositionOperationById(id);
+            const record = await this._service.getById(id);
             if (!record) {
-                throw new ApiError('Composition Operation not found!', 404);
+                ErrorHandler.throwNotFoundError('Composition Operation not found!');
             }
             const message = 'Composition Operation retrieved successfully!';
             return ResponseHandler.success(
@@ -82,18 +71,17 @@ export class CompositionOperationController extends BaseController {
         }
     };
 
-    updateCompositionOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: CompositionOperationUpdateModel =
                 await this._validator.validateCompositionOperationUpdateRequest(
                     request
                 );
-            const updatedRecord =
-                await this._service.updateCompositionOperation(id, model);
+            const updatedRecord = await this._service.update(
+                id,
+                model
+            );
             const message = 'Composition Operation updated successfully!';
             ResponseHandler.success(
                 request,
@@ -107,16 +95,16 @@ export class CompositionOperationController extends BaseController {
         }
     };
 
-    deleteCompositionOperation = async (
+    delete = async (
         request: express.Request,
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
-            const result = await this._service.deleteCompositionOperation(id);
+            const result = await this._service.delete(id);
             const message = 'Composition Operation deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
@@ -124,17 +112,12 @@ export class CompositionOperationController extends BaseController {
         }
     };
 
-    searchCompositionOperation = async (
-        request: express.Request,
-        response: express.Response
-    ) => {
+    search = async (request: express.Request, response: express.Response) => {
         try {
-            const filters: OperationSearchFilters =
+            const filters: CompositionOperationSearchFilters =
                 await this._validator.validateOperationSearchRequest(request);
-            const searchResults =
-                await this._service.searchCompositionOperation(filters);
-            const message =
-                'Composition Operation search completed successfully!';
+            const searchResults = await this._service.search(filters);
+            const message = 'Composition Operation search completed successfully!';
             ResponseHandler.success(
                 request,
                 response,

@@ -1,8 +1,8 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormSubmission } from '../form.submission/form.submission.model';
-import { QueryResponseType } from '../../../../../domain.types/forms/query.response.types';
-import { FormFieldEntity } from '../form.field/form.field.model';
+import { QueryResponseType } from '../../../domain.types/query.response.types';
+import { FormField } from '../form.field/form.field.model';
 
 @Entity('question_responses')
 export class QuestionResponse extends BaseEntity {
@@ -60,7 +60,7 @@ export class QuestionResponse extends BaseEntity {
     @JoinColumn({ name: 'FormSubmissionId' })
     FormSubmission: FormSubmission;
 
-    @ManyToOne(() => FormFieldEntity, formField => formField.Responses)
+    @ManyToOne(() => FormField, formField => formField.Responses)
     @JoinColumn({ name: 'FormFieldId' })
-    FormField: FormFieldEntity;
+    FormField: FormField;
 }

@@ -1,8 +1,11 @@
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
+} from './miscellaneous/base.search.types';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// User DTOs
 export interface UserCreateModel {
     FirstName: string;
     LastName: string;
@@ -31,25 +34,25 @@ export interface UserResponseDto {
     Phone: string;
     Email: string;
     Username: string;
-    Password: string;
+    // Password: string;
     CreatedAt: Date;
 }
 
 export interface UserSearchFilters extends BaseSearchFilters {
-    firstName?: string;
-    lastName?: string;
-    countryCode?: number;
-    phone?: string;
-    email?: string;
-    username?: string;
-    password?: string;
+    FirstName?: string;
+    LastName?: string;
+    CountryCode?: number;
+    Phone?: string;
+    Email?: string;
+    Username?: string;
+    // Password?: string;
 }
 
 export interface UserSearchResults extends BaseSearchResults {
     Items: UserSearchResponseDto[];
 }
 
-export interface UserSearchResponseDto extends BaseSearchResults {
+export interface UserSearchResponseDto {
     id: string;
     FirstName: string;
     LastName: string;
@@ -57,6 +60,6 @@ export interface UserSearchResponseDto extends BaseSearchResults {
     Phone: string;
     Email: string;
     Username: string;
-    Password: string;
+    // Password: string;
     CreatedAt: Date;
 }

@@ -1,18 +1,19 @@
 import express from 'express';
 import { ValidationLogicController } from './validation.logic.controller';
+import { context } from '../../../auth/context.handler';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export const register = (app: express.Application): void => {
     const router = express.Router();
     const controller = new ValidationLogicController();
+    const contextBase = 'ValidationLogic';
 
-    // Validation Logic routes
-    router.get('/search', controller.searchValidationLogic);
-    router.post('/', controller.createValidationLogic);
-    router.put('/:id', controller.updateValidationLogic);
-    router.get('/:id', controller.getValidationLogicById);
-    router.delete('/:id', controller.deleteValidationLogic);
+    router.get('/search', context(`${contextBase}.Search`), controller.search);
+    router.post('/', context(`${contextBase}.Create`), controller.create);
+    router.put('/:id', context(`${contextBase}.Update`), controller.update);
+    router.get('/:id', context(`${contextBase}.GetById`), controller.getById);
+    router.delete('/:id', context(`${contextBase}.Delete`), controller.delete);
 
     app.use('/api/v1/field-validation-logic', router);
 };

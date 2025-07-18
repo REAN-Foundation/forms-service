@@ -1,25 +1,24 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { InputUnitListValidator } from './input.unit.list.validator';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { InputUnitListService } from '../../services/input.unit.list/input.unit.list.service';
+import { InputUnitListService } from '../../database/services/input.unit.list.service';
 import {
     InputUnitListCreateModel,
     InputUnitListSearchFilters,
     InputUnitListUpdateModel,
-} from '../../domain.types/forms/input.unit.list.domain.types';
+} from '../../domain.types/input.unit.list.domain.types';
 import { Injector } from '../../startup/injector';
 
-export class InputUnitListController extends BaseController {
+///////////////////////////////////////////////////////////////////////////////////////
+
+export class InputUnitListController {
+    //#region member variables and constructors
+
     _service: InputUnitListService =
         Injector.Container.resolve(InputUnitListService);
     _validator: InputUnitListValidator = new InputUnitListValidator();
-
-    constructor() {
-        super();
-    }
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -47,7 +46,7 @@ export class InputUnitListController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -67,7 +66,7 @@ export class InputUnitListController extends BaseController {
 
     update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             const model: InputUnitListUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -89,7 +88,7 @@ export class InputUnitListController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: uuid = await this._validator.validateParamAsUUID(
+            const id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );

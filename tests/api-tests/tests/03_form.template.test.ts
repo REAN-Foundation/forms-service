@@ -9,7 +9,7 @@ import { generateFormTemplate, expectSuccessResponse, expectValidId, expectValid
 const infra = Application.instance();
 
 describe('03 - Form Template Tests', function () {
-    var agent = request.agent(infra._app);
+    var agent = request.agent(infra.app);
 
     it('03:01 -> Create new form template', function (done) {
         const templateData = generateFormTemplate();

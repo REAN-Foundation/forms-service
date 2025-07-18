@@ -1,19 +1,22 @@
 import joi from 'joi';
 import express from 'express';
-import { ErrorHandler } from '../../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../../common/error.handling/error.handler';
 import BaseValidator from '../../base.validator';
 import {
     CompositionOperationCreateModel,
     CompositionOperationUpdateModel,
-    OperationSearchFilters,
-} from '../../../domain.types/forms/operation.domain.types';
+    CompositionOperationSearchFilters,
+} from '../../../domain.types/operations/composition.operation.domain.types';
 import {
     CompositionOperatorType,
     OperationType,
-} from '../../../domain.types/forms/operation.enums';
+} from '../../../domain.types/operation.enums';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class CompositionOperationValidator extends BaseValidator {
-    // Composition Operation validation
+    //#region member variables and constructors
+
     public validateCompositionOperationCreateRequest = async (
         request: express.Request
     ): Promise<CompositionOperationCreateModel> => {
@@ -70,7 +73,7 @@ export class CompositionOperationValidator extends BaseValidator {
 
     public validateOperationSearchRequest = async (
         request: express.Request
-    ): Promise<OperationSearchFilters> => {
+    ): Promise<CompositionOperationSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -80,28 +83,50 @@ export class CompositionOperationValidator extends BaseValidator {
                     .string()
                     .valid(...Object.values(CompositionOperatorType))
                     .optional(),
-                PageIndex: joi.number().integer().min(0).optional(),
-                ItemsPerPage: joi.number().integer().min(1).max(100).optional(),
-                OrderBy: joi.string().optional(),
-                Order: joi.string().valid('ASC', 'DESC').optional(),
+                type: joi.string().valid(OperationType.Composition).optional(),
             });
             await schema.validateAsync(request.query);
+            const filters = this.getSearchFilters(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
             return {
-                id: request.query.id as string,
-                name: request.query.name as string,
-                description: request.query.description as string,
-                operator: request.query.operator as CompositionOperatorType,
-                PageIndex: request.query.PageIndex
-                    ? parseInt(request.query.PageIndex as string)
-                    : 0,
-                ItemsPerPage: request.query.ItemsPerPage
-                    ? parseInt(request.query.ItemsPerPage as string)
-                    : 10,
-                OrderBy: request.query.OrderBy as string,
-                Order: request.query.Order as 'ASC' | 'DESC',
+                ...baseFilters,
+                ...filters,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
+
+    private getSearchFilters = (query: any): CompositionOperationSearchFilters => {
+        var filters: any = {};
+
+        const id = query.id ? query.id : null;
+        if (id != null) {
+            filters['id'] = id;
+        }
+
+        const name = query.name ? query.name : null;
+        if (name != null) {
+            filters['name'] = name;
+        }
+
+        const description = query.description ? query.description : null;
+        if (description != null) {
+            filters['description'] = description;
+        }
+
+        const operator = query.operator ? query.operator : null;
+        if (operator != null) {
+            filters['operator'] = operator;
+        }
+
+        const type = query.type ? query.type : null;
+        if (type != null) {
+            filters['type'] = type;
+        }
+
+        return filters;
+    };
+
+    //#endregion
 }

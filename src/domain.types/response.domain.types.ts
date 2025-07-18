@@ -3,7 +3,8 @@ import { QueryResponseType } from './query.response.types';
 import {
     BaseSearchFilters,
     BaseSearchResults,
-} from '../miscellaneous/base.search.types';
+} from './miscellaneous/base.search.types';
+import { uuid } from './miscellaneous/system.types';
 
 export interface QuestionResponseCreateModel {
     FormSubmissionId: string;
@@ -77,15 +78,15 @@ export interface QuestionResponseResponseDto {
 }
 
 export interface QuestionResponseSearchFilters extends BaseSearchFilters {
-    FormSubmissionId?: string;
-    QuestionId?: string;
+    FormSubmissionId?: uuid;
+    QuestionId?: uuid;
     ResponseType?: QueryResponseType;
     IntegerValue?: number;
     FloatValue?: GLfloat;
     BooleanValue?: string;
     DateTimeValue?: Date;
     Url?: string;
-    FileResourceId?: string;
+    FileResourceId?: uuid;
     TextValue?: string;
 }
 

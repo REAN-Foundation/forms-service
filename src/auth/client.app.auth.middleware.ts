@@ -1,6 +1,6 @@
 import express from "express";
 import { AuthResult } from "./auth.types";
-import { ResponseHandler } from "../common/res.handlers/response.handler";
+import { ResponseHandler } from "../common/handlers/response.handler";
 import { logger } from "../logger/logger";
 import { clientAppCache } from "./client.app.cache";
 import { CurrentClient } from "../domain.types/miscellaneous/current.client";

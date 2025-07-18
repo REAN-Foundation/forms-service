@@ -1,6 +1,9 @@
-import { CalculationLogicResponseDto } from '../../../../domain.types/forms/logic.domain.types';
-import { LogicType } from '../../../../domain.types/forms/logic.enums';
+import { CalculationLogicResponseDto } from '../../domain.types/logic/calculation.logic.domain.types';
+import { LogicType } from '../../domain.types/logic.enums';
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Calculation Logic Mapper
 export class CalculationLogicMapper {
     static toDto = (record: any): CalculationLogicResponseDto => {
         if (record === null) {

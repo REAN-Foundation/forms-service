@@ -1,27 +1,25 @@
 import express from 'express';
-import { ResponseHandler } from '../../common/res.handlers/response.handler';
+import { ResponseHandler } from '../../common/handlers/response.handler';
 import { FormTemplateValidator } from './form.template.validator';
-import { BaseController } from '../base.controller';
-import { ErrorHandler } from '../../common/res.handlers/error.handler';
+import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { error } from 'console';
-import { FormTemplateService } from '../../services/form.template/form.template.service';
+import { FormTemplateService } from '../../database/services/form.template.service';
 import {
     FormTemplateCreateModel,
     FormTemplateSearchFilters,
     FormTemplateUpdateModel,
-} from '../../domain.types/forms/form.template.domain.types';
-import { FormSectionService } from '../../services/form.section/form.section.service';
+} from '../../domain.types/form.template.domain.types';
+import { FormSectionService } from '../../database/services/form.section.service';
 import { generateDisplayCode } from '../../domain.types/miscellaneous/display.code';
-import { ApiError } from '../../common/api.error';
 import { Helper } from '../../domain.types/miscellaneous/helper';
 import fs from 'fs';
-import { container } from 'tsyringe';
 import { Injector } from '../../startup/injector';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class FormTemplateController extends BaseController {
+export class FormTemplateController {
+    //#region member variables and constructors
+
     _service: FormTemplateService =
         Injector.Container.resolve(FormTemplateService);
 
@@ -30,24 +28,7 @@ export class FormTemplateController extends BaseController {
 
     _validator: FormTemplateValidator = new FormTemplateValidator();
 
-    constructor() {
-        super();
-    }
-
     //#endregion
-
-    // getAll = async (request: express.Request, response: express.Response) => {
-    //     try {
-    //         const record = await this._service.allFormTemplates();
-    //         if (record === null) {
-    //             ErrorHandler.throwInternalServerError('Unable to add Form!', error);
-    //         }
-    //         const message = 'All Form templates retrived successfully!';
-    //         return ResponseHandler.success(request, response, message, 201, record);
-    //     } catch (error) {
-    //         ResponseHandler.handleError(request, response, error);
-    //     }
-    // }
 
     create = async (request: express.Request, response: express.Response) => {
         try {
@@ -57,7 +38,7 @@ export class FormTemplateController extends BaseController {
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
                     'Unable to add Form!',
-                    error
+                    new Error('Unable to add Form!')
                 );
             }
 
@@ -92,7 +73,7 @@ export class FormTemplateController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response) => {
         try {
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -116,10 +97,10 @@ export class FormTemplateController extends BaseController {
     ) => {
         try {
             var formTemplateId: uuid =
-                await this._validator.validateParamAsUUID(request, 'id');
+                await this._validator.requestParamAsUUID(request, 'id');
             const isRecordExists = await this._service.getById(formTemplateId);
             if (!isRecordExists) {
-                throw new ApiError('Cannot find form template!', 404);
+                throw new Error('Cannot find form template!');
             }
             const record = await this._service.getDetailsById(formTemplateId);
             const message =
@@ -141,14 +122,14 @@ export class FormTemplateController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: string = await this._validator.validateParamAsUUID(
+            const id: string = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
 
             const assessmentTemplate = await this._service.getById(id);
             if (!assessmentTemplate) {
-                throw new ApiError('Cannot find assessment template!', 404);
+                throw new Error('Cannot find assessment template!');
             }
 
             const templateObj = await this._service.readTemplateObjToExport(
@@ -177,7 +158,7 @@ export class FormTemplateController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            const id: string = await this._validator.validateParamAsUUID(
+            const id: string = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -185,7 +166,7 @@ export class FormTemplateController extends BaseController {
             const templateObj = await this._service.previewTemplate(id);
 
             if (!templateObj) {
-                throw new ApiError('Cannot find assessment template!', 404);
+                throw new Error('Cannot find assessment template!');
             }
 
             const message = 'Form templated retrived successfully!';
@@ -203,7 +184,7 @@ export class FormTemplateController extends BaseController {
 
     update = async (request: express.Request, response: express.Response) => {
         try {
-            const id = await this._validator.validateParamAsUUID(request, 'id');
+            const id = await this._validator.requestParamAsUUID(request, 'id');
             var model: FormTemplateUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
@@ -225,7 +206,7 @@ export class FormTemplateController extends BaseController {
         response: express.Response
     ): Promise<void> => {
         try {
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );
@@ -242,7 +223,7 @@ export class FormTemplateController extends BaseController {
         response: express.Response
     ) => {
         try {
-            var id: uuid = await this._validator.validateParamAsUUID(
+            var id: uuid = await this._validator.requestParamAsUUID(
                 request,
                 'id'
             );

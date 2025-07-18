@@ -1,11 +1,11 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { LogicType } from '../../../../../domain.types/forms/logic.enums';
-import { CalculationRuleEntity } from '../rule/calculation.rule.model';
+import { LogicType } from '../../../domain.types/logic.enums';
+import { CalculationRule } from '../rule/calculation.rule.model';
 import { BaseLogicEntity } from './base.logic.model';
 
 // Calculation Logic Entity
 @Entity({ name: 'eval_calculation_logics' })
-export class CalculationLogicEntity extends BaseLogicEntity {
+export class CalculationLogic extends BaseLogicEntity {
     @Column({
         type: 'varchar',
         length: 50,
@@ -15,8 +15,8 @@ export class CalculationLogicEntity extends BaseLogicEntity {
     Type: LogicType.Calculation;
 
     // TODO: Add proper CalculationRule relationship when CalculationRule entity is created
-    @OneToMany(() => CalculationRuleEntity, rule => rule.LogicId)
-    Rules: CalculationRuleEntity[];
+    @OneToMany(() => CalculationRule, rule => rule.LogicId)
+    Rules: CalculationRule[];
 
     @Column({ type: 'varchar', length: 255, nullable: true })
     FallbackValue?: string;
