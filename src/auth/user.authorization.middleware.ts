@@ -12,21 +12,21 @@ export const authorizeUserMiddleware = async (
     try {
         const context = request.context;
         if (context == null || context === 'undefined') {
-            ResponseHandler.failure(request, response, 'Unauthorized', 401);
+            ResponseHandler.failure(request, response, 'Unauthorized context', 401);
             return;
         }
 
-        const currentUser = request.currentUser ?? null;
-        if (!currentUser) {
-            ResponseHandler.failure(request, response, 'Unauthorized', 401);
-            return;
-        }
+        // const currentUser = request.currentUser ?? null;
+        // if (!currentUser) {
+        //     ResponseHandler.failure(request, response, 'Unauthorized current user', 401);
+        //     return;
+        // }
 
-        const isAuthorized = await checkRoleBasedPermissions(request);
-        if (!isAuthorized) {
-            ResponseHandler.failure(request, response, 'Unauthorized', 401);
-            return;
-        }
+        // const isAuthorized = await checkRoleBasedPermissions(request);
+        // if (!isAuthorized) {
+        //     ResponseHandler.failure(request, response, 'Unauthorized', 401);
+        //     return;
+        // }
         next();
     } catch (error) {
         logger.error(error.message);

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { NodeSDK, NodeSDKConfiguration } from '@opentelemetry/sdk-node';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
-import { Resource } from '@opentelemetry/resources';
+import { resourceFromAttributes } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { ExpressInstrumentation, ExpressLayerType } from '@opentelemetry/instrumentation-express';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
@@ -83,7 +83,7 @@ export class Telemetry {
         //else use this...
         const traceExporter = new ConsoleSpanExporter();
 
-        const resource = new Resource({
+        const resource = resourceFromAttributes({
             [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
         });
 
@@ -158,7 +158,7 @@ export class Telemetry {
 
 export function getServiceName() {
     const environment = process.env.NODE_ENV ?? '';
-    const name = process.env.SERVICE_NAME ?? 'Awards-service';
+    const name = process.env.SERVICE_NAME ?? 'forms-service';
     const serviceName = `${name}-${environment}`;
     return serviceName;
 }

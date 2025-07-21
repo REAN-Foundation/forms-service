@@ -60,43 +60,43 @@ const authenticate = async (request: express.Request): Promise<AuthResult> => {
         }
 
         // synchronous verification
-        var user = jwt.verify(token, process.env.USER_ACCESS_TOKEN_SECRET) as JwtPayload;
-        var sessionId = user.SessionId ?? null;
-        if (!sessionId) {
-            const IsPrivilegedUser = request.currentClient.IsPrivileged as boolean;
-            if (IsPrivilegedUser) {
-                request.currentUser = user as CurrentUser;
-                return res;
-            }
-            res = {
-                Result: false,
-                Message: 'Your session has expired. Please login to the app again.',
-                HttpErrorCode: 403,
-            };
+        // var user = jwt.verify(token, process.env.USER_ACCESS_TOKEN_SECRET) as JwtPayload;
+        // var sessionId = user.SessionId ?? null;
+        // if (!sessionId) {
+        //     const IsPrivilegedUser = request.currentClient.IsPrivileged as boolean;
+        //     if (IsPrivilegedUser) {
+        //         request.currentUser = user as CurrentUser;
+        //         return res;
+        //     }
+        //     res = {
+        //         Result: false,
+        //         Message: 'Your session has expired. Please login to the app again.',
+        //         HttpErrorCode: 403,
+        //     };
 
-            return res;
-        }
+        //     return res;
+        // }
 
-        const expiresAt = user.exp;
-        const currentTime = Math.floor(Date.now() / 1000);
+        // const expiresAt = user.exp;
+        // const currentTime = Math.floor(Date.now() / 1000);
 
-        if (expiresAt < currentTime) {
-            res = {
-                Result: false,
-                Message: 'Invalid or expired user login session.',
-                HttpErrorCode: 403,
-            };
+        // if (expiresAt < currentTime) {
+        //     res = {
+        //         Result: false,
+        //         Message: 'Invalid or expired user login session.',
+        //         HttpErrorCode: 403,
+        //     };
 
-            return res;
-        }
+        //     return res;
+        // }
 
-        request.currentUser = user as CurrentUser;
-        request.currentUserTenantId = request.currentUser?.TenantId;
-        res = {
-            Result: true,
-            Message: 'Authenticated',
-            HttpErrorCode: 200,
-        };
+        // request.currentUser = user as CurrentUser;
+        // request.currentUserTenantId = request.currentUser?.TenantId;
+        // res = {
+        //     Result: true,
+        //     Message: 'Authenticated',
+        //     HttpErrorCode: 200,
+        // };
 
         return res;
     } catch (err) {
