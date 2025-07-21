@@ -10,10 +10,17 @@ post {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
     "Name": "Addition Operation",
     "Description": "Add two numbers together",
+    "Type": "Mathematical",
     "Operator": "Add",
     "Operands": "[{\"type\":\"number\",\"value\":5},{\"type\":\"number\",\"value\":3}]",
     "ResultDataType": "Float"

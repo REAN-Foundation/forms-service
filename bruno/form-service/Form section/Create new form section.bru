@@ -10,6 +10,12 @@ post {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   // {
   //     "ParentFormTemplateId": "64888ed6-7452-48ad-8f4e-48448f21259f",  //Form template id
@@ -22,12 +28,10 @@ body:json {
   // }
   {
       "ParentFormTemplateId": "{{TEMPLATE_ID}}",
-      // "SectionIdentifier": "new form section 1"
-       "Title": "New form section ",
-      "Description": "sf esdrg",
-      "Sequence": 12,
-      "ParentSectionId": "6d0c3b91-7337-49cd-8a01-a0c3a2bd2601"
-  
+      "Title": "New Form Section",
+      "Description": "This is a new form section for organizing form fields",
+      "Sequence": 1,
+      "ParentSectionId": "{{PARENT_SECTION_ID}}"
   }
 }
 

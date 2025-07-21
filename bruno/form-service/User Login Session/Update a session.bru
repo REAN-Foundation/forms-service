@@ -10,6 +10,12 @@ put {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
       "UserId": "05b04a84-ce2d-4c5a-9528-4cc168e0ad0a",

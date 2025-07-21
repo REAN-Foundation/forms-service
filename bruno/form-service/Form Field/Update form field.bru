@@ -10,6 +10,12 @@ put {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
       "Title": "Updated: What is your favorite color?",

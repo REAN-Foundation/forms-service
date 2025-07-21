@@ -10,12 +10,21 @@ get {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 params:query {
   pageIndex: 0
   itemsPerPage: 10
   orderBy: CreatedAt
-  order: DESC
-  ~name: Addition
+  order: descending
+  name: Addition
+  operator: Add
+  resultDataType: Float
+  type: Mathematical
 }
 
 script:post-response {

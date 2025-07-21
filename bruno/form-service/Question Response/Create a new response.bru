@@ -10,21 +10,25 @@ post {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
-      "FormSubmissionId": "e89a1449-a420-4b99-880c-f3eb14cf3803",
-      "QuestionId": "2391ccf4-0adf-4be0-a500-261ad79ac238",
+      "FormSubmissionId": "{{SUBMISSION_ID}}",
+      "QuestionId": "{{QUESTION_ID}}",
       "ResponseType": "Text",
-      "IntegerValue": 1,
-      "FloatValue": 1.2,
+      "IntegerValue": 25,
+      "FloatValue": 3.14,
       "BooleanValue": true,
-      "DateTimeValue": "2024-03-08 18:25:30.843",
-      "Url": "https://meet.google.com/zrb-tyni-rdz",
-      "FileResourceId": "0c9ea637-cb8d-468e-b4c7-303d2604c1b5",
-      "TextValue": "hjsj1234-erhh233",
-  //     "SubmissionTimestamp": "2024-03-08 18:25:30.843",
-  //     "LastSaveTimestamp": "2024-03-08 18:25:30.843",
-    "UserResponse":"Yes"
+      "DateTimeValue": "2024-03-08T18:25:30.843Z",
+      "Url": "https://example.com/resource",
+      "FileResourceId": "{{FILE_RESOURCE_ID}}",
+      "TextValue": "This is a sample text response",
+      "UserResponse": "Yes"
   }
   // {
   //     "FormSubmissionId": "2ed8ebf0-bfac-462c-9012-9a3ab5f59ba6",

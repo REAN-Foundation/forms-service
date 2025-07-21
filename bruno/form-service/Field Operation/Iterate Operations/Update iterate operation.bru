@@ -10,13 +10,20 @@ put {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
     "Name": "Updated Array Sum Operation",
     "Description": "Updated description for array sum operation",
+    "Type": "Iterate",
     "CollectionField": "products",
     "ResultField": "sum",
-    "OperationId": "5b1410d5-47dd-424b-ac85-336e8d2a4d36",
+    "OperationId": "{{MATHEMATICAL_OPERATION_ID}}",
     "FilterExpression": "product.price > 10"
   }
 }

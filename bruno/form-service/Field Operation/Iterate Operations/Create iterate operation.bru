@@ -10,13 +10,20 @@ post {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
     "Name": "Array Sum Operation",
     "Description": "Sum all elements in an array",
+    "Type": "Iterate",
     "CollectionField": "items",
     "ResultField": "total",
-    "OperationId": "5b1410d5-47dd-424b-ac85-336e8d2a4d36",
+    "OperationId": "{{MATHEMATICAL_OPERATION_ID}}",
     "FilterExpression": "item.value > 0"
   }
 }

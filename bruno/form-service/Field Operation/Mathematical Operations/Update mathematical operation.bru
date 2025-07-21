@@ -10,10 +10,17 @@ put {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
     "Name": "Updated Addition Operation",
     "Description": "Updated description for addition operation",
+    "Type": "Mathematical",
     "Operator": "Subtract",
     "Operands": "[{\"type\":\"number\",\"value\":10},{\"type\":\"number\",\"value\":4}]",
     "ResultDataType": "Integer"

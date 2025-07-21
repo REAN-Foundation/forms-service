@@ -10,10 +10,17 @@ put {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
     "Name": "Updated Age Check Operation",
     "Description": "Updated description for age check operation",
+    "Type": "Logical",
     "Operator": "GreaterThanOrEqual",
     "Operands": "[{\"type\":\"field\",\"value\":\"age\"},{\"type\":\"number\",\"value\":21}]"
   }

@@ -10,6 +10,12 @@ put {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   // {
   //     // "TemplateId": "2ed8ebf0-bfac-462c-9012-9a3ab5f59ba6",

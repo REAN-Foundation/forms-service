@@ -9,6 +9,12 @@ get {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 script:post-response {
   test("Request is successful", function () {
       expect(res.getStatus()).to.equal(200);

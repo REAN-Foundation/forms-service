@@ -10,12 +10,21 @@ get {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 params:query {
   pageIndex: 0
   itemsPerPage: 10
   orderBy: CreatedAt
-  order: DESC
-  ~name: Custom
+  order: descending
+  name: Custom
+  expression: amount * taxRate
+  resultDataType: number
+  type: FunctionExpression
 }
 
 script:post-response {

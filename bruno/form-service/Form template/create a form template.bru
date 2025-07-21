@@ -10,17 +10,22 @@ post {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
       "Title": "Assessment First",
       "Description": "This is description",
       "CurrentVersion": 1,
       "Type": "Questionnaire",
-      // "DisplayCode": "xyz1234",
       "OwnerUserId": "{{USER_ID}}",
-      // "RootSectionId": "9618c6a8-0555-4a14-95ec-1946ec09c8e0",
+      "RootSectionId": "{{SECTION_ID}}",
       "DefaultSectionNumbering": true,
-      "ItemsPerPage":"OneQuestion"
+      "ItemsPerPage": "OneQuestion"
   }
 }
 

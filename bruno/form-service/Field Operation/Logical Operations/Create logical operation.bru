@@ -10,10 +10,17 @@ post {
   auth: none
 }
 
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
 body:json {
   {
     "Name": "Age Check Operation",
     "Description": "Check if age is greater than 18",
+    "Type": "Logical",
     "Operator": "GreaterThan",
     "Operands": "[{\"type\":\"field\",\"value\":\"age\"},{\"type\":\"number\",\"value\":18}]"
   }
