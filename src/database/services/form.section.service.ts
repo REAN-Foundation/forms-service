@@ -23,18 +23,43 @@ export class FormSectionService extends BaseService {
     // Form Section operations
     public create = async (createModel: FormSectionCreateModel)
         : Promise<FormSectionResponseDto> => {
+        try {
+            // Validate parent section if provided
+            if (createModel.ParentSectionId) {
+                const parentSection = await this._formSectionRepository.findOne({
+                    where: {
+                        id: createModel.ParentSectionId
+                    }
+                });
 
-        const section = this._formSectionRepository.create({
-            FormTemplateId: createModel.ParentFormTemplateId,
-            Title: createModel.Title,
-            Description: createModel.Description,
-            DisplayCode: createModel.DisplayCode,
-            Sequence: createModel.Sequence ?? 0,
-            ParentSectionId: createModel.ParentSectionId,
-        });
-        const record = await this._formSectionRepository.save(section);
+                if (!parentSection) {
+                    ErrorHandler.throwNotFoundError(`Parent section with id ${createModel.ParentSectionId} not found!`);
+                }
 
-        return FormSectionMapper.toDto(record);
+                // Validate that parent section belongs to the same template
+                if (parentSection.FormTemplateId !== createModel.ParentFormTemplateId) {
+                    ErrorHandler.throwInputValidationError(['Parent section must belong to the same form template!']);
+                }
+            }
+
+            const section = this._formSectionRepository.create({
+                FormTemplateId: createModel.ParentFormTemplateId,
+                Title: createModel.Title,
+                Description: createModel.Description,
+                DisplayCode: createModel.DisplayCode,
+                Sequence: createModel.Sequence ?? 0,
+                ParentSectionId: createModel.ParentSectionId,
+            });
+            const record = await this._formSectionRepository.save(section);
+
+            return FormSectionMapper.toDto(record);
+        } catch (error) {
+            logger.error(`❌ Error creating form section: ${error.message}`);
+            if (error.name === 'ValidationError' || error.name === 'NotFoundError') {
+                throw error;
+            }
+            ErrorHandler.throwInternalServerError('Error creating form section', error);
+        }
     };
 
     public getById = async (id: uuid): Promise<FormSectionResponseDto> => {

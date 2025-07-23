@@ -109,7 +109,7 @@ export class QuestionResponseController {
             } else {
                 const createModel: QuestionResponseCreateModel = {
                     FormSubmissionId: model.FormSubmissionId,
-                    QuestionId: model.QuestionId,
+                    FormFieldId: model.FormFieldId,
                     ResponseType: model.ResponseType,
                     IntegerValue: model.IntegerValue,
                     FloatValue: model.FloatValue,
@@ -119,6 +119,8 @@ export class QuestionResponseController {
                     FileResourceId: model.FileResourceId,
                     TextValue: model.TextValue,
                     UserResponse: model.UserResponse ?? null,
+                    SubmissionTimestamp: new Date(),
+                    LastSaveTimestamp: new Date(),
                 };
                 await this._service.create(createModel);
             }

@@ -5,24 +5,24 @@ meta {
 }
 
 get {
-  url: {{BASE_URL}}/field-calculation-logic/search?enabled=true&type=Calculation&PageIndex=0&ItemsPerPage=10&OrderBy=CreatedAt&Order=DESC
+  url: {{BASE_URL}}/field-calculation-logic/search?enabled=true&type=Calculation&orderBy=CreatedAt&order=DESC
   body: none
   auth: none
+}
+
+params:query {
+  enabled: true
+  type: Calculation
+  orderBy: CreatedAt
+  order: DESC
+  ~pageIndex: 0
+  ~itemsPerPage: 10
 }
 
 headers {
   x-api-key: {{INTERNAL_API_KEY}}
   Authorization: Bearer {{JWT_TOKEN}}
   Content-Type: application/json
-}
-
-params:query {
-  enabled: true
-  type: Calculation
-  pageIndex: 0
-  itemsPerPage: 10
-  orderBy: CreatedAt
-  order: DESC
 }
 
 script:post-response {

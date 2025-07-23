@@ -40,12 +40,12 @@ export class FormFieldController {
             const record = await this._service.create(model);
             if (record === null) {
                 ErrorHandler.throwInternalServerError(
-                    'Unable to add FormField!',
-                    new Error('Unable to add FormField!')
+                    'Unable to add Form Field!',
+                    new Error('Unable to add Form Field!')
                 );
             }
 
-            const message = 'FormField added successfully!';
+            const message = 'Form Field added successfully!';
             return ResponseHandler.success(
                 request,
                 response,
@@ -66,7 +66,7 @@ export class FormFieldController {
                 'id'
             );
             const record = await this._service.getById(id);
-            const message = 'FormField retrieved successfully!';
+            const message = 'Form Field retrieved successfully!';
             return ResponseHandler.success(
                 request,
                 response,
@@ -90,7 +90,7 @@ export class FormFieldController {
                 'templateId'
             );
             const record = await this._service.getByTemplateId(id);
-            const message = 'FormFields by templateId retrived successfully!';
+            const message = 'Form Fields by templateId retrieved successfully!';
             return ResponseHandler.success(
                 request,
                 response,
@@ -110,7 +110,7 @@ export class FormFieldController {
             var model: FormFieldUpdateModel =
                 await this._validator.validateUpdateRequest(request);
             const updatedRecord = await this._service.update(id, model);
-            const message = 'FormField updated successfully!';
+            const message = 'Form Field updated successfully!';
             ResponseHandler.success(
                 request,
                 response,
@@ -134,7 +134,7 @@ export class FormFieldController {
                 'id'
             );
             const result = await this._service.delete(id);
-            const message = 'FormField deleted successfully!';
+            const message = 'Form Field deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -146,7 +146,7 @@ export class FormFieldController {
             var filters: FormFieldSearchFilters =
                 await this._validator.validateSearchRequest(request);
             const searchResults = await this._service.search(filters);
-            const message = 'FormField retrieved successfully!';
+            const message = 'Form Fields retrieved successfully!';
             ResponseHandler.success(
                 request,
                 response,

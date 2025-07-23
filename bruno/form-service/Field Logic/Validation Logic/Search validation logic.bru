@@ -5,24 +5,24 @@ meta {
 }
 
 get {
-  url: {{BASE_URL}}/field-validation-logic/search?type=Validation
+  url: {{BASE_URL}}/field-validation-logic/search?pageIndex=0&itemsPerPage=10&orderBy=CreatedAt&order=DESC
   body: none
   auth: none
+}
+
+params:query {
+  pageIndex: 0
+  itemsPerPage: 10
+  orderBy: CreatedAt
+  order: DESC
+  ~type: Validation
+  ~enabled: true
 }
 
 headers {
   x-api-key: {{INTERNAL_API_KEY}}
   Authorization: Bearer {{JWT_TOKEN}}
   Content-Type: application/json
-}
-
-params:query {
-  type: Validation
-  ~enabled: true
-  pageIndex: 0
-  itemsPerPage: 10
-  orderBy: CreatedAt
-  order: DESC
 }
 
 script:post-response {

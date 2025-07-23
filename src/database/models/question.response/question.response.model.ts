@@ -9,8 +9,8 @@ export class QuestionResponse extends BaseEntity {
     @Column({ type: 'uuid', nullable: false })
     FormSubmissionId: string;
 
-    @Column({ type: 'uuid', nullable: false })
-    QuestionId: string;
+    // @Column({ type: 'uuid', nullable: false })
+    // QuestionId: string;
 
     @Column({ type: 'uuid', nullable: true })
     FormFieldId: string;
@@ -45,22 +45,22 @@ export class QuestionResponse extends BaseEntity {
     FileResourceId?: string;
 
     @Column({ type: 'varchar', length: 2048, nullable: true })
-    Text?: string;
+    TextValue?: string;
 
     @Column({ type: 'text', nullable: true })
     UserResponse: string;
 
-    @Column({ nullable: true })
-    SubmissionTimestamp: Date;
+    @Column({ type: 'timestamp', nullable: true })
+    SubmissionTimestamp?: Date;
 
-    @Column()
+    @Column({ type: 'timestamp', nullable: true })
     LastSaveTimestamp: Date;
 
     @ManyToOne(() => FormSubmission, submission => submission.QuestionResponses)
     @JoinColumn({ name: 'FormSubmissionId' })
     FormSubmission: FormSubmission;
 
-    @ManyToOne(() => FormField, formField => formField.Responses)
+    @ManyToOne(() => FormField, formField => formField.Responses, { eager: true })
     @JoinColumn({ name: 'FormFieldId' })
     FormField: FormField;
 }

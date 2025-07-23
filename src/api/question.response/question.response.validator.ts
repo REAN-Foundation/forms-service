@@ -24,7 +24,8 @@ export class QuestionResponseValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 FormSubmissionId: joi.string().uuid().required(),
-                QuestionId: joi.string().uuid().required(),
+                // QuestionId: joi.string().uuid().required(),
+                FormFieldId: joi.string().uuid().required(),
                 ResponseType: joi.string(),
                 IntegerValue: joi.number().optional(),
                 FloatValue: joi.number().optional(),
@@ -34,11 +35,14 @@ export class QuestionResponseValidator extends BaseValidator {
                 FileResourceId: joi.string().optional(),
                 TextValue: joi.string().optional(),
                 UserResponse: joi.string().optional(),
+                SubmissionTimestamp: joi.date().optional(),
+                LastSaveTimestamp: joi.date().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 FormSubmissionId: request.body.FormSubmissionId,
-                QuestionId: request.body.QuestionId,
+                // QuestionId: request.body.QuestionId,
+                FormFieldId: request.body.FormFieldId,
                 ResponseType: request.body.ResponseType,
                 IntegerValue: request.body.IntegerValue ?? null,
                 FloatValue: request.body.FloatValue ?? null,
@@ -48,6 +52,8 @@ export class QuestionResponseValidator extends BaseValidator {
                 FileResourceId: request.body.FileResourceId ?? null,
                 TextValue: request.body.TextValue ?? null,
                 UserResponse: request.body.UserResponse ?? null,
+                SubmissionTimestamp: new Date(request.body.SubmissionTimestamp) ?? null,
+                LastSaveTimestamp: new Date(request.body.LastSaveTimestamp) ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -67,6 +73,8 @@ export class QuestionResponseValidator extends BaseValidator {
                 Url: joi.string().optional(),
                 FileResourceId: joi.string().optional(),
                 TextValue: joi.string().optional(),
+                SubmissionTimestamp: joi.date().optional(),
+                LastSaveTimestamp: joi.date().optional(),
             });
             await schema.validateAsync(request.body);
             return {
@@ -78,6 +86,8 @@ export class QuestionResponseValidator extends BaseValidator {
                 Url: request.body.Url ?? null,
                 FileResourceId: request.body.FileResourceId ?? null,
                 TextValue: request.body.TextValue ?? null,
+                SubmissionTimestamp: new Date(request.body.SubmissionTimestamp) ?? null,
+                LastSaveTimestamp: new Date(request.body.LastSaveTimestamp) ?? null,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -106,7 +116,8 @@ export class QuestionResponseValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 formSubmissionId: joi.string().uuid().optional(),
-                questionId: joi.string().uuid().optional(),
+                // questionId: joi.string().uuid().optional(),
+                formFieldId: joi.string().uuid().optional(),
                 responseType: joi.string().optional(),
                 integerValue: joi.number().optional(),
                 floatValue: joi.string().optional(),
@@ -114,6 +125,8 @@ export class QuestionResponseValidator extends BaseValidator {
                 url: joi.string().optional(),
                 fileResourceId: joi.string().optional(),
                 textValue: joi.string().optional(),
+                submissionTimestamp: joi.date().optional(),
+                lastSaveTimestamp: joi.date().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -152,7 +165,8 @@ export class QuestionResponseValidator extends BaseValidator {
                         joi.object({
                             id: joi.string().uuid().optional().allow(null),
                             FormSubmissionId: joi.string().uuid().required(),
-                            QuestionId: joi.string().uuid().required(),
+                            // QuestionId: joi.string().uuid().required(),
+                            FormFieldId: joi.string().uuid().required(),
                             ResponseType: joi.string().required(),
                             IntegerValue: joi.number().optional().allow(null),
                             FloatValue: joi.number().optional().allow(null),
@@ -202,9 +216,9 @@ export class QuestionResponseValidator extends BaseValidator {
         if (formSubmissionId != null) {
             filters['FormSubmissionId'] = formSubmissionId;
         }
-        var questionId = query.questionId ? query.questionId : null;
-        if (questionId != null) {
-            filters['QuestionId'] = questionId;
+        var formFieldId = query.formFieldId ? query.formFieldId : null;
+        if (formFieldId != null) {
+            filters['FormFieldId'] = formFieldId;
         }
         var responseType = query.responseType ? query.responseType : null;
         if (responseType != null) {
@@ -235,23 +249,13 @@ export class QuestionResponseValidator extends BaseValidator {
         if (textValue != null) {
             filters['TextValue'] = textValue;
         }
-
-        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
-        if (itemsPerPage != null) {
-            filters['ItemsPerPage'] = Number(itemsPerPage);
+        var submissionTimestamp = query.submissionTimestamp ? query.submissionTimestamp : null;
+        if (submissionTimestamp != null) {
+            filters['SubmissionTimestamp'] = submissionTimestamp;
         }
-        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
-        if (orderBy != null) {
-            filters['OrderBy'] = orderBy;
-        }
-        var order = query.order ? query.order : 'ASC';
-        if (order != null) {
-            filters['Order'] = order;
-        }
-
-        const pageIndex = query.pageIndex ? query.pageIndex : 0;
-        if (pageIndex != null) {
-            filters['PageIndex'] = pageIndex;
+        var lastSaveTimestamp = query.lastSaveTimestamp ? query.lastSaveTimestamp : null;
+        if (lastSaveTimestamp != null) {
+            filters['LastSaveTimestamp'] = lastSaveTimestamp;
         }
 
         return filters;

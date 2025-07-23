@@ -50,7 +50,7 @@ export default class BaseValidator {
                 pageIndex       : joi.number().integer().sign('positive').optional(),
                 itemsPerPage    : joi.number().integer().sign('positive').optional(),
             });
-            await schema.validateAsync(request.query);
+            // await schema.validateAsync(request.query);
             return this.getBaseSearchFilters(request);
         } catch (error) {
             ErrorHandler.handleValidationError(error);

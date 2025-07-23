@@ -55,7 +55,11 @@ export class UserService extends BaseService {
 
     public allUsers = async (): Promise<UserResponseDto[]> => {
         try {
-            const users = await this._userRepository.find();
+            const users = await this._userRepository.find({
+                where: {
+                    DeletedAt: null
+                }
+            });
             return users.map(user => UserMapper.toDto(user));
         } catch (error) {
             logger.error(`❌ Error getting all users: ${error.message}`);

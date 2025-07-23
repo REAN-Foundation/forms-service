@@ -5,25 +5,25 @@ meta {
 }
 
 get {
-  url: {{BASE_URL}}/question-responses/search?responseType=Text
+  url: {{BASE_URL}}/question-responses/search?formSubmissionId=04e0865b-d0d9-4150-ac83-b3eb6f8ad4cd
   body: none
   auth: none
+}
+
+params:query {
+  formSubmissionId: 04e0865b-d0d9-4150-ac83-b3eb6f8ad4cd
+  ~pageIndex: 0
+  ~itemsPerPage: 10
+  ~orderBy: CreatedAt
+  ~order: DESC
+  ~responseType: Text
+  ~questionId: b56027ee-bdba-4182-bed6-d544a5bcc8e4
 }
 
 headers {
   x-api-key: {{INTERNAL_API_KEY}}
   Authorization: Bearer {{JWT_TOKEN}}
   Content-Type: application/json
-}
-
-params:query {
-  pageIndex: 0
-  itemsPerPage: 10
-  orderBy: CreatedAt
-  order: DESC
-  responseType: Text
-  ~formSubmissionId: a8b15839-1592-43b7-b586-89765cf99222
-  ~questionId: b56027ee-bdba-4182-bed6-d544a5bcc8e4
 }
 
 script:post-response {

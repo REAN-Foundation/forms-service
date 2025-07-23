@@ -22,6 +22,19 @@ export class UserController {
 
     //#endregion
 
+    getAll = async (request: express.Request, response: express.Response) => {
+        try {
+            const record = await this._service.allUsers();
+            if (record === null) {
+                ErrorHandler.throwInternalServerError('Unable to fetch all users!');
+            }
+            const message = 'Fetch all users successfully!';
+            return ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    }
+
     create = async (request: express.Request, response: express.Response) => {
         try {
             // await this.authorize('Form.Create', request, response);

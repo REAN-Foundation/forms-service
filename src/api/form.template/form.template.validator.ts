@@ -95,8 +95,8 @@ export class FormTemplateValidator extends BaseValidator {
                 currentVersion: joi.number().optional(),
                 type: joi.string().optional(),
                 displayCode: joi.string().optional(),
-                ownerUserId: joi.string().uuid().optional(),
-                rootSectionId: joi.string().uuid().optional(),
+                ownerUserId: joi.string().optional(),
+                rootSectionId: joi.string().optional(),
                 defaultSectionNumbering: joi.boolean().optional(),
                 itemsPerPage: joi.number().optional(),
                 pageIndex: joi.number().optional(),
@@ -166,23 +166,6 @@ export class FormTemplateValidator extends BaseValidator {
             filters['DefaultSectionNumbering'] = defaultSectionNumbering;
         }
 
-        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
-        if (itemsPerPage != null) {
-            filters['ItemsPerPage'] = Number(itemsPerPage);
-        }
-        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
-        if (orderBy != null) {
-            filters['OrderBy'] = orderBy;
-        }
-        var order = query.order ? query.order : 'ASC';
-        if (order != null) {
-            filters['Order'] = order;
-        }
-
-        const pageIndex = query.pageIndex ? query.pageIndex : 0;
-        if (pageIndex != null) {
-            filters['PageIndex'] = pageIndex;
-        }
         return filters;
     };
 }

@@ -55,8 +55,8 @@ export interface FormTemplateSearchFilters extends BaseSearchFilters {
     TenantCode: string;
     Type?: FormType;
     DisplayCode?: string;
-    OwnerUserId?: uuid;
-    RootSectionId?: uuid;
+    OwnerUserId?: string;
+    RootSectionId?: string;
     DefaultSectionNumbering?: boolean;
 }
 

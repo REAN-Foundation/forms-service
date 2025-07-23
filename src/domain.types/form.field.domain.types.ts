@@ -4,32 +4,30 @@ import {
     BaseSearchResults,
 } from './miscellaneous/base.search.types';
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-
 export interface FormFieldOption {
     Text: string;
-    Sequence: string;
-    ImageUrl: string;
+    Sequence: number;
+    ImageUrl?: string;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface FormFieldCreateModel {
     ParentTemplateId: string;
     ParentSectionId: string;
-    Title?: string;
+    Title: string;
     Description?: string;
     DisplayCode: string;
     ResponseType: QueryResponseType;
     Score?: number;
     Sequence?: number;
-    CorrectAnswer: string;
-    IsRequired?: boolean;
-    Hint: string;
+    CorrectAnswer?: string;
+    IsRequired: boolean;
+    Hint?: string;
     Options?: FormFieldOption[];
-    QuestionImageUrl: string;
-    RangeMin: number;
-    RangeMax: number | null;
+    ImageResourceId?: string;
+    RangeMin?: number;
+    RangeMax?: number;
+    DefaultExpectedUnit?: string;
+    PageBreakAfter?: boolean;
 }
 
 export interface FormFieldUpdateModel {
@@ -42,46 +40,51 @@ export interface FormFieldUpdateModel {
     IsRequired?: boolean;
     Hint?: string;
     Options?: FormFieldOption[];
-    QuestionImageUrl?: string;
+    ImageResourceId?: string;
     RangeMin?: number;
     RangeMax?: number;
+    DefaultExpectedUnit?: string;
+    PageBreakAfter?: boolean;
 }
 
 export interface FormFieldResponseDto {
     id: string;
+    ParentTemplateId: string;
+    ParentSectionId: string;
     Title: string;
     Description?: string;
-    DisplayCode: string | null;
+    DisplayCode: string;
     ResponseType: QueryResponseType;
-    Score: number;
-    Sequence: string;
-    CorrectAnswer: string;
-    IsRequired?: boolean;
-    Hint: string;
-    Options: FormFieldOption[];
-    QuestionImageUrl: string;
-    RangeMin: number;
-    RangeMax: number | null;
+    Score?: number;
+    Sequence: number;
+    CorrectAnswer?: string;
+    IsRequired: boolean;
+    Hint?: string;
+    Options?: FormFieldOption[];
+    ImageResourceId?: string;
+    RangeMin?: number;
+    RangeMax?: number;
+    DefaultExpectedUnit?: string;
+    PageBreakAfter: boolean;
     ParentFormSection?: {
         id: string;
-        SectionIdentifier: string;
         Title: string;
         Description?: string;
         DisplayCode: string;
-        Sequence: string;
-        ParentSectionId: string;
+        Sequence: number;
+        ParentSectionId?: string;
         CreatedAt: Date;
     };
-    ParentFormTemplate?: {
+    FormTemplate?: {
         id: string;
         Title: string;
         Description?: string;
-        CurrentVersion: string;
+        Version: string;
         Type: string;
         DisplayCode: string;
         OwnerUserId: string;
-        RootSectionId: string;
-        DefaultSectionNumbering: string;
+        RootSectionId?: string;
+        DefaultSectionNumbering: boolean;
         CreatedAt: Date;
     };
     CreatedAt: Date;
@@ -98,54 +101,9 @@ export interface FormFieldSearchFilters extends BaseSearchFilters {
     Score?: number;
     CorrectAnswer?: string;
     IsRequired?: boolean;
-    Hint?: string;
-    Options?: FormFieldOption[];
-    QuestionImageUrl?: string;
-    RangeMin?: number;
-    RangeMax?: number | null;
+    DefaultExpectedUnit?: string;
 }
 
 export interface FormFieldSearchResults extends BaseSearchResults {
-    Items: FormFieldSearchResponseDto[];
-}
-
-export interface FormFieldSearchResponseDto {
-    id: string;
-    Title: string;
-    Description: string;
-    DisplayCode?: string;
-    ResponseType: QueryResponseType;
-    Score: number;
-    Sequence: string;
-    CorrectAnswer: string;
-    IsRequired?: boolean;
-    Hint: string;
-    Options: FormFieldOption;
-    QuestionImageUrl: string;
-    RangeMin: number;
-    RangeMax: number;
-    ParentFormSection: {
-        id: string;
-        SectionIdentifier: string;
-        Title: string;
-        Description: string;
-        DisplayCode: string;
-        Sequence: number;
-        ParentSectionId: string;
-        CreatedAt: Date;
-    };
-    ParentFormTemplate: {
-        id: string;
-        Title: string;
-        Description: string;
-        CurrentVersion: number;
-        Type: string;
-        DisplayCode: string;
-        OwnerUserId: string;
-        RootSectionId: string;
-        DefaultSectionNumbering: boolean;
-        CreatedAt: Date;
-    };
-    CreatedAt: Date;
-    UpdatedAt: Date;
+    Items: FormFieldResponseDto[];
 }

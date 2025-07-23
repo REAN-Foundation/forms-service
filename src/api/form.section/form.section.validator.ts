@@ -17,7 +17,7 @@ export class FormSectionValidator extends BaseValidator {
     ): Promise<FormSectionCreateModel> => {
         try {
             const schema = joi.object({
-                ParentFormTemplateId: joi.string().uuid().optional(),
+                ParentFormTemplateId: joi.string().uuid().required(),
                 Title: joi.string().optional(),
                 Description: joi.string().optional(),
                 Sequence: joi.number().optional(),
@@ -27,7 +27,7 @@ export class FormSectionValidator extends BaseValidator {
             return {
                 ParentFormTemplateId: request.body.ParentFormTemplateId,
                 SectionIdentifier: request.body.SectionIdentifier ?? null,
-                Title: request.body.Title ?? null,
+                Title: request.body.Title,
                 Description: request.body.Description ?? null,
                 DisplayCode:
                     request.body.DisplayCode ??
@@ -132,18 +132,6 @@ export class FormSectionValidator extends BaseValidator {
             filters['parentSectionId'] = parentSectionId;
         }
 
-        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 25;
-        if (itemsPerPage != null) {
-            filters['ItemsPerPage'] = itemsPerPage;
-        }
-        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
-        if (orderBy != null) {
-            filters['OrderBy'] = orderBy;
-        }
-        var order = query.order ? query.order : 'ASC';
-        if (order != null) {
-            filters['Order'] = order;
-        }
         return filters;
     };
 }

@@ -1,0 +1,90 @@
+meta {
+  name: Save the responses
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{BASE_URL}}/question-responses/save
+  body: json
+  auth: inherit
+}
+
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "FormSubmissionKey": "f0854f9dd3b095a0a2716b0ab2feda6935e4d4a1d341b6b9bfc36dfa6dde6931",
+    "QuestionResponses": [
+      {
+        "id": null,
+        "FormSubmissionId": "d6e7e2f2-a337-46de-b9e5-57a0214ad679",
+        "ResponseType": "SingleChoiceSelection",
+        "QuestionId": "12e89baa-b3be-4ecd-bbeb-4f8e64d75c62",
+        "IntegerValue": null,
+        "FloatValue": null,
+        "BooleanValue": null,
+        "DateTimeValue": null,
+        "Url": null,
+        "TextValue": "Blue",
+        "FileResourceId": null
+      },
+      {
+        "id": null,
+        "FormSubmissionId": "d6e7e2f2-a337-46de-b9e5-57a0214ad679",
+        "ResponseType": "Integer",
+        "QuestionId": "4e68c332-e741-491d-9faa-9b294fee4daf",
+        "IntegerValue": 2,
+        "FloatValue": null,
+        "BooleanValue": null,
+        "DateTimeValue": null,
+        "Url": null,
+        "TextValue": null,
+        "FileResourceId": null
+      },
+      {
+        "id": null,
+        "FormSubmissionId": "d6e7e2f2-a337-46de-b9e5-57a0214ad679",
+        "ResponseType": "Text",
+        "QuestionId": "811734b5-2ab9-45a6-a248-36cc46b29ad6",
+        "IntegerValue": null,
+        "FloatValue": null,
+        "BooleanValue": null,
+        "DateTimeValue": null,
+        "Url": null,
+        "TextValue": "prashant kharade",
+        "FileResourceId": null
+      },
+      {
+        "id": null,
+        "FormSubmissionId": "d6e7e2f2-a337-46de-b9e5-57a0214ad679",
+        "ResponseType": "MultiChoiceSelection",
+        "QuestionId": "347de100-ba70-4a96-b3dc-b181224ebb49",
+        "IntegerValue": null,
+        "FloatValue": null,
+        "BooleanValue": null,
+        "DateTimeValue": null,
+        "Url": null,
+        "TextValue": "[\"one\",\"two\"]",
+        "FileResourceId": null
+      },
+      {
+        "id": null,
+        "FormSubmissionId": "d6e7e2f2-a337-46de-b9e5-57a0214ad679",
+        "ResponseType": "SingleChoiceSelection",
+        "QuestionId": "bd1a658a-195d-4c63-b48b-06137d5bc91c",
+        "IntegerValue": null,
+        "FloatValue": null,
+        "BooleanValue": null,
+        "DateTimeValue": null,
+        "Url": null,
+        "TextValue": "one",
+        "FileResourceId": null
+      }
+    ]
+  }
+}

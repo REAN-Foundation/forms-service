@@ -5,23 +5,24 @@ meta {
 }
 
 get {
-  url: {{BASE_URL}}/form-submissions/search?id={{SUBMISSION_ID}}
+  url: {{BASE_URL}}/form-submissions/search?encrypted=03fe880b33dd789808e6536ee0f61c530702b237183c902eed5797eadd9214a9
   body: none
   auth: none
+}
+
+params:query {
+  encrypted: 03fe880b33dd789808e6536ee0f61c530702b237183c902eed5797eadd9214a9
+  ~pageIndex: 0
+  ~itemsPerPage: 10
+  ~orderBy: CreatedAt
+  ~order: DESC
+  ~id: {{SUBMISSION_ID}}
 }
 
 headers {
   x-api-key: {{INTERNAL_API_KEY}}
   Authorization: Bearer {{JWT_TOKEN}}
   Content-Type: application/json
-}
-
-params:query {
-  pageIndex: 0
-  itemsPerPage: 10
-  orderBy: CreatedAt
-  order: DESC
-  id: {{SUBMISSION_ID}}
 }
 
 script:post-response {

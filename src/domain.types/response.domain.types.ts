@@ -8,7 +8,8 @@ import { uuid } from './miscellaneous/system.types';
 
 export interface QuestionResponseCreateModel {
     FormSubmissionId: string;
-    QuestionId: string;
+    // QuestionId: string;
+    FormFieldId: string;
     ResponseType: QueryResponseType;
     IntegerValue: number;
     FloatValue: number;
@@ -18,12 +19,15 @@ export interface QuestionResponseCreateModel {
     FileResourceId: string;
     TextValue: string;
     UserResponse: string;
+    SubmissionTimestamp: Date;
+    LastSaveTimestamp: Date;
 }
 
 export interface QuestionResponseUpdateModel {
     id?: string;
     FormSubmissionId?: string;
-    QuestionId?: string;
+    // QuestionId?: string;
+    FormFieldId?: string;
     ResponseType?: QueryResponseType;
     IntegerValue?: number;
     FloatValue?: number;
@@ -33,6 +37,8 @@ export interface QuestionResponseUpdateModel {
     FileResourceId?: string;
     TextValue?: string;
     UserResponse?: string;
+    SubmissionTimestamp?: Date;
+    LastSaveTimestamp?: Date;
 }
 
 export interface QuestionResponseSaveModel {
@@ -65,6 +71,7 @@ export interface QuestionResponseResponseDto {
         CreatedAt: Date;
         UpdatedAt: Date;
     };
+    FormFieldId: string;
     ResponseType: QueryResponseType;
     IntegerValue: number;
     FloatValue: GLfloat;
@@ -79,7 +86,8 @@ export interface QuestionResponseResponseDto {
 
 export interface QuestionResponseSearchFilters extends BaseSearchFilters {
     FormSubmissionId?: uuid;
-    QuestionId?: uuid;
+    // QuestionId?: uuid;
+    FormFieldId?: uuid;
     ResponseType?: QueryResponseType;
     IntegerValue?: number;
     FloatValue?: GLfloat;
@@ -88,6 +96,8 @@ export interface QuestionResponseSearchFilters extends BaseSearchFilters {
     Url?: string;
     FileResourceId?: uuid;
     TextValue?: string;
+    SubmissionTimestamp?: Date;
+    LastSaveTimestamp?: Date;
 }
 
 export interface QuestionResponseSearchResults extends BaseSearchResults {
@@ -119,6 +129,7 @@ export interface QuestionResponseSearchResponseDto extends BaseSearchResults {
         CreatedAt: Date;
         UpdatedAt: Date;
     };
+    FormFieldId: string;
     ResponseType: QueryResponseType;
     IntegerValue: number;
     FloatValue: GLfloat;

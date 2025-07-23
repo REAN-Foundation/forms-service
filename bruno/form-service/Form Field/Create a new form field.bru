@@ -18,72 +18,80 @@ headers {
 
 body:json {
   {
-      "ParentTemplateId": "{{TEMPLATE_ID}}",
-      "ParentSectionId": "{{SECTION_ID}}",
-      "Title": "What is your favorite color?",
-      "Description": "Please select your favorite color from the options below",
-      "ResponseType": "SingleChoiceSelection",
-      "Score": 5,
-      "CorrectAnswer": "Blue",
-      "IsRequired": true,
-      "Hint": "Choose the color you like the most",
-      "QuestionImageUrl": "https://example.com/color-image.jpg",
-      "RangeMin": 1,
-      "RangeMax": 10,
-      "Options": [
-          {
-              "Text": "Red",
-              "Sequence": "1",
-              "ImageUrl": "https://example.com/red.jpg"
-          },
-          {
-              "Text": "Blue",
-              "Sequence": "2",
-              "ImageUrl": "https://example.com/blue.jpg"
-          },
-          {
-              "Text": "Green",
-              "Sequence": "3",
-              "ImageUrl": "https://example.com/green.jpg"
-          },
-          {
-              "Text": "Yellow",
-              "Sequence": "4",
-              "ImageUrl": "https://example.com/yellow.jpg"
-          }
-      ]
+    "ParentTemplateId": "{{TEMPLATE_ID}}",
+    "ParentSectionId": "{{SECTION_ID}}",
+    "Title": "What is your favorite color?",
+    "Description": "Please select your favorite color from the options below",
+    "ResponseType": "SingleChoiceSelection",
+    "Score": 5,
+    "Sequence": 1,
+    "CorrectAnswer": "Blue",
+    "IsRequired": true,
+    "Hint": "Choose the color you like the most",
+    "Options": [
+      {
+        "Text": "Red",
+        "Sequence": 1,
+        "ImageUrl": "https://example.com/red.jpg"
+      },
+      {
+        "Text": "Blue",
+        "Sequence": 2,
+        "ImageUrl": "https://example.com/blue.jpg"
+      },
+      {
+        "Text": "Green",
+        "Sequence": 3,
+        "ImageUrl": "https://example.com/green.jpg"
+      },
+      {
+        "Text": "Yellow",
+        "Sequence": 4,
+        "ImageUrl": "https://example.com/yellow.jpg"
+      }
+    ],
+    "ImageResourceId": "550e8400-e29b-41d4-a716-446655440000",
+    "RangeMin": 1,
+    "RangeMax": 10,
+    "DefaultExpectedUnit": "units",
+    "PageBreakAfter": false
   }
 }
 
 script:post-response {
   try {
-      var jsonRes = res.getBody();
-      bru.setEnvVar("FORM_FIELD_ID", jsonRes.Data.id);
+    var jsonRes = res.getBody();
+    bru.setEnvVar("FORM_FIELD_ID", jsonRes.Data.id);
   }
   catch (error) {
-      console.log(error.message);
+    console.log(error.message);
   }
   
   test("Request is successful", function () {
-      expect(res.getStatus()).to.equal(201);
-      var jsonRes = res.getBody();
-      expect(jsonRes.Status).to.eql('Success');
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
   });
   
   test("Form field is created", function () {
-      var jsonRes = res.getBody();
-      expect(jsonRes.Data).to.have.property('id');
-      expect(jsonRes.Data).to.have.property('Title');
-      expect(jsonRes.Data).to.have.property('Description');
-      expect(jsonRes.Data).to.have.property('DisplayCode');
-      expect(jsonRes.Data).to.have.property('ResponseType');
-      expect(jsonRes.Data).to.have.property('Score');
-      expect(jsonRes.Data).to.have.property('CorrectAnswer');
-      expect(jsonRes.Data).to.have.property('IsRequired');
-      expect(jsonRes.Data).to.have.property('Hint');
-      expect(jsonRes.Data).to.have.property('Options');
-      expect(jsonRes.Data).to.have.property('QuestionImageUrl');
-      expect(jsonRes.Data).to.have.property('RangeMin');
-      expect(jsonRes.Data).to.have.property('RangeMax');
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('TemplateId');
+    expect(jsonRes.Data).to.have.property('ParentSectionId');
+    expect(jsonRes.Data).to.have.property('Title');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data).to.have.property('DisplayCode');
+    expect(jsonRes.Data).to.have.property('ResponseType');
+    expect(jsonRes.Data).to.have.property('Score');
+    expect(jsonRes.Data).to.have.property('Sequence');
+    expect(jsonRes.Data).to.have.property('CorrectAnswer');
+    expect(jsonRes.Data).to.have.property('IsRequired');
+    expect(jsonRes.Data).to.have.property('Hint');
+    expect(jsonRes.Data).to.have.property('Options');
+    expect(jsonRes.Data).to.have.property('ImageResourceId');
+    expect(jsonRes.Data).to.have.property('RangeMin');
+    expect(jsonRes.Data).to.have.property('RangeMax');
+    expect(jsonRes.Data).to.have.property('DefaultExpectedUnit');
+    expect(jsonRes.Data).to.have.property('PageBreakAfter');
   });
 }

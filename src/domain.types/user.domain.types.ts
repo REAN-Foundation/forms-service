@@ -34,7 +34,7 @@ export interface UserResponseDto {
     Phone: string;
     Email: string;
     Username: string;
-    // Password: string;
+    Password: string;
     CreatedAt: Date;
 }
 

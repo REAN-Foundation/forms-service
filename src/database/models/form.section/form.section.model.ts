@@ -17,8 +17,8 @@ export class FormSection extends BaseEntity {
     @Column({ type: 'uuid', nullable: true })
     ParentSectionId?: string;
 
-    @Column({ type: 'varchar', length: 128, nullable: false })
-    Title: string;
+    @Column({ type: 'varchar', length: 128, nullable: true })
+    Title?: string;
 
     @Column({ type: 'varchar', length: 128, nullable: false })
     DisplayCode?: string;
@@ -43,11 +43,9 @@ export class FormSection extends BaseEntity {
     @JoinColumn({ name: 'FormTemplateId' })
     FormTemplate: FormTemplate;
 
-    @ManyToOne(() => FormSection, section => section.ChildSections, {
-        nullable: true,
-    })
+    @ManyToOne(() => FormSection, section => section.ChildSections)
     @JoinColumn({ name: 'ParentSectionId' })
-    ParentSection?: FormSection;
+    ParentSection: FormSection;
 
     @OneToMany(() => FormSection, section => section.ParentSection)
     ChildSections: FormSection[];

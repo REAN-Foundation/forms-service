@@ -26,7 +26,8 @@ export class ResponseService extends BaseService {
 
         const response = this._questionResponseRepository.create({
             FormSubmissionId: createModel.FormSubmissionId,
-            QuestionId: createModel.QuestionId,
+            // QuestionId: createModel.QuestionId,
+            FormFieldId: createModel.FormFieldId,
             ResponseType: createModel.ResponseType,
             IntegerValue: createModel.IntegerValue,
             FloatValue: createModel.FloatValue,
@@ -34,7 +35,7 @@ export class ResponseService extends BaseService {
             DateTimeValue: createModel.DateTimeValue,
             Url: createModel.Url,
             FileResourceId: createModel.FileResourceId,
-            Text: createModel.TextValue,
+            TextValue: createModel.TextValue,
             UserResponse: createModel.UserResponse,
         });
         const record = await this._questionResponseRepository.save(response);
@@ -140,7 +141,7 @@ export class ResponseService extends BaseService {
                 response.FileResourceId = model.FileResourceId;
             }
             if (model.TextValue != null) {
-                response.Text = model.TextValue;
+                response.TextValue = model.TextValue;
             }
             if (model.UserResponse != null) {
                 response.UserResponse = model.UserResponse;
@@ -194,8 +195,11 @@ export class ResponseService extends BaseService {
         if (filters.FormSubmissionId) {
             search.where['FormSubmissionId'] = filters.FormSubmissionId;
         }
-        if (filters.QuestionId) {
-            search.where['QuestionId'] = filters.QuestionId;
+        // if (filters.QuestionId) {
+        //     search.where['QuestionId'] = filters.QuestionId;
+        // }
+        if (filters.FormFieldId) {
+            search.where['FormFieldId'] = filters.FormFieldId;
         }
         if (filters.ResponseType) {
             search.where['ResponseType'] = filters.ResponseType;

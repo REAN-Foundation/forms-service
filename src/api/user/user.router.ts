@@ -9,6 +9,7 @@ export const register = (app: express.Application): void => {
     const controller = new UserController();
     const contextBase = 'User';
 
+    router.get('/all', context(`${contextBase}.GetAll`), controller.getAll);
     router.get('/search', context(`${contextBase}.Search`), controller.search);
     router.post('/', context(`${contextBase}.Create`), controller.create);
     router.put('/:id', context(`${contextBase}.Update`), controller.update);

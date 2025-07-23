@@ -25,7 +25,7 @@ export class FormFieldService extends BaseService {
         : Promise<FormFieldResponseDto> => {
 
         const field = this._formFieldRepository.create({
-            TemplateId: createModel.ParentTemplateId,
+            ParentTemplateId: createModel.ParentTemplateId,
             ParentSectionId: createModel.ParentSectionId,
             Title: createModel.Title,
             Description: createModel.Description,
@@ -33,11 +33,11 @@ export class FormFieldService extends BaseService {
             ResponseType: createModel.ResponseType,
             Score: createModel.Score,
             Sequence: createModel.Sequence,
-            ExpectedAnswer: createModel.CorrectAnswer,
+            CorrectAnswer: createModel.CorrectAnswer,
             IsRequired: createModel.IsRequired,
             Hint: createModel.Hint,
             Options: JSON.stringify(createModel.Options),
-            ImageResourceId: createModel.QuestionImageUrl,
+            ImageResourceId: createModel.ImageResourceId,
             RangeMin: createModel.RangeMin,
             RangeMax: createModel.RangeMax,
         });
@@ -69,7 +69,7 @@ export class FormFieldService extends BaseService {
         try {
             const fields = await this._formFieldRepository.find({
                 where: {
-                    TemplateId: templateId
+                    ParentTemplateId: templateId
                 },
                 relations: {
                     ParentFormSection: true,
@@ -133,7 +133,7 @@ export class FormFieldService extends BaseService {
                 field.Score = model.Score;
             }
             if (model.CorrectAnswer != null) {
-                field.ExpectedAnswer = model.CorrectAnswer;
+                field.CorrectAnswer = model.CorrectAnswer;
             }
             if (model.IsRequired != null) {
                 field.IsRequired = model.IsRequired;
@@ -144,8 +144,8 @@ export class FormFieldService extends BaseService {
             if (model.Options != null) {
                 field.Options = JSON.stringify(model.Options);
             }
-            if (model.QuestionImageUrl != null) {
-                field.ImageResourceId = model.QuestionImageUrl;
+            if (model.ImageResourceId != null) {
+                field.ImageResourceId = model.ImageResourceId;
             }
             if (model.RangeMin != null) {
                 field.RangeMin = model.RangeMin;
@@ -190,7 +190,7 @@ export class FormFieldService extends BaseService {
         };
 
         if (filters.ParentTemplateId) {
-            search.where['TemplateId'] = filters.ParentTemplateId;
+            search.where['ParentTemplateId'] = filters.ParentTemplateId;
         }
         if (filters.ParentSectionId) {
             search.where['ParentSectionId'] = filters.ParentSectionId;
@@ -211,23 +211,20 @@ export class FormFieldService extends BaseService {
             search.where['Score'] = filters.Score;
         }
         if (filters.CorrectAnswer) {
-            search.where['ExpectedAnswer'] = filters.CorrectAnswer;
+            search.where['CorrectAnswer'] = filters.CorrectAnswer;
         }
         if (filters.IsRequired) {
             search.where['IsRequired'] = filters.IsRequired;
         }
-        if (filters.Hint) {
-            search.where['Hint'] = filters.Hint;
-        }
-        if (filters.QuestionImageUrl) {
-            search.where['ImageResourceId'] = filters.QuestionImageUrl;
-        }
-        if (filters.RangeMin) {
-            search.where['RangeMin'] = filters.RangeMin;
-        }
-        if (filters.RangeMax) {
-            search.where['RangeMax'] = filters.RangeMax;
-        }
+        // if (filters.ImageResourceId) {
+        //     search.where['ImageResourceId'] = filters.ImageResourceId;
+        // }
+        // if (filters.RangeMin) {
+        //     search.where['RangeMin'] = filters.RangeMin;
+        // }
+        // if (filters.RangeMax) {
+        //     search.where['RangeMax'] = filters.RangeMax;
+        // }
 
         return search;
     };

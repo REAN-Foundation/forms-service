@@ -14,6 +14,7 @@ export const register = (app: express.Application): void => {
     router.put('/:id', context(`${contextBase}.Update`), controller.update);
     router.get('/:id', context(`${contextBase}.GetById`), controller.getById);
     router.delete('/:id', context(`${contextBase}.Delete`), controller.delete);
+    router.post('/save', context(`${contextBase}.Save`), controller.save);
 
     app.use('/api/v1/question-responses', router);
 };

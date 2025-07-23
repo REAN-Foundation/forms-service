@@ -14,7 +14,7 @@ export class UserMapper {
             Phone: record.Phone,
             Email: record.Email,
             Username: record.Username,
-            // Password: record.Password,
+            Password: record.Password,
             CreatedAt: record.CreatedAt,
         };
         return dto;
