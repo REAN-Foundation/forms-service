@@ -6,7 +6,7 @@ import { exit } from 'process';
 
 // Global type declaration
 declare global {
-  var TestCache: { [key: string]: any };
+    var TestCache: { [key: string]: any };
 }
 
 const infra = Application.instance();
@@ -14,24 +14,29 @@ const infra = Application.instance();
 /////////////////////////////////////////////////////////////////////////////////
 
 //Set-up
-before(async () => {
+before('Initialize Test Environment', async function() {
+    this.timeout(30000); // 30 second timeout for setup
     console.log('Set-up: Initializing test set-up!');
     const start = Date.now();
+    
+    // Set test environment variables
+    process.env.NODE_ENV = 'test';
+    process.env.PORT = '5556'; // Use a different port for tests
     
     // Initialize test data cache
     initializeCache();
     
     await infra.start();
-    // await wait(1000); // Removed unnecessary wait
     console.log('Set-up: infra.start() completed in', Date.now() - start, 'ms');
     console.log('\nTest set-up: Done!\n');
 });
 
 //Tear-down
-after(async (done) => {
+after('Cleanup Test Environment', async function() {
+    this.timeout(10000); // 10 second timeout for cleanup
+    console.info('Starting test environment cleanup...');
+    await wait(1000); // Give time for any pending operations to complete
     console.info('Tear-down: Server shut down successfully!');
-    done();
-    await wait(1000);
     exit(0);
 });
 
