@@ -18,14 +18,17 @@ headers {
 
 body:json {
   {
-    "Name": "Email Validation Rule",
-    "Description": "Validate email format and domain",
+    "Name": "Age Validation Rule",
+    "Description": "Validate that age is between 0 and 150",
     "Priority": 1,
     "IsActive": true,
-    "OperationId": "14aff0d6-0d9e-4337-90a8-ed0078a91a44",
+    "OperationType": "Logical",
+    "OperationId": "2a2496eb-3420-492a-973c-7def5a21aeee",
+  //   "OperationId": "{{LOGICAL_OPERATION_ID}}",
     "ErrorWhenFalse": true,
-    "ErrorMessage": "Please enter a valid email address",
-    "LogicId": "15f0cedf-3f46-4498-a090-5a4360e26a21"
+    "ErrorMessage": "Age must be between 0 and 150 years",
+  //   "LogicId": "{{VALIDATION_LOGIC_ID}}"
+    "LogicId": "100dd882-293c-4268-a1f2-02c2a291647d"
   }
 }
 
@@ -37,7 +40,9 @@ script:post-response {
   catch (error) {
     console.log(error.message);
   }
-  
+}
+
+tests {
   test("Request is successful", function () {
     expect(res.getStatus()).to.equal(201);
     var jsonRes = res.getBody();
@@ -48,18 +53,20 @@ script:post-response {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Email Validation Rule');
+    expect(jsonRes.Data.Name).equals('Age Validation Rule');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Validate email format and domain');
+    expect(jsonRes.Data.Description).equals('Validate that age is between 0 and 150');
     expect(jsonRes.Data).to.have.property('Priority');
     expect(jsonRes.Data.Priority).equals(1);
     expect(jsonRes.Data).to.have.property('IsActive');
     expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('OperationType');
+    expect(jsonRes.Data.OperationType).equals('Logical');
     expect(jsonRes.Data).to.have.property('OperationId');
     expect(jsonRes.Data).to.have.property('ErrorWhenFalse');
     expect(jsonRes.Data.ErrorWhenFalse).equals(true);
     expect(jsonRes.Data).to.have.property('ErrorMessage');
-    expect(jsonRes.Data.ErrorMessage).equals('Please enter a valid email address');
+    expect(jsonRes.Data.ErrorMessage).equals('Age must be between 0 and 150 years');
     expect(jsonRes.Data).to.have.property('LogicId');
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');

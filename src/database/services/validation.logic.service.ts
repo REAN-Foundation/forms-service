@@ -13,7 +13,7 @@ import { ValidationLogicMapper } from '../mappers/validation.logic.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { LogicType } from '../../domain.types/logic.enums';
+import { LogicType } from '../../domain.types/enums/logic.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +40,74 @@ export class ValidationLogicService extends BaseService {
             const logic = await this._validationLogicRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Rules: true,
                 }
             });
+
+            if (!logic) {
+                ErrorHandler.throwNotFoundError('Validation logic not found!');
+            }
 
             return ValidationLogicMapper.toDto(logic);
         } catch (error) {
             logger.error(`❌ Error getting validation logic by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getByIdWithRules = async (id: uuid): Promise<ValidationLogicResponseDto> => {
+        try {
+            const logic = await this._validationLogicRepository.findOne({
+                where: {
+                    id: id
+                },
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            if (!logic) {
+                ErrorHandler.throwNotFoundError('Validation logic not found!');
+            }
+
+            return ValidationLogicMapper.toDto(logic);
+        } catch (error) {
+            logger.error(`❌ Error getting validation logic with rules by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getAllWithRules = async (): Promise<ValidationLogicResponseDto[]> => {
+        try {
+            const logics = await this._validationLogicRepository.find({
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            return logics.map(logic => ValidationLogicMapper.toDto(logic));
+        } catch (error) {
+            logger.error(`❌ Error getting all validation logics with rules: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getByFieldIdWithRules = async (fieldId: uuid): Promise<ValidationLogicResponseDto[]> => {
+        try {
+            const logics = await this._validationLogicRepository.find({
+                where: {
+                    FieldId: fieldId
+                },
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            return logics.map(logic => ValidationLogicMapper.toDto(logic));
+        } catch (error) {
+            logger.error(`❌ Error getting validation logics by field id with rules: ${error.message}`);
             ErrorHandler.throwInternalServerError(error.message, error);
         }
     };
@@ -78,6 +140,9 @@ export class ValidationLogicService extends BaseService {
             const logic = await this._validationLogicRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Rules: true,
                 }
             });
             if (!logic) {
@@ -103,6 +168,9 @@ export class ValidationLogicService extends BaseService {
             var record = await this._validationLogicRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Rules: true,
                 }
             });
             var result = await this._validationLogicRepository.remove(record);

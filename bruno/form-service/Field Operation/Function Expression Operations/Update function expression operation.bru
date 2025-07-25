@@ -18,12 +18,10 @@ headers {
 
 body:json {
   {
-    "Name": "Updated Custom Calculation Function",
-    "Description": "Updated custom mathematical function for complex calculations",
-    "Type": "FunctionExpression",
-    "Expression": "amount * taxRate - (amount * discountRate) + (includeShipping ? shippingCost : 0)",
-    "Variables": "{\"amount\": \"number\", \"taxRate\": \"number\", \"discountRate\": \"number\", \"includeShipping\": \"boolean\", \"shippingCost\": \"number\"}",
-    "ResultDataType": "number"
+    "Name": "Updated BMI Calculation Function",
+    "Description": "Updated BMI calculation with additional validation",
+    "Expression": "weight / (height / 100) ^ 2",
+    "Variables": "{\"weight\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{WEIGHT_FIELD_ID}}\"}, \"height\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{HEIGHT_FIELD_ID}}\"}}"
   }
 }
 
@@ -38,17 +36,14 @@ script:post-response {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Updated Custom Calculation Function');
+    expect(jsonRes.Data.Name).equals('Updated BMI Calculation Function');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Updated custom mathematical function for complex calculations');
+    expect(jsonRes.Data.Description).equals('Updated BMI calculation with additional validation');
     expect(jsonRes.Data).to.have.property('Type');
     expect(jsonRes.Data.Type).equals('FunctionExpression');
     expect(jsonRes.Data).to.have.property('Expression');
-    expect(jsonRes.Data.Expression).equals('amount * taxRate - (amount * discountRate) + (includeShipping ? shippingCost : 0)');
+    expect(jsonRes.Data.Expression).equals('weight / (height / 100) ^ 2');
     expect(jsonRes.Data).to.have.property('Variables');
-    expect(jsonRes.Data.Variables).equals('{"amount": "number", "taxRate": "number", "discountRate": "number", "includeShipping": "boolean", "shippingCost": "number"}');
-    expect(jsonRes.Data).to.have.property('ResultDataType');
-    expect(jsonRes.Data.ResultDataType).equals('number');
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });

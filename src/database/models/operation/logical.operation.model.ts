@@ -1,9 +1,9 @@
 import { Entity, Column } from 'typeorm';
-import { BaseOperationEntity } from './base.operation.model';
-import { LogicalOperatorType } from '../../../domain.types/operation.enums';
+import { BaseOperation } from './base.operation.model';
+import { LogicalOperatorType, OperationType } from '../../../domain.types/enums/operation.enums';
 
 @Entity({ name: 'eval_logical_operations' })
-export class LogicalOperation extends BaseOperationEntity {
+export class LogicalOperation extends BaseOperation {
     @Column({ type: 'varchar', length: 50, nullable: false })
     Operator: LogicalOperatorType;
 

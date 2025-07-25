@@ -6,7 +6,7 @@ import {
     SkipLogicCreateModel,
     SkipLogicUpdateModel,
 } from '../../../domain.types/logic/skip.logic.domain.types';
-import { LogicType } from '../../../domain.types/logic.enums';
+import { LogicType } from '../../../domain.types/enums/logic.enums';
 import { SkipLogicSearchFilters } from '../../../domain.types/logic/skip.logic.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,14 +19,12 @@ export class SkipLogicValidator extends BaseValidator {
     ): Promise<SkipLogicCreateModel> => {
         try {
             const schema = joi.object({
-                Type: joi.string().valid(LogicType.Skip).required(),
                 FieldId: joi.string().uuid().required(),
                 Enabled: joi.boolean().optional(),
                 DefaultSkip: joi.boolean().optional(),
             });
             await schema.validateAsync(request.body);
             return {
-                Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled ?? true,
                 DefaultSkip: request.body.DefaultSkip ?? false,
@@ -41,14 +39,12 @@ export class SkipLogicValidator extends BaseValidator {
     ): Promise<SkipLogicUpdateModel> => {
         try {
             const schema = joi.object({
-                Type: joi.string().valid(LogicType.Skip).optional(),
                 FieldId: joi.string().uuid().optional(),
                 Enabled: joi.boolean().optional(),
                 DefaultSkip: joi.boolean().optional(),
             });
             await schema.validateAsync(request.body);
             return {
-                Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled,
                 DefaultSkip: request.body.DefaultSkip,
@@ -64,7 +60,6 @@ export class SkipLogicValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
-                type: joi.string().valid(LogicType.Skip).optional(),
                 fieldId: joi.string().uuid().optional(),
                 enabled: joi.boolean().optional(),
                 defaultSkip: joi.boolean().optional(),
@@ -89,28 +84,21 @@ export class SkipLogicValidator extends BaseValidator {
             filters['id'] = id;
         }
 
-        const type = query.type ? query.type : null;
-        if (type != null) {
-            filters['type'] = type;
-        }
-
         const fieldId = query.fieldId ? query.fieldId : null;
         if (fieldId != null) {
-            filters['fieldId'] = fieldId;
+            filters['FieldId'] = fieldId;
         }
 
         const enabled = query.enabled ? query.enabled : null;
         if (enabled != null) {
-            filters['enabled'] = enabled;
+            filters['Enabled'] = enabled;
         }
 
         const defaultSkip = query.defaultSkip ? query.defaultSkip : null;
         if (defaultSkip != null) {
-            filters['defaultSkip'] = defaultSkip;
+            filters['DefaultSkip'] = defaultSkip;
         }
 
         return filters;
     };
-
-    //#endregion
 }

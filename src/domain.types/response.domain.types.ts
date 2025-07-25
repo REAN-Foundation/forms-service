@@ -1,4 +1,4 @@
-import { FormStatus } from './form.submission.enums';
+import { FormStatus } from './enums/form.submission.enums';
 import { QueryResponseType } from './query.response.types';
 import {
     BaseSearchFilters,

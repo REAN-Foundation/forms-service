@@ -4,7 +4,7 @@ import {
     BaseOperationUpdateModel,
 } from './base.operation.domain.types';
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
-import { OperationType } from '../operation.enums';
+import { OperationType } from '../enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -13,27 +13,26 @@ export interface FunctionExpressionOperationCreateModel
     extends BaseOperationCreateModel {
     Expression: string;
     Variables: string; // JSON serialized Record<string, Operand>
-    ResultDataType: string;
+    // ResultDataType: string;
 }
 
 export interface FunctionExpressionOperationUpdateModel
     extends BaseOperationUpdateModel {
     Expression?: string;
     Variables?: string; // JSON serialized Record<string, Operand>
-    ResultDataType?: string;
+    // ResultDataType?: string;
 }
 
 export interface FunctionExpressionOperationResponseDto
     extends BaseOperationResponseDto {
+    Type: OperationType.FunctionExpression;
     Expression: string;
     Variables: string; // JSON serialized Record<string, Operand>
-    ResultDataType: string;
 }
 
 export interface FunctionExpressionOperationSearchFilters extends BaseSearchFilters {
     Expression?: string;
     Variables?: string; // JSON serialized Record<string, Operand>
-    ResultDataType?: string;
     Type?: OperationType;
 }
 

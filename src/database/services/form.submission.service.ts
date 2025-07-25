@@ -13,7 +13,7 @@ import { FormSubmissionMapper } from '../mappers/form.submission.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { FormStatus } from '../../domain.types/form.submission.enums';
+import { FormStatus } from '../../domain.types/enums/form.submission.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -22,6 +22,7 @@ body:json {
     "Description": "Updated calculation for total price",
     "Priority": 2,
     "IsActive": false,
+    "OperationType": "Mathematical",
     "ConditionForOperationId": "7c1410d5-47dd-424b-ac85-336e8d2a4d37",
     "OperationId": "7c1410d5-47dd-424b-ac85-336e8d2a4d37",
     "LogicId": "15af8cd4-828d-48af-9d21-f4630083f487"
@@ -29,6 +30,9 @@ body:json {
 }
 
 script:post-response {
+}
+
+tests {
   test("Request is successful", function () {
     expect(res.getStatus()).to.equal(200);
     var jsonRes = res.getBody();
@@ -46,6 +50,8 @@ script:post-response {
     expect(jsonRes.Data.Priority).equals(2);
     expect(jsonRes.Data).to.have.property('IsActive');
     expect(jsonRes.Data.IsActive).equals(false);
+    expect(jsonRes.Data).to.have.property('OperationType');
+    expect(jsonRes.Data.OperationType).equals('Mathematical');
     expect(jsonRes.Data).to.have.property('ConditionForOperationId');
     expect(jsonRes.Data).to.have.property('OperationId');
     expect(jsonRes.Data).to.have.property('LogicId');

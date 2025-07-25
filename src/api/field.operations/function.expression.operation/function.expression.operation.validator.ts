@@ -8,8 +8,7 @@ import {
     FunctionExpressionOperationUpdateModel,
     FunctionExpressionOperationSearchFilters,
 } from '../../../domain.types/operations/function.expression.operation.domain.types';
-import { OperationType } from '../../../domain.types/operation.enums';
-import { QueryResponseType } from '../../../domain.types/query.response.types';
+import { OperationType } from '../../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,16 +28,21 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
                     .optional(),
                 Expression: joi.string().required(),
                 Variables: joi.string().required(),
-                ResultDataType: joi.string().required(),
             });
             await schema.validateAsync(request.body);
+
+            // Validate Variables JSON structure
+            const variablesValidation = this.validateVariables(request.body.Variables);
+            if (variablesValidation.error) {
+                throw new Error(`Invalid Variables structure: ${variablesValidation.error.message}`);
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Type: OperationType.FunctionExpression, // Always set to FunctionExpression for this operation type
+                Type: OperationType.FunctionExpression,
                 Expression: request.body.Expression,
                 Variables: request.body.Variables,
-                ResultDataType: request.body.ResultDataType,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -58,25 +62,32 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
                     .optional(),
                 Expression: joi.string().optional(),
                 Variables: joi.string().optional(),
-                ResultDataType: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
+
+            // Validate Variables JSON structure if provided
+            if (request.body.Variables) {
+                const variablesValidation = this.validateVariables(request.body.Variables);
+                if (variablesValidation.error) {
+                    throw new Error(`Invalid Variables structure: ${variablesValidation.error.message}`);
+                }
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Type: OperationType.FunctionExpression, // Always set to FunctionExpression for this operation type
+                Type: request.body.Type,
                 Expression: request.body.Expression,
                 Variables: request.body.Variables,
-                ResultDataType: request.body.ResultDataType,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateOperationSearchRequest = async (
+    public validateFunctionExpressionOperationSearchRequest = async (
         request: express.Request
-    ): Promise<FunctionExpressionOperationResponseDto> => {
+    ): Promise<FunctionExpressionOperationSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
@@ -84,7 +95,6 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
                 description: joi.string().optional(),
                 expression: joi.string().optional(),
                 variables: joi.string().optional(),
-                resultDataType: joi.string().valid(QueryResponseType).optional(),
                 type: joi.string().valid(OperationType.FunctionExpression).optional(),
             });
             await schema.validateAsync(request.query);
@@ -109,37 +119,27 @@ export class FunctionExpressionOperationValidator extends BaseValidator {
 
         const name = query.name ? query.name : null;
         if (name != null) {
-            filters['name'] = name;
+            filters['Name'] = name;
         }
 
         const description = query.description ? query.description : null;
         if (description != null) {
-            filters['description'] = description;
-        }
-
-        const operator = query.operator ? query.operator : null;
-        if (operator != null) {
-            filters['operator'] = operator;
+            filters['Description'] = description;
         }
 
         const expression = query.expression ? query.expression : null;
         if (expression != null) {
-            filters['expression'] = expression;
+            filters['Expression'] = expression;
         }
 
         const variables = query.variables ? query.variables : null;
         if (variables != null) {
-            filters['variables'] = variables;
-        }
-
-        const resultDataType = query.resultDataType ? query.resultDataType : null;
-        if (resultDataType != null) {
-            filters['resultDataType'] = resultDataType;
+            filters['Variables'] = variables;
         }
 
         const type = query.type ? query.type : null;
         if (type != null) {
-            filters['type'] = type;
+            filters['Type'] = type;
         }
 
         return filters;

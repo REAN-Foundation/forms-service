@@ -45,3 +45,23 @@ export enum CompositionOperatorType {
     Xor = 'Xor',
     None = 'None',
 }
+
+
+export enum OperandDataType {
+    Float = 'Float',
+    Integer = 'Integer',
+    Boolean = 'Boolean',
+    Text = 'Text',
+    DateTime = 'DateTime',
+    Location = 'Location',
+    Array = 'Array',
+    Object = 'Object',
+    Date = 'Date',
+}
+
+export enum OperandType {
+    Constant = 'Constant',
+    FieldReference = 'FieldReference',
+    Function = 'Function',
+    Mathematical = 'Mathematical',
+}

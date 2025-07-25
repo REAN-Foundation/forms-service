@@ -6,6 +6,7 @@ meta {
 
 get {
   url: {{BASE_URL}}/form-fields/{{FORM_FIELD_ID}}
+  body: none
   auth: none
 }
 
@@ -15,7 +16,7 @@ headers {
   Content-Type: application/json
 }
 
-script:post-response {
+tests {
   test("Request is successful", function () {
       expect(res.getStatus()).to.equal(200);
       var jsonRes = res.getBody();
@@ -38,4 +39,4 @@ script:post-response {
       expect(jsonRes.Data).to.have.property('RangeMin');
       expect(jsonRes.Data).to.have.property('RangeMax');
   });
-} 
+}

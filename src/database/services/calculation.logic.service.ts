@@ -13,7 +13,7 @@ import { CalculationLogicMapper } from '../mappers/calculation.logic.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { LogicType } from '../../domain.types/logic.enums';
+import { LogicType } from '../../domain.types/enums/logic.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -43,12 +43,74 @@ export class CalculationLogicService extends BaseService {
             const logic = await this._calculationLogicRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Rules: true,
                 }
             });
+
+            if (!logic) {
+                ErrorHandler.throwNotFoundError('Calculation logic not found!');
+            }
 
             return CalculationLogicMapper.toDto(logic);
         } catch (error) {
             logger.error(`❌ Error getting calculation logic by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getByIdWithRules = async (id: uuid): Promise<CalculationLogicResponseDto> => {
+        try {
+            const logic = await this._calculationLogicRepository.findOne({
+                where: {
+                    id: id
+                },
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            if (!logic) {
+                ErrorHandler.throwNotFoundError('Calculation logic not found!');
+            }
+
+            return CalculationLogicMapper.toDto(logic);
+        } catch (error) {
+            logger.error(`❌ Error getting calculation logic with rules by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getAllWithRules = async (): Promise<CalculationLogicResponseDto[]> => {
+        try {
+            const logics = await this._calculationLogicRepository.find({
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            return logics.map(logic => CalculationLogicMapper.toDto(logic));
+        } catch (error) {
+            logger.error(`❌ Error getting all calculation logics with rules: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getByFieldIdWithRules = async (fieldId: uuid): Promise<CalculationLogicResponseDto[]> => {
+        try {
+            const logics = await this._calculationLogicRepository.find({
+                where: {
+                    FieldId: fieldId
+                },
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            return logics.map(logic => CalculationLogicMapper.toDto(logic));
+        } catch (error) {
+            logger.error(`❌ Error getting calculation logics by field id with rules: ${error.message}`);
             ErrorHandler.throwInternalServerError(error.message, error);
         }
     };

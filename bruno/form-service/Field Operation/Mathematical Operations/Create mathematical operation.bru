@@ -18,12 +18,10 @@ headers {
 
 body:json {
   {
-    "Name": "Addition Operation",
-    "Description": "Add two numbers together",
-    "Type": "Mathematical",
+    "Name": "Price Calculation Operation",
+    "Description": "Calculate total price including tax",
     "Operator": "Add",
-    "Operands": "[{\"type\":\"number\",\"value\":5},{\"type\":\"number\",\"value\":3}]",
-    "ResultDataType": "Float"
+    "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{BASE_PRICE_FIELD_ID}}\"}, {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{TAX_AMOUNT_FIELD_ID}}\"}]"
   }
 }
 
@@ -46,17 +44,14 @@ script:post-response {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Addition Operation');
+    expect(jsonRes.Data.Name).equals('Price Calculation Operation');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Add two numbers together');
+    expect(jsonRes.Data.Description).equals('Calculate total price including tax');
     expect(jsonRes.Data).to.have.property('Type');
     expect(jsonRes.Data.Type).equals('Mathematical');
     expect(jsonRes.Data).to.have.property('Operator');
     expect(jsonRes.Data.Operator).equals('Add');
     expect(jsonRes.Data).to.have.property('Operands');
-    expect(jsonRes.Data.Operands).equals('[{"type":"number","value":5},{"type":"number","value":3}]');
-    expect(jsonRes.Data).to.have.property('ResultDataType');
-    expect(jsonRes.Data.ResultDataType).equals('Float');
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });

@@ -1,12 +1,12 @@
 import { Entity, Column } from 'typeorm';
-import { BaseOperationEntity } from './base.operation.model';
-import { CompositionOperatorType } from '../../../domain.types/operation.enums';
+import { BaseOperation } from './base.operation.model';
+import { CompositionOperatorType, OperationType } from '../../../domain.types/enums/operation.enums';
 
 @Entity({ name: 'eval_composition_operations' })
-export class CompositionOperation extends BaseOperationEntity {
+export class CompositionOperation extends BaseOperation {
     @Column({ type: 'varchar', length: 50, nullable: false })
-    Operator: CompositionOperatorType;
+    Operator!: CompositionOperatorType;
 
     @Column({ type: 'text', nullable: false })
-    Operands: string; // JSON serialized Operand[]
+    Children!: string; // JSON serialized Operation[] (stored as IDs)
 }

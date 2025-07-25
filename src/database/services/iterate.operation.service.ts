@@ -13,7 +13,7 @@ import { IterateOperationMapper } from '../mappers/iterate.operation.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { OperationType } from '../../domain.types/operation.enums';
+import { OperationType } from '../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,10 +29,9 @@ export class IterateOperationService extends BaseService {
             Type: OperationType.Iterate,
             Name: createModel.Name,
             Description: createModel.Description,
-            CollectionField: createModel.CollectionField,
-            ResultField: createModel.ResultField,
+            ItemAlias: createModel.ItemAlias,
             OperationId: createModel.OperationId,
-            FilterExpression: createModel.FilterExpression,
+            ArrayOperand: createModel.ArrayOperand,
         });
         const record = await this._iterateOperationRepository.save(operation);
 
@@ -93,17 +92,14 @@ export class IterateOperationService extends BaseService {
             if (model.Description != null) {
                 operation.Description = model.Description;
             }
-            if (model.CollectionField != null) {
-                operation.CollectionField = model.CollectionField;
-            }
-            if (model.ResultField != null) {
-                operation.ResultField = model.ResultField;
+            if (model.ItemAlias != null) {
+                operation.ItemAlias = model.ItemAlias;
             }
             if (model.OperationId != null) {
                 operation.OperationId = model.OperationId;
             }
-            if (model.FilterExpression != null) {
-                operation.FilterExpression = model.FilterExpression;
+            if (model.ArrayOperand != null) {
+                operation.ArrayOperand = model.ArrayOperand;
             }
             var record = await this._iterateOperationRepository.save(operation);
             return IterateOperationMapper.toDto(record);
@@ -138,17 +134,14 @@ export class IterateOperationService extends BaseService {
             }
         };
 
-        if (filters.CollectionField) {
-            search.where['CollectionField'] = filters.CollectionField;
-        }
-        if (filters.ResultField) {
-            search.where['ResultField'] = filters.ResultField;
+        if (filters.ItemAlias) {
+            search.where['ItemAlias'] = filters.ItemAlias;
         }
         if (filters.OperationId) {
             search.where['OperationId'] = filters.OperationId;
         }
-        if (filters.FilterExpression) {
-            search.where['FilterExpression'] = filters.FilterExpression;
+        if (filters.ArrayOperand) {
+            search.where['ArrayOperand'] = filters.ArrayOperand;
         }
         if (filters.Name) {
             search.where['Name'] = filters.Name;

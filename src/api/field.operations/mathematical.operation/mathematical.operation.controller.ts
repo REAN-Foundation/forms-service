@@ -116,7 +116,7 @@ export class MathematicalOperationController {
     search = async (request: express.Request, response: express.Response) => {
         try {
             const filters: MathematicalOperationSearchFilters =
-                await this._validator.validateOperationSearchRequest(request);
+                await this._validator.validateMathematicalOperationSearchRequest(request);
             const searchResults =
                 await this._service.search(filters);
             const message = 'Mathematical Operation search completed successfully!';

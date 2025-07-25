@@ -1,4 +1,4 @@
-import { OperationType } from '../../domain.types/operation.enums';
+import { OperationType } from '../../domain.types/enums/operation.enums';
 import { CompositionOperationResponseDto } from '../../domain.types/operations/composition.operation.domain.types';
 
 export class CompositionOperationMapper {
@@ -13,7 +13,7 @@ export class CompositionOperationMapper {
             Description: record.Description,
             Type: OperationType.Composition,
             Operator: record.Operator,
-            Operands: record.Operands,
+            Children: record.Children,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };

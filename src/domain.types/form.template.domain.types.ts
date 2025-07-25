@@ -1,4 +1,4 @@
-import { FormType } from './form.template.enums';
+import { FormType } from './enums/form.template.enums';
 import {
     BaseSearchFilters,
     BaseSearchResults,

@@ -2,10 +2,54 @@ import joi from 'joi';
 import express from 'express';
 import { ErrorHandler } from '../common/error.handling/error.handler';
 import { uuid } from '../domain.types/miscellaneous/system.types';
+import { BaseSearchFilters } from '../domain.types/miscellaneous/base.search.types';
+import { OperandType, OperandDataType } from '../domain.types/enums/operation.enums';
 
 //////////////////////////////////////////////////////////////////
 
 export default class BaseValidator {
+
+    // Comprehensive Operand validation schema
+    protected static operandSchema = joi.object({
+        Type: joi.string().valid(...Object.values(OperandType)).required(),
+        DataType: joi.string().valid(...Object.values(OperandDataType)).required(),
+        Value: joi.any().optional(),
+        FieldId: joi.string().uuid().optional(),
+        FunctionName: joi.string().optional(),
+        FunctionArgs: joi.array().items(joi.link('#operandSchema')).optional(),
+    }).id('operandSchema');
+
+    // Helper method to validate operands array
+    protected validateOperandsArray = (operands: any): { error?: Error; value?: any } => {
+        const operandsArraySchema = joi.array().items(BaseValidator.operandSchema);
+        const result = operandsArraySchema.validate(operands);
+        return { error: result.error, value: result.value };
+    };
+
+    // Helper method to validate serialized operands (JSON string)
+    protected validateSerializedOperands = (operandsString: string): { error?: Error; value?: any } => {
+        try {
+            const operands = JSON.parse(operandsString);
+            return this.validateOperandsArray(operands);
+        } catch (error) {
+            return { error: new Error('Invalid JSON format for operands') };
+        }
+    };
+
+    // Helper method to validate variables for function expressions
+    protected validateVariables = (variablesString: string): { error?: Error; value?: any } => {
+        try {
+            const variables = JSON.parse(variablesString);
+            const variablesSchema = joi.object().pattern(
+                joi.string(),
+                BaseValidator.operandSchema
+            );
+            const result = variablesSchema.validate(variables);
+            return { error: result.error, value: result.value };
+        } catch (error) {
+            return { error: new Error('Invalid JSON format for variables') };
+        }
+    };
 
     public requestParamAsUUID = async (request: express.Request, paramName: string): Promise<uuid> => {
         try {

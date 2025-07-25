@@ -40,6 +40,9 @@ export class FormFieldValidator extends BaseValidator {
                 RangeMax: joi.number().optional(),
                 DefaultExpectedUnit: joi.string().optional(),
                 PageBreakAfter: joi.boolean().default(false),
+                SkipLogicId: joi.string().uuid().optional(),
+                CalculateLogicId: joi.string().uuid().optional(),
+                ValidateLogicId: joi.string().uuid().optional(),
             });
 
             await schema.validateAsync(request.body);
@@ -61,6 +64,9 @@ export class FormFieldValidator extends BaseValidator {
                 RangeMax: request.body.RangeMax,
                 DefaultExpectedUnit: request.body.DefaultExpectedUnit,
                 PageBreakAfter: request.body.PageBreakAfter ?? false,
+                SkipLogicId: request.body.SkipLogicId,
+                CalculateLogicId: request.body.CalculateLogicId,
+                ValidateLogicId: request.body.ValidateLogicId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -92,6 +98,9 @@ export class FormFieldValidator extends BaseValidator {
                 RangeMax: joi.number().optional(),
                 DefaultExpectedUnit: joi.string().optional(),
                 PageBreakAfter: joi.boolean().optional(),
+                SkipLogicId: joi.string().uuid().optional(),
+                CalculateLogicId: joi.string().uuid().optional(),
+                ValidateLogicId: joi.string().uuid().optional(),
             });
 
             await schema.validateAsync(request.body);
@@ -110,6 +119,9 @@ export class FormFieldValidator extends BaseValidator {
                 RangeMax: request.body.RangeMax,
                 DefaultExpectedUnit: request.body.DefaultExpectedUnit,
                 PageBreakAfter: request.body.PageBreakAfter,
+                SkipLogicId: request.body.SkipLogicId,
+                CalculateLogicId: request.body.CalculateLogicId,
+                ValidateLogicId: request.body.ValidateLogicId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -131,6 +143,9 @@ export class FormFieldValidator extends BaseValidator {
                 correctAnswer: joi.string().optional(),
                 isRequired: joi.boolean().optional(),
                 defaultExpectedUnit: joi.string().optional(),
+                skipLogicId: joi.string().uuid().optional(),
+                calculateLogicId: joi.string().uuid().optional(),
+                validateLogicId: joi.string().uuid().optional(),
             });
 
             await schema.validateAsync(request.query);
@@ -177,6 +192,15 @@ export class FormFieldValidator extends BaseValidator {
         }
         if (query.defaultExpectedUnit) {
             filters.DefaultExpectedUnit = query.defaultExpectedUnit;
+        }
+        if (query.skipLogicId) {
+            filters.SkipLogicId = query.skipLogicId;
+        }
+        if (query.calculateLogicId) {
+            filters.CalculateLogicId = query.calculateLogicId;
+        }
+        if (query.validateLogicId) {
+            filters.ValidateLogicId = query.validateLogicId;
         }
 
         return filters;

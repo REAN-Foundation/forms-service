@@ -1,4 +1,6 @@
+import { RuleType } from '../../domain.types/enums/rule.enums';
 import { CalculationRuleResponseDto } from '../../domain.types/rules/calculation.rule.domain.types';
+import { OperationMapper } from './base.operation.mapper';
 
 export class CalculationRuleMapper {
     static toDto = (record: any): CalculationRuleResponseDto => {
@@ -10,10 +12,11 @@ export class CalculationRuleMapper {
             id: record.id,
             Name: record.Name,
             Description: record.Description,
-            Priority: record.Priority,
-            IsActive: record.IsActive,
+            Operation: record.Operation ? OperationMapper.toOperationDto(record.Operation as any) : null!,
+            OperationType: record.OperationType,
             ConditionForOperationId: record.ConditionForOperationId,
-            OperationId: record.OperationId,
+            ConditionForOperation: record.ConditionForOperation ? OperationMapper.toOperationDto(record.ConditionForOperation as any) : null!,
+            RuleType: RuleType.Calculation,
             LogicId: record.LogicId,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,

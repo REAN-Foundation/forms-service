@@ -115,7 +115,7 @@ export class IterateOperationController {
     search = async (request: express.Request, response: express.Response) => {
         try {
             const filters: IterateOperationSearchFilters =
-                await this._validator.validateOperationSearchRequest(request);
+                await this._validator.validateIterateOperationSearchRequest(request);
             const searchResults = await this._service.search(filters);
             const message = 'Iterate Operation search completed successfully!';
             ResponseHandler.success(

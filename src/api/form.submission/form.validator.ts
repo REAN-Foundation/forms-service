@@ -8,8 +8,8 @@ import {
     FormSubmissionSearchFilters,
     FormSubmissionUpdateModel,
 } from '../../domain.types/form.submission.domain.types';
-import { FormStatus } from '../../domain.types/form.submission.enums';
-import { FormType } from '../../domain.types/form.template.enums';
+import { FormStatus } from '../../domain.types/enums/form.submission.enums';
+import { FormType } from '../../domain.types/enums/form.template.enums';
 import { TimeUtils } from '../../common/utilities/time.utils';
 import { DurationType } from '../../domain.types/miscellaneous/time.types';
 

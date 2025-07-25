@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { BaseEntity } from '../base.entity';
 import { FormTemplate } from '../form.template/form.template.model';
 import { QuestionResponse } from '../question.response/question.response.model';
-import { FormStatus } from '../../../domain.types/form.submission.enums';
+import { FormStatus } from '../../../domain.types/enums/form.submission.enums';
 
 @Entity('form_submissions')
 export class FormSubmission extends BaseEntity {

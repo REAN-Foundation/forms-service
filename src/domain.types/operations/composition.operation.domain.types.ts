@@ -3,7 +3,7 @@ import {
     BaseOperationResponseDto,
     BaseOperationUpdateModel,
 } from './base.operation.domain.types';
-import { CompositionOperatorType, OperationType } from '../operation.enums';
+import { CompositionOperatorType, OperationType } from '../enums/operation.enums';
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,24 +12,25 @@ import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.sear
 export interface CompositionOperationCreateModel
     extends BaseOperationCreateModel {
     Operator: CompositionOperatorType;
-    Operands: string; // JSON serialized Operand[]
+    Children: string; // JSON serialized Operand[]
 }
 
 export interface CompositionOperationUpdateModel
     extends BaseOperationUpdateModel {
     Operator?: CompositionOperatorType;
-    Operands?: string; // JSON serialized Operand[]
+    Children?: string; // JSON serialized Operand[]
 }
 
 export interface CompositionOperationResponseDto
     extends BaseOperationResponseDto {
+    Type: OperationType.Composition;
     Operator: CompositionOperatorType;
-    Operands: string; // JSON serialized Operand[]
+    Children: string; // JSON serialized Operand[]
 }
 
 export interface CompositionOperationSearchFilters extends BaseSearchFilters {
     Operator?: CompositionOperatorType;
-    Operands?: string; // JSON serialized Operand[]
+    Children?: string; // JSON serialized Operand[]
     Name?: string;
     Description?: string;
     Type?: OperationType;

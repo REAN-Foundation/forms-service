@@ -13,7 +13,7 @@ import { LogicalOperationMapper } from '../mappers/logical.operation.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { OperationType } from '../../domain.types/operation.enums';
+import { OperationType } from '../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

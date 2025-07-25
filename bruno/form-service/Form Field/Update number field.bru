@@ -1,0 +1,23 @@
+meta {
+  name: Update number field
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{BASE_URL}}/form-fields/{{FORM_FIELD_ID}}
+  body: json
+  auth: inherit
+}
+
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "ValidateLogicId":"100dd882-293c-4268-a1f2-02c2a291647d"
+  }
+}

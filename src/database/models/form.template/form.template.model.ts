@@ -7,7 +7,7 @@ import { FormField } from '../form.field/form.field.model';
 import {
     FormType,
     NavigationStrategy,
-} from '../../../domain.types/form.template.enums';
+} from '../../../domain.types/enums/form.template.enums';
 
 @Entity({ name: 'form_templates' })
 export class FormTemplate extends BaseEntity {

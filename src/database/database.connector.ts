@@ -20,7 +20,6 @@ import { SkipLogic } from './models/logic/skip.logic.model';
 import { CalculationRule } from './models/rule/calculation.rule.model';
 import { SkipRule } from './models/rule/skip.rule.model';
 import { ValidationRule } from './models/rule/validation.rule.model';
-
 import { CompositionOperation } from './models/operation/composition.operation.model';
 import { FunctionExpressionOperation } from './models/operation/function.expression.operation.model';
 import { IterateOperation } from './models/operation/iterate.operation.model';

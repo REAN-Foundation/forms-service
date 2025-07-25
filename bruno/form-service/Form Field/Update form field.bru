@@ -1,7 +1,7 @@
 meta {
   name: Update form field
   type: http
-  seq: 4
+  seq: 5
 }
 
 put {
@@ -72,4 +72,4 @@ script:post-response {
       expect(jsonRes.Data.Score).to.equal(10);
       expect(jsonRes.Data.CorrectAnswer).to.equal('Green');
   });
-} 
+}

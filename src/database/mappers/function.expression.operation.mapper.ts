@@ -1,3 +1,4 @@
+import { OperationType } from '../../domain.types/enums/operation.enums';
 import { FunctionExpressionOperationResponseDto } from '../../domain.types/operations/function.expression.operation.domain.types';
 
 export class FunctionExpressionOperationMapper {
@@ -8,12 +9,11 @@ export class FunctionExpressionOperationMapper {
 
         const dto: FunctionExpressionOperationResponseDto = {
             id: record.id,
+            Type: OperationType.FunctionExpression,
             Name: record.Name,
             Description: record.Description,
-            Type: record.Type,
             Expression: record.Expression,
             Variables: record.Variables,
-            ResultDataType: record.ResultDataType,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };

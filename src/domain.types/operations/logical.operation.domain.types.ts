@@ -3,7 +3,7 @@ import {
     BaseOperationResponseDto,
     BaseOperationUpdateModel,
 } from './base.operation.domain.types';
-import { LogicalOperatorType, OperationType } from '../operation.enums';
+import { LogicalOperatorType, OperationType } from '../enums/operation.enums';
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,6 +20,7 @@ export interface LogicalOperationUpdateModel extends BaseOperationUpdateModel {
 }
 
 export interface LogicalOperationResponseDto extends BaseOperationResponseDto {
+    Type: OperationType.Logical;
     Operator: LogicalOperatorType;
     Operands: string; // JSON serialized Operand[]
 }

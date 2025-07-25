@@ -116,7 +116,7 @@ export class FunctionExpressionOperationController {
     search = async (request: express.Request, response: express.Response) => {
         try {
             const filters: FunctionExpressionOperationSearchFilters =
-                await this._validator.validateOperationSearchRequest(request);
+                await this._validator.validateFunctionExpressionOperationSearchRequest(request);
             const searchResults = await this._service.search(filters);
             const message = 'Function Expression Operation search completed successfully!';
             ResponseHandler.success(

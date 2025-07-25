@@ -27,9 +27,8 @@ export class ValidationRuleService extends BaseService {
         const rule = this._validationRuleRepository.create({
             Name: createModel.Name,
             Description: createModel.Description,
-            Priority: createModel.Priority ?? 0,
-            IsActive: createModel.IsActive ?? true,
-            OperationId: createModel.OperationId,
+            OperationType: createModel.OperationType,
+            BaseOperationId: createModel.OperationId,
             ErrorWhenFalse: createModel.ErrorWhenFalse,
             ErrorMessage: createModel.ErrorMessage,
             LogicId: createModel.LogicId,
@@ -47,6 +46,7 @@ export class ValidationRuleService extends BaseService {
                 },
                 relations: {
                     Logic: true,
+                    // Operation: true,
                 }
             });
 
@@ -96,14 +96,11 @@ export class ValidationRuleService extends BaseService {
             if (model.Description != null) {
                 rule.Description = model.Description;
             }
-            if (model.Priority != null) {
-                rule.Priority = model.Priority;
-            }
-            if (model.IsActive != null) {
-                rule.IsActive = model.IsActive;
+            if (model.OperationType != null) {
+                rule.OperationType = model.OperationType;
             }
             if (model.OperationId != null) {
-                rule.OperationId = model.OperationId;
+                rule.BaseOperationId = model.OperationId;
             }
             if (model.ErrorWhenFalse != null) {
                 rule.ErrorWhenFalse = model.ErrorWhenFalse;
@@ -143,7 +140,7 @@ export class ValidationRuleService extends BaseService {
 
         var search: FindManyOptions<ValidationRule> = {
             relations: {
-                Logic: true,
+                // Logic: true,
             },
             where: {
             }
@@ -155,14 +152,11 @@ export class ValidationRuleService extends BaseService {
         if (filters.Description) {
             search.where['Description'] = filters.Description;
         }
-        if (filters.Priority) {
-            search.where['Priority'] = filters.Priority;
-        }
-        if (filters.IsActive != null) {
-            search.where['IsActive'] = filters.IsActive;
+        if (filters.OperationType) {
+            search.where['OperationType'] = filters.OperationType;
         }
         if (filters.OperationId) {
-            search.where['OperationId'] = filters.OperationId;
+            search.where['BaseOperationId'] = filters.OperationId;
         }
         if (filters.LogicId) {
             search.where['LogicId'] = filters.LogicId;

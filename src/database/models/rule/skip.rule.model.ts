@@ -1,9 +1,9 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseRuleEntity } from './base.rule.model';
+import { BaseRule } from './base.rule.model';
 import { SkipLogic } from '../logic/skip.logic.model';
 
 @Entity({ name: 'eval_skip_rules' })
-export class SkipRule extends BaseRuleEntity {
+export class SkipRule extends BaseRule {
     @Column({ type: 'uuid', nullable: false })
     OperationId: string;
 
@@ -13,7 +13,10 @@ export class SkipRule extends BaseRuleEntity {
     @Column({ type: 'uuid', nullable: true })
     LogicId?: string;
 
-    @ManyToOne(() => SkipLogic, { nullable: true })
+    @ManyToOne(() => SkipLogic, skipLogic => skipLogic.Rules, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'LogicId' })
     Logic?: SkipLogic;
+
+    // Note: Operation relationship will be handled at application level
+    // since operations are polymorphic across multiple tables
 }

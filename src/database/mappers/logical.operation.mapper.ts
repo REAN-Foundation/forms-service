@@ -1,7 +1,9 @@
+import { OperationType } from '../../domain.types/enums/operation.enums';
 import { LogicalOperationResponseDto } from '../../domain.types/operations/logical.operation.domain.types';
+import { LogicalOperation } from '../models/operation/logical.operation.model';
 
 export class LogicalOperationMapper {
-    static toDto = (record: any): LogicalOperationResponseDto => {
+    static toDto = (record: LogicalOperation): LogicalOperationResponseDto => {
         if (record === null) {
             return null;
         }
@@ -10,7 +12,7 @@ export class LogicalOperationMapper {
             id: record.id,
             Name: record.Name,
             Description: record.Description,
-            Type: record.Type,
+            Type: OperationType.Logical,
             Operator: record.Operator,
             Operands: record.Operands,
             CreatedAt: record.CreatedAt,

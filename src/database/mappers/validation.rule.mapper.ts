@@ -1,4 +1,6 @@
+import { RuleType } from '../../domain.types/enums/rule.enums';
 import { ValidationRuleResponseDto } from '../../domain.types/rules/validation.rule.domain.types';
+import { OperationMapper } from './base.operation.mapper';
 
 export class ValidationRuleMapper {
     static toDto = (record: any): ValidationRuleResponseDto => {
@@ -10,11 +12,11 @@ export class ValidationRuleMapper {
             id: record.id,
             Name: record.Name,
             Description: record.Description,
-            Priority: record.Priority,
-            IsActive: record.IsActive,
-            OperationId: record.OperationId,
+            Operation: record.Operation ? OperationMapper.toOperationDto(record.Operation as any) : null!,
+            OperationType: record.OperationType,
             ErrorWhenFalse: record.ErrorWhenFalse,
             ErrorMessage: record.ErrorMessage,
+            RuleType: RuleType.Validation,
             LogicId: record.LogicId,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,

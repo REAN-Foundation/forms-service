@@ -11,7 +11,7 @@ import {
 import {
     LogicalOperatorType,
     OperationType,
-} from '../../../domain.types/operation.enums';
+} from '../../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +33,13 @@ export class LogicalOperationValidator extends BaseValidator {
                 Operands: joi.string().required(),
             });
             await schema.validateAsync(request.body);
+
+            // Validate Operands JSON structure
+            const operandsValidation = this.validateSerializedOperands(request.body.Operands);
+            if (operandsValidation.error) {
+                throw new Error(`Invalid Operands structure: ${operandsValidation.error.message}`);
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
@@ -60,10 +67,19 @@ export class LogicalOperationValidator extends BaseValidator {
                 Operands: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
+
+            // Validate Operands JSON structure if provided
+            if (request.body.Operands) {
+                const operandsValidation = this.validateSerializedOperands(request.body.Operands);
+                if (operandsValidation.error) {
+                    throw new Error(`Invalid Operands structure: ${operandsValidation.error.message}`);
+                }
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Type: OperationType.Logical,
+                Type: request.body.Type,
                 Operator: request.body.Operator,
                 Operands: request.body.Operands,
             };
@@ -72,21 +88,24 @@ export class LogicalOperationValidator extends BaseValidator {
         }
     };
 
-    public validateOperationSearchRequest = async (
+    public validateLogicalOperationSearchRequest = async (
         request: express.Request
-    ): Promise<LogicalOperationResponseDto> => {
+    ): Promise<LogicalOperationSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
                 description: joi.string().optional(),
-                operator: joi.string().valid(...Object.values(LogicalOperatorType)).optional(),
+                operator: joi
+                    .string()
+                    .valid(...Object.values(LogicalOperatorType))
+                    .optional(),
                 operands: joi.string().optional(),
                 type: joi.string().valid(OperationType.Logical).optional(),
             });
             await schema.validateAsync(request.query);
-            const baseFilters = await this.validateBaseSearchFilters(request);
             const filters = this.getSearchFilters(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
             return {
                 ...baseFilters,
                 ...filters,
@@ -106,30 +125,29 @@ export class LogicalOperationValidator extends BaseValidator {
 
         const name = query.name ? query.name : null;
         if (name != null) {
-            filters['name'] = name;
+            filters['Name'] = name;
         }
 
         const description = query.description ? query.description : null;
         if (description != null) {
-            filters['description'] = description;
+            filters['Description'] = description;
         }
 
         const operator = query.operator ? query.operator : null;
         if (operator != null) {
-            filters['operator'] = operator;
+            filters['Operator'] = operator;
         }
 
         const operands = query.operands ? query.operands : null;
         if (operands != null) {
-            filters['operands'] = operands;
+            filters['Operands'] = operands;
         }
 
         const type = query.type ? query.type : null;
         if (type != null) {
-            filters['type'] = type;
+            filters['Type'] = type;
         }
 
         return filters;
     };
-    //#endregion
 }

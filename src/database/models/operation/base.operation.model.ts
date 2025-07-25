@@ -1,11 +1,11 @@
 import { Column } from 'typeorm';
 import { BaseEntity } from '../base.entity';
-import { OperationType } from '../../../domain.types/operation.enums';
+import { OperationType } from '../../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-// Base Operation Entity
-export abstract class BaseOperationEntity extends BaseEntity {
+// Base Operation Entity - Abstract class, not a table
+export abstract class BaseOperation extends BaseEntity {
     @Column({ type: 'varchar', length: 255, nullable: true })
     Name?: string;
 

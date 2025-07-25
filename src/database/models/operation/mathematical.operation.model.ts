@@ -1,15 +1,12 @@
 import { Entity, Column } from 'typeorm';
-import { BaseOperationEntity } from './base.operation.model';
-import { MathematicalOperatorType } from '../../../domain.types/operation.enums';
+import { BaseOperation } from './base.operation.model';
+import { MathematicalOperatorType, OperationType } from '../../../domain.types/enums/operation.enums';
 
 @Entity({ name: 'eval_mathematical_operations' })
-export class MathematicalOperation extends BaseOperationEntity {
+export class MathematicalOperation extends BaseOperation {
     @Column({ type: 'varchar', length: 50, nullable: false })
     Operator: MathematicalOperatorType;
 
     @Column({ type: 'text', nullable: false })
     Operands: string; // JSON serialized Operand[]
-
-    @Column({ type: 'text', nullable: false })
-    ResultDataType: string;
 }

@@ -5,6 +5,8 @@ import {
 } from './base.rule.domain.types';
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
 import { uuid } from '../miscellaneous/system.types';
+import { OperationResponseDto } from '../operations/base.operation.domain.types';
+import { OperationType } from '../enums/operation.enums';
 
 // Validation Rule DTOs
 export interface ValidationRuleCreateModel extends BaseRuleCreateModel {
@@ -22,20 +24,10 @@ export interface ValidationRuleUpdateModel extends BaseRuleUpdateModel {
 }
 
 export interface ValidationRuleResponseDto extends BaseRuleResponseDto {
-    OperationId: uuid;
-    ErrorWhenFalse: boolean;
-    ErrorMessage: string;
+    Operation: OperationResponseDto;
+    ErrorWhenFalse?: boolean;
+    ErrorMessage?: string;
     LogicId?: uuid;
-    Operation?: {
-        id: uuid;
-        Name?: string;
-        Description?: string;
-    };
-    Logic?: {
-        id: uuid;
-        Type: string;
-        DefaultSkip?: boolean;
-    };
 }
 
 // Validation Rule Search DTOs
@@ -49,6 +41,7 @@ export interface ValidationRuleSearchFilters extends BaseSearchFilters {
     LogicId?: uuid;
     ErrorWhenFalse?: boolean;
     ErrorMessage?: string;
+    OperationType?: OperationType;
 }
 
 export interface ValidationRuleSearchResults extends BaseSearchResults {

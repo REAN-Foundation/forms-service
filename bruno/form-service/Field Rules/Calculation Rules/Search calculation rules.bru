@@ -23,9 +23,13 @@ params:query {
   order: DESC
   ~name: Price
   ~isActive: true
+  ~operationType: FunctionExpression
 }
 
 script:post-response {
+}
+
+tests {
   test("Request is successful", function () {
     expect(res.getStatus()).to.equal(200);
     var jsonRes = res.getBody();
@@ -53,6 +57,7 @@ script:post-response {
       expect(firstItem).to.have.property('Description');
       expect(firstItem).to.have.property('Priority');
       expect(firstItem).to.have.property('IsActive');
+      expect(firstItem).to.have.property('OperationType');
       expect(firstItem).to.have.property('ConditionForOperationId');
       expect(firstItem).to.have.property('OperationId');
       expect(firstItem).to.have.property('LogicId');

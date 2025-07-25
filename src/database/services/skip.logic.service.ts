@@ -13,7 +13,7 @@ import { SkipLogicMapper } from '../mappers/skip.logic.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { LogicType } from '../../domain.types/logic.enums';
+import { LogicType } from '../../domain.types/enums/logic.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -41,12 +41,74 @@ export class SkipLogicService extends BaseService {
             const logic = await this._skipLogicRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Rules: true,
                 }
             });
+
+            if (!logic) {
+                ErrorHandler.throwNotFoundError('Skip logic not found!');
+            }
 
             return SkipLogicMapper.toDto(logic);
         } catch (error) {
             logger.error(`❌ Error getting skip logic by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getByIdWithRules = async (id: uuid): Promise<SkipLogicResponseDto> => {
+        try {
+            const logic = await this._skipLogicRepository.findOne({
+                where: {
+                    id: id
+                },
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            if (!logic) {
+                ErrorHandler.throwNotFoundError('Skip logic not found!');
+            }
+
+            return SkipLogicMapper.toDto(logic);
+        } catch (error) {
+            logger.error(`❌ Error getting skip logic with rules by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getAllWithRules = async (): Promise<SkipLogicResponseDto[]> => {
+        try {
+            const logics = await this._skipLogicRepository.find({
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            return logics.map(logic => SkipLogicMapper.toDto(logic));
+        } catch (error) {
+            logger.error(`❌ Error getting all skip logics with rules: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getByFieldIdWithRules = async (fieldId: uuid): Promise<SkipLogicResponseDto[]> => {
+        try {
+            const logics = await this._skipLogicRepository.find({
+                where: {
+                    FieldId: fieldId
+                },
+                relations: {
+                    Rules: true,
+                }
+            });
+
+            return logics.map(logic => SkipLogicMapper.toDto(logic));
+        } catch (error) {
+            logger.error(`❌ Error getting skip logics by field id with rules: ${error.message}`);
             ErrorHandler.throwInternalServerError(error.message, error);
         }
     };

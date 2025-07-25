@@ -5,6 +5,7 @@ import {
 } from './base.logic.domain.types';
 import { ValidationRuleResponseDto } from '../rules/validation.rule.domain.types';
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
+import { LogicType } from '../enums/logic.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,8 +19,8 @@ export interface ValidationLogicUpdateModel extends BaseLogicUpdateModel {
 }
 
 export interface ValidationLogicResponseDto extends BaseLogicResponseDto {
-    // Type: LogicType.Validation;
-    Rules?: ValidationRuleResponseDto[];
+    Type: LogicType.Validation;
+    Rules: ValidationRuleResponseDto[];
 }
 
 export interface ValidationLogicSearchFilters extends BaseSearchFilters {

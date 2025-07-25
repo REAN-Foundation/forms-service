@@ -115,7 +115,7 @@ export class CompositionOperationController {
     search = async (request: express.Request, response: express.Response) => {
         try {
             const filters: CompositionOperationSearchFilters =
-                await this._validator.validateOperationSearchRequest(request);
+                await this._validator.validateCompositionOperationSearchRequest(request);
             const searchResults = await this._service.search(filters);
             const message = 'Composition Operation search completed successfully!';
             ResponseHandler.success(

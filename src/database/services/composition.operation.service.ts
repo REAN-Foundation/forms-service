@@ -13,7 +13,7 @@ import { CompositionOperationMapper } from '../mappers/composition.operation.map
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { OperationType } from '../../domain.types/operation.enums';
+import { OperationType } from '../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,7 @@ export class CompositionOperationService extends BaseService {
             Name: createModel.Name,
             Description: createModel.Description,
             Operator: createModel.Operator,
-            Operands: createModel.Operands,
+            Children: createModel.Children,
         });
         const record = await this._compositionOperationRepository.save(operation);
 
@@ -94,8 +94,8 @@ export class CompositionOperationService extends BaseService {
             if (model.Operator != null) {
                 operation.Operator = model.Operator;
             }
-            if (model.Operands != null) {
-                operation.Operands = model.Operands;
+            if (model.Children != null) {
+                operation.Children = model.Children;
             }
             var record = await this._compositionOperationRepository.save(operation);
             return CompositionOperationMapper.toDto(record);
@@ -133,8 +133,8 @@ export class CompositionOperationService extends BaseService {
         if (filters.Operator) {
             search.where['Operator'] = filters.Operator;
         }
-        if (filters.Operands) {
-            search.where['Operands'] = filters.Operands;
+        if (filters.Children) {
+            search.where['Children'] = filters.Children;
         }
         if (filters.Name) {
             search.where['Name'] = filters.Name;

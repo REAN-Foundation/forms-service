@@ -18,11 +18,14 @@ headers {
 
 body:json {
   {
-    "Name": "Total Price Calculation",
-    "Description": "Calculate total price based on quantity and unit price",
-    "ConditionForOperationId": "7c1410d5-47dd-424b-ac85-336e8d2a4d37",
-    "OperationId": "7c1410d5-47dd-424b-ac85-336e8d2a4d37",
-    "LogicId": "15af8cd4-828d-48af-9d21-f4630083f487"
+    "Name": "BMI Calculation Rule",
+    "Description": "Calculate BMI using weight and height fields",
+    "Priority": 1,
+    "IsActive": true,
+    "OperationType": "FunctionExpression",
+    "ConditionForOperationId": "{{LOGICAL_OPERATION_ID}}",
+    "OperationId": "{{FUNCTION_EXPRESSION_OPERATION_ID}}",
+    "LogicId": "{{CALCULATION_LOGIC_ID}}"
   }
 }
 
@@ -34,7 +37,9 @@ script:post-response {
   catch (error) {
     console.log(error.message);
   }
-  
+}
+
+tests {
   test("Request is successful", function () {
     expect(res.getStatus()).to.equal(201);
     var jsonRes = res.getBody();
@@ -45,13 +50,15 @@ script:post-response {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Total Price Calculation');
+    expect(jsonRes.Data.Name).equals('BMI Calculation Rule');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Calculate total price based on quantity and unit price');
+    expect(jsonRes.Data.Description).equals('Calculate BMI using weight and height fields');
     expect(jsonRes.Data).to.have.property('Priority');
     expect(jsonRes.Data.Priority).equals(1);
     expect(jsonRes.Data).to.have.property('IsActive');
     expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('OperationType');
+    expect(jsonRes.Data.OperationType).equals('FunctionExpression');
     expect(jsonRes.Data).to.have.property('ConditionForOperationId');
     expect(jsonRes.Data).to.have.property('OperationId');
     expect(jsonRes.Data).to.have.property('LogicId');

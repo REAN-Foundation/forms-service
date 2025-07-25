@@ -1,3 +1,4 @@
+import { OperationType } from '../../domain.types/enums/operation.enums';
 import { IterateOperationResponseDto } from '../../domain.types/operations/iterate.operation.domain.types';
 
 export class IterateOperationMapper {
@@ -8,13 +9,19 @@ export class IterateOperationMapper {
 
         const dto: IterateOperationResponseDto = {
             id: record.id,
+            Type: OperationType.Iterate,
             Name: record.Name,
             Description: record.Description,
-            Type: record.Type,
-            CollectionField: record.CollectionField,
-            ResultField: record.ResultField,
+            ArrayOperand: record.ArrayOperand,
+            ItemAlias: record.ItemAlias,
             OperationId: record.OperationId,
-            FilterExpression: record.FilterExpression,
+            Operation: record.Operation ? {
+                id: record.Operation.id,
+                Name: record.Operation.Name,
+                Description: record.Operation.Description,
+                CreatedAt: record.Operation.CreatedAt,
+                UpdatedAt: record.Operation.UpdatedAt
+            } : undefined,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };

@@ -1,3 +1,4 @@
+import { OperationType } from '../../domain.types/enums/operation.enums';
 import { MathematicalOperationResponseDto } from '../../domain.types/operations/mathematical.operation.domain.types';
 
 export class MathematicalOperationMapper {
@@ -10,10 +11,9 @@ export class MathematicalOperationMapper {
             id: record.id,
             Name: record.Name,
             Description: record.Description,
-            Type: record.Type,
+            Type: OperationType.Mathematical,
             Operator: record.Operator,
             Operands: record.Operands,
-            ResultDataType: record.ResultDataType,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };

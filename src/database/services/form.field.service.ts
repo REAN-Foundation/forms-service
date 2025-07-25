@@ -40,6 +40,9 @@ export class FormFieldService extends BaseService {
             ImageResourceId: createModel.ImageResourceId,
             RangeMin: createModel.RangeMin,
             RangeMax: createModel.RangeMax,
+            SkipLogicId: createModel.SkipLogicId,
+            CalculateLogicId: createModel.CalculateLogicId,
+            ValidateLogicId: createModel.ValidateLogicId,
         });
         const record = await this._formFieldRepository.save(field);
 
@@ -55,6 +58,15 @@ export class FormFieldService extends BaseService {
                 relations: {
                     ParentFormSection: true,
                     FormTemplate: true,
+                    SkipLogic: {
+                        Rules: true,
+                    },
+                    CalculateLogic: {
+                        Rules: true,
+                    },
+                    ValidateLogic: {
+                        Rules: true,
+                    },
                 }
             });
 
@@ -74,6 +86,9 @@ export class FormFieldService extends BaseService {
                 relations: {
                     ParentFormSection: true,
                     FormTemplate: true,
+                    SkipLogic: true,
+                    CalculateLogic: true,
+                    ValidateLogic: true,
                 }
             });
 
@@ -112,6 +127,13 @@ export class FormFieldService extends BaseService {
             const field = await this._formFieldRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    ParentFormSection: true,
+                    FormTemplate: true,
+                    SkipLogic: true,
+                    CalculateLogic: true,
+                    ValidateLogic: true,
                 }
             });
             if (!field) {
@@ -153,6 +175,16 @@ export class FormFieldService extends BaseService {
             if (model.RangeMax != null) {
                 field.RangeMax = model.RangeMax;
             }
+            if (model.SkipLogicId != null) {
+                field.SkipLogicId = model.SkipLogicId;
+            }
+            if (model.CalculateLogicId != null) {
+                field.CalculateLogicId = model.CalculateLogicId;
+            }
+            if (model.ValidateLogicId != null) {
+                field.ValidateLogicId = model.ValidateLogicId;
+            }
+
             var record = await this._formFieldRepository.save(field);
             return FormFieldMapper.toDto(record);
         } catch (error) {
@@ -166,6 +198,13 @@ export class FormFieldService extends BaseService {
             var record = await this._formFieldRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    ParentFormSection: true,
+                    FormTemplate: true,
+                    SkipLogic: true,
+                    CalculateLogic: true,
+                    ValidateLogic: true,
                 }
             });
             var result = await this._formFieldRepository.remove(record);
@@ -184,6 +223,9 @@ export class FormFieldService extends BaseService {
             relations: {
                 ParentFormSection: true,
                 FormTemplate: true,
+                SkipLogic: true,
+                CalculateLogic: true,
+                ValidateLogic: true,
             },
             where: {
             }
@@ -216,15 +258,15 @@ export class FormFieldService extends BaseService {
         if (filters.IsRequired) {
             search.where['IsRequired'] = filters.IsRequired;
         }
-        // if (filters.ImageResourceId) {
-        //     search.where['ImageResourceId'] = filters.ImageResourceId;
-        // }
-        // if (filters.RangeMin) {
-        //     search.where['RangeMin'] = filters.RangeMin;
-        // }
-        // if (filters.RangeMax) {
-        //     search.where['RangeMax'] = filters.RangeMax;
-        // }
+        if (filters.SkipLogicId) {
+            search.where['SkipLogicId'] = filters.SkipLogicId;
+        }
+        if (filters.CalculateLogicId) {
+            search.where['CalculateLogicId'] = filters.CalculateLogicId;
+        }
+        if (filters.ValidateLogicId) {
+            search.where['ValidateLogicId'] = filters.ValidateLogicId;
+        }
 
         return search;
     };

@@ -1,17 +1,25 @@
 import { Entity, Column } from 'typeorm';
-import { BaseOperationEntity } from './base.operation.model';
+import { BaseOperation } from './base.operation.model';
+import { OperationType } from '../../../domain.types/enums/operation.enums';
 
 @Entity({ name: 'eval_iterate_operations' })
-export class IterateOperation extends BaseOperationEntity {
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    CollectionField: string; // Field name to iterate over
+export class IterateOperation extends BaseOperation {
+    @Column({
+        type: 'text',
+        nullable: false
+    })
+    ArrayOperand!: string; // JSON serialized Operand
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    ResultField: string; // Field name to store result
+    @Column({
+        type: 'varchar',
+        length: 100,
+        nullable: false
+    })
+    ItemAlias!: string;
 
     @Column({ type: 'uuid', nullable: false })
     OperationId: string;
 
-    @Column({ type: 'text', nullable: true })
-    FilterExpression?: string; // Optional filter expression
+    // Note: Operation relationship will be handled at application level
+    // to avoid circular dependency issues
 }

@@ -27,13 +27,13 @@ body:json {
       "CorrectAnswer": "25",
       "IsRequired": true,
       "Hint": "Enter a number between 1 and 120",
-      "QuestionImageUrl": "https://example.com/age-field.jpg",
+  //     "QuestionImageUrl": "https://example.com/age-field.jpg",
       "RangeMin": 1,
       "RangeMax": 120
   }
 }
 
-script:post-response {
+tests {
   test("Request is successful", function () {
       expect(res.getStatus()).to.equal(201);
       var jsonRes = res.getBody();

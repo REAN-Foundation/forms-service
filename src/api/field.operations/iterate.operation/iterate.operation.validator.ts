@@ -8,7 +8,7 @@ import {
     IterateOperationUpdateModel,
     IterateOperationSearchFilters,
 } from '../../../domain.types/operations/iterate.operation.domain.types';
-import { OperationType } from '../../../domain.types/operation.enums';
+import { OperationType } from '../../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,20 +23,27 @@ export class IterateOperationValidator extends BaseValidator {
                 Name: joi.string().optional(),
                 Type: joi.string().valid(OperationType.Iterate).optional(),
                 Description: joi.string().optional(),
-                CollectionField: joi.string().required(),
-                ResultField: joi.string().required(),
+                ItemAlias: joi.string().required(),
                 OperationId: joi.string().uuid().required(),
-                FilterExpression: joi.string().optional(),
+                ArrayOperand: joi.string().optional(), // JSON serialized Operand
             });
             await schema.validateAsync(request.body);
+
+            // Validate ArrayOperand JSON structure if provided
+            if (request.body.ArrayOperand) {
+                const arrayOperandValidation = this.validateSerializedOperand(request.body.ArrayOperand);
+                if (arrayOperandValidation.error) {
+                    throw new Error(`Invalid ArrayOperand structure: ${arrayOperandValidation.error.message}`);
+                }
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Type: OperationType.Iterate, // Always set to Iterate for this operation type
-                CollectionField: request.body.CollectionField,
-                ResultField: request.body.ResultField,
+                Type: OperationType.Iterate,
+                ItemAlias: request.body.ItemAlias,
                 OperationId: request.body.OperationId,
-                FilterExpression: request.body.FilterExpression,
+                ArrayOperand: request.body.ArrayOperand,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -51,47 +58,66 @@ export class IterateOperationValidator extends BaseValidator {
                 Name: joi.string().optional(),
                 Type: joi.string().valid(OperationType.Iterate).optional(),
                 Description: joi.string().optional(),
-                CollectionField: joi.string().optional(),
-                ResultField: joi.string().optional(),
+                ItemAlias: joi.string().optional(),
                 OperationId: joi.string().uuid().optional(),
-                FilterExpression: joi.string().optional(),
+                ArrayOperand: joi.string().optional(), // JSON serialized Operand
             });
             await schema.validateAsync(request.body);
+
+            // Validate ArrayOperand JSON structure if provided
+            if (request.body.ArrayOperand) {
+                const arrayOperandValidation = this.validateSerializedOperand(request.body.ArrayOperand);
+                if (arrayOperandValidation.error) {
+                    throw new Error(`Invalid ArrayOperand structure: ${arrayOperandValidation.error.message}`);
+                }
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                CollectionField: request.body.CollectionField,
-                ResultField: request.body.ResultField,
+                Type: request.body.Type,
+                ItemAlias: request.body.ItemAlias,
                 OperationId: request.body.OperationId,
-                FilterExpression: request.body.FilterExpression,
+                ArrayOperand: request.body.ArrayOperand,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateOperationSearchRequest = async (
+    public validateIterateOperationSearchRequest = async (
         request: express.Request
-    ): Promise<IterateOperationResponseDto> => {
+    ): Promise<IterateOperationSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
                 description: joi.string().optional(),
-                collectionField: joi.string().optional(),
-                resultField: joi.string().optional(),
+                itemAlias: joi.string().optional(),
                 operationId: joi.string().uuid().optional(),
-                filterExpression: joi.string().optional(),
+                arrayOperand: joi.string().optional(),
+                type: joi.string().valid(OperationType.Iterate).optional(),
             });
             await schema.validateAsync(request.query);
-            const baseFilters = await this.validateBaseSearchFilters(request);
             const filters = this.getSearchFilters(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
             return {
                 ...baseFilters,
                 ...filters,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
+        }
+    };
+
+    // Helper method to validate a single operand
+    private validateSerializedOperand = (operandString: string): { error?: Error; value?: any } => {
+        try {
+            const operand = JSON.parse(operandString);
+            const result = BaseValidator.operandSchema.validate(operand);
+            return { error: result.error, value: result.value };
+        } catch (error) {
+            return { error: new Error('Invalid JSON format for operand') };
         }
     };
 
@@ -105,35 +131,34 @@ export class IterateOperationValidator extends BaseValidator {
 
         const name = query.name ? query.name : null;
         if (name != null) {
-            filters['name'] = name;
+            filters['Name'] = name;
         }
 
         const description = query.description ? query.description : null;
         if (description != null) {
-            filters['description'] = description;
+            filters['Description'] = description;
         }
 
-        const collectionField = query.collectionField ? query.collectionField : null;
-        if (collectionField != null) {
-            filters['collectionField'] = collectionField;
-        }
-
-        const resultField = query.resultField ? query.resultField : null;
-        if (resultField != null) {
-            filters['resultField'] = resultField;
+        const itemAlias = query.itemAlias ? query.itemAlias : null;
+        if (itemAlias != null) {
+            filters['ItemAlias'] = itemAlias;
         }
 
         const operationId = query.operationId ? query.operationId : null;
         if (operationId != null) {
-            filters['operationId'] = operationId;
+            filters['OperationId'] = operationId;
         }
 
-        const filterExpression = query.filterExpression ? query.filterExpression : null;
-        if (filterExpression != null) {
-            filters['filterExpression'] = filterExpression;
+        const arrayOperand = query.arrayOperand ? query.arrayOperand : null;
+        if (arrayOperand != null) {
+            filters['ArrayOperand'] = arrayOperand;
+        }
+
+        const type = query.type ? query.type : null;
+        if (type != null) {
+            filters['Type'] = type;
         }
 
         return filters;
     };
-    //#endregion
 }

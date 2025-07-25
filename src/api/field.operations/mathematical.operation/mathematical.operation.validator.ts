@@ -11,7 +11,7 @@ import {
 import {
     MathematicalOperatorType,
     OperationType,
-} from '../../../domain.types/operation.enums';
+} from '../../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,16 +31,21 @@ export class MathematicalOperationValidator extends BaseValidator {
                     .valid(...Object.values(MathematicalOperatorType))
                     .required(),
                 Operands: joi.string().required(),
-                ResultDataType: joi.string().required(),
             });
             await schema.validateAsync(request.body);
+
+            // Validate Operands JSON structure
+            const operandsValidation = this.validateSerializedOperands(request.body.Operands);
+            if (operandsValidation.error) {
+                throw new Error(`Invalid Operands structure: ${operandsValidation.error.message}`);
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Type: OperationType.Mathematical, // Always set to Mathematical for this operation type
+                Type: OperationType.Mathematical,
                 Operator: request.body.Operator,
                 Operands: request.body.Operands,
-                ResultDataType: request.body.ResultDataType,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -60,37 +65,47 @@ export class MathematicalOperationValidator extends BaseValidator {
                     .valid(...Object.values(MathematicalOperatorType))
                     .optional(),
                 Operands: joi.string().optional(),
-                ResultDataType: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
+
+            // Validate Operands JSON structure if provided
+            if (request.body.Operands) {
+                const operandsValidation = this.validateSerializedOperands(request.body.Operands);
+                if (operandsValidation.error) {
+                    throw new Error(`Invalid Operands structure: ${operandsValidation.error.message}`);
+                }
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
+                Type: request.body.Type,
                 Operator: request.body.Operator,
                 Operands: request.body.Operands,
-                ResultDataType: request.body.ResultDataType,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateOperationSearchRequest = async (
+    public validateMathematicalOperationSearchRequest = async (
         request: express.Request
-    ): Promise<MathematicalOperationResponseDto> => {
+    ): Promise<MathematicalOperationSearchFilters> => {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
                 description: joi.string().optional(),
-                operator: joi.string().valid(...Object.values(MathematicalOperatorType)).optional(),
+                operator: joi
+                    .string()
+                    .valid(...Object.values(MathematicalOperatorType))
+                    .optional(),
                 operands: joi.string().optional(),
-                resultDataType: joi.string().optional(),
                 type: joi.string().valid(OperationType.Mathematical).optional(),
             });
             await schema.validateAsync(request.query);
-            const baseFilters = await this.validateBaseSearchFilters(request);
             const filters = this.getSearchFilters(request.query);
+            const baseFilters = await this.validateBaseSearchFilters(request);
             return {
                 ...baseFilters,
                 ...filters,
@@ -110,35 +125,29 @@ export class MathematicalOperationValidator extends BaseValidator {
 
         const name = query.name ? query.name : null;
         if (name != null) {
-            filters['name'] = name;
+            filters['Name'] = name;
         }
 
         const description = query.description ? query.description : null;
         if (description != null) {
-            filters['description'] = description;
+            filters['Description'] = description;
         }
 
         const operator = query.operator ? query.operator : null;
         if (operator != null) {
-            filters['operator'] = operator;
+            filters['Operator'] = operator;
         }
 
         const operands = query.operands ? query.operands : null;
         if (operands != null) {
-            filters['operands'] = operands;
-        }
-
-        const resultDataType = query.resultDataType ? query.resultDataType : null;
-        if (resultDataType != null) {
-            filters['resultDataType'] = resultDataType;
+            filters['Operands'] = operands;
         }
 
         const type = query.type ? query.type : null;
         if (type != null) {
-            filters['type'] = type;
+            filters['Type'] = type;
         }
 
         return filters;
     };
-    //#endregion
 }

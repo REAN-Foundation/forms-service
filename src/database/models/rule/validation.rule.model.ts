@@ -1,11 +1,9 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseRuleEntity } from './base.rule.model';
+import { BaseRule } from './base.rule.model';
 import { ValidationLogic } from '../logic/validation.logic.model';
 
 @Entity({ name: 'eval_validation_rules' })
-export class ValidationRule extends BaseRuleEntity {
-    @Column({ type: 'uuid', nullable: false })
-    OperationId: string;
+export class ValidationRule extends BaseRule {
 
     @Column({ type: 'boolean', nullable: false, default: false })
     ErrorWhenFalse: boolean;
@@ -16,7 +14,7 @@ export class ValidationRule extends BaseRuleEntity {
     @Column({ type: 'uuid', nullable: true })
     LogicId?: string;
 
-    @ManyToOne(() => ValidationLogic, { nullable: true })
+    @ManyToOne(() => ValidationLogic, validationLogic => validationLogic.Rules, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'LogicId' })
     Logic?: ValidationLogic;
 }

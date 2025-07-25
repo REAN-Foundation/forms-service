@@ -27,9 +27,8 @@ export class SkipRuleService extends BaseService {
         const rule = this._skipRuleRepository.create({
             Name: createModel.Name,
             Description: createModel.Description,
-            Priority: createModel.Priority ?? 0,
-            IsActive: createModel.IsActive ?? true,
-            OperationId: createModel.OperationId,
+            OperationType: createModel.OperationType,
+            BaseOperationId: createModel.OperationId,
             SkipWhenTrue: createModel.SkipWhenTrue,
             LogicId: createModel.LogicId,
         });
@@ -45,7 +44,7 @@ export class SkipRuleService extends BaseService {
                     id: id
                 },
                 relations: {
-                    Logic: true,
+                    // Logic: true,
                 }
             });
 
@@ -95,14 +94,11 @@ export class SkipRuleService extends BaseService {
             if (model.Description != null) {
                 rule.Description = model.Description;
             }
-            if (model.Priority != null) {
-                rule.Priority = model.Priority;
-            }
-            if (model.IsActive != null) {
-                rule.IsActive = model.IsActive;
+            if (model.OperationType != null) {
+                rule.OperationType = model.OperationType;
             }
             if (model.OperationId != null) {
-                rule.OperationId = model.OperationId;
+                rule.BaseOperationId = model.OperationId;
             }
             if (model.SkipWhenTrue != null) {
                 rule.SkipWhenTrue = model.SkipWhenTrue;
@@ -139,7 +135,7 @@ export class SkipRuleService extends BaseService {
 
         var search: FindManyOptions<SkipRule> = {
             relations: {
-                Logic: true,
+                // Logic: true,
             },
             where: {
             }
@@ -151,14 +147,11 @@ export class SkipRuleService extends BaseService {
         if (filters.Description) {
             search.where['Description'] = filters.Description;
         }
-        if (filters.Priority) {
-            search.where['Priority'] = filters.Priority;
-        }
-        if (filters.IsActive != null) {
-            search.where['IsActive'] = filters.IsActive;
+        if (filters.OperationType) {
+            search.where['OperationType'] = filters.OperationType;
         }
         if (filters.OperationId) {
-            search.where['OperationId'] = filters.OperationId;
+            search.where['BaseOperationId'] = filters.OperationId;
         }
         if (filters.LogicId) {
             search.where['LogicId'] = filters.LogicId;

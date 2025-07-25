@@ -12,7 +12,7 @@ import {
 } from '../../domain.types/response.domain.types';
 import { QueryResponseType } from '../../domain.types/query.response.types';
 import { FormService } from '../../database/services/form.submission.service';
-import { FormStatus } from '../../domain.types/form.submission.enums';
+import { FormStatus } from '../../domain.types/enums/form.submission.enums';
 import { Injector } from '../../startup/injector';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 

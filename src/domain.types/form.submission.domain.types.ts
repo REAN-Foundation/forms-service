@@ -2,8 +2,8 @@ import {
     BaseSearchFilters,
     BaseSearchResults,
 } from './miscellaneous/base.search.types';
-import { FormStatus } from './form.submission.enums';
-import { FormType } from './form.template.enums';
+import { FormStatus } from './enums/form.submission.enums';
+import { FormType } from './enums/form.template.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

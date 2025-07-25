@@ -6,7 +6,7 @@ import {
     CalculationLogicCreateModel,
     CalculationLogicUpdateModel,
 } from '../../../domain.types/logic/calculation.logic.domain.types';
-import { LogicType } from '../../../domain.types/logic.enums';
+import { LogicType } from '../../../domain.types/enums/logic.enums';
 import { CalculationLogicSearchFilters } from '../../../domain.types/logic/calculation.logic.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,14 +19,12 @@ export class CalculationLogicValidator extends BaseValidator {
     ): Promise<CalculationLogicCreateModel> => {
         try {
             const schema = joi.object({
-                Type: joi.string().valid(LogicType.Calculation).required(),
                 FieldId: joi.string().uuid().required(),
                 Enabled: joi.boolean().optional(),
                 FallbackValue: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
             return {
-                Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled ?? true,
                 FallbackValue: request.body.FallbackValue,
@@ -41,14 +39,12 @@ export class CalculationLogicValidator extends BaseValidator {
     ): Promise<CalculationLogicUpdateModel> => {
         try {
             const schema = joi.object({
-                Type: joi.string().valid(LogicType.Calculation).optional(),
                 FieldId: joi.string().uuid().optional(),
                 Enabled: joi.boolean().optional(),
                 FallbackValue: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
             return {
-                Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled,
                 FallbackValue: request.body.FallbackValue,
@@ -64,9 +60,9 @@ export class CalculationLogicValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
-                type: joi.string().valid(LogicType.Calculation).optional(),
                 fieldId: joi.string().uuid().optional(),
                 enabled: joi.boolean().optional(),
+                fallbackValue: joi.string().optional(),
             });
             await schema.validateAsync(request.query);
             const filters = this.getSearchFilters(request.query);
@@ -83,9 +79,9 @@ export class CalculationLogicValidator extends BaseValidator {
     private getSearchFilters = (query: any): CalculationLogicSearchFilters => {
         var filters: any = {};
 
-        const type = query.type ? query.type : null;
-        if (type != null) {
-            filters['Type'] = type;
+        const id = query.id ? query.id : null;
+        if (id != null) {
+            filters['id'] = id;
         }
 
         const fieldId = query.fieldId ? query.fieldId : null;
@@ -98,8 +94,11 @@ export class CalculationLogicValidator extends BaseValidator {
             filters['Enabled'] = enabled;
         }
 
+        const fallbackValue = query.fallbackValue ? query.fallbackValue : null;
+        if (fallbackValue != null) {
+            filters['FallbackValue'] = fallbackValue;
+        }
+
         return filters;
     };
-
-    //#endregion
 }

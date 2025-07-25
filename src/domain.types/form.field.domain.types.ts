@@ -3,6 +3,12 @@ import {
     BaseSearchFilters,
     BaseSearchResults,
 } from './miscellaneous/base.search.types';
+import { LogicType } from './enums/logic.enums';
+// import { SkipLogicRuleResponseDto } from './rules/skip.logic.rule.domain.types';
+import { CalculationRuleResponseDto } from './rules/calculation.rule.domain.types';
+import { ValidationRuleResponseDto } from './rules/validation.rule.domain.types';
+import { SkipRuleResponseDto } from './rules/skip.rule.domain.types';
+import { RuleType } from './enums/rule.enums';
 
 export interface FormFieldOption {
     Text: string;
@@ -28,6 +34,9 @@ export interface FormFieldCreateModel {
     RangeMax?: number;
     DefaultExpectedUnit?: string;
     PageBreakAfter?: boolean;
+    SkipLogicId?: string;
+    CalculateLogicId?: string;
+    ValidateLogicId?: string;
 }
 
 export interface FormFieldUpdateModel {
@@ -45,6 +54,9 @@ export interface FormFieldUpdateModel {
     RangeMax?: number;
     DefaultExpectedUnit?: string;
     PageBreakAfter?: boolean;
+    SkipLogicId?: string;
+    CalculateLogicId?: string;
+    ValidateLogicId?: string;
 }
 
 export interface FormFieldResponseDto {
@@ -66,6 +78,9 @@ export interface FormFieldResponseDto {
     RangeMax?: number;
     DefaultExpectedUnit?: string;
     PageBreakAfter: boolean;
+    SkipLogicId?: string;
+    CalculateLogicId?: string;
+    ValidateLogicId?: string;
     ParentFormSection?: {
         id: string;
         Title: string;
@@ -89,6 +104,45 @@ export interface FormFieldResponseDto {
     };
     CreatedAt: Date;
     UpdatedAt?: Date;
+    SkipLogic?: {
+        id: string;
+        Type: LogicType;
+        FieldId: string;
+        Enabled: boolean;
+        CreatedAt: Date;
+        Name: string;
+        Description: string;
+        RuleType: RuleType;
+        ErrorWhenFalse: boolean;
+        ErrorMessage: string;
+        Rules: SkipRuleResponseDto[];
+    };
+    CalculateLogic?: {
+        id: string;
+        Type: LogicType;
+        FieldId: string;
+        Enabled: boolean;
+        CreatedAt: Date;
+        Name: string;
+        Description: string;
+        RuleType: RuleType;
+        ErrorWhenFalse: boolean;
+        ErrorMessage: string;
+        Rules: CalculationRuleResponseDto[];
+    };
+    ValidateLogic?: {
+        id: string;
+        Type: LogicType;
+        FieldId: string;
+        Enabled: boolean;
+        CreatedAt: Date;
+        Name: string;
+        Description: string;
+        RuleType: RuleType;
+        ErrorWhenFalse: boolean;
+        ErrorMessage: string;
+        Rules: ValidationRuleResponseDto[];
+    };
 }
 
 export interface FormFieldSearchFilters extends BaseSearchFilters {
@@ -102,6 +156,9 @@ export interface FormFieldSearchFilters extends BaseSearchFilters {
     CorrectAnswer?: string;
     IsRequired?: boolean;
     DefaultExpectedUnit?: string;
+    SkipLogicId?: string;
+    CalculateLogicId?: string;
+    ValidateLogicId?: string;
 }
 
 export interface FormFieldSearchResults extends BaseSearchResults {

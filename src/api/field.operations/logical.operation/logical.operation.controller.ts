@@ -115,7 +115,7 @@ export class LogicalOperationController {
     search = async (request: express.Request, response: express.Response) => {
         try {
             const filters: LogicalOperationSearchFilters =
-                await this._validator.validateOperationSearchRequest(request);
+                await this._validator.validateLogicalOperationSearchRequest(request);
             const searchResults = await this._service.search(filters);
             const message = 'Logical Operation search completed successfully!';
             ResponseHandler.success(

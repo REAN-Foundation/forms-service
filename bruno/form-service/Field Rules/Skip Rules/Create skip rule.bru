@@ -18,13 +18,14 @@ headers {
 
 body:json {
   {
-    "Name": "Age Skip Rule",
-    "Description": "Skip form section if user is under 18",
+    "Name": "Adult Check Skip Rule",
+    "Description": "Skip guardian fields if user is 18 or older",
     "Priority": 1,
     "IsActive": true,
-    "OperationId": "2ad466ac-7f4f-4ee1-8f54-784f2eccf1b9",
+    "OperationType": "Logical",
+    "OperationId": "{{LOGICAL_OPERATION_ID}}",
     "SkipWhenTrue": true,
-    "LogicId": "221a286a-51cb-419d-8a31-4aa0700d43b8"
+    "LogicId": "{{SKIP_LOGIC_ID}}"
   }
 }
 
@@ -36,7 +37,9 @@ script:post-response {
   catch (error) {
     console.log(error.message);
   }
-  
+}
+
+tests {
   test("Request is successful", function () {
     expect(res.getStatus()).to.equal(201);
     var jsonRes = res.getBody();
@@ -47,13 +50,15 @@ script:post-response {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Age Skip Rule');
+    expect(jsonRes.Data.Name).equals('Adult Check Skip Rule');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Skip form section if user is under 18');
+    expect(jsonRes.Data.Description).equals('Skip guardian fields if user is 18 or older');
     expect(jsonRes.Data).to.have.property('Priority');
     expect(jsonRes.Data.Priority).equals(1);
     expect(jsonRes.Data).to.have.property('IsActive');
     expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('OperationType');
+    expect(jsonRes.Data.OperationType).equals('Logical');
     expect(jsonRes.Data).to.have.property('OperationId');
     expect(jsonRes.Data).to.have.property('SkipWhenTrue');
     expect(jsonRes.Data.SkipWhenTrue).equals(true);

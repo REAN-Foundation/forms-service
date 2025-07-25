@@ -8,7 +8,7 @@ import {
     QuestionResponseUpdateModel,
 } from '../../domain.types/response.domain.types';
 import { FormSubmissionDto } from '../../domain.types/form.submission.domain.types';
-import { FormStatus } from '../../domain.types/form.submission.enums';
+import { FormStatus } from '../../domain.types/enums/form.submission.enums';
 import BaseValidator from '../base.validator';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

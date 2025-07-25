@@ -2,6 +2,10 @@ import {
     FormFieldOption,
     FormFieldResponseDto,
 } from '../../domain.types/form.field.domain.types';
+import { ValidationRuleMapper } from './validation.rule.mapper';
+// import { SkipLogicRuleMapper } from './skip.logic.rule.mapper';
+import { CalculationRuleMapper } from './calculation.rule.mapper';
+import { SkipRuleMapper } from './skip.rule.mapper';
 
 export class FormFieldMapper {
     static toDto = (record: any): FormFieldResponseDto => {
@@ -62,7 +66,50 @@ export class FormFieldMapper {
             } : null,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
+            SkipLogicId: record.SkipLogicId,
+            CalculateLogicId: record.CalculateLogicId,
+            ValidateLogicId: record.ValidateLogicId,
+            SkipLogic: record.SkipLogic ? {
+                id: record.SkipLogic.id,
+                Type: record.SkipLogic.Type,
+                FieldId: record.SkipLogic.FieldId,
+                Enabled: record.SkipLogic.Enabled,
+                CreatedAt: record.SkipLogic.CreatedAt,
+                Name: record.SkipLogic.Name,
+                Description: record.SkipLogic.Description,
+                RuleType: record.SkipLogic.RuleType,
+                ErrorWhenFalse: record.SkipLogic.ErrorWhenFalse,
+                ErrorMessage: record.SkipLogic.ErrorMessage,
+                Rules: record.SkipLogic.Rules ? record.SkipLogic.Rules.map(rule => SkipRuleMapper.toDto(rule)) : [],
+            } : null,
+            CalculateLogic: record.CalculateLogic ? {
+                id: record.CalculateLogic.id,
+                Type: record.CalculateLogic.Type,
+                FieldId: record.CalculateLogic.FieldId,
+                Enabled: record.CalculateLogic.Enabled,
+                CreatedAt: record.CalculateLogic.CreatedAt,
+                Name: record.CalculateLogic.Name,
+                Description: record.CalculateLogic.Description,
+                RuleType: record.CalculateLogic.RuleType,
+                ErrorWhenFalse: record.CalculateLogic.ErrorWhenFalse,
+                ErrorMessage: record.CalculateLogic.ErrorMessage,
+                Rules: record.CalculateLogic.Rules ? record.CalculateLogic.Rules.map(rule => CalculationRuleMapper.toDto(rule)) : [],
+            } : null,
+            ValidateLogic: record.ValidateLogic ? {
+                id: record.ValidateLogic.id,
+                Type: record.ValidateLogic.Type,
+                FieldId: record.ValidateLogic.FieldId,
+                Enabled: record.ValidateLogic.Enabled,
+                CreatedAt: record.ValidateLogic.CreatedAt,
+                Name: record.ValidateLogic.Name,
+                Description: record.ValidateLogic.Description,
+                RuleType: record.ValidateLogic.RuleType,
+                ErrorWhenFalse: record.ValidateLogic.ErrorWhenFalse,
+                ErrorMessage: record.ValidateLogic.ErrorMessage,
+                Rules: record.ValidateLogic.Rules ? record.ValidateLogic.Rules.map(rule => ValidationRuleMapper.toDto(rule)) : [],
+            } : null,
         };
+
 
         return dto;
     };

@@ -7,6 +7,7 @@ import {
     CalculationRuleUpdateModel,
     CalculationRuleSearchFilters,
 } from '../../../domain.types/rules/calculation.rule.domain.types';
+import { OperationType } from '../../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -25,8 +26,7 @@ export class CalculationRuleValidator extends BaseValidator {
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
-                Priority: joi.number().integer().min(0).optional(),
-                IsActive: joi.boolean().optional(),
+                OperationType: joi.string().valid(...Object.values(OperationType)).required(),
                 ConditionForOperationId: joi.string().uuid().optional(),
                 OperationId: joi.string().uuid().required(),
                 LogicId: joi.string().uuid().optional(),
@@ -35,8 +35,7 @@ export class CalculationRuleValidator extends BaseValidator {
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Priority: request.body.Priority ?? 0,
-                IsActive: request.body.IsActive ?? true,
+                OperationType: request.body.OperationType,
                 ConditionForOperationId: request.body.ConditionForOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
@@ -53,8 +52,7 @@ export class CalculationRuleValidator extends BaseValidator {
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
-                Priority: joi.number().integer().min(0).optional(),
-                IsActive: joi.boolean().optional(),
+                OperationType: joi.string().valid(...Object.values(OperationType)).optional(),
                 ConditionForOperationId: joi.string().uuid().optional(),
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
@@ -63,8 +61,7 @@ export class CalculationRuleValidator extends BaseValidator {
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Priority: request.body.Priority,
-                IsActive: request.body.IsActive,
+                OperationType: request.body.OperationType,
                 ConditionForOperationId: request.body.ConditionForOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
@@ -82,8 +79,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
                 description: joi.string().optional(),
-                priority: joi.number().integer().min(0).optional(),
-                isActive: joi.boolean().optional(),
+                operationType: joi.string().valid(...Object.values(OperationType)).optional(),
                 operationId: joi.string().uuid().optional(),
                 logicId: joi.string().uuid().optional(),
             });
@@ -108,27 +104,23 @@ export class CalculationRuleValidator extends BaseValidator {
         }
         var name = query.name ? query.name : null;
         if (name != null) {
-            filters['name'] = name;
+            filters['Name'] = name;
         }
         var description = query.description ? query.description : null;
         if (description != null) {
-            filters['description'] = description;
+            filters['Description'] = description;
         }
-        var priority = query.priority ? query.priority : null;
-        if (priority != null) {
-            filters['priority'] = priority;
-        }
-        var isActive = query.isActive ? query.isActive : null;
-        if (isActive != null) {
-            filters['isActive'] = isActive;
+        var operationType = query.operationType ? query.operationType : null;
+        if (operationType != null) {
+            filters['OperationType'] = operationType;
         }
         var operationId = query.operationId ? query.operationId : null;
         if (operationId != null) {
-            filters['operationId'] = operationId;
+            filters['OperationId'] = operationId;
         }
         var logicId = query.logicId ? query.logicId : null;
         if (logicId != null) {
-            filters['logicId'] = logicId;
+            filters['LogicId'] = logicId;
         }
         return filters;
     };

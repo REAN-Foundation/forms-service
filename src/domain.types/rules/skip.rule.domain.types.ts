@@ -5,6 +5,9 @@ import {
 } from './base.rule.domain.types';
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
 import { uuid } from '../miscellaneous/system.types';
+import { OperationResponseDto } from '../operations/base.operation.domain.types';
+import { RuleType } from '../enums/rule.enums';
+import { OperationType } from '../enums/operation.enums';
 
 // Skip Rule DTOs
 export interface SkipRuleCreateModel extends BaseRuleCreateModel {
@@ -20,19 +23,13 @@ export interface SkipRuleUpdateModel extends BaseRuleUpdateModel {
 }
 
 export interface SkipRuleResponseDto extends BaseRuleResponseDto {
+    ConditionForOperationId?: uuid;
+    Operation: OperationResponseDto;
+    ErrorMessage?: string;
+    ErrorWhenFalse?: boolean;
     OperationId: uuid;
     SkipWhenTrue: boolean;
     LogicId?: uuid;
-    Operation?: {
-        id: uuid;
-        Name?: string;
-        Description?: string;
-    };
-    Logic?: {
-        id: uuid;
-        Type: string;
-        DefaultSkip?: boolean;
-    };
 }
 
 // Skip Rule Search DTOs
@@ -45,6 +42,7 @@ export interface SkipRuleSearchFilters extends BaseSearchFilters {
     OperationId?: uuid;
     LogicId?: uuid;
     SkipWhenTrue?: boolean;
+    OperationType?: OperationType;
 }
 
 export interface SkipRuleSearchResults extends BaseSearchResults {

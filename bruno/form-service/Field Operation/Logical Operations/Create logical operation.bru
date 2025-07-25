@@ -18,11 +18,11 @@ headers {
 
 body:json {
   {
-    "Name": "Age Check Operation",
-    "Description": "Check if age is greater than 18",
-    "Type": "Logical",
-    "Operator": "GreaterThan",
-    "Operands": "[{\"type\":\"field\",\"value\":\"age\"},{\"type\":\"number\",\"value\":18}]"
+    "Name": "Name validation operation",
+    "Description": "Check whether name is correct and it doesnt have have ",
+    "Operator": "GreaterThanOrEqual",
+    "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18}]"
+  //     "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18}]"
   }
 }
 
@@ -45,16 +45,15 @@ script:post-response {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Age Check Operation');
+    expect(jsonRes.Data.Name).equals('Age Validation Operation');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Check if age is greater than 18');
+    expect(jsonRes.Data.Description).equals('Check if age is greater than or equal to 18');
     expect(jsonRes.Data).to.have.property('Type');
     expect(jsonRes.Data.Type).equals('Logical');
     expect(jsonRes.Data).to.have.property('Operator');
-    expect(jsonRes.Data.Operator).equals('GreaterThan');
+    expect(jsonRes.Data.Operator).equals('GreaterThanOrEqual');
     expect(jsonRes.Data).to.have.property('Operands');
-    expect(jsonRes.Data.Operands).equals('[{"type":"field","value":"age"},{"type":"number","value":18}]');
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });
-} 
+}

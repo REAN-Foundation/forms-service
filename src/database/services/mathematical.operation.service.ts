@@ -13,7 +13,7 @@ import { MathematicalOperationMapper } from '../mappers/mathematical.operation.m
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { OperationType } from '../../domain.types/operation.enums';
+import { OperationType } from '../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +31,6 @@ export class MathematicalOperationService extends BaseService {
             Description: createModel.Description,
             Operator: createModel.Operator,
             Operands: createModel.Operands,
-            ResultDataType: createModel.ResultDataType,
         });
         const record = await this._mathematicalOperationRepository.save(operation);
 
@@ -98,9 +97,6 @@ export class MathematicalOperationService extends BaseService {
             if (model.Operands != null) {
                 operation.Operands = model.Operands;
             }
-            if (model.ResultDataType != null) {
-                operation.ResultDataType = model.ResultDataType;
-            }
             var record = await this._mathematicalOperationRepository.save(operation);
             return MathematicalOperationMapper.toDto(record);
         } catch (error) {
@@ -139,9 +135,6 @@ export class MathematicalOperationService extends BaseService {
         }
         if (filters.Operands) {
             search.where['Operands'] = filters.Operands;
-        }
-        if (filters.ResultDataType) {
-            search.where['ResultDataType'] = filters.ResultDataType;
         }
         if (filters.Name) {
             search.where['Name'] = filters.Name;

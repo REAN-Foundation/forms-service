@@ -13,7 +13,7 @@ import { FunctionExpressionOperationMapper } from '../mappers/function.expressio
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
-import { OperationType } from '../../domain.types/operation.enums';
+import { OperationType } from '../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +31,6 @@ export class FunctionExpressionOperationService extends BaseService {
             Description: createModel.Description,
             Expression: createModel.Expression,
             Variables: createModel.Variables,
-            ResultDataType: createModel.ResultDataType,
         });
         const record = await this._functionExpressionOperationRepository.save(operation);
 
@@ -98,9 +97,6 @@ export class FunctionExpressionOperationService extends BaseService {
             if (model.Variables != null) {
                 operation.Variables = model.Variables;
             }
-            if (model.ResultDataType != null) {
-                operation.ResultDataType = model.ResultDataType;
-            }
             var record = await this._functionExpressionOperationRepository.save(operation);
             return FunctionExpressionOperationMapper.toDto(record);
         } catch (error) {
@@ -139,9 +135,6 @@ export class FunctionExpressionOperationService extends BaseService {
         }
         if (filters.Variables) {
             search.where['Variables'] = filters.Variables;
-        }
-        if (filters.ResultDataType) {
-            search.where['ResultDataType'] = filters.ResultDataType;
         }
 
         return search;

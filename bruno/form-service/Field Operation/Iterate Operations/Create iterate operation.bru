@@ -18,13 +18,11 @@ headers {
 
 body:json {
   {
-    "Name": "Array Sum Operation",
-    "Description": "Sum all elements in an array",
-    "Type": "Iterate",
-    "CollectionField": "items",
-    "ResultField": "total",
-    "OperationId": "{{MATHEMATICAL_OPERATION_ID}}",
-    "FilterExpression": "item.value > 0"
+    "Name": "Score Validation Operation",
+    "Description": "Check if all scores in array are above threshold",
+    "ItemAlias": "score",
+    "OperationId": "{{LOGICAL_OPERATION_ID}}",
+    "ArrayOperand": "{\"Type\": \"FieldReference\", \"DataType\": \"Array\", \"FieldId\": \"{{SCORES_FIELD_ID}}\"}"
   }
 }
 
@@ -47,19 +45,16 @@ script:post-response {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Array Sum Operation');
+    expect(jsonRes.Data.Name).equals('Score Validation Operation');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Sum all elements in an array');
+    expect(jsonRes.Data.Description).equals('Check if all scores in array are above threshold');
     expect(jsonRes.Data).to.have.property('Type');
     expect(jsonRes.Data.Type).equals('Iterate');
-    expect(jsonRes.Data).to.have.property('CollectionField');
-    expect(jsonRes.Data.CollectionField).equals('items');
-    expect(jsonRes.Data).to.have.property('ResultField');
-    expect(jsonRes.Data.ResultField).equals('total');
+    expect(jsonRes.Data).to.have.property('ItemAlias');
+    expect(jsonRes.Data.ItemAlias).equals('score');
     expect(jsonRes.Data).to.have.property('OperationId');
-    expect(jsonRes.Data.OperationId).equals('5b1410d5-47dd-424b-ac85-336e8d2a4d36');
-    expect(jsonRes.Data).to.have.property('FilterExpression');
-    expect(jsonRes.Data.FilterExpression).equals('item.value > 0');
+    expect(jsonRes.Data).to.have.property('ArrayOperand');
+    expect(jsonRes.Data).to.have.property('Operation');
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });

@@ -6,7 +6,7 @@ import {
     ValidationLogicCreateModel,
     ValidationLogicUpdateModel,
 } from '../../../domain.types/logic/validation.logic.domain.types';
-import { LogicType } from '../../../domain.types/logic.enums';
+import { LogicType } from '../../../domain.types/enums/logic.enums';
 import { ValidationLogicSearchFilters } from '../../../domain.types/logic/validation.logic.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,13 +19,11 @@ export class ValidationLogicValidator extends BaseValidator {
     ): Promise<ValidationLogicCreateModel> => {
         try {
             const schema = joi.object({
-                Type: joi.string().valid(LogicType.Validation).required(),
                 FieldId: joi.string().uuid().required(),
                 Enabled: joi.boolean().optional(),
             });
             await schema.validateAsync(request.body);
             return {
-                Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled ?? true,
             };
@@ -39,13 +37,11 @@ export class ValidationLogicValidator extends BaseValidator {
     ): Promise<ValidationLogicUpdateModel> => {
         try {
             const schema = joi.object({
-                Type: joi.string().valid(LogicType.Validation).optional(),
                 FieldId: joi.string().uuid().optional(),
                 Enabled: joi.boolean().optional(),
             });
             await schema.validateAsync(request.body);
             return {
-                Type: request.body.Type,
                 FieldId: request.body.FieldId,
                 Enabled: request.body.Enabled,
             };
@@ -60,7 +56,6 @@ export class ValidationLogicValidator extends BaseValidator {
         try {
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
-                type: joi.string().valid(LogicType.Validation).optional(),
                 fieldId: joi.string().uuid().optional(),
                 enabled: joi.boolean().optional(),
             });
@@ -84,23 +79,16 @@ export class ValidationLogicValidator extends BaseValidator {
             filters['id'] = id;
         }
 
-        const type = query.type ? query.type : null;
-        if (type != null) {
-            filters['type'] = type;
-        }
-
         const fieldId = query.fieldId ? query.fieldId : null;
         if (fieldId != null) {
-            filters['fieldId'] = fieldId;
+            filters['FieldId'] = fieldId;
         }
 
         const enabled = query.enabled ? query.enabled : null;
         if (enabled != null) {
-            filters['enabled'] = enabled;
+            filters['Enabled'] = enabled;
         }
 
         return filters;
     };
-
-    //#endregion
 }

@@ -5,6 +5,8 @@ import {
 } from './base.rule.domain.types';
 import { BaseSearchFilters, BaseSearchResults } from '../miscellaneous/base.search.types';
 import { uuid } from '../miscellaneous/system.types';
+import { OperationResponseDto } from '../operations/base.operation.domain.types';
+import { OperationType } from '../enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,25 +24,19 @@ export interface CalculationRuleUpdateModel extends BaseRuleUpdateModel {
 }
 
 export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
+    // Operation: OperationResponseDto;
+    // ConditionForOperationId?: uuid;
+    // ConditionForOperation?: OperationResponseDto;
+    // LogicId?: uuid;
+    // ErrorMessage?: string;
+    // ErrorWhenFalse?: boolean;
+    // OperationId: uuid;
+    Operation: OperationResponseDto;
     ConditionForOperationId?: uuid;
-    OperationId: uuid;
+    ConditionForOperation?: OperationResponseDto;
+    ErrorWhenFalse?: boolean;
+    ErrorMessage?: string;
     LogicId?: uuid;
-    ConditionForOperation?: {
-        id: uuid;
-        Name?: string;
-        Description?: string;
-    };
-    Operation?: {
-        id: uuid;
-        Name?: string;
-        Description?: string;
-    };
-    Logic?: {
-        id: uuid;
-        Type: string;
-        DefaultSkip?: boolean;
-        FallbackValue?: string;
-    };
 }
 
 // Calculation Rule Search DTOs
@@ -53,6 +49,7 @@ export interface CalculationRuleSearchFilters extends BaseSearchFilters {
     LogicId?: uuid;
     ValidationRuleId?: uuid;
     SkipRuleId?: uuid;
+    OperationType?: OperationType;
 }
 
 export interface CalculationRuleSearchResults extends BaseSearchResults {

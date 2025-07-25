@@ -1,7 +1,8 @@
 import { Column } from 'typeorm';
 import { BaseEntity } from '../base.entity';
+import { OperationType } from '../../../domain.types/enums/operation.enums';
 
-export abstract class BaseRuleEntity extends BaseEntity {
+export abstract class BaseRule extends BaseEntity {
     @Column({ type: 'varchar', length: 255, nullable: false })
     Name: string;
 
@@ -13,4 +14,10 @@ export abstract class BaseRuleEntity extends BaseEntity {
 
     @Column({ type: 'boolean', nullable: false, default: true })
     IsActive: boolean;
+
+    @Column({ type: 'uuid', nullable: false })
+    BaseOperationId: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    OperationType: OperationType;
 }

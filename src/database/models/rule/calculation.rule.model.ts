@@ -1,9 +1,9 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseRuleEntity } from './base.rule.model';
+import { BaseRule } from './base.rule.model';
 import { CalculationLogic } from '../logic/calculation.logic.model';
 
 @Entity({ name: 'eval_calculation_rules' })
-export class CalculationRule extends BaseRuleEntity {
+export class CalculationRule extends BaseRule {
     @Column({ type: 'uuid', nullable: true })
     ConditionForOperationId?: string;
 
@@ -13,7 +13,10 @@ export class CalculationRule extends BaseRuleEntity {
     @Column({ type: 'uuid', nullable: true })
     LogicId?: string;
 
-    @ManyToOne(() => CalculationLogic, { nullable: true })
+    @ManyToOne(() => CalculationLogic, calculationLogic => calculationLogic.Rules, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'LogicId' })
     Logic?: CalculationLogic;
+
+    // Note: Operation relationships will be handled at application level
+    // since operations are polymorphic across multiple tables
 }

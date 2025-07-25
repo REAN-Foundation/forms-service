@@ -5,7 +5,8 @@ meta {
 }
 
 get {
-  url: {{BASE_URL}}/field-validation-rules/{{VALIDATION_RULE_ID}}
+  url: {{BASE_URL}}/field-validation-rules/cdeacdc1-ba25-48d9-8b15-3e926987eb25
+  body: none
   auth: none
 }
 
@@ -36,4 +37,4 @@ script:post-response {
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });
-} 
+}

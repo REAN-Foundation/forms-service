@@ -10,7 +10,7 @@ import {
 import {
     CompositionOperatorType,
     OperationType,
-} from '../../../domain.types/operation.enums';
+} from '../../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,15 +29,22 @@ export class CompositionOperationValidator extends BaseValidator {
                     .string()
                     .valid(...Object.values(CompositionOperatorType))
                     .required(),
-                Operands: joi.string().required(),
+                Children: joi.string().required(), // JSON string of operation IDs
             });
             await schema.validateAsync(request.body);
+
+            // Validate Children JSON structure
+            const childrenValidation = this.validateChildrenArray(request.body.Children);
+            if (childrenValidation.error) {
+                throw new Error(`Invalid Children structure: ${childrenValidation.error.message}`);
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Type: OperationType.Composition, // Always set to Composition for this operation type
+                Type: OperationType.Composition,
                 Operator: request.body.Operator,
-                Operands: request.body.Operands,
+                Children: request.body.Children,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -56,22 +63,31 @@ export class CompositionOperationValidator extends BaseValidator {
                     .string()
                     .valid(...Object.values(CompositionOperatorType))
                     .optional(),
-                Operands: joi.string().optional(),
+                Children: joi.string().optional(), // JSON string of operation IDs
             });
             await schema.validateAsync(request.body);
+
+            // Validate Children JSON structure if provided
+            if (request.body.Children) {
+                const childrenValidation = this.validateChildrenArray(request.body.Children);
+                if (childrenValidation.error) {
+                    throw new Error(`Invalid Children structure: ${childrenValidation.error.message}`);
+                }
+            }
+
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
-                Type: OperationType.Composition, // Always set to Composition for this operation type
+                Type: request.body.Type,
                 Operator: request.body.Operator,
-                Operands: request.body.Operands,
+                Children: request.body.Children,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
     };
 
-    public validateOperationSearchRequest = async (
+    public validateCompositionOperationSearchRequest = async (
         request: express.Request
     ): Promise<CompositionOperationSearchFilters> => {
         try {
@@ -83,6 +99,7 @@ export class CompositionOperationValidator extends BaseValidator {
                     .string()
                     .valid(...Object.values(CompositionOperatorType))
                     .optional(),
+                children: joi.string().optional(),
                 type: joi.string().valid(OperationType.Composition).optional(),
             });
             await schema.validateAsync(request.query);
@@ -97,6 +114,18 @@ export class CompositionOperationValidator extends BaseValidator {
         }
     };
 
+    // Helper method to validate children array (operation IDs)
+    private validateChildrenArray = (childrenString: string): { error?: Error; value?: any } => {
+        try {
+            const children = JSON.parse(childrenString);
+            const childrenArraySchema = joi.array().items(joi.string().uuid());
+            const result = childrenArraySchema.validate(children);
+            return { error: result.error, value: result.value };
+        } catch (error) {
+            return { error: new Error('Invalid JSON format for children') };
+        }
+    };
+
     private getSearchFilters = (query: any): CompositionOperationSearchFilters => {
         var filters: any = {};
 
@@ -107,26 +136,29 @@ export class CompositionOperationValidator extends BaseValidator {
 
         const name = query.name ? query.name : null;
         if (name != null) {
-            filters['name'] = name;
+            filters['Name'] = name;
         }
 
         const description = query.description ? query.description : null;
         if (description != null) {
-            filters['description'] = description;
+            filters['Description'] = description;
         }
 
         const operator = query.operator ? query.operator : null;
         if (operator != null) {
-            filters['operator'] = operator;
+            filters['Operator'] = operator;
+        }
+
+        const children = query.children ? query.children : null;
+        if (children != null) {
+            filters['Children'] = children;
         }
 
         const type = query.type ? query.type : null;
         if (type != null) {
-            filters['type'] = type;
+            filters['Type'] = type;
         }
 
         return filters;
     };
-
-    //#endregion
 }
