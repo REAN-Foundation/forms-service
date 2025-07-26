@@ -25,6 +25,7 @@ export interface ValidationRuleUpdateModel extends BaseRuleUpdateModel {
 
 export interface ValidationRuleResponseDto extends BaseRuleResponseDto {
     Operation: OperationResponseDto;
+    OperationId: uuid;
     ErrorWhenFalse?: boolean;
     ErrorMessage?: string;
     LogicId?: uuid;

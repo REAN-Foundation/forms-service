@@ -14,6 +14,7 @@ export class ValidationRuleMapper {
             Description: record.Description,
             Operation: record.Operation ? OperationMapper.toOperationDto(record.Operation as any) : null!,
             OperationType: record.OperationType,
+            OperationId: record.BaseOperationId,
             ErrorWhenFalse: record.ErrorWhenFalse,
             ErrorMessage: record.ErrorMessage,
             RuleType: RuleType.Validation,

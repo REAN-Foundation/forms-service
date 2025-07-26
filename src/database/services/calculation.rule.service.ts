@@ -44,7 +44,7 @@ export class CalculationRuleService extends BaseService {
                     id: id
                 },
                 relations: {
-                    // Logic: true,
+                    Logic: true,
                 }
             });
 
@@ -83,6 +83,9 @@ export class CalculationRuleService extends BaseService {
             const rule = await this._calculationRuleRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Logic: true,
                 }
             });
             if (!rule) {
@@ -119,6 +122,9 @@ export class CalculationRuleService extends BaseService {
             var record = await this._calculationRuleRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Logic: true,
                 }
             });
             var result = await this._calculationRuleRepository.remove(record);
@@ -135,7 +141,7 @@ export class CalculationRuleService extends BaseService {
 
         var search: FindManyOptions<CalculationRule> = {
             relations: {
-                // Logic: true,
+                Logic: true,
             },
             where: {
             }

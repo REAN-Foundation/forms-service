@@ -18,11 +18,10 @@ headers {
 
 body:json {
   {
-    "Name": "Name validation operation",
+    "Name": "Age validation operation",
     "Description": "Check whether name is correct and it doesnt have have ",
     "Operator": "GreaterThanOrEqual",
-    "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18}]"
-  //     "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18}]"
+    "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{BASE_AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18}]"
   }
 }
 

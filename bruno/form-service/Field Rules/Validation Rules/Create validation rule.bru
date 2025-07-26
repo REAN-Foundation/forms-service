@@ -18,15 +18,15 @@ headers {
 
 body:json {
   {
-    "Name": "Age Validation Rule",
-    "Description": "Validate that age is between 0 and 150",
+    "Name": "Adult check rule",
+    "Description": "Validate that person is adult",
     "Priority": 1,
     "IsActive": true,
     "OperationType": "Logical",
-    "OperationId": "2a2496eb-3420-492a-973c-7def5a21aeee",
+    "OperationId": "b8a1c0b0-c01c-4659-a5fd-f9f6c2a22457",
   //   "OperationId": "{{LOGICAL_OPERATION_ID}}",
     "ErrorWhenFalse": true,
-    "ErrorMessage": "Age must be between 0 and 150 years",
+    "ErrorMessage": "Check user is adult or not",
   //   "LogicId": "{{VALIDATION_LOGIC_ID}}"
     "LogicId": "100dd882-293c-4268-a1f2-02c2a291647d"
   }
@@ -53,9 +53,9 @@ tests {
     var jsonRes = res.getBody();
     expect(jsonRes.Data).to.have.property('id');
     expect(jsonRes.Data).to.have.property('Name');
-    expect(jsonRes.Data.Name).equals('Age Validation Rule');
+    expect(jsonRes.Data.Name).equals('Adult check rule');
     expect(jsonRes.Data).to.have.property('Description');
-    expect(jsonRes.Data.Description).equals('Validate that age is between 0 and 150');
+    expect(jsonRes.Data.Description).equals('Validate that person is adult');
     expect(jsonRes.Data).to.have.property('Priority');
     expect(jsonRes.Data.Priority).equals(1);
     expect(jsonRes.Data).to.have.property('IsActive');
@@ -63,10 +63,11 @@ tests {
     expect(jsonRes.Data).to.have.property('OperationType');
     expect(jsonRes.Data.OperationType).equals('Logical');
     expect(jsonRes.Data).to.have.property('OperationId');
+    expect(jsonRes.Data.OperationId).equals('b8a1c0b0-c01c-4659-a5fd-f9f6c2a22457');
     expect(jsonRes.Data).to.have.property('ErrorWhenFalse');
     expect(jsonRes.Data.ErrorWhenFalse).equals(true);
     expect(jsonRes.Data).to.have.property('ErrorMessage');
-    expect(jsonRes.Data.ErrorMessage).equals('Age must be between 0 and 150 years');
+    expect(jsonRes.Data.ErrorMessage).equals('Check user is adult or not');
     expect(jsonRes.Data).to.have.property('LogicId');
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');

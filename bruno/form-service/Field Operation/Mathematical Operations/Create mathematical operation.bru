@@ -18,10 +18,10 @@ headers {
 
 body:json {
   {
-    "Name": "Price Calculation Operation",
-    "Description": "Calculate total price including tax",
-    "Operator": "Add",
-    "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{BASE_PRICE_FIELD_ID}}\"}, {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{TAX_AMOUNT_FIELD_ID}}\"}]"
+    "Name": "Age check operation",
+    "Description": "Calculate age is greater that 18 person is adult",
+    "Operator": "GreaterThan",
+    "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{BASE_AGE_FIELD_ID}}\"}]"
   }
 }
 
@@ -55,4 +55,4 @@ script:post-response {
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });
-} 
+}

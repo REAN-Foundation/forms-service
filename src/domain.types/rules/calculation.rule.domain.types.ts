@@ -32,6 +32,7 @@ export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
     // ErrorWhenFalse?: boolean;
     // OperationId: uuid;
     Operation: OperationResponseDto;
+    OperationId: uuid;
     ConditionForOperationId?: uuid;
     ConditionForOperation?: OperationResponseDto;
     ErrorWhenFalse?: boolean;

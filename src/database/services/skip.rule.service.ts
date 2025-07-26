@@ -44,7 +44,7 @@ export class SkipRuleService extends BaseService {
                     id: id
                 },
                 relations: {
-                    // Logic: true,
+                    Logic: true,
                 }
             });
 
@@ -68,7 +68,7 @@ export class SkipRuleService extends BaseService {
                 ItemsPerPage: limit,
                 Order: order === 'DESC' ? 'descending' : 'ascending',
                 OrderedBy: orderByColumn,
-                Items: list.map(x => SkipRuleMapper.toDto(x)) as any    ,
+                Items: list.map(x => SkipRuleMapper.toDto(x)) as any,
             };
             return searchResults;
         } catch (error) {
@@ -83,6 +83,9 @@ export class SkipRuleService extends BaseService {
             const rule = await this._skipRuleRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Logic: true
                 }
             });
             if (!rule) {
@@ -119,6 +122,9 @@ export class SkipRuleService extends BaseService {
             var record = await this._skipRuleRepository.findOne({
                 where: {
                     id: id
+                },
+                relations: {
+                    Logic: true,
                 }
             });
             var result = await this._skipRuleRepository.remove(record);
@@ -135,7 +141,7 @@ export class SkipRuleService extends BaseService {
 
         var search: FindManyOptions<SkipRule> = {
             relations: {
-                // Logic: true,
+                Logic: true,
             },
             where: {
             }

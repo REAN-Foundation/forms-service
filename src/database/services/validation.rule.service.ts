@@ -85,6 +85,9 @@ export class ValidationRuleService extends BaseService {
             const rule = await this._validationRuleRepository.findOne({
                 where: {
                     id: id
+                },
+                relations:{
+                    Logic:true
                 }
             });
             if (!rule) {
@@ -124,6 +127,9 @@ export class ValidationRuleService extends BaseService {
             var record = await this._validationRuleRepository.findOne({
                 where: {
                     id: id
+                },
+                relations:{
+                    Logic:true
                 }
             });
             var result = await this._validationRuleRepository.remove(record);
@@ -139,11 +145,11 @@ export class ValidationRuleService extends BaseService {
     private getSearchModel = (filters: ValidationRuleSearchFilters) => {
 
         var search: FindManyOptions<ValidationRule> = {
-            relations: {
-                // Logic: true,
-            },
             where: {
-            }
+            },
+            relations: {
+                Logic: true,
+            },
         };
 
         if (filters.Name) {

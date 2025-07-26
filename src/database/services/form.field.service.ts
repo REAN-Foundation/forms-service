@@ -1,8 +1,8 @@
 import {
-    FormFieldCreateModel,
     FormFieldResponseDto,
-    FormFieldSearchFilters,
+    FormFieldCreateModel,
     FormFieldUpdateModel,
+    FormFieldSearchFilters,
     FormFieldSearchResults,
 } from '../../domain.types/form.field.domain.types';
 import { BaseService } from './base.service';
@@ -13,6 +13,7 @@ import { FormFieldMapper } from '../mappers/form.field.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,6 +71,10 @@ export class FormFieldService extends BaseService {
                 }
             });
 
+            if (!field) {
+                return null;
+            }
+
             return FormFieldMapper.toDto(field);
         } catch (error) {
             logger.error(`❌ Error getting form field by id: ${error.message}`);
@@ -86,9 +91,15 @@ export class FormFieldService extends BaseService {
                 relations: {
                     ParentFormSection: true,
                     FormTemplate: true,
-                    SkipLogic: true,
-                    CalculateLogic: true,
-                    ValidateLogic: true,
+                    SkipLogic: {
+                        Rules: true,
+                    },
+                    CalculateLogic: {
+                        Rules: true,
+                    },
+                    ValidateLogic: {
+                        Rules: true,
+                    },
                 }
             });
 
@@ -131,9 +142,15 @@ export class FormFieldService extends BaseService {
                 relations: {
                     ParentFormSection: true,
                     FormTemplate: true,
-                    SkipLogic: true,
-                    CalculateLogic: true,
-                    ValidateLogic: true,
+                    SkipLogic: {
+                        Rules: true,
+                    },
+                    CalculateLogic: {
+                        Rules: true,
+                    },
+                    ValidateLogic: {
+                        Rules: true,
+                    },
                 }
             });
             if (!field) {
@@ -202,9 +219,15 @@ export class FormFieldService extends BaseService {
                 relations: {
                     ParentFormSection: true,
                     FormTemplate: true,
-                    SkipLogic: true,
-                    CalculateLogic: true,
-                    ValidateLogic: true,
+                    SkipLogic: {
+                        Rules: true,
+                    },
+                    CalculateLogic: {
+                        Rules: true,
+                    },
+                    ValidateLogic: {
+                        Rules: true,
+                    },
                 }
             });
             var result = await this._formFieldRepository.remove(record);
@@ -223,9 +246,15 @@ export class FormFieldService extends BaseService {
             relations: {
                 ParentFormSection: true,
                 FormTemplate: true,
-                SkipLogic: true,
-                CalculateLogic: true,
-                ValidateLogic: true,
+                SkipLogic: {
+                    Rules: true,
+                },
+                CalculateLogic: {
+                    Rules: true,
+                },
+                ValidateLogic: {
+                    Rules: true,
+                },
             },
             where: {
             }
@@ -270,4 +299,6 @@ export class FormFieldService extends BaseService {
 
         return search;
     };
+
+
 }

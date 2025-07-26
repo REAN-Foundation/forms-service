@@ -14,6 +14,7 @@ export class CalculationRuleMapper {
             Description: record.Description,
             Operation: record.Operation ? OperationMapper.toOperationDto(record.Operation as any) : null!,
             OperationType: record.OperationType,
+            OperationId: record.OperationId || record.BaseOperationId,
             ConditionForOperationId: record.ConditionForOperationId,
             ConditionForOperation: record.ConditionForOperation ? OperationMapper.toOperationDto(record.ConditionForOperation as any) : null!,
             RuleType: RuleType.Calculation,
