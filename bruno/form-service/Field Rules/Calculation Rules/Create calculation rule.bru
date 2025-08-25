@@ -17,15 +17,23 @@ headers {
 }
 
 body:json {
+  // {
+  //   "Name": "BMI Calculation Rule",
+  //   "Description": "Calculate BMI using weight and height fields",
+  //   "Priority": 1,
+  //   "IsActive": true,
+  //   "OperationType": "FunctionExpression",
+  //   "ConditionForOperationId": "{{LOGICAL_OPERATION_ID}}",
+  //   "OperationId": "{{FUNCTION_EXPRESSION_OPERATION_ID}}",
+  //   "LogicId": "{{CALCULATION_LOGIC_ID}}"
+  // }
   {
-    "Name": "BMI Calculation Rule",
-    "Description": "Calculate BMI using weight and height fields",
-    "Priority": 1,
-    "IsActive": true,
+    "Name": "Total Price Calculation",
+    "Description": "Field Calculation-rule Description",
     "OperationType": "FunctionExpression",
-    "ConditionForOperationId": "{{LOGICAL_OPERATION_ID}}",
-    "OperationId": "{{FUNCTION_EXPRESSION_OPERATION_ID}}",
-    "LogicId": "{{CALCULATION_LOGIC_ID}}"
+  //   "ConditionForOperationId": "47e0e1fd-d5e1-4eba-b5fa-31edb8fb24f9",
+    "BaseOperationId": "47e0e1fd-d5e1-4eba-b5fa-31edb8fb24f9",
+    "LogicId": "e08d47f4-eb09-4bda-a6db-a7501ce16b07"
   }
 }
 

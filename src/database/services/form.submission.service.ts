@@ -188,10 +188,15 @@ export class FormService extends BaseService {
         if (filters.UserId) {
             search.where['UserId'] = filters.UserId;
         }
-        if (filters.Status) {
-            search.where['Status'] = filters.Status;
+        if (filters.Encrypted) {
+            search.where['Encrypted'] = filters.Encrypted;
         }
-
+        if (filters.ValidTill) {
+            search.where['ValidTill'] = filters.ValidTill;
+        }
+        if (filters.SubmittedAt) {
+            search.where['SubmittedAt'] = filters.SubmittedAt;
+        }
 
         return search;
     };

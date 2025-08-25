@@ -72,7 +72,6 @@ export class RuleMapper {
         return {
             Name: rule.Name,
             Description: rule.Description,
-            ConditionForOperationId: rule.ConditionForOperation?.id,
             OperationId: rule.Operation.id
         };
     }

@@ -150,7 +150,20 @@ export const generateMathematicalOperation = () => ({
   Description: faker.lorem.sentence(),
   Type: 'Mathematical',
   Operator: 'Add',
-  Operands: JSON.stringify(['field1', 'field2']),
+  Operands: JSON.stringify([
+    {
+      Type: 'FieldReference',
+      DataType: 'Float',
+      FieldId: generateGuid(),
+      FieldCode: 'FIELD_1'
+    },
+    {
+      Type: 'FieldReference',
+      DataType: 'Float',
+      FieldId: generateGuid(),
+      FieldCode: 'FIELD_2'
+    }
+  ]),
   ResultDataType: 'number'
 });
 
@@ -159,7 +172,20 @@ export const generateLogicalOperation = () => ({
   Description: faker.lorem.sentence(),
   Type: 'Logical',
   Operator: 'Equal',
-  Operands: JSON.stringify(['field1', 'field2'])
+  Operands: JSON.stringify([
+    {
+      Type: 'FieldReference',
+      DataType: 'Text',
+      FieldId: generateGuid(),
+      FieldCode: 'FIELD_1'
+    },
+    {
+      Type: 'Constant',
+      DataType: 'Text',
+      Value: 'test_value',
+      FieldCode: 'FIELD_1'
+    }
+  ])
 });
 
 export const generateCompositionOperation = () => ({
@@ -167,7 +193,7 @@ export const generateCompositionOperation = () => ({
   Description: faker.lorem.sentence(),
   Type: 'Composition',
   Operator: 'And',
-  Operands: JSON.stringify(['condition1', 'condition2'])
+  Children: JSON.stringify([generateGuid(), generateGuid()])
 });
 
 export const generateIterateOperation = () => ({
@@ -185,7 +211,26 @@ export const generateFunctionExpressionOperation = () => ({
   Description: faker.lorem.sentence(),
   Type: 'FunctionExpression',
   Expression: 'field1 * field2 + field3',
-  Variables: JSON.stringify({ field1: 'field1', field2: 'field2', field3: 'field3' }),
+  Variables: JSON.stringify({
+    field1: {
+      Type: 'FieldReference',
+      DataType: 'Float',
+      FieldId: generateGuid(),
+      FieldCode: 'FIELD_1'
+    },
+    field2: {
+      Type: 'FieldReference',
+      DataType: 'Float',
+      FieldId: generateGuid(),
+      FieldCode: 'FIELD_2'
+    },
+    field3: {
+      Type: 'FieldReference',
+      DataType: 'Float',
+      FieldId: generateGuid(),
+      FieldCode: 'FIELD_3'
+    }
+  }),
   ResultDataType: 'number'
 });
 

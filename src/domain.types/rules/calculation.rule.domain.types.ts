@@ -12,31 +12,23 @@ import { OperationType } from '../enums/operation.enums';
 
 // Calculation Rule DTOs
 export interface CalculationRuleCreateModel extends BaseRuleCreateModel {
-    ConditionForOperationId?: uuid;
-    OperationId: uuid;
+    BaseOperationId: uuid;
+    OperationId?: uuid;
     LogicId?: uuid;
 }
 
 export interface CalculationRuleUpdateModel extends BaseRuleUpdateModel {
-    ConditionForOperationId?: uuid;
+    BaseOperationId?: uuid;
     OperationId?: uuid;
     LogicId?: uuid;
 }
 
 export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
-    // Operation: OperationResponseDto;
-    // ConditionForOperationId?: uuid;
-    // ConditionForOperation?: OperationResponseDto;
-    // LogicId?: uuid;
-    // ErrorMessage?: string;
-    // ErrorWhenFalse?: boolean;
-    // OperationId: uuid;
     Operation: OperationResponseDto;
-    OperationId: uuid;
-    ConditionForOperationId?: uuid;
-    ConditionForOperation?: OperationResponseDto;
+    BaseOperationId: uuid;
     ErrorWhenFalse?: boolean;
     ErrorMessage?: string;
+    OperationId?: uuid;
     LogicId?: uuid;
 }
 
@@ -46,6 +38,7 @@ export interface CalculationRuleSearchFilters extends BaseSearchFilters {
     Description?: string;
     Priority?: number;
     IsActive?: boolean;
+    BaseOperationId?: uuid;
     OperationId?: uuid;
     LogicId?: uuid;
     ValidationRuleId?: uuid;

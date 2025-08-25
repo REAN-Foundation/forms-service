@@ -17,11 +17,17 @@ headers {
 }
 
 body:json {
+  // {
+  //   "Name": "email validation operation",
+  //   "Description": "Check whether email is correct ",
+  //   "Operator": "Contains",
+  //   "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Text\", \"FieldId\": \"{{BASE_AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Text\", \"Value\": \"gmail.com\"}]"
+  // }
   {
-    "Name": "Age validation operation",
-    "Description": "Check whether name is correct and it doesnt have have ",
-    "Operator": "GreaterThanOrEqual",
-    "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{BASE_AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18}]"
+    "Name": "What is your age? validation operation",
+    "Description": "Check whether what is your age? is correct",
+    "Operator": "LessThan",
+    "Operands": "[{\"Type\":\"FieldReference\",\"DataType\":\"Integer\",\"FieldId\":\"FORMFIELD_#ST2HI3vYucYe2y\"},{\"Type\":\"Constant\",\"DataType\":\"Integer\",\"Value\":\"20\"}]"
   }
 }
 

@@ -28,8 +28,8 @@ export class CalculationRuleService extends BaseService {
             Name: createModel.Name,
             Description: createModel.Description,
             OperationType: createModel.OperationType,
-            ConditionForOperationId: createModel.ConditionForOperationId,
-            BaseOperationId: createModel.OperationId,
+            OperationId: createModel.OperationId,
+            BaseOperationId: createModel.BaseOperationId,
             LogicId: createModel.LogicId,
         });
         const record = await this._calculationRuleRepository.save(rule);
@@ -100,11 +100,11 @@ export class CalculationRuleService extends BaseService {
             if (model.OperationType != null) {
                 rule.OperationType = model.OperationType;
             }
-            if (model.ConditionForOperationId != null) {
-                rule.ConditionForOperationId = model.ConditionForOperationId;
+            if (model.BaseOperationId != null) {
+                rule.BaseOperationId = model.BaseOperationId;
             }
             if (model.OperationId != null) {
-                rule.BaseOperationId = model.OperationId;
+                rule.OperationId = model.OperationId;
             }
             if (model.LogicId != null) {
                 rule.LogicId = model.LogicId;
@@ -156,8 +156,11 @@ export class CalculationRuleService extends BaseService {
         if (filters.OperationType) {
             search.where['OperationType'] = filters.OperationType;
         }
+        if (filters.BaseOperationId) {
+            search.where['BaseOperationId'] = filters.BaseOperationId;
+        }
         if (filters.OperationId) {
-            search.where['BaseOperationId'] = filters.OperationId;
+            search.where['OperationId'] = filters.OperationId;
         }
         if (filters.LogicId) {
             search.where['LogicId'] = filters.LogicId;

@@ -4,9 +4,6 @@ import { CalculationLogic } from '../logic/calculation.logic.model';
 
 @Entity({ name: 'eval_calculation_rules' })
 export class CalculationRule extends BaseRule {
-    @Column({ type: 'uuid', nullable: true })
-    ConditionForOperationId?: string;
-
     @Column({ type: 'uuid', nullable: false })
     OperationId: string;
 

@@ -17,12 +17,13 @@ headers {
 }
 
 body:json {
-  {
-    "Name": "Age and Email Validation",
-    "Description": "Check if user is adult AND has valid email",
-    "Operator": "And",
-    "Children": "[\"{{LOGICAL_OPERATION_ID}}\", \"{{EMAIL_VALIDATION_OPERATION_ID}}\"]"
-  }
+  // {
+  //   "Name": "Age and Email Validation",
+  //   "Description": "Check if user is adult AND has valid email",
+  //   "Operator": "And",
+  //   "Children": "[\"{{LOGICAL_OPERATION_ID}}\", \"{{EMAIL_VALIDATION_OPERATION_ID}}\"]"
+  // }
+  {"Name":"Test rule 1 - Composite validation","Description":"Test rule 1","Operator":"Or","Children":"[]"}
 }
 
 script:post-response {
@@ -55,4 +56,4 @@ script:post-response {
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });
-} 
+}

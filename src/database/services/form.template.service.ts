@@ -14,12 +14,26 @@ import { FormTemplateMapper } from '../mappers/form.template.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
+import { Injector } from '../../startup/injector';
+import { LogicalOperationService } from './logical.operation.service';
+import { MathematicalOperationService } from './mathematical.operation.service';
+import { CompositionOperationService } from './composition.operation.service';
+import { IterateOperationService } from './iterate.operation.service';
+import { FunctionExpressionOperationService } from './function.expression.operation.service';
+import { OperationType } from '../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class FormTemplateService extends BaseService {
 
     _formTemplateRepository: Repository<FormTemplate> = Source.getRepository(FormTemplate);
+
+    // Operation services for expanding composition children
+    _logicalOperationService: LogicalOperationService = Injector.Container.resolve(LogicalOperationService);
+    _mathematicalOperationService: MathematicalOperationService = Injector.Container.resolve(MathematicalOperationService);
+    _compositionOperationService: CompositionOperationService = Injector.Container.resolve(CompositionOperationService);
+    _iterateOperationService: IterateOperationService = Injector.Container.resolve(IterateOperationService);
+    _functionExpressionOperationService: FunctionExpressionOperationService = Injector.Container.resolve(FunctionExpressionOperationService);
 
     // Form Template operations
     public create = async (createModel: FormTemplateCreateModel)
@@ -48,8 +62,30 @@ export class FormTemplateService extends BaseService {
                     id: id
                 },
                 relations: {
-                    FormSections: true,
-                    FormFields: true,
+                    FormSections: {
+                        FormFields: {
+                            SkipLogic: {
+                                Rules: true,
+                            },
+                            CalculateLogic: {
+                                Rules: true,
+                            },
+                            ValidateLogic: {
+                                Rules: true,
+                            },
+                        },
+                    },
+                    FormFields: {
+                        SkipLogic: {
+                            Rules: true,
+                        },
+                        CalculateLogic: {
+                            Rules: true,
+                        },
+                        ValidateLogic: {
+                            Rules: true,
+                        },
+                    },
                     FormSubmissions: true,
                 }
             });
@@ -70,8 +106,18 @@ export class FormTemplateService extends BaseService {
                 },
                 relations: {
                     FormSections: {
-                        FormFields: true,
-                        FormTemplate: true,
+                        FormFields: {
+                            SkipLogic: {
+                                Rules: true,
+                            },
+                            CalculateLogic: {
+                                Rules: true,
+                            },
+                            ValidateLogic: {
+                                Rules: true,
+                            },
+                        },
+                        // FormTemplate: true,
                     },
                 },
                 order: {
@@ -100,6 +146,9 @@ export class FormTemplateService extends BaseService {
 
             const subsections = await this.mapSections(template.FormSections);
             template.FormSections = subsections;
+
+            // Populate operations for all form fields
+            await this.populateFormFieldsOperations(template.FormSections);
 
             return template;
         } catch (error) {
@@ -234,14 +283,38 @@ export class FormTemplateService extends BaseService {
         }
     };
 
+
+
     //#region Privates
 
     private getSearchModel = (filters: FormTemplateSearchFilters) => {
 
         var search: FindManyOptions<FormTemplate> = {
             relations: {
-                FormSections: true,
-                FormFields: true,
+                FormSections: {
+                    FormFields: {
+                        SkipLogic: {
+                            Rules: true,
+                        },
+                        CalculateLogic: {
+                            Rules: true,
+                        },
+                        ValidateLogic: {
+                            Rules: true,
+                        },
+                    },
+                },
+                FormFields: {
+                    SkipLogic: {
+                        Rules: true,
+                    },
+                    CalculateLogic: {
+                        Rules: true,
+                    },
+                    ValidateLogic: {
+                        Rules: true,
+                    },
+                },
                 FormSubmissions: true,
             },
             where: {
@@ -272,4 +345,175 @@ export class FormTemplateService extends BaseService {
 
         return search;
     };
+
+    /**
+     * Helper method to populate operations for all form fields in form sections
+     */
+    private async populateFormFieldsOperations(sections: any[]): Promise<void> {
+        try {
+            for (const section of sections) {
+                // Populate operations for form fields in current section
+                if (section.FormFields && Array.isArray(section.FormFields)) {
+                    for (const formField of section.FormFields) {
+                        await this.populateFormFieldOperations(formField);
+                    }
+                }
+
+                // Recursively populate operations for subsections
+                if (section.Subsections && Array.isArray(section.Subsections)) {
+                    await this.populateFormFieldsOperations(section.Subsections);
+                }
+            }
+        } catch (error) {
+            logger.error(`❌ Error populating form fields operations: ${error.message}`);
+            // Don't throw error, just log it to avoid breaking the main response
+        }
+    }
+
+    /**
+     * Helper method to populate operations for a single form field
+     */
+    private async populateFormFieldOperations(formField: any): Promise<void> {
+        try {
+            // Populate operations for Skip Logic rules
+            if (formField.SkipLogic?.Rules) {
+                for (const rule of formField.SkipLogic.Rules) {
+                    if (rule.OperationType && rule.BaseOperationId) {
+                        rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
+                    }
+                }
+            }
+
+            // Populate operations for Calculate Logic rules
+            if (formField.CalculateLogic?.Rules) {
+                for (const rule of formField.CalculateLogic.Rules) {
+                    if (rule.OperationType && rule.BaseOperationId) {
+                        rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
+                    }
+                }
+            }
+
+            // Populate operations for Validate Logic rules
+            if (formField.ValidateLogic?.Rules) {
+                for (const rule of formField.ValidateLogic.Rules) {
+                    if (rule.OperationType && rule.BaseOperationId) {
+                        rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
+                    }
+                }
+            }
+        } catch (error) {
+            logger.error(`❌ Error populating form field operations: ${error.message}`);
+            // Don't throw error, just log it to avoid breaking the main response
+        }
+    }
+
+    /**
+     * Helper method to fetch operation by type and id
+     */
+    private async getOperationByTypeAndId(operationType: OperationType, operationId: string): Promise<any> {
+        try {
+            switch (operationType) {
+                case OperationType.Logical:
+                    return await this._logicalOperationService.getById(operationId);
+
+                case OperationType.Mathematical:
+                    return await this._mathematicalOperationService.getById(operationId);
+
+                case OperationType.Composition:
+                    const compositionOp = await this._compositionOperationService.getById(operationId);
+                    if (compositionOp && compositionOp.Children) {
+                        // Expand composition operation children from string to array
+                        return await this.getExpandedCompositionOperation(compositionOp);
+                    }
+                    return compositionOp;
+
+                case OperationType.Iterate:
+                    return await this._iterateOperationService.getById(operationId);
+
+                case OperationType.FunctionExpression:
+                    return await this._functionExpressionOperationService.getById(operationId);
+
+                default:
+                    logger.warn(`❌ Unknown operation type: ${operationType}`);
+                    return null;
+            }
+        } catch (error) {
+            logger.error(`❌ Error fetching operation ${operationId} of type ${operationType}: ${error.message}`);
+            return null;
+        }
+    }
+
+    /**
+     * Helper method to get expanded composition operation with children as array
+     */
+    private async getExpandedCompositionOperation(compositionOp: any): Promise<any> {
+        const expandedChildren = await this.expandCompositionChildren(compositionOp.Children);
+        return {
+            ...compositionOp,
+            Children: expandedChildren
+        } as any;
+    }
+
+    /**
+     * Helper method to expand composition operation children from JSON string to array of LogicalOperationResponseDto
+     */
+    private async expandCompositionChildren(childrenString: string): Promise<any[]> {
+        try {
+            if (!childrenString) {
+                return [];
+            }
+
+            const childrenIds = JSON.parse(childrenString);
+            if (!Array.isArray(childrenIds)) {
+                return [];
+            }
+
+            const expandedChildren = [];
+            for (const childId of childrenIds) {
+                try {
+                    // Try to get the operation by ID (we'll need to determine the type)
+                    // For now, we'll try logical operations first since that's what you want
+                    const logicalOp = await this._logicalOperationService.getById(childId);
+                    if (logicalOp) {
+                        expandedChildren.push(logicalOp);
+                    } else {
+                        // If not found as logical operation, try other types
+                        const mathematicalOp = await this._mathematicalOperationService.getById(childId);
+                        if (mathematicalOp) {
+                            expandedChildren.push(mathematicalOp);
+                        } else {
+                            const compositionOp = await this._compositionOperationService.getById(childId);
+                            if (compositionOp) {
+                                // Recursively expand nested composition operations
+                                if (compositionOp.Children) {
+                                    const expandedNestedChildren = await this.expandCompositionChildren(compositionOp.Children);
+                                    compositionOp.Children = expandedNestedChildren as any;
+                                }
+                                expandedChildren.push(compositionOp);
+                            } else {
+                                const iterateOp = await this._iterateOperationService.getById(childId);
+                                if (iterateOp) {
+                                    expandedChildren.push(iterateOp);
+                                } else {
+                                    const functionOp = await this._functionExpressionOperationService.getById(childId);
+                                    if (functionOp) {
+                                        expandedChildren.push(functionOp);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    logger.error(`❌ Error expanding child operation ${childId}: ${error.message}`);
+                }
+            }
+
+            return expandedChildren;
+        } catch (error) {
+            logger.error(`❌ Error expanding composition children: ${error.message}`);
+            return [];
+        }
+    }
+
+    //#endregion
 }

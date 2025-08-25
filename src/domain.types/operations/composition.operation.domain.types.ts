@@ -25,7 +25,14 @@ export interface CompositionOperationResponseDto
     extends BaseOperationResponseDto {
     Type: OperationType.Composition;
     Operator: CompositionOperatorType;
-    Children: string; // JSON serialized Operand[]
+    Children: string; // JSON serialized array of operation IDs
+}
+
+export interface ExpandedCompositionOperationResponseDto
+    extends BaseOperationResponseDto {
+    Type: OperationType.Composition;
+    Operator: CompositionOperatorType;
+    Children: any[]; // Expanded array of operation DTOs
 }
 
 export interface CompositionOperationSearchFilters extends BaseSearchFilters {

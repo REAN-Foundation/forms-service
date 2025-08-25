@@ -23,6 +23,38 @@ body:json {
     "Expression": "weight / (height / 100) ^ 2",
     "Variables": "{\"weight\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{WEIGHT_FIELD_ID}}\"}, \"height\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{HEIGHT_FIELD_ID}}\"}}"
   }
+  
+  {
+                  FieldId: 'monthly-payment',
+                  Name: 'monthly-payment',
+                  Label: 'Monthly Payment',
+                  ResponseType: FieldResponseType.Float,
+                  Required: false,
+                  CalculateLogic:
+                  {
+                      id: 'payment-calculation',
+                      Type: LogicType.Calculation,
+                      FieldId: 'monthly-payment',
+                      Enabled: true,
+                      Rules: [
+                          {
+                              id: 'calculate-payment',
+                              Name: 'Calculate monthly payment',
+                              Operation: {
+                                  id: 'payment-formula',
+                                  Type: OperationType.FunctionExpression,
+                                  Expression: 'P * (r / 1200) / (1 - pow(1 + (r / 1200), -n))',
+                                  Variables: {
+                                      P: { Type: OperandType.FieldReference, DataType: OperandDataType.Float, FieldId: 'loan-amount' },
+                                      r: { Type: OperandType.FieldReference, DataType: OperandDataType.Float, FieldId: 'interest-rate' },
+                                      n: { Type: OperandType.FieldReference, DataType: OperandDataType.Integer, FieldId: 'loan-term' }
+                                  }
+                              }
+                          }
+                      ]
+                  }
+  
+              },
 }
 
 script:post-response {
@@ -55,4 +87,4 @@ script:post-response {
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });
-} 
+}

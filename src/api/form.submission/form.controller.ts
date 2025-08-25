@@ -185,7 +185,7 @@ export class FormController {
             const SubmissionKey =
                 await this._validator.validateSubmitRequest(request);
 
-            const formSubmission = await this._service.search({
+            const formSubmission = await this._service.search({   
                 Encrypted: SubmissionKey,
             });
 

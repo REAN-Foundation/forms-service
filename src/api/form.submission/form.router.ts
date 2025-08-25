@@ -10,6 +10,7 @@ export const register = (app: express.Application): void => {
     const contextBase = 'FormSubmission';
 
     router.get('/search', context(`${contextBase}.Search`), controller.search);
+    router.put('/submit', context(`${contextBase}.Submit`), controller.submit);
     router.post('/', context(`${contextBase}.Create`), controller.create);
     router.put('/:id', context(`${contextBase}.Update`), controller.update);
     router.get('/:id', context(`${contextBase}.GetById`), controller.getById);

@@ -27,8 +27,8 @@ export class CalculationRuleValidator extends BaseValidator {
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
                 OperationType: joi.string().valid(...Object.values(OperationType)).required(),
-                ConditionForOperationId: joi.string().uuid().optional(),
-                OperationId: joi.string().uuid().required(),
+                BaseOperationId: joi.string().uuid().required(),
+                OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
@@ -36,7 +36,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 Name: request.body.Name,
                 Description: request.body.Description,
                 OperationType: request.body.OperationType,
-                ConditionForOperationId: request.body.ConditionForOperationId,
+                BaseOperationId: request.body.BaseOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
             };
@@ -53,7 +53,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
                 OperationType: joi.string().valid(...Object.values(OperationType)).optional(),
-                ConditionForOperationId: joi.string().uuid().optional(),
+                BaseOperationId: joi.string().uuid().optional(),
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
             });
@@ -62,7 +62,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 Name: request.body.Name,
                 Description: request.body.Description,
                 OperationType: request.body.OperationType,
-                ConditionForOperationId: request.body.ConditionForOperationId,
+                BaseOperationId: request.body.BaseOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
             };
@@ -80,6 +80,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 name: joi.string().optional(),
                 description: joi.string().optional(),
                 operationType: joi.string().valid(...Object.values(OperationType)).optional(),
+                baseOperationId: joi.string().uuid().optional(),
                 operationId: joi.string().uuid().optional(),
                 logicId: joi.string().uuid().optional(),
             });
@@ -113,6 +114,10 @@ export class CalculationRuleValidator extends BaseValidator {
         var operationType = query.operationType ? query.operationType : null;
         if (operationType != null) {
             filters['OperationType'] = operationType;
+        }
+        var baseOperationId = query.baseOperationId ? query.baseOperationId : null;
+        if (baseOperationId != null) {
+            filters['BaseOperationId'] = baseOperationId;
         }
         var operationId = query.operationId ? query.operationId : null;
         if (operationId != null) {

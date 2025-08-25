@@ -55,6 +55,7 @@ export interface Operand {
     DataType: OperandDataType;
     Value?: any;
     FieldId?: string;
+    FieldCode?: string;
     FunctionName?: string;
     FunctionArgs?: Operand[];
 }

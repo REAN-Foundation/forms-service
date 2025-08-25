@@ -15,6 +15,7 @@ export default class BaseValidator {
         DataType: joi.string().valid(...Object.values(OperandDataType)).required(),
         Value: joi.any().optional(),
         FieldId: joi.string().uuid().optional(),
+        FieldCode: joi.string().optional(),
         FunctionName: joi.string().optional(),
         FunctionArgs: joi.array().items(joi.link('#operandSchema')).optional(),
     }).id('operandSchema');

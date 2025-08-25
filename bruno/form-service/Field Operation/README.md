@@ -13,7 +13,7 @@ Perform logical comparisons and boolean operations.
   "Name": "Age Validation Operation",
   "Description": "Check if age is greater than or equal to 18",
   "Operator": "GreaterThanOrEqual",
-  "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{AGE_FIELD_ID}}\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18}]"
+  "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Integer\", \"FieldId\": \"{{AGE_FIELD_ID}}\", \"FieldCode\": \"AGE_FIELD\"}, {\"Type\": \"Constant\", \"DataType\": \"Integer\", \"Value\": 18, \"FieldCode\": \"AGE_FIELD\"}]"
 }
 ```
 
@@ -28,7 +28,7 @@ Perform mathematical calculations.
   "Name": "Price Calculation Operation",
   "Description": "Calculate total price including tax",
   "Operator": "Add",
-  "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{BASE_PRICE_FIELD_ID}}\"}, {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{TAX_AMOUNT_FIELD_ID}}\"}]"
+  "Operands": "[{\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{BASE_PRICE_FIELD_ID}}\", \"FieldCode\": \"BASE_PRICE\"}, {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{TAX_AMOUNT_FIELD_ID}}\", \"FieldCode\": \"TAX_AMOUNT\"}]"
 }
 ```
 
@@ -43,7 +43,7 @@ Use mathematical expressions with variables.
   "Name": "BMI Calculation Function",
   "Description": "Calculate BMI using weight and height fields",
   "Expression": "weight / (height / 100) ^ 2",
-  "Variables": "{\"weight\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{WEIGHT_FIELD_ID}}\"}, \"height\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{HEIGHT_FIELD_ID}}\"}}"
+  "Variables": "{\"weight\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{WEIGHT_FIELD_ID}}\", \"FieldCode\": \"WEIGHT\"}, \"height\": {\"Type\": \"FieldReference\", \"DataType\": \"Float\", \"FieldId\": \"{{HEIGHT_FIELD_ID}}\", \"FieldCode\": \"HEIGHT\"}}"
 }
 ```
 
@@ -72,7 +72,7 @@ Perform operations over array values.
   "Description": "Check if all scores in array are above threshold",
   "ItemAlias": "score",
   "OperationId": "{{LOGICAL_OPERATION_ID}}",
-  "ArrayOperand": "{\"Type\": \"FieldReference\", \"DataType\": \"Array\", \"FieldId\": \"{{SCORES_FIELD_ID}}\"}"
+  "ArrayOperand": "{\"Type\": \"FieldReference\", \"DataType\": \"Array\", \"FieldId\": \"{{SCORES_FIELD_ID}}\", \"FieldCode\": \"SCORES\"}"
 }
 ```
 
@@ -86,6 +86,7 @@ Operands follow a standardized structure:
   "DataType": "Float|Integer|Boolean|Text|DateTime|Location|Array|Object|Date",
   "Value": "any", // For Constant operands
   "FieldId": "uuid", // For FieldReference operands
+  "FieldCode": "string", // Display code for the field (optional)
   "FunctionName": "string", // For Function operands
   "FunctionArgs": [] // For Function operands
 }
