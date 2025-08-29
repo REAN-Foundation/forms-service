@@ -61,7 +61,8 @@ export class OperationMapper {
             id: entity.id,
             Type: OperationType.Logical,
             Operator: entity.Operator,
-            Operands: JSON.parse(entity.Operands) as Operand[]
+            Operands: JSON.parse(entity.Operands) as Operand[],
+            ValueDefinition: entity.ValueDefinition
         };
     }
 
@@ -123,7 +124,8 @@ export class OperationMapper {
         return {
             Type: OperationType.Logical,
             Operator: operation.Operator,
-            Operands: JSON.stringify(operation.Operands)
+            Operands: JSON.stringify(operation.Operands),
+            ValueDefinition: operation.ValueDefinition
         };
     }
 

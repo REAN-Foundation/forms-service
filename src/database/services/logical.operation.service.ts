@@ -31,6 +31,7 @@ export class LogicalOperationService extends BaseService {
             Description: createModel.Description,
             Operator: createModel.Operator,
             Operands: createModel.Operands,
+            ValueDefinition: createModel.ValueDefinition,
         });
         const record = await this._logicalOperationRepository.save(operation);
 
@@ -97,6 +98,9 @@ export class LogicalOperationService extends BaseService {
             if (model.Operands != null) {
                 operation.Operands = model.Operands;
             }
+            if (model.ValueDefinition != null) {
+                operation.ValueDefinition = model.ValueDefinition;
+            }
             var record = await this._logicalOperationRepository.save(operation);
             return LogicalOperationMapper.toDto(record);
         } catch (error) {
@@ -135,6 +139,9 @@ export class LogicalOperationService extends BaseService {
         }
         if (filters.Operands) {
             search.where['Operands'] = filters.Operands;
+        }
+        if (filters.ValueDefinition) {
+            search.where['ValueDefinition'] = filters.ValueDefinition;
         }
         if (filters.Name) {
             search.where['Name'] = filters.Name;

@@ -15,6 +15,7 @@ export class LogicalOperationMapper {
             Type: OperationType.Logical,
             Operator: record.Operator,
             Operands: record.Operands,
+            ValueDefinition: record.ValueDefinition,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };

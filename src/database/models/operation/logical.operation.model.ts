@@ -9,4 +9,7 @@ export class LogicalOperation extends BaseOperation {
 
     @Column({ type: 'text', nullable: false })
     Operands: string; // JSON serialized Operand[]
+
+    @Column({ type: 'text', nullable: true })
+    ValueDefinition: string; // JSON serialized descriptor for expression/static value
 }

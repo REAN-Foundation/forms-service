@@ -14,6 +14,9 @@ export class CalculationRule extends BaseRule {
     @JoinColumn({ name: 'LogicId' })
     Logic?: CalculationLogic;
 
+    @Column({ type: 'text', nullable: true })
+    Settings?: string;
+
     // Note: Operation relationships will be handled at application level
     // since operations are polymorphic across multiple tables
 }

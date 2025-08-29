@@ -10,17 +10,28 @@ import { OperationType } from '../enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+export interface CalculationRuleSettings {
+    DecimalPlaces?: number;
+    RoundingMethod?: string;
+    AutoUpdate?: boolean;
+    ShowFormula?: boolean;
+    AllowManualOverride?: boolean;
+    NumberFormat?: string;
+}
+
 // Calculation Rule DTOs
 export interface CalculationRuleCreateModel extends BaseRuleCreateModel {
     BaseOperationId: uuid;
     OperationId?: uuid;
     LogicId?: uuid;
+    Settings?: CalculationRuleSettings;
 }
 
 export interface CalculationRuleUpdateModel extends BaseRuleUpdateModel {
     BaseOperationId?: uuid;
     OperationId?: uuid;
     LogicId?: uuid;
+    Settings?: CalculationRuleSettings;
 }
 
 export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
@@ -30,6 +41,7 @@ export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
     ErrorMessage?: string;
     OperationId?: uuid;
     LogicId?: uuid;
+    Settings?: CalculationRuleSettings;
 }
 
 // Calculation Rule Search DTOs
@@ -44,6 +56,7 @@ export interface CalculationRuleSearchFilters extends BaseSearchFilters {
     ValidationRuleId?: uuid;
     SkipRuleId?: uuid;
     OperationType?: OperationType;
+    Settings?: CalculationRuleSettings;
 }
 
 export interface CalculationRuleSearchResults extends BaseSearchResults {

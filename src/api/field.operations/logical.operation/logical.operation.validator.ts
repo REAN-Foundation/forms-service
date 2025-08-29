@@ -31,6 +31,7 @@ export class LogicalOperationValidator extends BaseValidator {
                     .valid(...Object.values(LogicalOperatorType))
                     .required(),
                 Operands: joi.string().required(),
+                ValueDefinition: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
 
@@ -46,6 +47,7 @@ export class LogicalOperationValidator extends BaseValidator {
                 Type: OperationType.Logical,
                 Operator: request.body.Operator,
                 Operands: request.body.Operands,
+                ValueDefinition: request.body.ValueDefinition,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -65,6 +67,7 @@ export class LogicalOperationValidator extends BaseValidator {
                     .valid(...Object.values(LogicalOperatorType))
                     .optional(),
                 Operands: joi.string().optional(),
+                ValueDefinition: joi.string().optional(),
             });
             await schema.validateAsync(request.body);
 
@@ -82,6 +85,7 @@ export class LogicalOperationValidator extends BaseValidator {
                 Type: request.body.Type,
                 Operator: request.body.Operator,
                 Operands: request.body.Operands,
+                ValueDefinition: request.body.ValueDefinition,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -101,6 +105,7 @@ export class LogicalOperationValidator extends BaseValidator {
                     .valid(...Object.values(LogicalOperatorType))
                     .optional(),
                 operands: joi.string().optional(),
+                valueDefinition: joi.string().optional(),
                 type: joi.string().valid(OperationType.Logical).optional(),
             });
             await schema.validateAsync(request.query);
@@ -141,6 +146,11 @@ export class LogicalOperationValidator extends BaseValidator {
         const operands = query.operands ? query.operands : null;
         if (operands != null) {
             filters['Operands'] = operands;
+        }
+
+        const valueDefinition = query.valueDefinition ? query.valueDefinition : null;
+        if (valueDefinition != null) {
+            filters['ValueDefinition'] = valueDefinition;
         }
 
         const type = query.type ? query.type : null;

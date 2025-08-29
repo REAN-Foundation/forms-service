@@ -31,6 +31,7 @@ export class CalculationRuleService extends BaseService {
             OperationId: createModel.OperationId,
             BaseOperationId: createModel.BaseOperationId,
             LogicId: createModel.LogicId,
+            Settings: createModel.Settings ? JSON.stringify(createModel.Settings) : null,
         });
         const record = await this._calculationRuleRepository.save(rule);
 
@@ -109,6 +110,9 @@ export class CalculationRuleService extends BaseService {
             if (model.LogicId != null) {
                 rule.LogicId = model.LogicId;
             }
+            if (model.Settings != null) {
+                rule.Settings = model.Settings ? JSON.stringify(model.Settings) : null;
+            }
             var record = await this._calculationRuleRepository.save(rule);
             return CalculationRuleMapper.toDto(record);
         } catch (error) {
@@ -164,6 +168,9 @@ export class CalculationRuleService extends BaseService {
         }
         if (filters.LogicId) {
             search.where['LogicId'] = filters.LogicId;
+        }
+        if (filters.Settings) {
+            search.where['Settings'] = JSON.stringify(filters.Settings);
         }
         if (filters.ValidationRuleId) {
             search.where['ValidationRuleId'] = filters.ValidationRuleId;

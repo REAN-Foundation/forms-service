@@ -68,6 +68,7 @@ export interface LogicalOperation extends BaseOperation {
     Type: OperationType.Logical;
     Operator: LogicalOperatorType;
     Operands: Operand[];
+    ValueDefinition?: string;
 }
 
 export interface MathematicalOperation extends BaseOperation {

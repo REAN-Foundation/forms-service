@@ -18,6 +18,7 @@ export class CalculationRuleMapper {
             BaseOperationId: record.BaseOperationId,
             RuleType: RuleType.Calculation,
             LogicId: record.LogicId,
+            Settings: record.Settings ? JSON.parse(record.Settings) : undefined,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };

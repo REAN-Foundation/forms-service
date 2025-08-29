@@ -23,6 +23,15 @@ export class CalculationRuleValidator extends BaseValidator {
         request: express.Request
     ): Promise<CalculationRuleCreateModel> => {
         try {
+            const settingsSchema = joi.object({
+                DecimalPlaces: joi.number().integer().optional(),
+                RoundingMethod: joi.string().optional(),
+                AutoUpdate: joi.boolean().optional(),
+                ShowFormula: joi.boolean().optional(),
+                AllowManualOverride: joi.boolean().optional(),
+                NumberFormat: joi.string().optional(),
+            }).optional();
+
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
@@ -30,6 +39,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 BaseOperationId: joi.string().uuid().required(),
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
+                Settings: settingsSchema,
             });
             await schema.validateAsync(request.body);
             return {
@@ -39,6 +49,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 BaseOperationId: request.body.BaseOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
+                Settings: request.body.Settings,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -49,6 +60,15 @@ export class CalculationRuleValidator extends BaseValidator {
         request: express.Request
     ): Promise<CalculationRuleUpdateModel> => {
         try {
+            const settingsSchema = joi.object({
+                DecimalPlaces: joi.number().integer().optional(),
+                RoundingMethod: joi.string().optional(),
+                AutoUpdate: joi.boolean().optional(),
+                ShowFormula: joi.boolean().optional(),
+                AllowManualOverride: joi.boolean().optional(),
+                NumberFormat: joi.string().optional(),
+            }).optional();
+
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
@@ -56,6 +76,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 BaseOperationId: joi.string().uuid().optional(),
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
+                Settings: settingsSchema,
             });
             await schema.validateAsync(request.body);
             return {
@@ -65,6 +86,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 BaseOperationId: request.body.BaseOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
+                Settings: request.body.Settings,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -75,6 +97,15 @@ export class CalculationRuleValidator extends BaseValidator {
         request: express.Request
     ): Promise<CalculationRuleSearchFilters> => {
         try {
+            const settingsSchema = joi.object({
+                DecimalPlaces: joi.number().integer().optional(),
+                RoundingMethod: joi.string().optional(),
+                AutoUpdate: joi.boolean().optional(),
+                ShowFormula: joi.boolean().optional(),
+                AllowManualOverride: joi.boolean().optional(),
+                NumberFormat: joi.string().optional(),
+            }).optional();
+
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
@@ -83,6 +114,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 baseOperationId: joi.string().uuid().optional(),
                 operationId: joi.string().uuid().optional(),
                 logicId: joi.string().uuid().optional(),
+                settings: settingsSchema,
             });
             await schema.validateAsync(request.query);
             const baseFilters = await this.validateBaseSearchFilters(request);
@@ -126,6 +158,10 @@ export class CalculationRuleValidator extends BaseValidator {
         var logicId = query.logicId ? query.logicId : null;
         if (logicId != null) {
             filters['LogicId'] = logicId;
+        }
+        var settings = query.settings ? query.settings : null;
+        if (settings != null) {
+            filters['Settings'] = settings;
         }
         return filters;
     };
