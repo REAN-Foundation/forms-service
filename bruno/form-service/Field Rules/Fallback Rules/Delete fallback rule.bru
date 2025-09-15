@@ -1,0 +1,30 @@
+meta {
+  name: Delete Fallback Rule
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{BASE_URL}}/field-fallback-rules/{{FALLBACK_RULE_ID}}
+  body: none
+  auth: none
+}
+
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Fallback Rule is deleted successfully", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.equal(true);
+  });
+}

@@ -6,6 +6,8 @@ import {
     CalculationRuleCreateModel,
     CalculationRuleUpdateModel,
     CalculationRuleSearchFilters,
+    OutcomeDataType,
+    RuleOutcomeType,
 } from '../../../domain.types/rules/calculation.rule.domain.types';
 import { OperationType } from '../../../domain.types/enums/operation.enums';
 
@@ -32,6 +34,14 @@ export class CalculationRuleValidator extends BaseValidator {
                 NumberFormat: joi.string().optional(),
             }).optional();
 
+            const ruleOutcomeSchema = joi.object({
+                Type: joi.string().valid(...Object.values(RuleOutcomeType)).required(),
+                StaticValue: joi.any().optional(),
+                DataType: joi.string().valid(...Object.values(OutcomeDataType)).optional(),
+                FunctionExpression: joi.string().optional(),
+                FunctionExpressionId: joi.string().uuid().optional(),
+            }).optional();
+
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
@@ -40,6 +50,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
                 Settings: settingsSchema,
+                RuleOutcome: ruleOutcomeSchema,
             });
             await schema.validateAsync(request.body);
             return {
@@ -50,6 +61,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
                 Settings: request.body.Settings,
+                RuleOutcome: request.body.RuleOutcome,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -69,6 +81,14 @@ export class CalculationRuleValidator extends BaseValidator {
                 NumberFormat: joi.string().optional(),
             }).optional();
 
+            const ruleOutcomeSchema = joi.object({
+                Type: joi.string().valid(...Object.values(RuleOutcomeType)).optional(),
+                StaticValue: joi.any().optional(),
+                DataType: joi.string().valid(...Object.values(OutcomeDataType)).optional(),
+                FunctionExpression: joi.string().optional(),
+                FunctionExpressionId: joi.string().uuid().optional(),
+            }).optional();
+
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
@@ -77,6 +97,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
                 Settings: settingsSchema,
+                RuleOutcome: ruleOutcomeSchema,
             });
             await schema.validateAsync(request.body);
             return {
@@ -87,6 +108,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
                 Settings: request.body.Settings,
+                RuleOutcome: request.body.RuleOutcome,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -106,6 +128,14 @@ export class CalculationRuleValidator extends BaseValidator {
                 NumberFormat: joi.string().optional(),
             }).optional();
 
+            const ruleOutcomeSchema = joi.object({
+                Type: joi.string().valid(...Object.values(RuleOutcomeType)).optional(),
+                StaticValue: joi.any().optional(),
+                DataType: joi.string().valid(...Object.values(OutcomeDataType)).optional(),
+                FunctionExpression: joi.string().optional(),
+                FunctionExpressionId: joi.string().uuid().optional(),
+            }).optional();
+
             const schema = joi.object({
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
@@ -115,6 +145,7 @@ export class CalculationRuleValidator extends BaseValidator {
                 operationId: joi.string().uuid().optional(),
                 logicId: joi.string().uuid().optional(),
                 settings: settingsSchema,
+                ruleOutcome: ruleOutcomeSchema,
             });
             await schema.validateAsync(request.query);
             const baseFilters = await this.validateBaseSearchFilters(request);
@@ -162,6 +193,10 @@ export class CalculationRuleValidator extends BaseValidator {
         var settings = query.settings ? query.settings : null;
         if (settings != null) {
             filters['Settings'] = settings;
+        }
+        var ruleOutcome = query.ruleOutcome ? query.ruleOutcome : null;
+        if (ruleOutcome != null) {
+            filters['RuleOutcome'] = ruleOutcome;
         }
         return filters;
     };

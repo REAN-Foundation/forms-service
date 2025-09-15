@@ -20,6 +20,7 @@ import { register as functionExpressionOperation } from '../api/field.operations
 import { register as skipRule } from '../api/field.rules/skip.rule/skip.rule.router';
 import { register as calculationRule } from '../api/field.rules/calculation.rule/calculation.rule.router';
 import { register as validationRule } from '../api/field.rules/validation.rule/validation.rule.router';
+import { register as fallbackRule } from '../api/field.rules/fallback.rule/fallback.rule.router';
 import { register as inputUnitList } from '../api/input.unit.list/input.unit.list.router';
 
 import { logger } from "../logger/logger";
@@ -126,6 +127,7 @@ export class RouteHandler {
                 skipRule(expressApp);
                 calculationRule(expressApp);
                 validationRule(expressApp);
+                fallbackRule(expressApp);
 
                 resolve(true);
 

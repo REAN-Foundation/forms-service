@@ -1,0 +1,69 @@
+meta {
+  name: Search Fallback Rules
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{BASE_URL}}/field-fallback-rules
+  body: none
+  auth: none
+}
+
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
+params:query {
+  pageIndex: 0
+  limit: 10
+  orderBy: CreatedAt
+  order: DESC
+  Name: 
+  Action: 
+  IsActive: 
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Search results have correct structure", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('TotalCount');
+    expect(jsonRes.Data).to.have.property('RetrievedCount');
+    expect(jsonRes.Data).to.have.property('PageIndex');
+    expect(jsonRes.Data).to.have.property('ItemsPerPage');
+    expect(jsonRes.Data).to.have.property('Order');
+    expect(jsonRes.Data).to.have.property('OrderedBy');
+    expect(jsonRes.Data).to.have.property('Items');
+    expect(jsonRes.Data.Items).to.be.an('array');
+  });
+  
+  test("Fallback Rule items have correct properties", function () {
+    var jsonRes = res.getBody();
+    if (jsonRes.Data.Items.length > 0) {
+      var item = jsonRes.Data.Items[0];
+      expect(item).to.have.property('id');
+      expect(item).to.have.property('Name');
+      expect(item).to.have.property('Description');
+      expect(item).to.have.property('Priority');
+      expect(item).to.have.property('IsActive');
+      expect(item).to.have.property('OperationType');
+      expect(item).to.have.property('BaseOperationId');
+      expect(item).to.have.property('Action');
+      expect(item).to.have.property('ActionValue');
+      expect(item).to.have.property('ActionMessage');
+      expect(item).to.have.property('ActionParameters');
+      expect(item).to.have.property('ExecutionOrder');
+      expect(item).to.have.property('StopOnSuccess');
+      expect(item).to.have.property('CreatedAt');
+      expect(item).to.have.property('UpdatedAt');
+    }
+  });
+}

@@ -1,0 +1,81 @@
+meta {
+  name: Create Fallback Rule
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BASE_URL}}/field-fallback-rules
+  body: json
+  auth: none
+}
+
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "Name": "Default Value Fallback",
+    "Description": "Set default value when validation fails",
+    "Priority": 1,
+    "IsActive": true,
+    "OperationType": "Logical",
+    "BaseOperationId": "{{LOGICAL_OPERATION_ID}}",
+    "Action": "SET_DEFAULT",
+    "ActionValue": "default_value",
+    "ActionMessage": "Setting default value due to validation failure",
+    "ActionParameters": "{\"retryCount\": 3, \"timeout\": 5000}",
+    "ExecutionOrder": 1,
+    "StopOnSuccess": true
+  }
+}
+
+script:post-response {
+  try {
+    var jsonRes = res.getBody();
+    bru.setEnvVar("FALLBACK_RULE_ID", jsonRes.Data.id);
+  }
+  catch (error) {
+    console.log(error.message);
+  }
+}
+
+tests {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(201);
+    var jsonRes = res.getBody();
+    expect(jsonRes.Status).to.eql('Success');
+  });
+  
+  test("Fallback Rule is created with correct properties", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.Data).to.have.property('id');
+    expect(jsonRes.Data).to.have.property('Name');
+    expect(jsonRes.Data.Name).equals('Default Value Fallback');
+    expect(jsonRes.Data).to.have.property('Description');
+    expect(jsonRes.Data.Description).equals('Set default value when validation fails');
+    expect(jsonRes.Data).to.have.property('Priority');
+    expect(jsonRes.Data.Priority).equals(1);
+    expect(jsonRes.Data).to.have.property('IsActive');
+    expect(jsonRes.Data.IsActive).equals(true);
+    expect(jsonRes.Data).to.have.property('OperationType');
+    expect(jsonRes.Data.OperationType).equals('Logical');
+    expect(jsonRes.Data).to.have.property('BaseOperationId');
+    expect(jsonRes.Data).to.have.property('Action');
+    expect(jsonRes.Data.Action).equals('SET_DEFAULT');
+    expect(jsonRes.Data).to.have.property('ActionValue');
+    expect(jsonRes.Data.ActionValue).equals('default_value');
+    expect(jsonRes.Data).to.have.property('ActionMessage');
+    expect(jsonRes.Data.ActionMessage).equals('Setting default value due to validation failure');
+    expect(jsonRes.Data).to.have.property('ActionParameters');
+    expect(jsonRes.Data).to.have.property('ExecutionOrder');
+    expect(jsonRes.Data.ExecutionOrder).equals(1);
+    expect(jsonRes.Data).to.have.property('StopOnSuccess');
+    expect(jsonRes.Data.StopOnSuccess).equals(true);
+    expect(jsonRes.Data).to.have.property('CreatedAt');
+    expect(jsonRes.Data).to.have.property('UpdatedAt');
+  });
+}

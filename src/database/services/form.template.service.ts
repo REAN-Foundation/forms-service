@@ -65,25 +65,37 @@ export class FormTemplateService extends BaseService {
                     FormSections: {
                         FormFields: {
                             SkipLogic: {
-                                Rules: true,
+                                Rules: {
+                                    FallbackRule: true,
+                                },
                             },
                             CalculateLogic: {
-                                Rules: true,
+                                Rules: {
+                                    FallbackRule: true,
+                                },
                             },
                             ValidateLogic: {
-                                Rules: true,
+                                Rules: {
+                                    FallbackRule: true,
+                                },
                             },
                         },
                     },
                     FormFields: {
                         SkipLogic: {
-                            Rules: true,
+                            Rules: {
+                                FallbackRule: true,
+                            },
                         },
                         CalculateLogic: {
-                            Rules: true,
+                            Rules: {
+                                FallbackRule: true,
+                            },
                         },
                         ValidateLogic: {
-                            Rules: true,
+                            Rules: {
+                                FallbackRule: true,
+                            },
                         },
                     },
                     FormSubmissions: true,
@@ -108,13 +120,19 @@ export class FormTemplateService extends BaseService {
                     FormSections: {
                         FormFields: {
                             SkipLogic: {
-                                Rules: true,
+                                Rules: {
+                                    FallbackRule: true,
+                                },
                             },
                             CalculateLogic: {
-                                Rules: true,
+                                Rules: {
+                                    FallbackRule: true,
+                                },
                             },
                             ValidateLogic: {
-                                Rules: true,
+                                Rules: {
+                                    FallbackRule: true,
+                                },
                             },
                         },
                         // FormTemplate: true,
@@ -294,25 +312,37 @@ export class FormTemplateService extends BaseService {
                 FormSections: {
                     FormFields: {
                         SkipLogic: {
-                            Rules: true,
+                            Rules: {
+                                FallbackRule: true,
+                            },
                         },
                         CalculateLogic: {
-                            Rules: true,
+                            Rules: {
+                                FallbackRule: true,
+                            },
                         },
                         ValidateLogic: {
-                            Rules: true,
+                            Rules: {
+                                FallbackRule: true,
+                            },
                         },
                     },
                 },
                 FormFields: {
                     SkipLogic: {
-                        Rules: true,
+                        Rules: {
+                            FallbackRule: true,
+                        },
                     },
                     CalculateLogic: {
-                        Rules: true,
+                        Rules: {
+                            FallbackRule: true,
+                        },
                     },
                     ValidateLogic: {
-                        Rules: true,
+                        Rules: {
+                            FallbackRule: true,
+                        },
                     },
                 },
                 FormSubmissions: true,
@@ -381,6 +411,10 @@ export class FormTemplateService extends BaseService {
                     if (rule.OperationType && rule.BaseOperationId) {
                         rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
                     }
+                    // Populate fallback rule operation if exists
+                    if (rule.FallbackRule?.OperationType && rule.FallbackRule?.BaseOperationId) {
+                        rule.FallbackRule.Operation = await this.getOperationByTypeAndId(rule.FallbackRule.OperationType, rule.FallbackRule.BaseOperationId);
+                    }
                 }
             }
 
@@ -390,6 +424,10 @@ export class FormTemplateService extends BaseService {
                     if (rule.OperationType && rule.BaseOperationId) {
                         rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
                     }
+                    // Populate fallback rule operation if exists
+                    if (rule.FallbackRule?.OperationType && rule.FallbackRule?.BaseOperationId) {
+                        rule.FallbackRule.Operation = await this.getOperationByTypeAndId(rule.FallbackRule.OperationType, rule.FallbackRule.BaseOperationId);
+                    }
                 }
             }
 
@@ -398,6 +436,10 @@ export class FormTemplateService extends BaseService {
                 for (const rule of formField.ValidateLogic.Rules) {
                     if (rule.OperationType && rule.BaseOperationId) {
                         rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
+                    }
+                    // Populate fallback rule operation if exists
+                    if (rule.FallbackRule?.OperationType && rule.FallbackRule?.BaseOperationId) {
+                        rule.FallbackRule.Operation = await this.getOperationByTypeAndId(rule.FallbackRule.OperationType, rule.FallbackRule.BaseOperationId);
                     }
                 }
             }

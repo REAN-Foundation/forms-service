@@ -15,7 +15,8 @@
         "format:check": "prettier --check ./src/**/*.ts",
         "format:json": "prettier --write *.json",
         "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' ./src/index.ts",
-        "docs": "node serve-docs.js"
+        "docs": "node serve-docs.js",
+        "test:unit": "mocha --require ts-node/register --timeout 20000 \"tests/unit/**/*.test.ts\""
     },
     "repository": {
         "type": "git",

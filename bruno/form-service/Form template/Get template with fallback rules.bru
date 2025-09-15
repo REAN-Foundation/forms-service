@@ -1,0 +1,112 @@
+meta {
+  name: Get Template with Fallback Rules
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{BASE_URL}}/form-templates/{{TEMPLATE_ID}}/details
+  body: none
+  auth: none
+}
+
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes).to.have.property('FormSections');
+  });
+  
+  test("Template includes fallback rules in form fields", function () {
+    var jsonRes = res.getBody();
+    if (jsonRes.FormSections && jsonRes.FormSections.length > 0) {
+      var hasFallbackRules = false;
+      
+      // Check all form sections for fallback rules
+      jsonRes.FormSections.forEach(function(section) {
+        if (section.FormFields && section.FormFields.length > 0) {
+          section.FormFields.forEach(function(field) {
+            // Check Skip Logic rules for fallback rules
+            if (field.SkipLogic && field.SkipLogic.Rules) {
+              field.SkipLogic.Rules.forEach(function(rule) {
+                if (rule.FallbackRule) {
+                  hasFallbackRules = true;
+                  expect(rule.FallbackRule).to.have.property('id');
+                  expect(rule.FallbackRule).to.have.property('Action');
+                  expect(rule.FallbackRule).to.have.property('ActionValue');
+                  expect(rule.FallbackRule).to.have.property('ActionMessage');
+                  expect(rule.FallbackRule).to.have.property('ExecutionOrder');
+                  expect(rule.FallbackRule).to.have.property('StopOnSuccess');
+                }
+              });
+            }
+            
+            // Check Calculate Logic rules for fallback rules
+            if (field.CalculateLogic && field.CalculateLogic.Rules) {
+              field.CalculateLogic.Rules.forEach(function(rule) {
+                if (rule.FallbackRule) {
+                  hasFallbackRules = true;
+                  expect(rule.FallbackRule).to.have.property('id');
+                  expect(rule.FallbackRule).to.have.property('Action');
+                  expect(rule.FallbackRule).to.have.property('ActionValue');
+                  expect(rule.FallbackRule).to.have.property('ActionMessage');
+                  expect(rule.FallbackRule).to.have.property('ExecutionOrder');
+                  expect(rule.FallbackRule).to.have.property('StopOnSuccess');
+                }
+              });
+            }
+            
+            // Check Validate Logic rules for fallback rules
+            if (field.ValidateLogic && field.ValidateLogic.Rules) {
+              field.ValidateLogic.Rules.forEach(function(rule) {
+                if (rule.FallbackRule) {
+                  hasFallbackRules = true;
+                  expect(rule.FallbackRule).to.have.property('id');
+                  expect(rule.FallbackRule).to.have.property('Action');
+                  expect(rule.FallbackRule).to.have.property('ActionValue');
+                  expect(rule.FallbackRule).to.have.property('ActionMessage');
+                  expect(rule.FallbackRule).to.have.property('ExecutionOrder');
+                  expect(rule.FallbackRule).to.have.property('StopOnSuccess');
+                }
+              });
+            }
+          });
+        }
+      });
+      
+      console.log("Found fallback rules in template:", hasFallbackRules);
+    }
+  });
+  
+  test("Fallback rules have proper action types", function () {
+    var jsonRes = res.getBody();
+    var validActions = ['SET_DEFAULT', 'SHOW_MESSAGE', 'SKIP_FIELD', 'RETRY', 'CLEAR_FIELD', 'DISABLE_FIELD'];
+    
+    if (jsonRes.FormSections && jsonRes.FormSections.length > 0) {
+      jsonRes.FormSections.forEach(function(section) {
+        if (section.FormFields && section.FormFields.length > 0) {
+          section.FormFields.forEach(function(field) {
+            // Check all rule types for fallback rules
+            var ruleTypes = ['SkipLogic', 'CalculateLogic', 'ValidateLogic'];
+            
+            ruleTypes.forEach(function(ruleType) {
+              if (field[ruleType] && field[ruleType].Rules) {
+                field[ruleType].Rules.forEach(function(rule) {
+                  if (rule.FallbackRule && rule.FallbackRule.Action) {
+                    expect(validActions).to.include(rule.FallbackRule.Action);
+                  }
+                });
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}

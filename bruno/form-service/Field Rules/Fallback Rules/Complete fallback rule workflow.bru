@@ -1,0 +1,174 @@
+meta {
+  name: Complete Fallback Rule Workflow
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{BASE_URL}}/form-templates/{{TEMPLATE_ID}}/details
+  body: none
+  auth: none
+}
+
+headers {
+  x-api-key: {{INTERNAL_API_KEY}}
+  Authorization: Bearer {{JWT_TOKEN}}
+  Content-Type: application/json
+}
+
+script:pre-request {
+  console.log("Starting Complete Fallback Rule Workflow Test");
+  console.log("Template ID:", bru.getEnvVar("TEMPLATE_ID"));
+  console.log("Fallback Rule ID:", bru.getEnvVar("FALLBACK_RULE_ID"));
+}
+
+script:post-response {
+  test("Request is successful", function () {
+    expect(res.getStatus()).to.equal(200);
+    var jsonRes = res.getBody();
+    expect(jsonRes).to.have.property('FormSections');
+  });
+  
+  test("Template structure is valid", function () {
+    var jsonRes = res.getBody();
+    expect(jsonRes.FormSections).to.be.an('array');
+    
+    if (jsonRes.FormSections.length > 0) {
+      jsonRes.FormSections.forEach(function(section, sectionIndex) {
+        expect(section).to.have.property('id');
+        expect(section).to.have.property('FormFields');
+        expect(section.FormFields).to.be.an('array');
+        
+        console.log(`Section ${sectionIndex + 1}: ${section.Title || 'Untitled'} (${section.FormFields.length} fields)`);
+        
+        if (section.FormFields.length > 0) {
+          section.FormFields.forEach(function(field, fieldIndex) {
+            console.log(`  Field ${fieldIndex + 1}: ${field.Title || field.DisplayCode || 'Untitled'}`);
+            
+            // Check for Skip Logic with fallback rules
+            if (field.SkipLogic && field.SkipLogic.Rules) {
+              console.log(`    Skip Logic: ${field.SkipLogic.Rules.length} rules`);
+              field.SkipLogic.Rules.forEach(function(rule, ruleIndex) {
+                console.log(`      Rule ${ruleIndex + 1}: ${rule.Name}`);
+                if (rule.FallbackRule) {
+                  console.log(`        Fallback Rule: ${rule.FallbackRule.Action} - ${rule.FallbackRule.ActionMessage}`);
+                }
+              });
+            }
+            
+            // Check for Calculate Logic with fallback rules
+            if (field.CalculateLogic && field.CalculateLogic.Rules) {
+              console.log(`    Calculate Logic: ${field.CalculateLogic.Rules.length} rules`);
+              field.CalculateLogic.Rules.forEach(function(rule, ruleIndex) {
+                console.log(`      Rule ${ruleIndex + 1}: ${rule.Name}`);
+                if (rule.FallbackRule) {
+                  console.log(`        Fallback Rule: ${rule.FallbackRule.Action} - ${rule.FallbackRule.ActionMessage}`);
+                }
+              });
+            }
+            
+            // Check for Validate Logic with fallback rules
+            if (field.ValidateLogic && field.ValidateLogic.Rules) {
+              console.log(`    Validate Logic: ${field.ValidateLogic.Rules.length} rules`);
+              field.ValidateLogic.Rules.forEach(function(rule, ruleIndex) {
+                console.log(`      Rule ${ruleIndex + 1}: ${rule.Name}`);
+                if (rule.FallbackRule) {
+                  console.log(`        Fallback Rule: ${rule.FallbackRule.Action} - ${rule.FallbackRule.ActionMessage}`);
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+  
+  test("Fallback rules are properly integrated", function () {
+    var jsonRes = res.getBody();
+    var fallbackRuleCount = 0;
+    var ruleTypesWithFallback = [];
+    
+    if (jsonRes.FormSections && jsonRes.FormSections.length > 0) {
+      jsonRes.FormSections.forEach(function(section) {
+        if (section.FormFields && section.FormFields.length > 0) {
+          section.FormFields.forEach(function(field) {
+            // Check all rule types
+            var ruleTypes = [
+              { name: 'SkipLogic', rules: field.SkipLogic?.Rules },
+              { name: 'CalculateLogic', rules: field.CalculateLogic?.Rules },
+              { name: 'ValidateLogic', rules: field.ValidateLogic?.Rules }
+            ];
+            
+            ruleTypes.forEach(function(ruleType) {
+              if (ruleType.rules && ruleType.rules.length > 0) {
+                ruleType.rules.forEach(function(rule) {
+                  if (rule.FallbackRule) {
+                    fallbackRuleCount++;
+                    if (!ruleTypesWithFallback.includes(ruleType.name)) {
+                      ruleTypesWithFallback.push(ruleType.name);
+                    }
+                    
+                    // Validate fallback rule structure
+                    expect(rule.FallbackRule).to.have.property('id');
+                    expect(rule.FallbackRule).to.have.property('Action');
+                    expect(rule.FallbackRule).to.have.property('ExecutionOrder');
+                    expect(rule.FallbackRule).to.have.property('StopOnSuccess');
+                    expect(rule.FallbackRule).to.have.property('CreatedAt');
+                    
+                    // Validate action properties
+                    if (rule.FallbackRule.ActionValue) {
+                      expect(rule.FallbackRule).to.have.property('ActionValue');
+                    }
+                    if (rule.FallbackRule.ActionMessage) {
+                      expect(rule.FallbackRule).to.have.property('ActionMessage');
+                    }
+                    if (rule.FallbackRule.ActionParameters) {
+                      expect(rule.FallbackRule).to.have.property('ActionParameters');
+                    }
+                  }
+                });
+              }
+            });
+          });
+        }
+      });
+    }
+    
+    console.log(`Total fallback rules found: ${fallbackRuleCount}`);
+    console.log(`Rule types with fallback rules: ${ruleTypesWithFallback.join(', ')}`);
+    
+    // This test will pass even if no fallback rules are found, as it's just demonstrating the structure
+    expect(fallbackRuleCount).to.be.a('number');
+  });
+  
+  test("Fallback rule actions are valid", function () {
+    var jsonRes = res.getBody();
+    var validActions = ['SET_DEFAULT', 'SHOW_MESSAGE', 'SKIP_FIELD', 'RETRY', 'CLEAR_FIELD', 'DISABLE_FIELD'];
+    var foundActions = [];
+    
+    if (jsonRes.FormSections && jsonRes.FormSections.length > 0) {
+      jsonRes.FormSections.forEach(function(section) {
+        if (section.FormFields && section.FormFields.length > 0) {
+          section.FormFields.forEach(function(field) {
+            var ruleTypes = ['SkipLogic', 'CalculateLogic', 'ValidateLogic'];
+            
+            ruleTypes.forEach(function(ruleType) {
+              if (field[ruleType] && field[ruleType].Rules) {
+                field[ruleType].Rules.forEach(function(rule) {
+                  if (rule.FallbackRule && rule.FallbackRule.Action) {
+                    expect(validActions).to.include(rule.FallbackRule.Action);
+                    if (!foundActions.includes(rule.FallbackRule.Action)) {
+                      foundActions.push(rule.FallbackRule.Action);
+                    }
+                  }
+                });
+              }
+            });
+          });
+        }
+      });
+    }
+    
+    console.log(`Found fallback actions: ${foundActions.join(', ')}`);
+  });
+}

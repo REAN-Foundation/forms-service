@@ -19,12 +19,34 @@ export interface CalculationRuleSettings {
     NumberFormat?: string;
 }
 
+export enum RuleOutcomeType {
+    StaticValue = 'StaticValue',
+    FunctionExpression = 'FunctionExpression',
+}
+
+export enum OutcomeDataType {
+    Float = 'Float',
+    Integer = 'Integer',
+    Boolean = 'Boolean',
+    Text = 'Text',
+    DateTime = 'DateTime',
+    Location = 'Location',
+}
+
+export interface RuleOutcome {
+    Type: RuleOutcomeType;
+    StaticValue?: any;
+    DataType?: OutcomeDataType;
+    FunctionExpression?: string;
+    FunctionExpressionId?: uuid;
+}
 // Calculation Rule DTOs
 export interface CalculationRuleCreateModel extends BaseRuleCreateModel {
     BaseOperationId: uuid;
     OperationId?: uuid;
     LogicId?: uuid;
     Settings?: CalculationRuleSettings;
+    RuleOutcome?: RuleOutcome;
 }
 
 export interface CalculationRuleUpdateModel extends BaseRuleUpdateModel {
@@ -32,6 +54,7 @@ export interface CalculationRuleUpdateModel extends BaseRuleUpdateModel {
     OperationId?: uuid;
     LogicId?: uuid;
     Settings?: CalculationRuleSettings;
+    RuleOutcome?: RuleOutcome;
 }
 
 export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
@@ -42,6 +65,7 @@ export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
     OperationId?: uuid;
     LogicId?: uuid;
     Settings?: CalculationRuleSettings;
+    RuleOutcome?: RuleOutcome;
 }
 
 // Calculation Rule Search DTOs
@@ -57,6 +81,7 @@ export interface CalculationRuleSearchFilters extends BaseSearchFilters {
     SkipRuleId?: uuid;
     OperationType?: OperationType;
     Settings?: CalculationRuleSettings;
+    RuleOutcome?: RuleOutcome;
 }
 
 export interface CalculationRuleSearchResults extends BaseSearchResults {
