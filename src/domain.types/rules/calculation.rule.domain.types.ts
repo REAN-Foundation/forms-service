@@ -47,6 +47,7 @@ export interface CalculationRuleCreateModel extends BaseRuleCreateModel {
     LogicId?: uuid;
     Settings?: CalculationRuleSettings;
     RuleOutcome?: RuleOutcome;
+    FallbackRuleId?: uuid;
 }
 
 export interface CalculationRuleUpdateModel extends BaseRuleUpdateModel {
@@ -55,6 +56,7 @@ export interface CalculationRuleUpdateModel extends BaseRuleUpdateModel {
     LogicId?: uuid;
     Settings?: CalculationRuleSettings;
     RuleOutcome?: RuleOutcome;
+    FallbackRuleId?: uuid;
 }
 
 export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
@@ -66,6 +68,8 @@ export interface CalculationRuleResponseDto extends BaseRuleResponseDto {
     LogicId?: uuid;
     Settings?: CalculationRuleSettings;
     RuleOutcome?: RuleOutcome;
+    FallbackRuleId?: uuid;
+    FallbackRule?: any;
 }
 
 // Calculation Rule Search DTOs

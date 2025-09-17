@@ -14,6 +14,7 @@ export interface ValidationRuleCreateModel extends BaseRuleCreateModel {
     ErrorWhenFalse: boolean;
     ErrorMessage: string;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
 }
 
 export interface ValidationRuleUpdateModel extends BaseRuleUpdateModel {
@@ -21,6 +22,7 @@ export interface ValidationRuleUpdateModel extends BaseRuleUpdateModel {
     ErrorWhenFalse?: boolean;
     ErrorMessage?: string;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
 }
 
 export interface ValidationRuleResponseDto extends BaseRuleResponseDto {
@@ -29,6 +31,8 @@ export interface ValidationRuleResponseDto extends BaseRuleResponseDto {
     ErrorWhenFalse?: boolean;
     ErrorMessage?: string;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
+    FallbackRule?: any;
 }
 
 // Validation Rule Search DTOs

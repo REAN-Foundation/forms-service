@@ -10,7 +10,7 @@ export class FormTemplateMapper {
             id: record.id,
             Title: record.Title,
             Description: record.Description,
-            CurrentVersion: record.CurrentVersion,
+            CurrentVersion: record.Version,
             TenantCode: record.TenantCode,
             Type: record.Type,
             DisplayCode: record.DisplayCode,

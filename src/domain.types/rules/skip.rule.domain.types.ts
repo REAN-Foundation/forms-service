@@ -14,12 +14,14 @@ export interface SkipRuleCreateModel extends BaseRuleCreateModel {
     OperationId: uuid;
     SkipWhenTrue: boolean;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
 }
 
 export interface SkipRuleUpdateModel extends BaseRuleUpdateModel {
     OperationId?: uuid;
     SkipWhenTrue?: boolean;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
 }
 
 export interface SkipRuleResponseDto extends BaseRuleResponseDto {
@@ -30,6 +32,8 @@ export interface SkipRuleResponseDto extends BaseRuleResponseDto {
     OperationId: uuid;
     SkipWhenTrue: boolean;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
+    FallbackRule?: any;
 }
 
 // Skip Rule Search DTOs

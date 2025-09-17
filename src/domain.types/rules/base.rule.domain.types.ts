@@ -12,22 +12,31 @@ export interface BaseRuleCreateModel {
     Name?: string;
     Description?: string;
     OperationType: OperationType;
+    BaseOperationId?: string;
+    Priority?: number;
+    IsActive?: boolean;
 }
 
 export interface BaseRuleUpdateModel {
     Name?: string;
     Description?: string;
     OperationType?: OperationType;
+    BaseOperationId?: string;
+    Priority?: number;
+    IsActive?: boolean;
 }
 
 export interface BaseRuleResponseDto {
     id: uuid;
     Name?: string;
     Description?: string;
+    BaseOperationId?: string;
+    Priority?: number;
+    IsActive?: boolean;
     RuleType: RuleType;
     OperationType: OperationType;
     CreatedAt: Date;
-    UpdatedAt?: Date;
+    UpdatedAt: Date;
 }
 
 export type RuleResponseDto = SkipRuleResponseDto | CalculationRuleResponseDto | ValidationRuleResponseDto | FallbackRuleResponseDto;
@@ -36,6 +45,10 @@ export interface BaseRule {
     id: string;
     Name: string;
     Description?: string;
+    BaseOperationId?: string;
+    Priority?: number;
+    IsActive?: boolean;
+    OperationType: OperationType;
 }
 
 export interface SkipRule extends BaseRule {
@@ -57,7 +70,6 @@ export interface ValidationRule extends BaseRule {
 export interface FallbackRule extends BaseRule {
     Operation: Operation;           // When should this fallback action be triggered?
     Action: string;                 // What action to take (SET_DEFAULT, SHOW_MESSAGE, etc.)
-    ActionValue?: string;           // The value to set or the message to show
     ActionMessage?: string;         // User-friendly message for the action
     ActionParameters?: any;         // Additional parameters for complex actions
     ExecutionOrder: number;         // Order in which fallback actions should be executed

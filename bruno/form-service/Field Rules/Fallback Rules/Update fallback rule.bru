@@ -23,13 +23,9 @@ body:json {
     "Priority": 2,
     "IsActive": true,
     "OperationType": "Logical",
-    "BaseOperationId": "{{LOGICAL_OPERATION_ID}}",
     "Action": "SHOW_MESSAGE",
-    "ActionValue": "updated_default_value",
     "ActionMessage": "Updated message for fallback action",
-    "ActionParameters": "{\"retryCount\": 5, \"timeout\": 10000}",
-    "ExecutionOrder": 2,
-    "StopOnSuccess": false
+    "ActionParameters": "{\"retryCount\": 5, \"timeout\": 10000}"
   }
 }
 
@@ -53,11 +49,8 @@ script:post-response {
     expect(jsonRes.Data.IsActive).equals(true);
     expect(jsonRes.Data).to.have.property('OperationType');
     expect(jsonRes.Data.OperationType).equals('Logical');
-    expect(jsonRes.Data).to.have.property('BaseOperationId');
     expect(jsonRes.Data).to.have.property('Action');
     expect(jsonRes.Data.Action).equals('SHOW_MESSAGE');
-    expect(jsonRes.Data).to.have.property('ActionValue');
-    expect(jsonRes.Data.ActionValue).equals('updated_default_value');
     expect(jsonRes.Data).to.have.property('ActionMessage');
     expect(jsonRes.Data.ActionMessage).equals('Updated message for fallback action');
     expect(jsonRes.Data).to.have.property('ActionParameters');

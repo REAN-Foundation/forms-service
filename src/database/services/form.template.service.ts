@@ -20,6 +20,7 @@ import { MathematicalOperationService } from './mathematical.operation.service';
 import { CompositionOperationService } from './composition.operation.service';
 import { IterateOperationService } from './iterate.operation.service';
 import { FunctionExpressionOperationService } from './function.expression.operation.service';
+import { FallbackRuleService } from './fallback.rule.service';
 import { OperationType } from '../../domain.types/enums/operation.enums';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,6 +35,7 @@ export class FormTemplateService extends BaseService {
     _compositionOperationService: CompositionOperationService = Injector.Container.resolve(CompositionOperationService);
     _iterateOperationService: IterateOperationService = Injector.Container.resolve(IterateOperationService);
     _functionExpressionOperationService: FunctionExpressionOperationService = Injector.Container.resolve(FunctionExpressionOperationService);
+    _fallbackRuleService: FallbackRuleService = Injector.Container.resolve(FallbackRuleService);
 
     // Form Template operations
     public create = async (createModel: FormTemplateCreateModel)
@@ -411,6 +413,14 @@ export class FormTemplateService extends BaseService {
                     if (rule.OperationType && rule.BaseOperationId) {
                         rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
                     }
+                    // Populate fallback rule details if FallbackRuleId exists but FallbackRule is null
+                    if (rule.FallbackRuleId && !rule.FallbackRule) {
+                        try {
+                            rule.FallbackRule = await this._fallbackRuleService.getById(rule.FallbackRuleId);
+                        } catch (error) {
+                            logger.warn(`⚠️ Could not fetch fallback rule with ID ${rule.FallbackRuleId}: ${error.message}`);
+                        }
+                    }
                     // Populate fallback rule operation if exists
                     if (rule.FallbackRule?.OperationType && rule.FallbackRule?.BaseOperationId) {
                         rule.FallbackRule.Operation = await this.getOperationByTypeAndId(rule.FallbackRule.OperationType, rule.FallbackRule.BaseOperationId);
@@ -424,6 +434,14 @@ export class FormTemplateService extends BaseService {
                     if (rule.OperationType && rule.BaseOperationId) {
                         rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
                     }
+                    // Populate fallback rule details if FallbackRuleId exists but FallbackRule is null
+                    if (rule.FallbackRuleId && !rule.FallbackRule) {
+                        try {
+                            rule.FallbackRule = await this._fallbackRuleService.getById(rule.FallbackRuleId);
+                        } catch (error) {
+                            logger.warn(`⚠️ Could not fetch fallback rule with ID ${rule.FallbackRuleId}: ${error.message}`);
+                        }
+                    }
                     // Populate fallback rule operation if exists
                     if (rule.FallbackRule?.OperationType && rule.FallbackRule?.BaseOperationId) {
                         rule.FallbackRule.Operation = await this.getOperationByTypeAndId(rule.FallbackRule.OperationType, rule.FallbackRule.BaseOperationId);
@@ -436,6 +454,14 @@ export class FormTemplateService extends BaseService {
                 for (const rule of formField.ValidateLogic.Rules) {
                     if (rule.OperationType && rule.BaseOperationId) {
                         rule.Operation = await this.getOperationByTypeAndId(rule.OperationType, rule.BaseOperationId);
+                    }
+                    // Populate fallback rule details if FallbackRuleId exists but FallbackRule is null
+                    if (rule.FallbackRuleId && !rule.FallbackRule) {
+                        try {
+                            rule.FallbackRule = await this._fallbackRuleService.getById(rule.FallbackRuleId);
+                        } catch (error) {
+                            logger.warn(`⚠️ Could not fetch fallback rule with ID ${rule.FallbackRuleId}: ${error.message}`);
+                        }
                     }
                     // Populate fallback rule operation if exists
                     if (rule.FallbackRule?.OperationType && rule.FallbackRule?.BaseOperationId) {

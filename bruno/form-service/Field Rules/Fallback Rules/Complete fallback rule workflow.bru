@@ -111,14 +111,9 @@ script:post-response {
                     // Validate fallback rule structure
                     expect(rule.FallbackRule).to.have.property('id');
                     expect(rule.FallbackRule).to.have.property('Action');
-                    expect(rule.FallbackRule).to.have.property('ExecutionOrder');
-                    expect(rule.FallbackRule).to.have.property('StopOnSuccess');
                     expect(rule.FallbackRule).to.have.property('CreatedAt');
                     
                     // Validate action properties
-                    if (rule.FallbackRule.ActionValue) {
-                      expect(rule.FallbackRule).to.have.property('ActionValue');
-                    }
                     if (rule.FallbackRule.ActionMessage) {
                       expect(rule.FallbackRule).to.have.property('ActionMessage');
                     }

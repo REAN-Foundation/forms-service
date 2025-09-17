@@ -28,13 +28,12 @@ export class FallbackRuleService extends BaseService {
             Name: createModel.Name,
             Description: createModel.Description,
             OperationType: createModel.OperationType,
-            OperationId: createModel.OperationId,
+            Priority: createModel.Priority,
+            IsActive: createModel.IsActive,
+            // OperationId: createModel.OperationId,
             Action: createModel.Action,
-            ActionValue: createModel.ActionValue,
             ActionMessage: createModel.ActionMessage,
             ActionParameters: createModel.ActionParameters ? JSON.stringify(createModel.ActionParameters) : null,
-            ExecutionOrder: createModel.ExecutionOrder || 0,
-            StopOnSuccess: createModel.StopOnSuccess !== undefined ? createModel.StopOnSuccess : true,
         });
         const record = await this._fallbackRuleRepository.save(rule);
 
@@ -98,26 +97,23 @@ export class FallbackRuleService extends BaseService {
             if (model.OperationType != null) {
                 rule.OperationType = model.OperationType;
             }
-            if (model.OperationId != null) {
-                rule.OperationId = model.OperationId;
+            if (model.Priority != null) {
+                rule.Priority = model.Priority;
             }
+            if (model.IsActive != null) {
+                rule.IsActive = model.IsActive;
+            }
+            // if (model.OperationId != null) {
+            //     rule.OperationId = model.OperationId;
+            // }
             if (model.Action != null) {
                 rule.Action = model.Action;
-            }
-            if (model.ActionValue != null) {
-                rule.ActionValue = model.ActionValue;
             }
             if (model.ActionMessage != null) {
                 rule.ActionMessage = model.ActionMessage;
             }
             if (model.ActionParameters != null) {
                 rule.ActionParameters = model.ActionParameters ? JSON.stringify(model.ActionParameters) : null;
-            }
-            if (model.ExecutionOrder != null) {
-                rule.ExecutionOrder = model.ExecutionOrder;
-            }
-            if (model.StopOnSuccess != null) {
-                rule.StopOnSuccess = model.StopOnSuccess;
             }
             var record = await this._fallbackRuleRepository.save(rule);
             return FallbackRuleMapper.toDto(record);
@@ -160,17 +156,17 @@ export class FallbackRuleService extends BaseService {
         if (filters.OperationType) {
             search.where['OperationType'] = filters.OperationType;
         }
-        if (filters.OperationId) {
-            search.where['OperationId'] = filters.OperationId;
+        if (filters.Priority) {
+            search.where['Priority'] = filters.Priority;
         }
+        if (filters.IsActive) {
+            search.where['IsActive'] = filters.IsActive;
+        }
+        // if (filters.OperationId) {
+        //     search.where['OperationId'] = filters.OperationId;
+        // }
         if (filters.Action) {
             search.where['Action'] = filters.Action;
-        }
-        if (filters.ExecutionOrder !== undefined) {
-            search.where['ExecutionOrder'] = filters.ExecutionOrder;
-        }
-        if (filters.StopOnSuccess !== undefined) {
-            search.where['StopOnSuccess'] = filters.StopOnSuccess;
         }
 
         return search;

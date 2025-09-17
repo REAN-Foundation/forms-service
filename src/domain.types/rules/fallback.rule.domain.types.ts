@@ -15,69 +15,51 @@ export enum FallbackActionType {
     SHOW_MESSAGE = 'SHOW_MESSAGE',
     SKIP_FIELD = 'SKIP_FIELD',
     RETRY = 'RETRY',
-    HIDE_FIELD = 'HIDE_FIELD',
+    CLEAR_FIELD = 'CLEAR_FIELD',
     DISABLE_FIELD = 'DISABLE_FIELD',
-    REDIRECT = 'REDIRECT',
-    CUSTOM = 'CUSTOM',
 }
 
 export interface FallbackActionParameters {
-    [key: string]: any;
-    // Common parameters
+    retryCount?: number;
     timeout?: number;
-    maxRetries?: number;
-    redirectUrl?: string;
-    customHandler?: string;
-    // Field-specific parameters
-    fieldValue?: any;
-    fieldState?: string;
-    // UI parameters
-    messageType?: 'info' | 'warning' | 'error' | 'success';
-    showDuration?: number;
-    // Validation parameters
-    validationRules?: any[];
+    delay?: number;
+    maxAttempts?: number;
+    customSettings?: Record<string, any>;
 }
 
 // Fallback Rule DTOs
 export interface FallbackRuleCreateModel extends BaseRuleCreateModel {
-    OperationId: uuid;
+    Priority?: number;
+    IsActive?: boolean;
     Action: FallbackActionType;
-    ActionValue?: string;
     ActionMessage?: string;
     ActionParameters?: FallbackActionParameters;
-    ExecutionOrder?: number;
-    StopOnSuccess?: boolean;
 }
 
 export interface FallbackRuleUpdateModel extends BaseRuleUpdateModel {
-    OperationId?: uuid;
+    Priority?: number;
+    IsActive?: boolean;
     Action?: FallbackActionType;
-    ActionValue?: string;
     ActionMessage?: string;
     ActionParameters?: FallbackActionParameters;
-    ExecutionOrder?: number;
-    StopOnSuccess?: boolean;
 }
 
 export interface FallbackRuleResponseDto extends BaseRuleResponseDto {
     Operation: OperationResponseDto;
-    OperationId: uuid;
+    Priority?: number;
+    IsActive?: boolean;
     Action: FallbackActionType;
-    ActionValue?: string;
     ActionMessage?: string;
     ActionParameters?: FallbackActionParameters;
-    ExecutionOrder: number;
-    StopOnSuccess: boolean;
 }
 
 // Fallback Rule Search DTOs
 export interface FallbackRuleSearchFilters extends BaseSearchFilters {
     Name?: string;
     Description?: string;
-    OperationId?: uuid;
+    Priority?: number;
+    IsActive?: boolean;
     Action?: FallbackActionType;
-    ExecutionOrder?: number;
-    StopOnSuccess?: boolean;
     OperationType?: OperationType;
 }
 

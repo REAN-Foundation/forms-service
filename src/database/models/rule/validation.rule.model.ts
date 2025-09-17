@@ -1,7 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseRule } from './base.rule.model';
 import { ValidationLogic } from '../logic/validation.logic.model';
-import { FallbackRule } from './fallback.rule.model';
 
 @Entity({ name: 'eval_validation_rules' })
 export class ValidationRule extends BaseRule {
@@ -22,7 +21,7 @@ export class ValidationRule extends BaseRule {
     @Column({ type: 'uuid', nullable: true })
     FallbackRuleId?: string;
 
-    @ManyToOne(() => FallbackRule, { onDelete: 'SET NULL' })
+    @ManyToOne('FallbackRule', { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'FallbackRuleId' })
-    FallbackRule?: FallbackRule;
+    FallbackRule?: any;
 }

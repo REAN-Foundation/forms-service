@@ -30,13 +30,9 @@ script:post-response {
     expect(jsonRes.Data).to.have.property('Priority');
     expect(jsonRes.Data).to.have.property('IsActive');
     expect(jsonRes.Data).to.have.property('OperationType');
-    expect(jsonRes.Data).to.have.property('BaseOperationId');
     expect(jsonRes.Data).to.have.property('Action');
-    expect(jsonRes.Data).to.have.property('ActionValue');
     expect(jsonRes.Data).to.have.property('ActionMessage');
     expect(jsonRes.Data).to.have.property('ActionParameters');
-    expect(jsonRes.Data).to.have.property('ExecutionOrder');
-    expect(jsonRes.Data).to.have.property('StopOnSuccess');
     expect(jsonRes.Data).to.have.property('CreatedAt');
     expect(jsonRes.Data).to.have.property('UpdatedAt');
   });

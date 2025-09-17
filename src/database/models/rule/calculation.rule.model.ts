@@ -1,7 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseRule } from './base.rule.model';
 import { CalculationLogic } from '../logic/calculation.logic.model';
-import { FallbackRule } from './fallback.rule.model';
 
 @Entity({ name: 'eval_calculation_rules' })
 export class CalculationRule extends BaseRule {
@@ -24,9 +23,9 @@ export class CalculationRule extends BaseRule {
     @Column({ type: 'uuid', nullable: true })
     FallbackRuleId?: string;
 
-    @ManyToOne(() => FallbackRule, { onDelete: 'SET NULL' })
+    @ManyToOne('FallbackRule', { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'FallbackRuleId' })
-    FallbackRule?: FallbackRule;
+    FallbackRule?: any;
 
     // Note: Operation relationships will be handled at application level
     // since operations are polymorphic across multiple tables

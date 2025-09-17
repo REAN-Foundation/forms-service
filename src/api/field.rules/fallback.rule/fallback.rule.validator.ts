@@ -35,29 +35,26 @@ export class FallbackRuleValidator extends BaseValidator {
             }).optional();
 
             const schema = joi.object({
-                Name: joi.string().max(100).optional(),
-                Description: joi.string().max(500).optional(),
+                Name: joi.string().optional(),
+                Description: joi.string().optional(),
                 OperationType: joi.string().valid(...Object.values(OperationType)).required(),
-                OperationId: joi.string().uuid().required(),
-                Action: joi.string().valid(...Object.values(FallbackActionType)).required(),
-                ActionValue: joi.string().max(1000).optional(),
-                ActionMessage: joi.string().max(500).optional(),
+                Priority: joi.number().integer().min(0).optional(),
+                IsActive: joi.boolean().optional(),
+                // OperationId: joi.string().uuid().required(),
+                Action: joi.string().valid(...Object.values(FallbackActionType)).required(),                ActionMessage: joi.string().optional(),
                 ActionParameters: actionParametersSchema,
-                ExecutionOrder: joi.number().integer().min(0).default(0).optional(),
-                StopOnSuccess: joi.boolean().default(true).optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
                 OperationType: request.body.OperationType,
-                OperationId: request.body.OperationId,
+                Priority: request.body.Priority,
+                IsActive: request.body.IsActive,
+                // OperationId: request.body.OperationId,
                 Action: request.body.Action,
-                ActionValue: request.body.ActionValue,
                 ActionMessage: request.body.ActionMessage,
                 ActionParameters: request.body.ActionParameters,
-                ExecutionOrder: request.body.ExecutionOrder,
-                StopOnSuccess: request.body.StopOnSuccess,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -81,29 +78,27 @@ export class FallbackRuleValidator extends BaseValidator {
             }).optional();
 
             const schema = joi.object({
-                Name: joi.string().max(100).optional(),
-                Description: joi.string().max(500).optional(),
+                Name: joi.string().optional(),
+                Description: joi.string().optional(),
                 OperationType: joi.string().valid(...Object.values(OperationType)).optional(),
-                OperationId: joi.string().uuid().optional(),
+                Priority: joi.number().integer().min(0).optional(),
+                IsActive: joi.boolean().optional(),
+                // OperationId: joi.string().uuid().optional(),
                 Action: joi.string().valid(...Object.values(FallbackActionType)).optional(),
-                ActionValue: joi.string().max(1000).optional(),
-                ActionMessage: joi.string().max(500).optional(),
+                ActionMessage: joi.string().optional(),
                 ActionParameters: actionParametersSchema,
-                ExecutionOrder: joi.number().integer().min(0).optional(),
-                StopOnSuccess: joi.boolean().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
                 OperationType: request.body.OperationType,
-                OperationId: request.body.OperationId,
+                Priority: request.body.Priority,
+                IsActive: request.body.IsActive,
+                // OperationId: request.body.OperationId,
                 Action: request.body.Action,
-                ActionValue: request.body.ActionValue,
                 ActionMessage: request.body.ActionMessage,
                 ActionParameters: request.body.ActionParameters,
-                ExecutionOrder: request.body.ExecutionOrder,
-                StopOnSuccess: request.body.StopOnSuccess,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -118,10 +113,10 @@ export class FallbackRuleValidator extends BaseValidator {
                 id: joi.string().uuid().optional(),
                 name: joi.string().optional(),
                 description: joi.string().optional(),
-                operationId: joi.string().uuid().optional(),
+                priority: joi.number().integer().min(0).optional(),
+                isActive: joi.boolean().optional(),
+                // operationId: joi.string().uuid().optional(),
                 action: joi.string().valid(...Object.values(FallbackActionType)).optional(),
-                executionOrder: joi.number().integer().min(0).optional(),
-                stopOnSuccess: joi.boolean().optional(),
                 operationType: joi.string().valid(...Object.values(OperationType)).optional(),
             });
             await schema.validateAsync(request.query);
@@ -151,21 +146,21 @@ export class FallbackRuleValidator extends BaseValidator {
         if (description != null) {
             filters['Description'] = description;
         }
-        var operationId = query.operationId ? query.operationId : null;
-        if (operationId != null) {
-            filters['OperationId'] = operationId;
+        var priority = query.priority ? query.priority : null;
+        if (priority != null) {
+            filters['Priority'] = priority;
         }
+        var isActive = query.isActive ? query.isActive : null;
+        if (isActive != null) {
+            filters['IsActive'] = isActive;
+        }
+        // var operationId = query.operationId ? query.operationId : null;
+        // if (operationId != null) {
+        //     // filters['OperationId'] = operationId;
+        // }
         var action = query.action ? query.action : null;
         if (action != null) {
             filters['Action'] = action;
-        }
-        var executionOrder = query.executionOrder ? query.executionOrder : null;
-        if (executionOrder != null) {
-            filters['ExecutionOrder'] = executionOrder;
-        }
-        var stopOnSuccess = query.stopOnSuccess ? query.stopOnSuccess : null;
-        if (stopOnSuccess != null) {
-            filters['StopOnSuccess'] = stopOnSuccess;
         }
         var operationType = query.operationType ? query.operationType : null;
         if (operationType != null) {

@@ -16,7 +16,7 @@ export abstract class BaseRule extends BaseEntity {
     IsActive: boolean;
 
     @Column({ type: 'uuid', nullable: false })
-    BaseOperationId: string;
+    BaseOperationId?: string;
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     OperationType: OperationType;

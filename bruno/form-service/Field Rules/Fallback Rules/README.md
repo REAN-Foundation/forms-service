@@ -46,15 +46,12 @@ Fallback Rules are used to define fallback actions when primary rules (validatio
 - `Priority`: Priority level for execution order
 - `IsActive`: Whether the rule is active
 - `OperationType`: Type of operation (Logical, Mathematical, etc.)
-- `BaseOperationId`: ID of the base operation
 
 ### Action Properties
+
 - `Action`: Type of action to take (e.g., 'SET_DEFAULT', 'SHOW_MESSAGE', 'SKIP_FIELD', 'RETRY')
-- `ActionValue`: The value to set or the message to show
 - `ActionMessage`: User-friendly message for the action
 - `ActionParameters`: Additional parameters for complex actions (JSON)
-- `ExecutionOrder`: Order in which fallback actions should be executed
-- `StopOnSuccess`: Whether to stop executing other fallback rules if this one succeeds
 
 ## Usage Examples
 
@@ -66,13 +63,9 @@ Fallback Rules are used to define fallback actions when primary rules (validatio
   "Priority": 1,
   "IsActive": true,
   "OperationType": "Logical",
-  "BaseOperationId": "operation-id",
   "Action": "SET_DEFAULT",
-  "ActionValue": "default_value",
   "ActionMessage": "Setting default value due to validation failure",
-  "ActionParameters": "{\"retryCount\": 3, \"timeout\": 5000}",
-  "ExecutionOrder": 1,
-  "StopOnSuccess": true
+  "ActionParameters": "{\"retryCount\": 3, \"timeout\": 5000}"
 }
 ```
 
