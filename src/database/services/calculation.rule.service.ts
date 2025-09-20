@@ -27,12 +27,15 @@ export class CalculationRuleService extends BaseService {
         const rule = this._calculationRuleRepository.create({
             Name: createModel.Name,
             Description: createModel.Description,
+            Priority: createModel.Priority,
+            IsActive: createModel.IsActive,
             OperationType: createModel.OperationType,
             OperationId: createModel.OperationId,
             BaseOperationId: createModel.BaseOperationId,
             LogicId: createModel.LogicId,
             Settings: createModel.Settings ? JSON.stringify(createModel.Settings) : null,
             RuleOutcome: createModel.RuleOutcome ? JSON.stringify(createModel.RuleOutcome) : null,
+            FallbackRuleId: createModel.FallbackRuleId,
         });
         const record = await this._calculationRuleRepository.save(rule);
 

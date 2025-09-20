@@ -68,6 +68,29 @@ export class SkipRuleController {
         }
     };
 
+    getDetailsById = async (request: express.Request, response: express.Response) => {
+        try {
+            const id: uuid = await this._validator.requestParamAsUUID(
+                request,
+                'id'
+            );
+            const record = await this._service.getDetailsById(id);
+            if (!record) {
+                ErrorHandler.throwNotFoundError('Skip Rule not found!');
+            }
+            const message = 'Skip Rule details retrieved successfully!';
+            return ResponseHandler.success(
+                request,
+                response,
+                message,
+                200,
+                record
+            );
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
     update = async (request: express.Request, response: express.Response) => {
         try {
             const id = await this._validator.requestParamAsUUID(request, 'id');

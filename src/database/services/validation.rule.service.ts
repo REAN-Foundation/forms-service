@@ -27,11 +27,14 @@ export class ValidationRuleService extends BaseService {
         const rule = this._validationRuleRepository.create({
             Name: createModel.Name,
             Description: createModel.Description,
+            Priority: createModel.Priority,
+            IsActive: createModel.IsActive,
             OperationType: createModel.OperationType,
-            BaseOperationId: createModel.OperationId,
+            BaseOperationId: createModel.BaseOperationId,
             ErrorWhenFalse: createModel.ErrorWhenFalse,
             ErrorMessage: createModel.ErrorMessage,
             LogicId: createModel.LogicId,
+            FallbackRuleId: createModel.FallbackRuleId,
         });
         const record = await this._validationRuleRepository.save(rule);
 

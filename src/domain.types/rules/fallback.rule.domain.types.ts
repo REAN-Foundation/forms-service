@@ -59,6 +59,7 @@ export interface FallbackRuleSearchFilters extends BaseSearchFilters {
     Description?: string;
     Priority?: number;
     IsActive?: boolean;
+    BaseOperationId?: string;
     Action?: FallbackActionType;
     OperationType?: OperationType;
 }

@@ -13,6 +13,7 @@ export const register = (app: express.Application): void => {
     router.post('/', context(`${contextBase}.Create`), controller.create);
     router.put('/:id', context(`${contextBase}.Update`), controller.update);
     router.get('/:id', context(`${contextBase}.GetById`), controller.getById);
+    router.get('/:id/details', context(`${contextBase}.GetDetailsById`), controller.getDetailsById);
     router.delete('/:id', context(`${contextBase}.Delete`), controller.delete);
 
     app.use('/api/v1/field-skip-rules', router);

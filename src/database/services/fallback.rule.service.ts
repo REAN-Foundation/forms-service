@@ -30,7 +30,7 @@ export class FallbackRuleService extends BaseService {
             OperationType: createModel.OperationType,
             Priority: createModel.Priority,
             IsActive: createModel.IsActive,
-            // OperationId: createModel.OperationId,
+            BaseOperationId: createModel.BaseOperationId,
             Action: createModel.Action,
             ActionMessage: createModel.ActionMessage,
             ActionParameters: createModel.ActionParameters ? JSON.stringify(createModel.ActionParameters) : null,
@@ -103,9 +103,9 @@ export class FallbackRuleService extends BaseService {
             if (model.IsActive != null) {
                 rule.IsActive = model.IsActive;
             }
-            // if (model.OperationId != null) {
-            //     rule.OperationId = model.OperationId;
-            // }
+            if (model.BaseOperationId != null) {
+                rule.BaseOperationId = model.BaseOperationId;
+            }
             if (model.Action != null) {
                 rule.Action = model.Action;
             }
@@ -162,9 +162,9 @@ export class FallbackRuleService extends BaseService {
         if (filters.IsActive) {
             search.where['IsActive'] = filters.IsActive;
         }
-        // if (filters.OperationId) {
-        //     search.where['OperationId'] = filters.OperationId;
-        // }
+        if (filters.BaseOperationId) {
+            search.where['BaseOperationId'] = filters.BaseOperationId;
+        }
         if (filters.Action) {
             search.where['Action'] = filters.Action;
         }

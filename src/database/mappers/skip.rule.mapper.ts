@@ -1,6 +1,7 @@
 import { RuleType } from '../../domain.types/enums/rule.enums';
 import { SkipRuleResponseDto } from '../../domain.types/rules/skip.rule.domain.types';
 import { OperationMapper } from './base.operation.mapper';
+import { FallbackRuleMapper } from './fallback.rule.mapper';
 
 export class SkipRuleMapper {
     static toDto = (record: any): SkipRuleResponseDto => {
@@ -12,12 +13,18 @@ export class SkipRuleMapper {
             id: record.id,
             Name: record.Name,
             Description: record.Description,
+            Priority: record.Priority,
+            IsActive: record.IsActive,
             RuleType: RuleType.Skip,
             OperationType: record.OperationType,
-            OperationId: record.BaseOperationId,
+            BaseOperationId: record.BaseOperationId,
+            OperationId: record.OperationId,
             Operation: record.Operation ? OperationMapper.toOperationDto(record.Operation as any) : null!,
             SkipWhenTrue: record.SkipWhenTrue,
             LogicId: record.LogicId,
+            FallbackRuleId: record.FallbackRuleId,
+            BaseFallbackRuleId: record.BaseFallbackRuleId,
+            BaseFallbackRuleEntity: record.BaseFallbackRuleEntity ? FallbackRuleMapper.toDto(record.BaseFallbackRuleEntity) : null,
             ErrorMessage: record.ErrorMessage,
             ErrorWhenFalse: record.ErrorWhenFalse,
             CreatedAt: record.CreatedAt,

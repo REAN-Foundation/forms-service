@@ -40,8 +40,9 @@ export class FallbackRuleValidator extends BaseValidator {
                 OperationType: joi.string().valid(...Object.values(OperationType)).required(),
                 Priority: joi.number().integer().min(0).optional(),
                 IsActive: joi.boolean().optional(),
-                // OperationId: joi.string().uuid().required(),
-                Action: joi.string().valid(...Object.values(FallbackActionType)).required(),                ActionMessage: joi.string().optional(),
+                BaseOperationId: joi.string().uuid().required(),
+                Action: joi.string().valid(...Object.values(FallbackActionType)).required(),
+                ActionMessage: joi.string().optional(),
                 ActionParameters: actionParametersSchema,
             });
             await schema.validateAsync(request.body);
@@ -51,7 +52,7 @@ export class FallbackRuleValidator extends BaseValidator {
                 OperationType: request.body.OperationType,
                 Priority: request.body.Priority,
                 IsActive: request.body.IsActive,
-                // OperationId: request.body.OperationId,
+                BaseOperationId: request.body.BaseOperationId,
                 Action: request.body.Action,
                 ActionMessage: request.body.ActionMessage,
                 ActionParameters: request.body.ActionParameters,
@@ -83,7 +84,7 @@ export class FallbackRuleValidator extends BaseValidator {
                 OperationType: joi.string().valid(...Object.values(OperationType)).optional(),
                 Priority: joi.number().integer().min(0).optional(),
                 IsActive: joi.boolean().optional(),
-                // OperationId: joi.string().uuid().optional(),
+                BaseOperationId: joi.string().uuid().optional(),
                 Action: joi.string().valid(...Object.values(FallbackActionType)).optional(),
                 ActionMessage: joi.string().optional(),
                 ActionParameters: actionParametersSchema,
@@ -95,7 +96,7 @@ export class FallbackRuleValidator extends BaseValidator {
                 OperationType: request.body.OperationType,
                 Priority: request.body.Priority,
                 IsActive: request.body.IsActive,
-                // OperationId: request.body.OperationId,
+                BaseOperationId: request.body.BaseOperationId,
                 Action: request.body.Action,
                 ActionMessage: request.body.ActionMessage,
                 ActionParameters: request.body.ActionParameters,
@@ -115,7 +116,7 @@ export class FallbackRuleValidator extends BaseValidator {
                 description: joi.string().optional(),
                 priority: joi.number().integer().min(0).optional(),
                 isActive: joi.boolean().optional(),
-                // operationId: joi.string().uuid().optional(),
+                baseOperationId: joi.string().uuid().optional(),
                 action: joi.string().valid(...Object.values(FallbackActionType)).optional(),
                 operationType: joi.string().valid(...Object.values(OperationType)).optional(),
             });
@@ -154,10 +155,10 @@ export class FallbackRuleValidator extends BaseValidator {
         if (isActive != null) {
             filters['IsActive'] = isActive;
         }
-        // var operationId = query.operationId ? query.operationId : null;
-        // if (operationId != null) {
-        //     // filters['OperationId'] = operationId;
-        // }
+        var baseOperationId = query.baseOperationId ? query.baseOperationId : null;
+        if (baseOperationId != null) {
+            filters['BaseOperationId'] = baseOperationId;
+        }
         var action = query.action ? query.action : null;
         if (action != null) {
             filters['Action'] = action;

@@ -44,6 +44,7 @@ export interface ValidationRuleSearchFilters extends BaseSearchFilters {
     IsActive?: boolean;
     OperationId?: uuid;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
     ErrorWhenFalse?: boolean;
     ErrorMessage?: string;
     OperationType?: OperationType;

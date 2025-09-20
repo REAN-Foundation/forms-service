@@ -45,23 +45,29 @@ export class CalculationRuleValidator extends BaseValidator {
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
+                Priority: joi.number().integer().min(0).optional(),
+                IsActive: joi.boolean().optional(),
                 OperationType: joi.string().valid(...Object.values(OperationType)).required(),
                 BaseOperationId: joi.string().uuid().required(),
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
                 Settings: settingsSchema,
                 RuleOutcome: ruleOutcomeSchema,
+                FallbackRuleId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
+                Priority: request.body.Priority,
+                IsActive: request.body.IsActive,
                 OperationType: request.body.OperationType,
                 BaseOperationId: request.body.BaseOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
                 Settings: request.body.Settings,
                 RuleOutcome: request.body.RuleOutcome,
+                FallbackRuleId: request.body.FallbackRuleId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);
@@ -92,23 +98,29 @@ export class CalculationRuleValidator extends BaseValidator {
             const schema = joi.object({
                 Name: joi.string().optional(),
                 Description: joi.string().optional(),
+                Priority: joi.number().integer().min(0).optional(),
+                IsActive: joi.boolean().optional(),
                 OperationType: joi.string().valid(...Object.values(OperationType)).optional(),
                 BaseOperationId: joi.string().uuid().optional(),
                 OperationId: joi.string().uuid().optional(),
                 LogicId: joi.string().uuid().optional(),
                 Settings: settingsSchema,
                 RuleOutcome: ruleOutcomeSchema,
+                FallbackRuleId: joi.string().uuid().optional(),
             });
             await schema.validateAsync(request.body);
             return {
                 Name: request.body.Name,
                 Description: request.body.Description,
+                Priority: request.body.Priority,
+                IsActive: request.body.IsActive,
                 OperationType: request.body.OperationType,
                 BaseOperationId: request.body.BaseOperationId,
                 OperationId: request.body.OperationId,
                 LogicId: request.body.LogicId,
                 Settings: request.body.Settings,
                 RuleOutcome: request.body.RuleOutcome,
+                FallbackRuleId: request.body.FallbackRuleId,
             };
         } catch (error) {
             ErrorHandler.handleValidationError(error);

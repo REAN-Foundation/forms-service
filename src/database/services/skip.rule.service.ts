@@ -13,12 +13,14 @@ import { SkipRuleMapper } from '../mappers/skip.rule.mapper';
 import { ErrorHandler } from '../../common/error.handling/error.handler';
 import { logger } from '../../logger/logger';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
+import { FallbackRuleService } from './fallback.rule.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class SkipRuleService extends BaseService {
 
     _skipRuleRepository: Repository<SkipRule> = Source.getRepository(SkipRule);
+    _fallbackRuleService: FallbackRuleService = new FallbackRuleService();
 
     // Skip Rule operations
     public create = async (createModel: SkipRuleCreateModel)
@@ -27,10 +29,15 @@ export class SkipRuleService extends BaseService {
         const rule = this._skipRuleRepository.create({
             Name: createModel.Name,
             Description: createModel.Description,
+            Priority: createModel.Priority,
+            IsActive: createModel.IsActive,
             OperationType: createModel.OperationType,
-            BaseOperationId: createModel.OperationId,
+            BaseOperationId: createModel.BaseOperationId,
+            OperationId: createModel.OperationId,
             SkipWhenTrue: createModel.SkipWhenTrue,
             LogicId: createModel.LogicId,
+            FallbackRuleId: createModel.FallbackRuleId,
+            BaseFallbackRuleId: createModel.BaseFallbackRuleId,
         });
         const record = await this._skipRuleRepository.save(rule);
 
@@ -45,12 +52,52 @@ export class SkipRuleService extends BaseService {
                 },
                 relations: {
                     Logic: true,
+                    BaseFallbackRuleEntity: true,
                 }
             });
 
             return SkipRuleMapper.toDto(rule);
         } catch (error) {
             logger.error(`❌ Error getting skip rule by id: ${error.message}`);
+            ErrorHandler.throwInternalServerError(error.message, error);
+        }
+    };
+
+    public getDetailsById = async (id: uuid): Promise<SkipRuleResponseDto> => {
+        try {
+            const rule = await this._skipRuleRepository.findOne({
+                where: {
+                    id: id
+                },
+                relations: {
+                    Logic: true,
+                }
+            });
+
+            if (!rule) {
+                return null;
+            }
+
+            // Fetch BaseFallbackRule details if BaseFallbackRuleId exists
+            let baseFallbackRuleDetails = null;
+            if (rule.BaseFallbackRuleId) {
+                try {
+                    baseFallbackRuleDetails = await this._fallbackRuleService.getById(rule.BaseFallbackRuleId);
+                } catch (error) {
+                    logger.warn(`⚠️ Could not fetch BaseFallbackRule details for ID: ${rule.BaseFallbackRuleId}`);
+                    // Continue without BaseFallbackRule details
+                }
+            }
+
+            // Create a modified rule object with BaseFallbackRule details
+            const ruleWithDetails = {
+                ...rule,
+                BaseFallbackRuleEntity: baseFallbackRuleDetails
+            };
+
+            return SkipRuleMapper.toDto(ruleWithDetails);
+        } catch (error) {
+            logger.error(`❌ Error getting skip rule details by id: ${error.message}`);
             ErrorHandler.throwInternalServerError(error.message, error);
         }
     };
@@ -109,6 +156,9 @@ export class SkipRuleService extends BaseService {
             if (model.LogicId != null) {
                 rule.LogicId = model.LogicId;
             }
+            if (model.BaseFallbackRuleId != null) {
+                rule.BaseFallbackRuleId = model.BaseFallbackRuleId;
+            }
             var record = await this._skipRuleRepository.save(rule);
             return SkipRuleMapper.toDto(record);
         } catch (error) {
@@ -142,6 +192,7 @@ export class SkipRuleService extends BaseService {
         var search: FindManyOptions<SkipRule> = {
             relations: {
                 Logic: true,
+                BaseFallbackRuleEntity: true,
             },
             where: {
             }
@@ -164,6 +215,9 @@ export class SkipRuleService extends BaseService {
         }
         if (filters.SkipWhenTrue != null) {
             search.where['SkipWhenTrue'] = filters.SkipWhenTrue;
+        }
+        if (filters.BaseFallbackRuleId) {
+            search.where['BaseFallbackRuleId'] = filters.BaseFallbackRuleId;
         }
 
         return search;

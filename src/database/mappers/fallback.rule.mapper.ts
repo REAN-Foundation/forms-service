@@ -14,7 +14,7 @@ export class FallbackRuleMapper {
             Description: record.Description,
             Operation: record.Operation ? OperationMapper.toOperationDto(record.Operation as any) : null!,
             OperationType: record.OperationType,
-            // OperationId: record.OperationId,
+            BaseOperationId: record.BaseOperationId,
             RuleType: RuleType.Fallback,
             Priority: record.Priority,
             IsActive: record.IsActive,

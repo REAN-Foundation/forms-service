@@ -12,6 +12,8 @@ export class CalculationRuleMapper {
             id: record.id,
             Name: record.Name,
             Description: record.Description,
+            Priority: record.Priority,
+            IsActive: record.IsActive,
             Operation: record.Operation ? OperationMapper.toOperationDto(record.Operation as any) : null!,
             OperationType: record.OperationType,
             OperationId: record.OperationId,
@@ -20,6 +22,7 @@ export class CalculationRuleMapper {
             LogicId: record.LogicId,
             Settings: record.Settings ? JSON.parse(record.Settings) : undefined,
             RuleOutcome: record.RuleOutcome ? JSON.parse(record.RuleOutcome) : undefined,
+            FallbackRuleId: record.FallbackRuleId,
             CreatedAt: record.CreatedAt,
             UpdatedAt: record.UpdatedAt,
         };

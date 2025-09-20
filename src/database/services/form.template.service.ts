@@ -124,6 +124,7 @@ export class FormTemplateService extends BaseService {
                             SkipLogic: {
                                 Rules: {
                                     FallbackRule: true,
+                                    BaseFallbackRuleEntity: true,
                                 },
                             },
                             CalculateLogic: {
@@ -424,6 +425,14 @@ export class FormTemplateService extends BaseService {
                     // Populate fallback rule operation if exists
                     if (rule.FallbackRule?.OperationType && rule.FallbackRule?.BaseOperationId) {
                         rule.FallbackRule.Operation = await this.getOperationByTypeAndId(rule.FallbackRule.OperationType, rule.FallbackRule.BaseOperationId);
+                    }
+                    // Populate base fallback rule details if BaseFallbackRuleId exists but BaseFallbackRuleEntity is null
+                    if (rule.BaseFallbackRuleId && !rule.BaseFallbackRuleEntity) {
+                        try {
+                            rule.BaseFallbackRuleEntity = await this._fallbackRuleService.getById(rule.BaseFallbackRuleId);
+                        } catch (error) {
+                            logger.warn(`⚠️ Could not fetch base fallback rule with ID ${rule.BaseFallbackRuleId}: ${error.message}`);
+                        }
                     }
                 }
             }

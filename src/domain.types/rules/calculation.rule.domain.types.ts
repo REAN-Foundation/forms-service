@@ -81,6 +81,7 @@ export interface CalculationRuleSearchFilters extends BaseSearchFilters {
     BaseOperationId?: uuid;
     OperationId?: uuid;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
     ValidationRuleId?: uuid;
     SkipRuleId?: uuid;
     OperationType?: OperationType;

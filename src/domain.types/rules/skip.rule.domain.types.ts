@@ -8,6 +8,7 @@ import { uuid } from '../miscellaneous/system.types';
 import { OperationResponseDto } from '../operations/base.operation.domain.types';
 import { RuleType } from '../enums/rule.enums';
 import { OperationType } from '../enums/operation.enums';
+import { FallbackRuleResponseDto } from './fallback.rule.domain.types';
 
 // Skip Rule DTOs
 export interface SkipRuleCreateModel extends BaseRuleCreateModel {
@@ -15,6 +16,7 @@ export interface SkipRuleCreateModel extends BaseRuleCreateModel {
     SkipWhenTrue: boolean;
     LogicId?: uuid;
     FallbackRuleId?: uuid;
+    BaseFallbackRuleId?: uuid;
 }
 
 export interface SkipRuleUpdateModel extends BaseRuleUpdateModel {
@@ -22,6 +24,7 @@ export interface SkipRuleUpdateModel extends BaseRuleUpdateModel {
     SkipWhenTrue?: boolean;
     LogicId?: uuid;
     FallbackRuleId?: uuid;
+    BaseFallbackRuleId?: uuid;
 }
 
 export interface SkipRuleResponseDto extends BaseRuleResponseDto {
@@ -34,6 +37,8 @@ export interface SkipRuleResponseDto extends BaseRuleResponseDto {
     LogicId?: uuid;
     FallbackRuleId?: uuid;
     FallbackRule?: any;
+    BaseFallbackRuleId?: uuid;
+    BaseFallbackRuleEntity?: FallbackRuleResponseDto;
 }
 
 // Skip Rule Search DTOs
@@ -45,6 +50,8 @@ export interface SkipRuleSearchFilters extends BaseSearchFilters {
     IsActive?: boolean;
     OperationId?: uuid;
     LogicId?: uuid;
+    FallbackRuleId?: uuid;
+    BaseFallbackRuleId?: uuid;
     SkipWhenTrue?: boolean;
     OperationType?: OperationType;
 }

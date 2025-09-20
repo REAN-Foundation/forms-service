@@ -3,11 +3,7 @@ import { BaseRule } from './base.rule.model';
 
 @Entity({ name: 'eval_fallback_rules' })
 export class FallbackRule extends BaseRule {
-    // Override BaseOperationId to exclude it from fallback rules
-    BaseOperationId?: never;
-
-    // @Column({ type: 'uuid', nullable: false })
-    // OperationId: string;
+    // BaseOperationId is inherited from BaseRule
 
     @Column({ type: 'varchar', length: 100, nullable: false })
     Action: string; // e.g., 'SET_DEFAULT', 'SHOW_MESSAGE', 'SKIP_FIELD', 'RETRY', etc.
