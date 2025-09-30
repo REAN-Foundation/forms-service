@@ -54,7 +54,7 @@ export class FormController extends BaseController {
             }
 
             formSubmissionUpdateModel.Unencrypted = `id=${record.id}${model.UserId ? `&userId=${record.UserId}` : ''}`;
-            formSubmissionUpdateModel.Link = `${process.env.BASE_URL}/form/submission/${formSubmissionUpdateModel.Encrypted}`;
+            formSubmissionUpdateModel.Link = `${process.env.BASE_URL}/form/submissions/${formSubmissionUpdateModel.Encrypted}`;
             formSubmissionUpdateModel.LinkQueryParams = JSON.stringify({
                 id: record.id,
                 UserId: record.UserId,
